@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ABOUT | ZHANG JIARUI</title>
     <style>
-        /* 延续首页的极简美学 */
         body {
             margin: 0;
             padding: 0;
@@ -43,21 +42,26 @@
 
         .nav-links a:hover { color: #000; }
 
-        /* About 布局 */
+        /* 重点修改：调整 About 布局比例 */
         .about-container {
-            max-width: 1100px;
+            max-width: 1000px; /* 缩小总宽度，让内容更聚拢 */
             margin: 60px auto 120px;
             padding: 0 5%;
             display: grid;
-            grid-template-columns: 1fr 1.2fr;
-            gap: 100px;
+            grid-template-columns: 300px 1fr; /* 固定图片宽度为300px，其余给文字 */
+            gap: 80px;
+        }
+
+        .about-image {
+            width: 100%;
         }
 
         .about-image img {
-            width: 100%;
+            width: 100%; /* 宽度占满父容器（即300px） */
             height: auto;
             display: block;
-            filter: grayscale(100%); /* 保持黑白的高级感 */
+            filter: grayscale(100%); /* 保持高级黑白质感 */
+            opacity: 0.9;
         }
 
         .about-text h1 {
@@ -76,23 +80,18 @@
         }
 
         .statement {
-            font-size: 15px;
+            font-size: 14px; /* 稍微缩小字号，显得更专业精炼 */
             color: #333;
             margin-bottom: 60px;
             text-align: justify;
         }
 
-        .statement p {
-            margin-bottom: 25px;
-        }
+        .statement p { margin-bottom: 25px; }
 
-        /* 履历部分 */
-        .cv-section {
-            margin-top: 50px;
-        }
+        .cv-section { margin-top: 50px; }
 
         .cv-section h2 {
-            font-size: 12px;
+            font-size: 11px;
             letter-spacing: 0.3em;
             text-transform: uppercase;
             border-bottom: 1px solid #eee;
@@ -104,7 +103,7 @@
 
         .cv-item {
             display: flex;
-            font-size: 14px;
+            font-size: 13px;
             margin-bottom: 15px;
             align-items: baseline;
         }
@@ -112,14 +111,11 @@
         .cv-year {
             width: 110px;
             color: #bbb;
-            font-size: 12px;
+            font-size: 11px;
             letter-spacing: 0.1em;
         }
 
-        .cv-detail {
-            flex: 1;
-            color: #444;
-        }
+        .cv-detail { flex: 1; color: #444; }
 
         footer {
             padding: 80px 5%;
@@ -131,8 +127,16 @@
             border-top: 1px solid #f9f9f9;
         }
 
+        /* 移动端适配：图片在上方，文字在下方 */
         @media (max-width: 850px) {
-            .about-container { grid-template-columns: 1fr; gap: 50px; }
+            .about-container { 
+                grid-template-columns: 1fr; 
+                gap: 40px; 
+            }
+            .about-image {
+                width: 200px; /* 移动端图片更小一点 */
+                margin: 0 auto;
+            }
             nav { flex-direction: column; gap: 25px; }
         }
     </style>
@@ -150,7 +154,7 @@
 
     <div class="about-container">
         <div class="about-image">
-            <img src="profile.jpg" alt="Zhang Jiarui" onerror="this.src='https://via.placeholder.com/800x1000/F2F2F2/999999?text=ZHANG+JIARUI'">
+            <img src="profile.jpg" alt="Zhang Jiarui" onerror="this.src='https://via.placeholder.com/600x800/F2F2F2/999999?text=PROFILE+IMAGE'">
         </div>
 
         <div class="about-text">
@@ -166,8 +170,8 @@
                 <h2>Education</h2>
                 
                 <div class="cv-item">
-                    <div class="cv-year">2025 - 至今</div>
-                    <div class="cv-detail">中央美术学院，博士候选人 (Ph.D.)</div>
+                    <div class="cv-year">20XX - 20XX</div>
+                    <div class="cv-detail">中央美术学院，博士 (Ph.D.)</div>
                 </div>
 
                 <div class="cv-item">
