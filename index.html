@@ -15,7 +15,7 @@
             scroll-behavior: smooth;
         }
 
-        /* 2. 透明导航栏 - 像 Echelman 一样浮在大图上 */
+        /* 2. 透明导航栏 - 修正了 About 链接 */
         nav {
             position: absolute;
             top: 0;
@@ -34,7 +34,7 @@
             font-weight: 300;
             letter-spacing: 0.4em;
             text-decoration: none;
-            color: #fff; /* 初始为白色，浮在大图上 */
+            color: #fff; 
             text-transform: uppercase;
         }
 
@@ -46,9 +46,14 @@
             letter-spacing: 0.2em;
             text-transform: uppercase;
             font-weight: 300;
+            transition: opacity 0.3s;
         }
 
-        /* 3. 全屏封面区 - 沉浸式视觉 */
+        .nav-links a:hover {
+            opacity: 0.7;
+        }
+
+        /* 3. 全屏封面区 */
         .hero {
             height: 100vh;
             width: 100%;
@@ -60,7 +65,7 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            filter: brightness(0.85); /* 稍微压暗，方便看清白字 Logo */
+            filter: brightness(0.85);
         }
 
         /* 4. 内容主体 */
@@ -74,23 +79,22 @@
             font-size: 14px;
             letter-spacing: 0.5em;
             text-transform: uppercase;
-            margin-bottom: 60px;
+            margin-bottom: 80px;
             text-align: center;
             font-weight: 300;
             color: #888;
         }
 
-        /* 5. 作品网格 - 模仿 Echelman 的列表质感 */
+        /* 5. 作品网格 */
         .grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 80px 40px;
+            gap: 100px 60px;
         }
 
         .project {
             text-decoration: none;
             color: inherit;
-            overflow: hidden;
             display: block;
         }
 
@@ -108,15 +112,11 @@
         }
 
         .project:hover img {
-            transform: scale(1.05);
-        }
-
-        .project-info {
-            padding-left: 5px;
+            transform: scale(1.03);
         }
 
         .project-title {
-            font-size: 16px;
+            font-size: 15px;
             font-weight: 300;
             letter-spacing: 0.15em;
             text-transform: uppercase;
@@ -127,73 +127,3 @@
             color: #999;
             margin-top: 8px;
             letter-spacing: 0.1em;
-            text-transform: uppercase;
-        }
-
-        /* 6. 页脚 */
-        footer {
-            padding: 100px 5% 60px;
-            text-align: center;
-            font-size: 10px;
-            letter-spacing: 0.3em;
-            color: #aaa;
-            text-transform: uppercase;
-        }
-
-        /* 移动端适配 */
-        @media (max-width: 768px) {
-            .grid { grid-template-columns: 1fr; }
-            .hero { height: 70vh; }
-            .logo { font-size: 16px; letter-spacing: 0.2em; }
-            .nav-links { display: none; } /* 移动端隐藏菜单，保持极简 */
-        }
-    </style>
-</head>
-<body>
-
-    <nav>
-        <a href="/" class="logo">ZHANG JIARUI</a>
-        <div class="nav-links">
-            <a href="#works">Public Art</a>
-            <a href="#works">Exhibitions</a>
-            <a href="#">About</a>
-            <a href="#">Contact</a>
-        </div>
-    </nav>
-
-    <section class="hero">
-        <img src="1.jpg" alt="Zhang Jiarui Art">
-    </section>
-
-    <div class="content-section" id="works">
-        <h2 class="section-title">Selected Projects</h2>
-        
-        <div class="grid">
-            <a href="#" class="project">
-                <div class="project-image-wrapper">
-                    <img src="2.jpg" alt="Project 01">
-                </div>
-                <div class="project-info">
-                    <div class="project-title">Project Title One</div>
-                    <div class="project-meta">Location, Material — 2025</div>
-                </div>
-            </a>
-
-            <a href="#" class="project">
-                <div class="project-image-wrapper">
-                    <img src="3.jpg" alt="Project 02">
-                </div>
-                <div class="project-info">
-                    <div class="project-title">Project Title Two</div>
-                    <div class="project-meta">Location, Material — 2024</div>
-                </div>
-            </a>
-        </div>
-    </div>
-
-    <footer>
-        &copy; 2026 ZHANG JIARUI ART STUDIO. ALL RIGHTS RESERVED.
-    </footer>
-
-</body>
-</html>
