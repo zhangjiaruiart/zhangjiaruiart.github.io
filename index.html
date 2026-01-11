@@ -5,39 +5,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ZHANG JIARUI | ARTIST</title>
     <style>
-        /* 保持你喜欢的布局美学 */
-        body, html { margin: 0; padding: 0; font-family: "Optima", "Didot", "Helvetica Neue", Helvetica, Arial, sans-serif; background-color: #fff; color: #111; scroll-behavior: smooth; }
+        body, html { margin: 0; padding: 0; font-family: "Optima", sans-serif; background-color: #fff; color: #111; scroll-behavior: smooth; }
         nav { position: absolute; top: 0; left: 0; width: 100%; display: flex; justify-content: space-between; align-items: center; padding: 50px 5%; box-sizing: border-box; z-index: 100; }
-        .logo { font-size: 20px; font-weight: 300; letter-spacing: 0.6em; text-decoration: none; color: #fff; text-transform: uppercase; }
-        .nav-links a { margin-left: 35px; text-decoration: none; color: #fff; font-size: 11px; letter-spacing: 0.25em; text-transform: uppercase; font-weight: 300; }
-        .hero { height: 100vh; width: 100%; overflow: hidden; position: relative; background-color: #1a1a1a; }
+        .logo { font-size: 20px; letter-spacing: 0.6em; text-decoration: none; color: #fff; text-transform: uppercase; }
+        .hero { height: 100vh; width: 100%; background-color: #1a1a1a; }
         .hero img { width: 100%; height: 100%; object-fit: cover; filter: brightness(0.8); display: block; }
-        .content-section { padding: 100px 5%; max-width: 1400px; margin: 0 auto; }
-        .category-title { font-size: 14px; letter-spacing: 0.6em; text-transform: uppercase; margin-top: 60px; margin-bottom: 80px; text-align: left; font-weight: 400; border-bottom: 1px solid #eee; padding-bottom: 20px; }
-        .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 100px 60px; margin-bottom: 150px; }
-        .project { text-decoration: none; color: inherit; display: block; }
-        .project-image-wrapper { overflow: hidden; margin-bottom: 25px; background-color: #f7f7f7; aspect-ratio: 4 / 5; }
-        .project img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 1.5s cubic-bezier(0.15, 1, 0.3, 1); }
-        .project:hover img { transform: scale(1.05); }
-        .project-title { font-size: 15px; font-weight: 300; letter-spacing: 0.15em; text-transform: uppercase; }
-        footer { padding: 100px 5% 60px; text-align: center; font-size: 9px; letter-spacing: 0.4em; color: #bbb; text-transform: uppercase; border-top: 1px solid #f2f2f2; }
-        @media (max-width: 768px) { .grid { grid-template-columns: 1fr; } .hero { height: 75vh; } .nav-links { display: none; } }
+        .content-section { padding: 80px 5%; max-width: 1400px; margin: 0 auto; }
+        .category-title { font-size: 14px; letter-spacing: 0.5em; text-transform: uppercase; border-bottom: 1px solid #eee; padding-bottom: 15px; margin: 60px 0; }
+        .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 60px; }
+        .project-image-wrapper { background-color: #f7f7f7; aspect-ratio: 4/5; overflow: hidden; }
+        .project img { width: 100%; height: 100%; object-fit: cover; display: block; }
+        @media (max-width: 768px) { .grid { grid-template-columns: 1fr; } .hero { height: 70vh; } }
     </style>
 </head>
 <body>
-
     <nav>
         <a href="index.html" class="logo">ZHANG JIARUI</a>
-        <div class="nav-links">
-            <a href="#eco-art">Ecological Art</a>
-            <a href="#sculpture">Sculpture</a>
-            <a href="about.html">About</a>
-            <a href="mailto:contact@zhangjiarui.art">Contact</a>
-        </div>
     </nav>
 
     <section class="hero">
-        <img src="./Cover.jpg" alt="Cover" onerror="this.src='./cover.jpg'; this.onerror=null;">
+        <img src="Cover.jpg" alt="Cover" onerror="this.src='cover.jpg'">
     </section>
 
     <div class="content-section" id="eco-art">
@@ -45,32 +32,15 @@
         <div class="grid">
             <div class="project">
                 <div class="project-image-wrapper">
-                    <img src="./Work1.jpg" alt="Work 1" onerror="this.src='./work1.jpg'; this.onerror=null;">
+                    <img src="Work1.jpg" alt="Work 1" onerror="this.src='work1.jpg'">
                 </div>
-                <div class="project-title">Eco Project One</div>
             </div>
             <div class="project">
                 <div class="project-image-wrapper">
-                    <img src="https://via.placeholder.com/800x1000/F9F9F9/CCC?text=Project+Coming+Soon">
+                    <img src="Work2.jpg" alt="Work 2" onerror="this.src='work2.jpg'">
                 </div>
-                <div class="project-title">Future Work</div>
             </div>
         </div>
     </div>
-
-    <div class="content-section" id="sculpture">
-        <h2 class="category-title">Sculpture</h2>
-        <div class="grid">
-            <div class="project">
-                <div class="project-image-wrapper">
-                    <img src="./Work2.jpg" alt="Work 2" onerror="this.src='./work2.jpg'; this.onerror=null;">
-                </div>
-                <div class="project-title">Sculpture One</div>
-            </div>
-        </div>
-    </div>
-
-    <footer>&copy; 2026 ZHANG JIARUI ART STUDIO.</footer>
-
 </body>
 </html>
