@@ -1,31 +1,31 @@
 <!DOCTYPE html>
-<html lang="zh">
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ABOUT | ZHANG JIARUI</title>
     <style>
+        /* 延续首页的极简美学 */
         body {
             margin: 0;
             padding: 0;
             font-family: "Optima", "Didot", "Helvetica Neue", Helvetica, Arial, sans-serif;
-            background-color: #fff;
-            color: #111;
+            background-color: #ffffff;
+            color: #111111;
             line-height: 1.8;
         }
 
-        /* 导航栏：保持与首页一致，但文字设为黑色 */
         nav {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 40px 5%;
+            padding: 45px 5%;
         }
 
         .logo {
-            font-size: 22px;
+            font-size: 20px;
             font-weight: 300;
-            letter-spacing: 0.4em;
+            letter-spacing: 0.5em;
             text-decoration: none;
             color: #000;
             text-transform: uppercase;
@@ -35,75 +35,105 @@
             margin-left: 35px;
             text-decoration: none;
             color: #666;
-            font-size: 12px;
+            font-size: 11px;
             letter-spacing: 0.2em;
             text-transform: uppercase;
+            transition: color 0.3s;
         }
 
-        /* About 页面布局 */
+        .nav-links a:hover { color: #000; }
+
+        /* About 布局 */
         .about-container {
-            max-width: 1000px;
-            margin: 80px auto;
+            max-width: 1100px;
+            margin: 60px auto 120px;
             padding: 0 5%;
             display: grid;
-            grid-template-columns: 1fr 1.5fr; /* 左图右文 */
-            gap: 80px;
+            grid-template-columns: 1fr 1.2fr;
+            gap: 100px;
         }
 
         .about-image img {
             width: 100%;
             height: auto;
-            filter: grayscale(100%); /* 艺术家肖像建议黑白，更有质感 */
+            display: block;
+            filter: grayscale(100%); /* 保持黑白的高级感 */
         }
 
         .about-text h1 {
-            font-size: 28px;
+            font-size: 24px;
             font-weight: 300;
             letter-spacing: 0.2em;
-            margin-bottom: 30px;
+            margin: 0 0 10px 0;
+            text-transform: uppercase;
         }
 
-        .biography {
+        .birth-info {
+            font-size: 13px;
+            color: #999;
+            letter-spacing: 0.1em;
+            margin-bottom: 40px;
+        }
+
+        .statement {
             font-size: 15px;
-            margin-bottom: 50px;
             color: #333;
+            margin-bottom: 60px;
+            text-align: justify;
         }
 
+        .statement p {
+            margin-bottom: 25px;
+        }
+
+        /* 履历部分 */
         .cv-section {
-            margin-top: 60px;
+            margin-top: 50px;
         }
 
         .cv-section h2 {
-            font-size: 13px;
+            font-size: 12px;
             letter-spacing: 0.3em;
             text-transform: uppercase;
             border-bottom: 1px solid #eee;
-            padding-bottom: 10px;
-            margin-bottom: 20px;
+            padding-bottom: 15px;
+            margin-bottom: 25px;
+            color: #888;
+            font-weight: 400;
         }
 
         .cv-item {
             display: flex;
-            font-size: 13px;
-            margin-bottom: 10px;
+            font-size: 14px;
+            margin-bottom: 15px;
+            align-items: baseline;
         }
 
         .cv-year {
-            width: 80px;
-            color: #999;
+            width: 100px;
+            color: #bbb;
+            font-size: 12px;
+            letter-spacing: 0.1em;
+        }
+
+        .cv-detail {
+            flex: 1;
+            color: #444;
         }
 
         footer {
-            padding: 100px 5% 60px;
+            padding: 80px 5%;
             text-align: center;
-            font-size: 10px;
+            font-size: 9px;
             letter-spacing: 0.3em;
-            color: #aaa;
+            color: #ccc;
             text-transform: uppercase;
+            border-top: 1px solid #f9f9f9;
         }
 
-        @media (max-width: 768px) {
-            .about-container { grid-template-columns: 1fr; }
+        @media (max-width: 850px) {
+            .about-container { grid-template-columns: 1fr; gap: 50px; }
+            nav { flex-direction: column; gap: 25px; }
         }
     </style>
 </head>
@@ -113,42 +143,50 @@
         <a href="index.html" class="logo">ZHANG JIARUI</a>
         <div class="nav-links">
             <a href="index.html">Works</a>
-            <a href="about.html" style="color:#000; font-weight:bold;">About</a>
-            <a href="mailto:你的邮箱">Contact</a>
+            <a href="about.html" style="color:#000; font-weight: 400;">About</a>
+            <a href="mailto:contact@zhangjiarui.art">Contact</a>
         </div>
     </nav>
 
     <div class="about-container">
         <div class="about-image">
-            <img src="profile.jpg" alt="Zhang Jiarui" onerror="this.src='https://via.placeholder.com/600x800?text=Profile+Image'">
+            <img src="profile.jpg" alt="Zhang Jiarui" onerror="this.src='https://via.placeholder.com/800x1000/F2F2F2/999999?text=ZHANG+JIARUI'">
         </div>
 
         <div class="about-text">
-            <h1>Artist Biography</h1>
-            <div class="biography">
-                张家瑞（Zhang Jiarui），
-                近年来，我的艺术创作始终围绕两条相互交织的路径展开：一是“传统艺术的当代转化”，二是“生态艺术的现场实践”。这两条路径既有相对独立的探索方向，又在创作逻辑与方法论上形成互文，成为我持续艺术研究的重要支点。
+            <h1>Zhang Jiarui</h1>
+            <div class="birth-info">b. 1990</div>
 
-
-其一，我致力于传统雕塑语言的当代转化。在创作实践中，我偏爱选用木、红土等具有深厚文化底蕴和自然属性的材料，并以中国传统工艺如榫卯结构为技术根基。这种选择并非简单复古，而是试图剥离传统雕塑的功能性叙事和具象描摹，转而提炼其内在的线条与形态。例如，我深入研究中国古代造像的衣纹流转，以及传统器物的形制比例，将这些古典美学基因转化为一种纯粹的、抽象的当代视觉语言。这种探索深受西方极简主义对“纯粹形式”极致追求的启发，以及马克·罗斯科作品中那种由色彩和结构所蕴含的“情感张力”的影响。我期望通过这种方式，让传统美学精神在当代语境中焕发新的生命力，实现其意义的再生与拓展，而非仅仅停留在对符号的刻意复刻或形式的模仿，这是一种在历史与当下之间、东方与西方之间寻找平衡与对话的实践。
-
-
-其二，突破架上雕塑的边界，走向自然与工业现场的生态艺术实践。我先后在内蒙古库布齐沙漠（荒漠生态）、南海西沙群岛（海洋生态）、钢铁工业遗迹（工业生态）开展驻地创作 —— 在沙漠中以冰块为媒介，用冰墙的形式探讨人与自然在当代如何重新定义彼此的关系；在西沙群岛海底以最小干预原则，让艺术成为珊瑚修复与人类生态意识的桥梁；在工业遗迹里则借废弃的机械，讨论人类生产活动与自然的共生与对抗。
-                这些实践试图以在场的、具身的创作视角，拆解并重构 “人类与自然”“文化与生态”“艺术与情感” 的复杂关系，让艺术不再是旁观的表达，而是介入现场、引发思考的行动载体。它不仅介入物理环境，也介入社会与生态的伦理层面。通过这种方式，我希望让艺术成为一种生成性的实践——它不仅生产形式，更生产意义、关系与责任。
-
-
-我的创作既是对中国传统美学的再生实验，也是对当代生态语境的介入实践。两者在深层逻辑上指向同一个问题：如何在全球生态危机与文化断裂的当下，使艺术重新成为连接传统与未来、人与自然、感性与伦理的桥梁。。
-            </div>
-
-            <div class="cv-section">
-                <h2>Selected Exhibitions</h2>
-                <div class="cv-item"><div class="cv-year">2025</div><div>个人展览，某某画廊，北京</div></div>
-                <div class="cv-item"><div class="cv-year">2024</div><div>群展项目，某某艺术中心，上海</div></div>
+            <div class="statement">
+                <p>张家瑞的艺术创作始终围绕两条相互交织的路径展开:一是“传统艺术的当代 转化”，二是“生态艺术的现场实践”。这两条路径既有相对独立的探索方向，又在 创作逻辑与方法论上形成互文，成为我持续艺术研究的重要支点。</p>
+                <p>其作品既是对中国传统美学的再生实验，也是对当代生态语境的介入实践。两 者在深层逻辑上指向同一个问题:如何在全球生态危机与文化断裂的当下，使艺 术重新成为连接传统与未来、人与自然、感性与伦理的桥梁。</p>
             </div>
 
             <div class="cv-section">
                 <h2>Education</h2>
-                <div class="cv-item"><div class="cv-year">2025</div><div>中央美术学院，博士候选人</div></div>
+                
+                <div class="cv-item">
+                    <div class="cv-year">2017 - 2020</div>
+                    <div class="cv-detail">中央美术学院，硕士 (M.F.A.) — 雕塑/</div>
+                </div>
+
+                <div class="cv-item">
+                    <div class="cv-year">2010 - 2015</div>
+                    <div class="cv-detail">中央美术学院，学士 (B.F.A.) — 雕塑</div>
+                </div>
+
+                <div class="cv-item">
+                    <div class="cv-year">2006 - 2010</div>
+                    <div class="cv-detail">中央美术学院附中</div>
+                </div>
+            </div>
+
+            <div class="cv-section">
+                <h2>Selected Exhibitions</h2>
+                <div class="cv-item">
+                    <div class="cv-year">2025</div>
+                    <div class="cv-detail">当代艺术年度展，北京</div>
+                </div>
             </div>
         </div>
     </div>
