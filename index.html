@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ZHANG JIARUI | ARTIST</title>
     <style>
-        /* 1. 核心美学：大留白、极简线条 */
+        /* 核心美学：极简主义、大留白、超细字体 */
         body, html {
             margin: 0;
             padding: 0;
@@ -15,7 +15,7 @@
             scroll-behavior: smooth;
         }
 
-        /* 2. 透明导航栏：浮在封面图上 */
+        /* 顶部导航：在大图上方，保持通透感 */
         nav {
             position: absolute;
             top: 0;
@@ -24,7 +24,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 40px 5%;
+            padding: 50px 5%;
             box-sizing: border-box;
             z-index: 100;
         }
@@ -32,44 +32,45 @@
         .logo {
             font-size: 20px;
             font-weight: 300;
-            letter-spacing: 0.5em;
+            letter-spacing: 0.6em;
             text-decoration: none;
-            color: #ffffff; /* 在大图上显示为白色 */
+            color: #ffffff; 
             text-transform: uppercase;
         }
 
         .nav-links a {
-            margin-left: 35px;
+            margin-left: 40px;
             text-decoration: none;
             color: #ffffff;
             font-size: 11px;
-            letter-spacing: 0.2em;
+            letter-spacing: 0.25em;
             text-transform: uppercase;
             font-weight: 300;
-            transition: opacity 0.3s;
+            transition: opacity 0.3s ease;
         }
 
         .nav-links a:hover {
             opacity: 0.6;
         }
 
-        /* 3. 首页沉浸式全屏图 */
+        /* 首页 Hero 大图 */
         .hero {
             height: 100vh;
             width: 100%;
             overflow: hidden;
             position: relative;
-            background-color: #000;
+            background-color: #1a1a1a;
         }
 
         .hero img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            filter: brightness(0.9);
+            filter: brightness(0.85); /* 稍微压暗，保证白色文字清晰 */
+            display: block;
         }
 
-        /* 4. 作品展示区 */
+        /* 作品网格部分 */
         .content-section {
             padding: 140px 5%;
             max-width: 1400px;
@@ -77,16 +78,15 @@
         }
 
         .section-title {
-            font-size: 13px;
+            font-size: 12px;
             letter-spacing: 0.6em;
             text-transform: uppercase;
             margin-bottom: 100px;
             text-align: center;
-            font-weight: 300;
             color: #999;
+            font-weight: 300;
         }
 
-        /* 5. 响应式作品网格 */
         .grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -103,21 +103,23 @@
             overflow: hidden;
             margin-bottom: 30px;
             background-color: #f7f7f7;
+            aspect-ratio: 4 / 5; /* 统一作品展示比例 */
         }
 
         .project img {
             width: 100%;
-            height: auto;
+            height: 100%;
+            object-fit: cover;
             display: block;
-            transition: transform 1.2s cubic-bezier(0.15, 1, 0.3, 1);
+            transition: transform 1.5s cubic-bezier(0.15, 1, 0.3, 1);
         }
 
         .project:hover img {
-            transform: scale(1.04);
+            transform: scale(1.05);
         }
 
         .project-title {
-            font-size: 15px;
+            font-size: 16px;
             font-weight: 300;
             letter-spacing: 0.2em;
             text-transform: uppercase;
@@ -131,7 +133,7 @@
             text-transform: uppercase;
         }
 
-        /* 6. 页脚 */
+        /* 页脚 */
         footer {
             padding: 120px 5% 60px;
             text-align: center;
@@ -139,16 +141,16 @@
             letter-spacing: 0.4em;
             color: #bbb;
             text-transform: uppercase;
-            border-top: 1px solid #f0f0f0;
+            border-top: 1px solid #f2f2f2;
             margin-top: 100px;
         }
 
-        /* 移动端优化 */
+        /* 移动端适配 */
         @media (max-width: 768px) {
-            .grid { grid-template-columns: 1fr; gap: 60px; }
+            .grid { grid-template-columns: 1fr; gap: 80px; }
             .hero { height: 75vh; }
-            .logo { font-size: 15px; letter-spacing: 0.3em; }
-            .nav-links a { margin-left: 15px; font-size: 9px; }
+            .logo { font-size: 16px; letter-spacing: 0.4em; }
+            .nav-links { display: none; } /* 移动端保持极其简洁 */
         }
     </style>
 </head>
@@ -159,35 +161,35 @@
         <div class="nav-links">
             <a href="#works">Works</a>
             <a href="about.html">About</a>
-            <a href="mailto:yourname@email.com">Contact</a>
+            <a href="mailto:contact@zhangjiarui.art">Contact</a>
         </div>
     </nav>
 
     <section class="hero">
-        <img src="1.jpg" alt="Zhang Jiarui Art">
+        <img src="cover.jpg" alt="Zhang Jiarui Art">
     </section>
 
     <div class="content-section" id="works">
-        <h2 class="section-title">Public Art & Installations</h2>
+        <h2 class="section-title">Public Art & Installation</h2>
         
         <div class="grid">
             <div class="project">
                 <div class="project-image-wrapper">
-                    <img src="2.jpg" alt="Selected Project 01">
+                    <img src="work1.jpg" alt="Artwork One">
                 </div>
                 <div class="project-info">
-                    <div class="project-title">Project Title One</div>
-                    <div class="project-meta">Mixed Media, 2025</div>
+                    <div class="project-title">Selected Project One</div>
+                    <div class="project-meta">Location / Material — 2026</div>
                 </div>
             </div>
 
             <div class="project">
                 <div class="project-image-wrapper">
-                    <img src="3.jpg" alt="Selected Project 02">
+                    <img src="work2.jpg" alt="Artwork Two">
                 </div>
                 <div class="project-info">
-                    <div class="project-title">Project Title Two</div>
-                    <div class="project-meta">Sculpture, 2024</div>
+                    <div class="project-title">Selected Project Two</div>
+                    <div class="project-meta">Location / Material — 2025</div>
                 </div>
             </div>
         </div>
