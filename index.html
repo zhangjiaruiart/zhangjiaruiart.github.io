@@ -1,19 +1,21 @@
 <!DOCTYPE html>
-<html lang="zh">
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ZHANG JIARUI | ARTIST</title>
     <style>
+        /* 1. 核心美学：大留白、极简线条 */
         body, html {
             margin: 0;
             padding: 0;
             font-family: "Optima", "Didot", "Helvetica Neue", Helvetica, Arial, sans-serif;
-            background-color: #fff;
-            color: #111;
+            background-color: #ffffff;
+            color: #111111;
             scroll-behavior: smooth;
         }
 
+        /* 2. 透明导航栏：浮在封面图上 */
         nav {
             position: absolute;
             top: 0;
@@ -28,58 +30,67 @@
         }
 
         .logo {
-            font-size: 22px;
+            font-size: 20px;
             font-weight: 300;
-            letter-spacing: 0.4em;
+            letter-spacing: 0.5em;
             text-decoration: none;
-            color: #fff; 
+            color: #ffffff; /* 在大图上显示为白色 */
             text-transform: uppercase;
         }
 
         .nav-links a {
             margin-left: 35px;
             text-decoration: none;
-            color: #fff;
-            font-size: 12px;
+            color: #ffffff;
+            font-size: 11px;
             letter-spacing: 0.2em;
             text-transform: uppercase;
             font-weight: 300;
+            transition: opacity 0.3s;
         }
 
+        .nav-links a:hover {
+            opacity: 0.6;
+        }
+
+        /* 3. 首页沉浸式全屏图 */
         .hero {
             height: 100vh;
             width: 100%;
             overflow: hidden;
             position: relative;
+            background-color: #000;
         }
 
         .hero img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            filter: brightness(0.85);
+            filter: brightness(0.9);
         }
 
+        /* 4. 作品展示区 */
         .content-section {
-            padding: 120px 5%;
+            padding: 140px 5%;
             max-width: 1400px;
             margin: 0 auto;
         }
 
         .section-title {
-            font-size: 14px;
-            letter-spacing: 0.5em;
+            font-size: 13px;
+            letter-spacing: 0.6em;
             text-transform: uppercase;
-            margin-bottom: 80px;
+            margin-bottom: 100px;
             text-align: center;
             font-weight: 300;
-            color: #888;
+            color: #999;
         }
 
+        /* 5. 响应式作品网格 */
         .grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 100px 60px;
+            gap: 120px 60px;
         }
 
         .project {
@@ -90,50 +101,54 @@
 
         .project-image-wrapper {
             overflow: hidden;
-            margin-bottom: 25px;
-            background-color: #f9f9f9;
+            margin-bottom: 30px;
+            background-color: #f7f7f7;
         }
 
         .project img {
             width: 100%;
             height: auto;
             display: block;
-            transition: transform 0.8s cubic-bezier(0.2, 1, 0.3, 1);
+            transition: transform 1.2s cubic-bezier(0.15, 1, 0.3, 1);
         }
 
         .project:hover img {
-            transform: scale(1.03);
+            transform: scale(1.04);
         }
 
         .project-title {
             font-size: 15px;
             font-weight: 300;
-            letter-spacing: 0.15em;
+            letter-spacing: 0.2em;
             text-transform: uppercase;
         }
 
         .project-meta {
-            font-size: 11px;
-            color: #999;
-            margin-top: 8px;
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-        }
-
-        footer {
-            padding: 100px 5% 60px;
-            text-align: center;
             font-size: 10px;
-            letter-spacing: 0.3em;
-            color: #aaa;
+            color: #999;
+            margin-top: 10px;
+            letter-spacing: 0.15em;
             text-transform: uppercase;
         }
 
+        /* 6. 页脚 */
+        footer {
+            padding: 120px 5% 60px;
+            text-align: center;
+            font-size: 9px;
+            letter-spacing: 0.4em;
+            color: #bbb;
+            text-transform: uppercase;
+            border-top: 1px solid #f0f0f0;
+            margin-top: 100px;
+        }
+
+        /* 移动端优化 */
         @media (max-width: 768px) {
-            .grid { grid-template-columns: 1fr; }
-            .hero { height: 80vh; }
-            .logo { font-size: 16px; letter-spacing: 0.2em; }
-            .nav-links a { margin-left: 15px; font-size: 10px; }
+            .grid { grid-template-columns: 1fr; gap: 60px; }
+            .hero { height: 75vh; }
+            .logo { font-size: 15px; letter-spacing: 0.3em; }
+            .nav-links a { margin-left: 15px; font-size: 9px; }
         }
     </style>
 </head>
@@ -144,42 +159,42 @@
         <div class="nav-links">
             <a href="#works">Works</a>
             <a href="about.html">About</a>
-            <a href="mailto:your-email@example.com">Contact</a>
+            <a href="mailto:yourname@email.com">Contact</a>
         </div>
     </nav>
 
     <section class="hero">
-        <img src="1.jpg" alt="Featured Work">
+        <img src="1.jpg" alt="Zhang Jiarui Art">
     </section>
 
     <div class="content-section" id="works">
-        <h2 class="section-title">Selected Projects</h2>
+        <h2 class="section-title">Public Art & Installations</h2>
         
         <div class="grid">
             <div class="project">
                 <div class="project-image-wrapper">
-                    <img src="2.jpg" alt="Artwork 01">
+                    <img src="2.jpg" alt="Selected Project 01">
                 </div>
                 <div class="project-info">
                     <div class="project-title">Project Title One</div>
-                    <div class="project-meta">Material, 2025</div>
+                    <div class="project-meta">Mixed Media, 2025</div>
                 </div>
             </div>
 
             <div class="project">
                 <div class="project-image-wrapper">
-                    <img src="3.jpg" alt="Artwork 02">
+                    <img src="3.jpg" alt="Selected Project 02">
                 </div>
                 <div class="project-info">
                     <div class="project-title">Project Title Two</div>
-                    <div class="project-meta">Material, 2024</div>
+                    <div class="project-meta">Sculpture, 2024</div>
                 </div>
             </div>
         </div>
     </div>
 
     <footer>
-        &copy; 2026 ZHANG JIARUI ART STUDIO.
+        &copy; 2026 ZHANG JIARUI ART STUDIO. ALL RIGHTS RESERVED.
     </footer>
 
 </body>
