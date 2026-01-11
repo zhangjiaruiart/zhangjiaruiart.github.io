@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ABOUT | ZHANG JIARUI</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: "Optima", "Didot", "Helvetica Neue", Helvetica, Arial, sans-serif;
+            background-color: #fff;
+            color: #111;
+            line-height: 1.8;
+        }
+
+        /* 导航栏：保持与首页一致，但文字设为黑色 */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 40px 5%;
+        }
+
+        .logo {
+            font-size: 22px;
+            font-weight: 300;
+            letter-spacing: 0.4em;
+            text-decoration: none;
+            color: #000;
+            text-transform: uppercase;
+        }
+
+        .nav-links a {
+            margin-left: 35px;
+            text-decoration: none;
+            color: #666;
+            font-size: 12px;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+        }
+
+        /* About 页面布局 */
+        .about-container {
+            max-width: 1000px;
+            margin: 80px auto;
+            padding: 0 5%;
+            display: grid;
+            grid-template-columns: 1fr 1.5fr; /* 左图右文 */
+            gap: 80px;
+        }
+
+        .about-image img {
+            width: 100%;
+            height: auto;
+            filter: grayscale(100%); /* 艺术家肖像建议黑白，更有质感 */
+        }
+
+        .about-text h1 {
+            font-size: 28px;
+            font-weight: 300;
+            letter-spacing: 0.2em;
+            margin-bottom: 30px;
+        }
+
+        .biography {
+            font-size: 15px;
+            margin-bottom: 50px;
+            color: #333;
+        }
+
+        .cv-section {
+            margin-top: 60px;
+        }
+
+        .cv-section h2 {
+            font-size: 13px;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+
+        .cv-item {
+            display: flex;
+            font-size: 13px;
+            margin-bottom: 10px;
+        }
+
+        .cv-year {
+            width: 80px;
+            color: #999;
+        }
+
+        footer {
+            padding: 100px 5% 60px;
+            text-align: center;
+            font-size: 10px;
+            letter-spacing: 0.3em;
+            color: #aaa;
+            text-transform: uppercase;
+        }
+
+        @media (max-width: 768px) {
+            .about-container { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <a href="index.html" class="logo">ZHANG JIARUI</a>
+        <div class="nav-links">
+            <a href="index.html">Works</a>
+            <a href="about.html" style="color:#000; font-weight:bold;">About</a>
+            <a href="mailto:你的邮箱">Contact</a>
+        </div>
+    </nav>
+
+    <div class="about-container">
+        <div class="about-image">
+            <img src="profile.jpg" alt="Zhang Jiarui" onerror="this.src='https://via.placeholder.com/600x800?text=Profile+Image'">
+        </div>
+
+        <div class="about-text">
+            <h1>Artist Biography</h1>
+            <div class="biography">
+                张佳瑞（Zhang Jiarui），是一位致力于探索...（在这里输入你的创作理念，比如你对空间、材料、颜色的看法。参考 Echelman 的风格，用词可以抽象且富有诗意）。
+            </div>
+
+            <div class="cv-section">
+                <h2>Selected Exhibitions</h2>
+                <div class="cv-item"><div class="cv-year">2025</div><div>个人展览，某某画廊，北京</div></div>
+                <div class="cv-item"><div class="cv-year">2024</div><div>群展项目，某某艺术中心，上海</div></div>
+            </div>
+
+            <div class="cv-section">
+                <h2>Education</h2>
+                <div class="cv-item"><div class="cv-year">2022</div><div>某某美术学院，硕士学位</div></div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        &copy; 2026 ZHANG JIARUI ART STUDIO.
+    </footer>
+
+</body>
+</html>
