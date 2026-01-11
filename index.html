@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ZHANG JIARUI | ARTIST</title>
     <style>
-        /* 1. 基础美学设定 */
         body, html {
             margin: 0;
             padding: 0;
@@ -15,7 +14,6 @@
             scroll-behavior: smooth;
         }
 
-        /* 2. 透明导航栏 - 修正了 About 链接 */
         nav {
             position: absolute;
             top: 0;
@@ -46,14 +44,8 @@
             letter-spacing: 0.2em;
             text-transform: uppercase;
             font-weight: 300;
-            transition: opacity 0.3s;
         }
 
-        .nav-links a:hover {
-            opacity: 0.7;
-        }
-
-        /* 3. 全屏封面区 */
         .hero {
             height: 100vh;
             width: 100%;
@@ -68,7 +60,6 @@
             filter: brightness(0.85);
         }
 
-        /* 4. 内容主体 */
         .content-section {
             padding: 120px 5%;
             max-width: 1400px;
@@ -85,7 +76,6 @@
             color: #888;
         }
 
-        /* 5. 作品网格 */
         .grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -127,3 +117,70 @@
             color: #999;
             margin-top: 8px;
             letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+
+        footer {
+            padding: 100px 5% 60px;
+            text-align: center;
+            font-size: 10px;
+            letter-spacing: 0.3em;
+            color: #aaa;
+            text-transform: uppercase;
+        }
+
+        @media (max-width: 768px) {
+            .grid { grid-template-columns: 1fr; }
+            .hero { height: 80vh; }
+            .logo { font-size: 16px; letter-spacing: 0.2em; }
+            .nav-links a { margin-left: 15px; font-size: 10px; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <a href="index.html" class="logo">ZHANG JIARUI</a>
+        <div class="nav-links">
+            <a href="#works">Works</a>
+            <a href="about.html">About</a>
+            <a href="mailto:your-email@example.com">Contact</a>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <img src="1.jpg" alt="Featured Work">
+    </section>
+
+    <div class="content-section" id="works">
+        <h2 class="section-title">Selected Projects</h2>
+        
+        <div class="grid">
+            <div class="project">
+                <div class="project-image-wrapper">
+                    <img src="2.jpg" alt="Artwork 01">
+                </div>
+                <div class="project-info">
+                    <div class="project-title">Project Title One</div>
+                    <div class="project-meta">Material, 2025</div>
+                </div>
+            </div>
+
+            <div class="project">
+                <div class="project-image-wrapper">
+                    <img src="3.jpg" alt="Artwork 02">
+                </div>
+                <div class="project-info">
+                    <div class="project-title">Project Title Two</div>
+                    <div class="project-meta">Material, 2024</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        &copy; 2026 ZHANG JIARUI ART STUDIO.
+    </footer>
+
+</body>
+</html>
