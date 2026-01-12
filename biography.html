@@ -11,46 +11,60 @@
             background-color: #ffffff; color: #111;
             line-height: 1.6; scroll-behavior: smooth;
             overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
         }
 
-        /* --- 1. 交互式导航栏 --- */
+        /* --- 1. 动态导航栏 --- */
         nav {
-            position: fixed; /* 改为固定定位以便滚动交互 */
+            position: fixed;
             top: 0; left: 0; width: 100%; 
             display: flex; justify-content: space-between; align-items: center;
             padding: 40px 5%; box-sizing: border-box;
             z-index: 1000;
-            transition: all 0.5s cubic-bezier(0.2, 1, 0.3, 1);
+            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         .nav-scrolled {
             padding: 20px 5%;
-            background: rgba(255, 255, 255, 0.8);
+            background: rgba(255, 255, 255, 0.85);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
-            border-bottom: 1px solid rgba(0,0,0,0.05);
+            border-bottom: 1px solid rgba(0,0,0,0.03);
         }
 
         .logo { 
             font-size: 18px; font-weight: 300; letter-spacing: 0.5em; 
-            text-decoration: none; color: #111; text-transform: uppercase; 
+            text-decoration: none; color: #111; text-transform: uppercase;
+            transition: opacity 0.3s;
         }
+        .logo:hover { opacity: 0.6; }
 
         .nav-links a { 
             margin-left: 35px; text-decoration: none; color: #111; 
             font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; 
             font-weight: 300; position: relative; padding-bottom: 5px;
+            transition: color 0.3s;
         }
         
+        /* 导航横线动画：从中心向两端延展 */
         .nav-links a::after {
-            content: ''; position: absolute; bottom: 0; left: 50%;
-            width: 0; height: 1px; background: #111;
-            transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
-            transform: translateX(-50%);
+            content: ''; position: absolute; bottom: 0; left: 0;
+            width: 100%; height: 1px; background: #111;
+            transform: scaleX(0);
+            transform-origin: right;
+            transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
         }
-        .nav-links a:hover::after { width: 100%; }
+        .nav-links a:hover::after { 
+            transform: scaleX(1); 
+            transform-origin: left;
+        }
 
-        /* --- 2. 布局与动画 --- */
+        /* --- 2. 揭幕入场动画 --- */
+        @keyframes revealUp {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
         .container { 
             max-width: 1200px; 
             margin: 180px auto 80px; 
@@ -60,66 +74,83 @@
             gap: 100px; 
         }
 
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
+        /* 应用揭幕动画到所有区块 */
+        .reveal { 
+            opacity: 0;
+            animation: revealUp 1.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; 
         }
-
-        .reveal { animation: fadeInUp 1.2s cubic-bezier(0.15, 1, 0.3, 1) both; }
         .delay-1 { animation-delay: 0.2s; }
         .delay-2 { animation-delay: 0.4s; }
+        .delay-3 { animation-delay: 0.6s; }
 
-        /* --- 3. 图片增强 --- */
+        /* --- 3. 图片悬停深度交互 --- */
         .profile-image-wrapper {
-            position: sticky; top: 140px; /* 滚动时图片悬停在侧边 */
+            position: sticky; top: 140px;
             height: fit-content;
             overflow: hidden;
-            background-color: #f9f9f9;
+            background-color: #fcfcfc;
+            /* 增加外层阴影微调 */
+            transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         .profile-image-wrapper img {
             width: 100%; height: auto; display: block;
-            transition: transform 2s cubic-bezier(0.15, 1, 0.3, 1);
+            transition: transform 1.5s cubic-bezier(0.16, 1, 0.3, 1), filter 0.8s;
+            filter: grayscale(0.2);
         }
-        .profile-image-wrapper:hover img { transform: scale(1.05); }
+        
+        .profile-image-wrapper:hover img { 
+            transform: scale(1.08); 
+            filter: grayscale(0);
+        }
 
-        /* --- 4. 文本与简历细节 --- */
+        /* --- 4. 简历条目磁吸交互 --- */
+        .cv-item { 
+            margin-bottom: 18px; display: flex; align-items: baseline; 
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            cursor: default;
+        }
+
+        /* 鼠标移入条目时轻微向右滑动，且改变文字颜色深度 */
+        .cv-item:hover { transform: translateX(10px); }
+        .cv-item:hover .cv-detail { color: #000; }
+        .cv-item:hover .cv-year { color: #888; }
+
+        .cv-year { 
+            font-size: 10px; color: #bbb; letter-spacing: 0.1em; 
+            min-width: 110px; flex-shrink: 0; 
+            transition: color 0.3s;
+        }
+        .cv-detail { 
+            font-size: 13px; font-weight: 300; color: #333; 
+            transition: color 0.3s;
+        }
+
+        /* --- 其他视觉细节 --- */
         .about-text h1 { font-size: 26px; font-weight: 400; letter-spacing: 0.3em; margin: 0; text-transform: uppercase; }
         .birth-info { font-size: 11px; color: #aaa; margin: 10px 0 40px; letter-spacing: 0.2em; text-transform: uppercase; }
 
         .statement { font-size: 14px; font-weight: 300; color: #444; text-align: justify; margin-bottom: 70px; }
         .statement p { margin-bottom: 1.8em; line-height: 2; letter-spacing: 0.02em; }
 
-        .cv-section { margin-bottom: 50px; }
+        .cv-section { margin-bottom: 60px; }
         .cv-section h2 { 
             font-size: 11px; letter-spacing: 0.4em; text-transform: uppercase; 
             color: #111; border-bottom: 1px solid #f0f0f0; padding-bottom: 12px; 
             margin-bottom: 25px; font-weight: 400; 
         }
-        
-        .cv-item { 
-            margin-bottom: 15px; display: flex; align-items: baseline; 
-            transition: all 0.4s ease;
-        }
-        .cv-item:hover { transform: translateX(8px); }
-
-        .cv-year { 
-            font-size: 10px; color: #aaa; letter-spacing: 0.1em; 
-            min-width: 100px; flex-shrink: 0; 
-        }
-        .cv-detail { font-size: 13px; font-weight: 300; color: #111; }
 
         footer { 
-            padding: 100px 5% 40px; text-align: center; border-top: 1px solid #f9f9f9;
+            padding: 80px 5% 40px; text-align: center; border-top: 1px solid #f9f9f9;
             font-size: 9px; letter-spacing: 0.4em; color: #ccc; text-transform: uppercase; 
         }
 
-        /* --- 响应式调整 --- */
         @media (max-width: 900px) {
             .container { grid-template-columns: 1fr; gap: 50px; margin-top: 120px; }
             .profile-image-wrapper { position: relative; top: 0; }
             .nav-links { display: none; }
             .cv-item { flex-direction: column; gap: 4px; margin-bottom: 20px; }
+            .cv-item:hover { transform: none; } /* 移动端取消平移交互 */
         }
     </style>
 </head>
@@ -143,17 +174,17 @@
         </div>
 
         <div class="about-text">
-            <div class="reveal">
+            <div class="reveal delay-1">
                 <h1>Zhang Jiarui</h1>
                 <div class="birth-info">b. 1990, China</div>
             </div>
 
-            <div class="statement reveal delay-1">
+            <div class="statement reveal delay-2">
                 <p>Zhang Jiarui's artistic creation revolves around two intertwined paths: "the contemporary transformation of traditional art" and "the on-site practice of ecological art." These two paths form a profound intertextuality in both creative logic and methodology.</p>
                 <p>His works represent both a regenerative experiment of traditional aesthetics and a critical intervention in the contemporary ecological context. They address a fundamental inquiry: how art can function as a bridge connecting tradition with the future amidst global ecological crises.</p>
             </div>
 
-            <div class="cv-section reveal delay-2">
+            <div class="cv-section reveal delay-3">
                 <h2>Education</h2>
                 <div class="cv-item">
                     <div class="cv-year">2025 - PRES.</div>
@@ -169,7 +200,7 @@
                 </div>
             </div>
 
-            <div class="cv-section reveal delay-2">
+            <div class="cv-section reveal delay-3">
                 <h2>Exhibitions</h2>
                 <div class="cv-item">
                     <div class="cv-year">2016</div>
@@ -188,7 +219,7 @@
     </footer>
 
     <script>
-        // 导航栏滚动交互
+        // 1. 导航栏背景随滚动渐变
         window.onscroll = function() {
             var nav = document.getElementById('navbar');
             if (window.pageYOffset > 50) {
@@ -197,6 +228,10 @@
                 nav.classList.remove("nav-scrolled");
             }
         };
+
+        // 2. 处理滚动中再次出现的简单监听 (可选)
+        // 如果内容很长，可以使用 IntersectionObserver 来触发再次进入动画
+        // 目前采用一次性载入动画以保证流畅度
     </script>
 
 </body>
