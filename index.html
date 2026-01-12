@@ -13,167 +13,139 @@
             overflow-x: hidden;
         }
 
-        /* 导航栏样式 */
-        /* --- 1. 导航栏交互优化 --- */
+        /* --- 1. 导航栏优化：增加滚动吸顶效果 --- */
         nav {
-            position: absolute;
+            position: fixed; /* 改为固定定位 */
             top: 0; left: 0; width: 100%;
             display: flex; justify-content: space-between; align-items: center;
-            padding: 50px 5%; box-sizing: border-box;
-            z-index: 100;
+            padding: 30px 5%; /* 稍微缩小高度，更精致 */
+            box-sizing: border-box;
+            z-index: 1000;
+            transition: all 0.4s ease;
+        }
+
+        /* 滚动后导航栏变色，防止在白背景下看不见 */
+        .nav-scrolled {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px); /* 磨砂玻璃效果 */
+            padding: 20px 5%;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
         }
 
         .logo {
-            font-size: 20px; font-weight: 300; letter-spacing: 0.6em;
+            font-size: 18px; font-weight: 300; letter-spacing: 0.5em;
             text-decoration: none; color: #ffffff; text-transform: uppercase;
-            transition: transform 0.3s ease;
+            transition: color 0.3s ease;
         }
-        .logo:active { transform: scale(0.95); } /* 点击缩放反馈 */
+
+        .nav-scrolled .logo, .nav-scrolled .nav-links a {
+            color: #111111; /* 滚动后变黑色 */
+        }
 
         .nav-links a {
             margin-left: 35px; text-decoration: none; color: #ffffff;
-            font-size: 11px; letter-spacing: 0.25em; text-transform: uppercase;
-            font-weight: 300; transition: opacity 0.3s;
+            font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase;
             font-weight: 300; position: relative; padding-bottom: 5px;
-            transition: opacity 0.3s;
+            transition: color 0.3s ease;
         }
         
-        /* 导航下划线动画 */
         .nav-links a::after {
             content: ''; position: absolute; bottom: 0; left: 50%;
-            width: 0; height: 1px; background: #fff;
+            width: 0; height: 1px; background: currentColor;
             transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
             transform: translateX(-50%);
         }
         .nav-links a:hover::after { width: 100%; }
 
-        /* --- 2. 核心动画定义 --- */
+        /* --- 2. 动画效果 --- */
         @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(30px); }
+            from { opacity: 0; transform: translateY(40px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; } to { opacity: 1; }
-        }
-        .nav-links a:hover { opacity: 0.6; }
-
-        /* --- 3. 布局与内容交互 --- */
         .hero {
             height: 100vh; width: 100%; overflow: hidden;
-            position: relative; background-color: #1a1a1a;
+            position: relative; background-color: #000;
         }
 
         .hero img {
             width: 100%; height: 100%; object-fit: cover;
-            filter: brightness(0.8); display: block;
-            animation: fadeIn 2s ease;
+            filter: brightness(0.85); display: block;
+            animation: fadeIn 2.5s ease;
         }
 
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
         .content-section {
-            padding: 40px 5%; max-width: 1400px; margin: 0 auto;
-            /* 页面加载时淡入升起 */
+            padding: 100px 5% 40px; /* 增加顶部间距防止被导航遮挡 */
+            max-width: 1400px; margin: 0 auto;
             animation: fadeInUp 1.2s cubic-bezier(0.15, 1, 0.3, 1) both;
         }
 
         .category-title {
-            font-size: 14px; letter-spacing: 0.6em; text-transform: uppercase;
-            margin-top: 20px; margin-bottom: 40px; text-align: left;
-            margin-top: 40px; margin-bottom: 40px; text-align: left;
-            font-weight: 400; border-bottom: 1px solid #eee;
-            padding-bottom: 15px; color: #111;
+            font-size: 13px; letter-spacing: 0.5em; text-transform: uppercase;
+            margin-bottom: 50px; font-weight: 400; 
+            border-bottom: 1px solid #f0f0f0; padding-bottom: 20px;
         }
 
         .grid {
             display: grid; grid-template-columns: repeat(2, 1fr);
-            gap: 50px 60px; margin-bottom: 40px; 
+            gap: 60px 80px; margin-bottom: 60px; 
         }
 
         .project { text-decoration: none; color: inherit; display: block; }
 
         .project-image-wrapper {
-            overflow: hidden; margin-bottom: 20px;
-            background-color: #f7f7f7; position: relative;
+            overflow: hidden; margin-bottom: 25px;
+            background-color: #fcfcfc; position: relative;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.02);
         }
 
         .img-ratio { aspect-ratio: 4 / 5; }
         .video-ratio { aspect-ratio: 16 / 9; background-color: #000; }
 
-        /* 图片悬停平滑放大效果 */
         .project img {
             width: 100%; height: 100%; object-fit: cover;
-            display: block; transition: transform 1.5s cubic-bezier(0.15, 1, 0.3, 1);
-            display: block; transition: transform 1.8s cubic-bezier(0.15, 1, 0.3, 1);
+            transition: transform 1.5s cubic-bezier(0.2, 1, 0.3, 1);
         }
-        .project:hover img { transform: scale(1.08); }
-
-        .img-ratio { aspect-ratio: 4 / 5; }
-        .video-ratio { aspect-ratio: 16 / 9; background-color: #000; }
+        .project:hover img { transform: scale(1.05); }
 
         .project-title {
-            font-size: 15px; font-weight: 300; letter-spacing: 0.15em;
-            text-transform: uppercase; margin-top: 15px;
-            transition: opacity 0.3s;
+            font-size: 14px; font-weight: 400; letter-spacing: 0.1em;
+            text-transform: uppercase; margin-top: 10px;
         }
-        .project:hover .project-title { opacity: 0.6; }
 
         .project-meta {
-            font-size: 10px; color: #999; margin-top: 8px;
-            letter-spacing: 0.1em; text-transform: uppercase;
+            font-size: 10px; color: #aaa; margin-top: 8px;
+            letter-spacing: 0.05em; text-transform: uppercase;
         }
 
-        /* --- 4. 联系区域交互 --- */
-        .contact-section {
-            padding: 60px 5%; background-color: #ffffff; margin-top: 20px;
-        }
-
-        .contact-container {
-            max-width: 1200px; margin: 0 auto;
-            border-top: 1px solid #eee; padding-top: 40px;
-        }
-
-        .contact-row {
-            display: flex; justify-content: center; align-items: center;
-            gap: 30px; flex-wrap: wrap;
-        }
-
-        .contact-item { display: flex; align-items: center; gap: 10px; }
-
-        .contact-label {
-            font-size: 10px; letter-spacing: 0.2em;
-            text-transform: uppercase; color: #999;
-        }
-
-        .contact-value {
-            font-size: 14px; letter-spacing: 0.05em; font-weight: 300;
-            color: #111; text-decoration: none; transition: opacity 0.3s;
-            color: #111; text-decoration: none; 
-            padding-bottom: 2px; border-bottom: 1px solid transparent;
-            transition: all 0.3s ease;
-        }
-        .contact-value:hover { opacity: 0.5; }
-
-        .divider { color: #eee; font-size: 12px; }
-        .contact-value:hover { border-color: #111; opacity: 0.7; }
+        /* --- 3. 联系与页脚 --- */
+        .contact-section { padding: 100px 5% 60px; }
+        .contact-container { max-width: 1000px; margin: 0 auto; text-align: center; }
+        .contact-row { display: flex; justify-content: center; gap: 40px; flex-wrap: wrap; }
+        .contact-label { font-size: 9px; color: #bbb; text-transform: uppercase; display: block; margin-bottom: 5px; letter-spacing: 0.1em; }
+        .contact-value { font-size: 13px; color: #111; text-decoration: none; border-bottom: 1px solid transparent; transition: all 0.3s; }
+        .contact-value:hover { border-bottom: 1px solid #111; }
+        .divider { color: #eee; align-self: center; }
 
         footer {
-            padding: 50px 5% 40px; text-align: center;
-            font-size: 9px; letter-spacing: 0.4em; color: #bbb;
-            text-transform: uppercase;
+            padding: 60px 5%; text-align: center; border-top: 1px solid #f9f9f9;
+            font-size: 9px; letter-spacing: 0.3em; color: #ccc;
         }
 
         @media (max-width: 768px) {
             .grid { grid-template-columns: 1fr; gap: 40px; }
-            .hero { height: 75vh; }
             .nav-links { display: none; }
-            .contact-row { flex-direction: column; gap: 15px; align-items: flex-start; padding-left: 5%; }
+            .logo { font-size: 14px; }
+            .contact-row { flex-direction: column; gap: 30px; }
             .divider { display: none; }
         }
     </style>
 </head>
 <body>
 
-   <nav>
+    <nav id="navbar">
         <a href="index.html" class="logo">ZHANGJIARUI ARTWORKS</a>
         <div class="nav-links">
             <a href="#eco-art">Ecological Art</a>
@@ -205,8 +177,7 @@
                     <iframe width="100%" height="100%" src="https://www.youtube.com/embed/lfMcm-Hn3S4?rel=0" frameborder="0" allowfullscreen style="position: absolute; top: 0; left: 0;"></iframe>
                 </div>
                 <div class="project-info">
-                    <div class="project-title">4.5 Tons / Collaborate with Betta Liu</div>
-                
+                    <div class="project-title">4.5 Tons</div>
                     <div class="project-meta">Installation / 2024 / Inner Mongolia</div>
                 </div>
             </div>
@@ -250,16 +221,12 @@
                     <span class="contact-label">Email</span>
                     <a href="mailto:jerryzhang_arts@qq.com" class="contact-value">jerryzhang_arts@qq.com</a>
                 </div>
-                
-                <span class="divider">·</span>
-                
+                <span class="divider">/</span>
                 <div class="contact-item">
                     <span class="contact-label">WeChat</span>
                     <span class="contact-value">zjr5556699</span>
                 </div>
-                
-                <span class="divider">·</span>
-                
+                <span class="divider">/</span>
                 <div class="contact-item">
                     <span class="contact-label">Phone</span>
                     <a href="tel:+8615117988382" class="contact-value">(+86) 151 1798 8382</a>
@@ -269,8 +236,19 @@
     </div>
 
     <footer>
-        &copy; 2026 ZHANG JIARUI ART STUDIO.
+        &copy; 2026 ZHANGJIARUI ARTWORKS.
     </footer>
+
+    <script>
+        window.onscroll = function() {
+            var nav = document.getElementById('navbar');
+            if (window.pageYOffset > 100) {
+                nav.classList.add("nav-scrolled");
+            } else {
+                nav.classList.remove("nav-scrolled");
+            }
+        };
+    </script>
 
 </body>
 </html>
