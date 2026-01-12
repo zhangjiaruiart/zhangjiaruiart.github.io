@@ -13,21 +13,21 @@
             overflow-x: hidden;
         }
 
-        /* --- 1. 导航栏优化：增加滚动吸顶效果 --- */
+        /* --- 1. 导航栏：固定吸顶与磨砂效果 --- */
         nav {
-            position: fixed; /* 改为固定定位 */
+            position: fixed;
             top: 0; left: 0; width: 100%;
             display: flex; justify-content: space-between; align-items: center;
-            padding: 30px 5%; /* 稍微缩小高度，更精致 */
+            padding: 40px 5%; 
             box-sizing: border-box;
             z-index: 1000;
-            transition: all 0.4s ease;
+            transition: all 0.5s cubic-bezier(0.2, 1, 0.3, 1);
         }
 
-        /* 滚动后导航栏变色，防止在白背景下看不见 */
         .nav-scrolled {
-            background: rgba(255, 255, 255, 0.9);
-            backdrop-filter: blur(10px); /* 磨砂玻璃效果 */
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
             padding: 20px 5%;
             border-bottom: 1px solid rgba(0,0,0,0.05);
         }
@@ -35,18 +35,18 @@
         .logo {
             font-size: 18px; font-weight: 300; letter-spacing: 0.5em;
             text-decoration: none; color: #ffffff; text-transform: uppercase;
-            transition: color 0.3s ease;
+            transition: color 0.4s ease;
         }
 
         .nav-scrolled .logo, .nav-scrolled .nav-links a {
-            color: #111111; /* 滚动后变黑色 */
+            color: #111111;
         }
 
         .nav-links a {
             margin-left: 35px; text-decoration: none; color: #ffffff;
             font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase;
             font-weight: 300; position: relative; padding-bottom: 5px;
-            transition: color 0.3s ease;
+            transition: color 0.4s ease;
         }
         
         .nav-links a::after {
@@ -57,9 +57,14 @@
         }
         .nav-links a:hover::after { width: 100%; }
 
-        /* --- 2. 动画效果 --- */
+        /* --- 2. 核心动画：视差缩放与淡入 --- */
+        @keyframes heroZoom {
+            from { transform: scale(1.1); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
         @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(40px); }
+            from { opacity: 0; transform: translateY(30px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
@@ -71,26 +76,35 @@
         .hero img {
             width: 100%; height: 100%; object-fit: cover;
             filter: brightness(0.85); display: block;
-            animation: fadeIn 2.5s ease;
+            animation: heroZoom 2.5s cubic-bezier(0.15, 1, 0.3, 1) forwards;
         }
 
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        /* 封面滚动提示 */
+        .hero::after {
+            content: 'SCROLL';
+            position: absolute; bottom: 40px; left: 50%;
+            transform: translateX(-50%);
+            color: #fff; font-size: 9px; letter-spacing: 0.5em;
+            opacity: 0.4; font-weight: 300;
+        }
 
         .content-section {
-            padding: 100px 5% 40px; /* 增加顶部间距防止被导航遮挡 */
+            padding: 120px 5% 60px;
             max-width: 1400px; margin: 0 auto;
             animation: fadeInUp 1.2s cubic-bezier(0.15, 1, 0.3, 1) both;
         }
 
         .category-title {
             font-size: 13px; letter-spacing: 0.5em; text-transform: uppercase;
-            margin-bottom: 50px; font-weight: 400; 
+            margin-bottom: 60px; font-weight: 400; 
             border-bottom: 1px solid #f0f0f0; padding-bottom: 20px;
+            color: #111;
         }
 
+        /* --- 3. 作品网格交互 --- */
         .grid {
             display: grid; grid-template-columns: repeat(2, 1fr);
-            gap: 60px 80px; margin-bottom: 60px; 
+            gap: 80px 60px; margin-bottom: 80px; 
         }
 
         .project { text-decoration: none; color: inherit; display: block; }
@@ -98,7 +112,6 @@
         .project-image-wrapper {
             overflow: hidden; margin-bottom: 25px;
             background-color: #fcfcfc; position: relative;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.02);
         }
 
         .img-ratio { aspect-ratio: 4 / 5; }
@@ -106,40 +119,44 @@
 
         .project img {
             width: 100%; height: 100%; object-fit: cover;
-            transition: transform 1.5s cubic-bezier(0.2, 1, 0.3, 1);
+            transition: transform 1.8s cubic-bezier(0.15, 1, 0.3, 1);
         }
         .project:hover img { transform: scale(1.05); }
 
         .project-title {
             font-size: 14px; font-weight: 400; letter-spacing: 0.1em;
-            text-transform: uppercase; margin-top: 10px;
+            text-transform: uppercase; margin-top: 15px;
         }
 
         .project-meta {
             font-size: 10px; color: #aaa; margin-top: 8px;
             letter-spacing: 0.05em; text-transform: uppercase;
+            line-height: 1.5;
         }
 
-        /* --- 3. 联系与页脚 --- */
-        .contact-section { padding: 100px 5% 60px; }
-        .contact-container { max-width: 1000px; margin: 0 auto; text-align: center; }
-        .contact-row { display: flex; justify-content: center; gap: 40px; flex-wrap: wrap; }
-        .contact-label { font-size: 9px; color: #bbb; text-transform: uppercase; display: block; margin-bottom: 5px; letter-spacing: 0.1em; }
-        .contact-value { font-size: 13px; color: #111; text-decoration: none; border-bottom: 1px solid transparent; transition: all 0.3s; }
-        .contact-value:hover { border-bottom: 1px solid #111; }
-        .divider { color: #eee; align-self: center; }
+        /* --- 4. 联系与页脚 --- */
+        .contact-section { padding: 120px 5% 80px; background-color: #fff; }
+        .contact-container { max-width: 1100px; margin: 0 auto; text-align: center; }
+        .contact-row { display: flex; justify-content: center; gap: 50px; flex-wrap: wrap; }
+        .contact-item { text-align: center; }
+        .contact-label { font-size: 9px; color: #bbb; text-transform: uppercase; display: block; margin-bottom: 8px; letter-spacing: 0.2em; }
+        .contact-value { font-size: 13px; color: #111; text-decoration: none; padding-bottom: 2px; border-bottom: 1px solid transparent; transition: all 0.3s; }
+        .contact-value:hover { border-bottom: 1px solid #111; opacity: 0.7; }
+        .divider { color: #eee; align-self: center; font-weight: 100; }
 
         footer {
-            padding: 60px 5%; text-align: center; border-top: 1px solid #f9f9f9;
-            font-size: 9px; letter-spacing: 0.3em; color: #ccc;
+            padding: 80px 5% 50px; text-align: center; border-top: 1px solid #f9f9f9;
+            font-size: 9px; letter-spacing: 0.4em; color: #ccc; text-transform: uppercase;
         }
 
-        @media (max-width: 768px) {
-            .grid { grid-template-columns: 1fr; gap: 40px; }
+        /* --- 5. 响应式适配 --- */
+        @media (max-width: 900px) {
+            .grid { grid-template-columns: 1fr; gap: 50px; }
             .nav-links { display: none; }
-            .logo { font-size: 14px; }
-            .contact-row { flex-direction: column; gap: 30px; }
+            .logo { font-size: 14px; letter-spacing: 0.3em; }
+            .contact-row { flex-direction: column; gap: 40px; }
             .divider { display: none; }
+            .content-section { padding-top: 80px; }
         }
     </style>
 </head>
@@ -177,8 +194,8 @@
                     <iframe width="100%" height="100%" src="https://www.youtube.com/embed/lfMcm-Hn3S4?rel=0" frameborder="0" allowfullscreen style="position: absolute; top: 0; left: 0;"></iframe>
                 </div>
                 <div class="project-info">
-                    <div class="project-title">4.5 Tons / Cooperate with Betta Liu</div>
-                    <div class="project-meta">Installation / 2024 / Inner Mongolia</div>
+                    <div class="project-title">4.5 Tons</div>
+                    <div class="project-meta">Installation / In Collaboration with Betta Liu / 2024 / Inner Mongolia</div>
                 </div>
             </div>
         </div>
@@ -189,7 +206,7 @@
         <div class="grid">
             <div class="project">
                 <div class="project-image-wrapper img-ratio">
-                    <img src="images/Work2.jpg" alt="Work 2" onerror="this.src='images/work2.jpg'">
+                    <img src="images/Work2.jpg" alt="Work 2" onerror="this.src='images/work2.jpg'" loading="lazy">
                 </div>
                 <div class="project-info">
                     <div class="project-title">Sculpture Installation</div>
@@ -240,6 +257,7 @@
     </footer>
 
     <script>
+        // 导航栏滚动交互
         window.onscroll = function() {
             var nav = document.getElementById('navbar');
             if (window.pageYOffset > 100) {
