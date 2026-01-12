@@ -88,7 +88,6 @@
         }
 
         .content-section {
-            padding: 80px 5% 20px; /* 进一步压缩版块间距 */
             padding: 80px 5% 20px; 
             max-width: 1400px; margin: 0 auto;
             animation: fadeInUp 1.2s cubic-bezier(0.15, 1, 0.3, 1) both;
@@ -96,18 +95,15 @@
 
         .category-title {
             font-size: 13px; letter-spacing: 0.5em; text-transform: uppercase;
-            margin-bottom: 25px; /* 间距再次减半 */
             margin-bottom: 25px; 
             font-weight: 400; 
             border-bottom: 1px solid #f0f0f0; padding-bottom: 15px;
             color: #111;
         }
 
-        /* --- 3. 作品网格：极致压缩间距 --- */
         /* --- 3. 作品网格 --- */
         .grid {
             display: grid; grid-template-columns: repeat(2, 1fr);
-            gap: 20px 60px; /* 行间距缩短至 20px */
             gap: 20px 60px; 
             margin-bottom: 30px; 
         }
@@ -115,9 +111,8 @@
         .project { text-decoration: none; color: inherit; display: block; }
 
         .project-image-wrapper {
-            overflow: hidden; margin-bottom: 8px; /* 图片与标题间距极致压缩 */
             overflow: hidden; 
-            margin-bottom: 20px; /* 已将此处的空隙增加，防止标题离图片太近 */
+            margin-bottom: 20px; 
             background-color: #fcfcfc; position: relative;
         }
 
@@ -204,43 +199,36 @@
         </div>
     </div>
 
-  <div class="content-section" id="sculpture">
-        <h2 class="category-title">sculpture</h2>
+    <div class="content-section" id="sculpture">
+        <h2 class="category-title">Sculpture</h2>
 
         <div style="display: flex; flex-wrap: wrap; gap: 40px 60px;">
 
-            <div class="content-section" id="sculpture">
-    <h2 class="category-title"></h2>
-    <div style="display: flex; flex-wrap: wrap; gap: 40px 60px;">
+            <div style="flex: 1; min-width: 300px;">
+                <h3 style="font-size: 11px; letter-spacing: 0.3em; text-transform: uppercase; color: #888; margin: 20px 0 20px 0; font-weight: 300;">Wood Series</h3>
+                <a href="series1.html" class="project">
+                    <div class="project-image-wrapper img-ratio">
+                        <img src="images/sculpture/s1_cover.jpg" alt="Series 1" onerror="this.src='images/Work2.jpg'" loading="lazy">
+                    </div>
+                    <div class="project-info">
+                        <div class="project-title">Triangle</div>
+                        <div class="project-meta">Wood / 2024</div>
+                    </div>
+                </a>
+            </div>
 
-        <div style="flex: 1; min-width: 300px;">
-            <h3 style="font-size: 11px; letter-spacing: 0.3em; text-transform: uppercase; color: #888; margin: 20px 0 20px 0; font-weight: 300;">Wood Series </h3>
-            <a href="series1.html" class="project">
-                <div class="project-image-wrapper img-ratio">
-                    <img src="images/sculpture/s1_cover.jpg" alt="Series 1" onerror="this.src='images/Work2.jpg'" loading="lazy">
-                </div>
-                <div class="project-info">
-                    <div class="project-title">Triangle</div>
-                    <div class="project-meta">Wood / 2024 / </div>
-                </div>
-            </a>
-        </div>
-
-        <div style="flex: 1; min-width: 300px;">
-            <h3 style="font-size: 11px; letter-spacing: 0.3em; text-transform: uppercase; color: #888; margin: 20px 0 20px 0; font-weight: 300;">Water Series</h3>
-            <a href="series2.html" class="project">
-                <div class="project-image-wrapper img-ratio">
-                    <img src="images/sculpture/s2_cover.jpg" alt="Series 2" onerror="this.src='images/Work2.jpg'" loading="lazy">
-                </div>
-                <div class="project-info">
-                    <div class="project-title">Water1</div>
-                    <div class="project-meta">Transparent resin / 2024</div>
-                </div>
-            </a>
-        </div>
-
-        </div>
-</div>
+            <div style="flex: 1; min-width: 300px;">
+                <h3 style="font-size: 11px; letter-spacing: 0.3em; text-transform: uppercase; color: #888; margin: 20px 0 20px 0; font-weight: 300;">Water Series</h3>
+                <a href="series2.html" class="project">
+                    <div class="project-image-wrapper img-ratio">
+                        <img src="images/sculpture/s2_cover.jpg" alt="Series 2" onerror="this.src='images/Work2.jpg'" loading="lazy">
+                    </div>
+                    <div class="project-info">
+                        <div class="project-title">Water1</div>
+                        <div class="project-meta">Transparent resin / 2024</div>
+                    </div>
+                </a>
+            </div>
 
             <div style="flex: 1; min-width: 300px;">
                 <h3 style="font-size: 11px; letter-spacing: 0.3em; text-transform: uppercase; color: #888; margin: 20px 0 20px 0; font-weight: 300;">Gold Series</h3>
@@ -254,7 +242,7 @@
                     </div>
                 </a>
             </div>
-        
+
             <div style="flex: 1; min-width: 300px;">
                 <h3 style="font-size: 11px; letter-spacing: 0.3em; text-transform: uppercase; color: #888; margin: 20px 0 20px 0; font-weight: 300;">Formless Series</h3>
                 <a href="series4.html" class="project">
@@ -272,11 +260,11 @@
                 <h3 style="font-size: 11px; letter-spacing: 0.3em; text-transform: uppercase; color: #888; margin: 20px 0 20px 0; font-weight: 300;">Line Series</h3>
                 <a href="series5.html" class="project">
                     <div class="project-image-wrapper img-ratio">
-                        <img src=" images/sculpture/s5_cover.jpg" alt="Series 5" onerror="this.src='images/Work2.jpg'" loading="lazy">
+                        <img src="images/sculpture/s5_cover.jpg" alt="Series 5" onerror="this.src='images/Work2.jpg'" loading="lazy">
                     </div>
                     <div class="project-info">
                         <div class="project-title">X</div>
-                        <div class="project-meta">Acrylic，Handmade dyeing / 2024</div>
+                        <div class="project-meta">Acrylic, Handmade dyeing / 2024</div>
                     </div>
                 </a>
             </div>
