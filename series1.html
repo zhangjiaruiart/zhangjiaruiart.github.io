@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WOOD SERIES | ZHANG JIARUI</title>
+    <style>
+        body, html {
+            margin: 0; padding: 0;
+            font-family: "Optima", "Didot", "Helvetica Neue", Helvetica, Arial, sans-serif;
+            background-color: #ffffff; color: #111111;
+            line-height: 1.6;
+        }
+
+        /* --- 导航栏 (简化版) --- */
+        nav {
+            padding: 30px 5%;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .logo {
+            font-size: 14px; font-weight: 300; letter-spacing: 0.5em;
+            text-decoration: none; color: #111; text-transform: uppercase;
+        }
+        .back-link {
+            font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase;
+            text-decoration: none; color: #aaa; transition: color 0.3s;
+        }
+        .back-link:hover { color: #111; }
+
+        /* --- 主内容区 --- */
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 5% 100px; }
+
+        /* 作品标题与介绍 */
+        .work-header { margin: 60px 0; max-width: 800px; }
+        .work-title { 
+            font-size: 24px; font-weight: 300; letter-spacing: 0.2em; 
+            text-transform: uppercase; margin-bottom: 20px; 
+        }
+        .work-description { 
+            font-size: 14px; color: #555; text-align: justify; 
+            margin-bottom: 40px; font-weight: 300;
+        }
+        .work-meta { 
+            font-size: 11px; color: #999; text-transform: uppercase; 
+            letter-spacing: 0.1em; border-top: 1px solid #eee; padding-top: 20px;
+        }
+
+        /* 沉浸式大图展示 */
+        .hero-image { width: 100%; margin-bottom: 60px; }
+        .hero-image img { width: 100%; height: auto; display: block; }
+
+        /* 图片网格展示更多细节 */
+        .details-grid { 
+            display: grid; grid-template-columns: repeat(2, 1fr); 
+            gap: 40px; margin-top: 40px;
+        }
+        .details-grid img { width: 100%; height: auto; transition: opacity 0.4s; }
+        .details-grid img:hover { opacity: 0.9; }
+
+        /* 全屏图片 */
+        .full-width-img { width: 100%; margin: 60px 0; }
+
+        footer {
+            padding: 80px 5% 40px; text-align: center;
+            font-size: 9px; letter-spacing: 0.4em; color: #ccc; text-transform: uppercase;
+            border-top: 1px solid #f9f9f9;
+        }
+
+        @media (max-width: 768px) {
+            .details-grid { grid-template-columns: 1fr; gap: 20px; }
+            .work-title { font-size: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <a href="index.html" class="logo">ZHANGJIARUI</a>
+        <a href="index.html#sculpture" class="back-link">← Back to Artworks</a>
+    </nav>
+
+    <div class="container">
+        
+        <div class="hero-image">
+            <img src="images/sculpture/s1_cover.jpg" alt="Triangle Detail 1">
+        </div>
+
+        <header class="work-header">
+            <h1 class="work-title">Wood Series: Triangle</h1>
+            <p class="work-description">
+                这里填写关于作品的详细创作理念。例如：本项目探索了木材在几何形体下的张力，
+                通过对手工雕刻痕迹的保留，呈现自然材料与数学精确性之间的对话。
+                (This project explores the tension of wood under geometric forms...)
+            </p>
+            <div class="work-meta">
+                Materials: Hand-carved Wood, Natural Oil Finish <br>
+                Dimensions: 45 x 45 x 60 cm <br>
+                Year: 2024
+            </div>
+        </header>
+
+        <div class="details-grid">
+            <img src="images/sculpture/s1_detail1.jpg" alt="Detail 1" onerror="this.src='images/Work2.jpg'">
+            <img src="images/sculpture/s1_detail2.jpg" alt="Detail 2" onerror="this.src='images/Work2.jpg'">
+        </div>
+
+        <div class="full-width-img">
+            <img src="images/sculpture/s1_full.jpg" style="width:100%" alt="Full View" onerror="this.src='images/Work2.jpg'">
+        </div>
+
+        <div class="details-grid">
+            <img src="images/sculpture/s1_detail3.jpg" alt="Detail 3" onerror="this.src='images/Work2.jpg'">
+            <img src="images/sculpture/s1_detail4.jpg" alt="Detail 4" onerror="this.src='images/Work2.jpg'">
+        </div>
+
+    </div>
+
+    <footer>
+        &copy; 2026 ZHANGJIARUI ARTWORKS.
+    </footer>
+
+</body>
+</html>
