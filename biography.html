@@ -12,17 +12,45 @@
             line-height: 1.6;
         }
 
+        /* --- 导航栏样式升级 --- */
         nav {
-            width: 100%; display: flex; justify-content: space-between; align-items: center;
-            padding: 50px 5%; box-sizing: border-box;
+            width: 100%; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center;
+            padding: 40px 5%; 
+            box-sizing: border-box;
+            position: fixed; /* 固定位置 */
+            top: 0;
+            left: 0;
+            z-index: 1000;
+            transition: all 0.4s ease; /* 平滑过渡 */
+            background-color: rgba(255, 255, 255, 0); /* 初始透明 */
         }
+
+        /* 滚动后的样式 */
+        nav.scrolled {
+            padding: 15px 5%; 
+            background-color: rgba(255, 255, 255, 0.8); /* 半透明白 */
+            backdrop-filter: blur(10px); /* 毛玻璃效果 */
+            -webkit-backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+
         .logo { font-size: 20px; font-weight: 300; letter-spacing: 0.6em; text-decoration: none; color: #111; text-transform: uppercase; }
         .nav-links a { margin-left: 35px; text-decoration: none; color: #111; font-size: 11px; letter-spacing: 0.25em; text-transform: uppercase; font-weight: 300; transition: opacity 0.3s; }
         .nav-links a:hover { opacity: 0.6; }
 
-        .container { max-width: 1200px; margin: 40px auto; padding: 0 5%; display: grid; grid-template-columns: 1fr 1.5fr; gap: 80px; }
+        /* 修正正文间距，防止被固定导航栏遮挡 */
+        .container { 
+            max-width: 1200px; 
+            margin: 140px auto 40px; /* 增加了顶部 margin */
+            padding: 0 5%; 
+            display: grid; 
+            grid-template-columns: 1fr 1.5fr; 
+            gap: 80px; 
+        }
 
-        /* Profile Image Section - 文字占位已删除 */
         .profile-image-wrapper {
             width: 100%;
             background-color: #f7f7f7;
@@ -38,7 +66,6 @@
             display: block;
         }
 
-        /* Text Section */
         .about-text h1 { font-size: 28px; font-weight: 300; letter-spacing: 0.2em; margin: 0; line-height: 1.2; text-transform: uppercase; }
         .birth-info { font-size: 12px; color: #999; margin: 15px 0 40px; letter-spacing: 0.1em; }
 
@@ -55,8 +82,8 @@
         footer { padding: 80px 5% 40px; text-align: center; font-size: 9px; letter-spacing: 0.4em; color: #bbb; text-transform: uppercase; }
 
         @media (max-width: 900px) {
-            .container { grid-template-columns: 1fr; gap: 40px; }
-            nav { flex-direction: column; gap: 20px; padding: 30px 5%; }
+            .container { grid-template-columns: 1fr; gap: 40px; margin-top: 100px; }
+            nav { flex-direction: column; gap: 15px; padding: 20px 5%; }
             .nav-links { margin-left: 0; }
             .nav-links a { margin: 0 10px; font-size: 10px; }
         }
@@ -64,7 +91,7 @@
 </head>
 <body>
 
-    <nav>
+    <nav id="navbar">
         <a href="index.html" class="logo">ZHANG JIARUI</a>
         <div class="nav-links">
             <a href="index.html#eco-art">Ecological Art</a>
@@ -122,6 +149,17 @@
     <footer>
         &copy; 2026 ZHANG JIARUI ART STUDIO.
     </footer>
+
+    <script>
+        window.addEventListener('scroll', function() {
+            const nav = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                nav.classList.add('scrolled');
+            } else {
+                nav.classList.remove('scrolled');
+            }
+        });
+    </script>
 
 </body>
 </html>
