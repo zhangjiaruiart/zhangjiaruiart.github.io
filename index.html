@@ -88,30 +88,31 @@
         }
 
         .content-section {
-            padding: 80px 5% 20px; /* 进一步压缩版块间距 */
+            padding: 80px 5% 20px; 
             max-width: 1400px; margin: 0 auto;
             animation: fadeInUp 1.2s cubic-bezier(0.15, 1, 0.3, 1) both;
         }
 
         .category-title {
             font-size: 13px; letter-spacing: 0.5em; text-transform: uppercase;
-            margin-bottom: 25px; /* 间距再次减半 */
+            margin-bottom: 25px; 
             font-weight: 400; 
             border-bottom: 1px solid #f0f0f0; padding-bottom: 15px;
             color: #111;
         }
 
-        /* --- 3. 作品网格：极致压缩间距 --- */
+        /* --- 3. 作品网格 --- */
         .grid {
             display: grid; grid-template-columns: repeat(2, 1fr);
-            gap: 20px 60px; /* 行间距缩短至 20px */
+            gap: 20px 60px; 
             margin-bottom: 30px; 
         }
 
         .project { text-decoration: none; color: inherit; display: block; }
 
         .project-image-wrapper {
-            overflow: hidden; margin-bottom: 8px; /* 图片与标题间距极致压缩 */
+            overflow: hidden; 
+            margin-bottom: 20px; /* 已将此处的空隙增加，防止标题离图片太近 */
             background-color: #fcfcfc; position: relative;
         }
 
