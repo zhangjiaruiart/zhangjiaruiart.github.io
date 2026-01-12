@@ -61,11 +61,11 @@
         }
         .nav-links a:hover::after { width: 100%; }
 
-        /* 3. Hero 视差区域 - 修复层级 */
+        /* 3. Hero 视差区域 - 增加层级控制 */
         .hero {
             height: 100vh; width: 100%; overflow: hidden;
             position: relative; background-color: #000;
-            z-index: 1; /* 确保不覆盖后续内容 */
+            z-index: 1;
         }
 
         .hero img {
@@ -74,6 +74,7 @@
             filter: brightness(0.85); display: block;
             position: absolute; top: 0; left: 0;
             will-change: transform;
+            background-color: #111; /* 占位色 */
         }
 
         .hero::after {
@@ -92,13 +93,11 @@
             100% { opacity: 0.2; transform: translate(-50%, 0); }
         }
 
-        /* 4. 内容入场动画 */
+        /* 4. 内容区 - 增加 z-index 和背景色确保不被遮挡 */
         .reveal {
             opacity: 0;
             transform: translateY(50px);
             transition: all 1.2s cubic-bezier(0.19, 1, 0.22, 1);
-            position: relative;
-            z-index: 5; /* 确保内容在 hero 之上 */
         }
 
         .reveal.active {
@@ -109,14 +108,15 @@
         .content-section {
             padding: 120px 5% 40px; 
             max-width: 1400px; margin: 0 auto;
-            background: #fff; /* 防止视差图片透过来 */
+            position: relative;
+            z-index: 10; /* 确保在视差图之上 */
+            background-color: #ffffff; /* 必须有背景色覆盖 Hero */
         }
 
         .category-title {
             font-size: 13px; letter-spacing: 0.5em; text-transform: uppercase;
             margin-bottom: 35px; font-weight: 400; color: #111;
             position: relative; overflow: hidden;
-            padding-bottom: 15px;
         }
         
         .category-title::after {
@@ -124,7 +124,7 @@
             width: 100%; height: 1px; background: #eee;
         }
 
-        /* 5. 作品网格与图片显示修复 */
+        /* 5. 作品网格 */
         .grid {
             display: grid; grid-template-columns: repeat(2, 1fr);
             gap: 40px 80px; margin-bottom: 60px; 
@@ -135,12 +135,12 @@
         .project-image-wrapper {
             overflow: hidden; margin-bottom: 25px;
             background-color: #f7f7f7; position: relative;
-            display: block; /* 确保容器撑开 */
+            display: block;
         }
 
         .project-image-wrapper::before {
             content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.05); opacity: 0; z-index: 1;
+            background: rgba(0,0,0,0.08); opacity: 0; z-index: 1;
             transition: opacity 0.6s ease;
         }
         .project:hover .project-image-wrapper::before { opacity: 1; }
@@ -149,45 +149,26 @@
         .video-ratio { aspect-ratio: 16 / 9; background-color: #000; }
 
         .project img {
-            width: 100%; height: 100%; 
-            object-fit: cover;
-            display: block; /* 消除幽灵间隙 */
+            width: 100%; height: 100%; object-fit: cover;
+            display: block;
             transition: transform 1.5s cubic-bezier(0.19, 1, 0.22, 1);
         }
         .project:hover img { transform: scale(1.06); }
 
-        .project-title {
-            font-size: 14px; font-weight: 400; letter-spacing: 0.1em;
-            text-transform: uppercase; margin-top: 5px;
-            transition: color 0.3s ease;
-        }
-        .project:hover .project-title { color: #888; }
-
-        .project-meta {
-            font-size: 10px; color: #aaa; margin-top: 4px;
-            letter-spacing: 0.05em; text-transform: uppercase;
-            line-height: 1.4;
-        }
-
-        /* 6. 联系部分交互 */
-        .contact-section { padding: 100px 5% 60px; background-color: #fff; }
+        /* 6. 联系部分 */
+        .contact-section { padding: 100px 5% 60px; background-color: #fff; position: relative; z-index: 10; }
         .contact-container { max-width: 1100px; margin: 0 auto; text-align: center; }
         .contact-row { display: flex; justify-content: center; gap: 60px; flex-wrap: wrap; }
-        .contact-item { transition: transform 0.3s ease; }
-        .contact-item:hover { transform: translateY(-5px); }
-        .contact-label { font-size: 9px; color: #bbb; text-transform: uppercase; display: block; margin-bottom: 10px; letter-spacing: 0.2em; }
-        .contact-value { font-size: 13px; color: #111; text-decoration: none; padding-bottom: 2px; border-bottom: 1px solid transparent; transition: all 0.3s; }
-        .contact-value:hover { border-bottom: 1px solid #111; }
 
         footer {
             padding: 80px 5% 40px; text-align: center; border-top: 1px solid #f9f9f9;
             font-size: 9px; letter-spacing: 0.4em; color: #ccc; text-transform: uppercase;
+            position: relative; z-index: 10; background: #fff;
         }
 
         @media (max-width: 900px) {
             .grid { grid-template-columns: 1fr; gap: 40px; }
             .nav-links { display: none; }
-            .content-section { padding-top: 80px; }
         }
     </style>
 </head>
@@ -205,7 +186,8 @@
     </nav>
 
     <section class="hero">
-        <img src="images/Cover.JPG" id="heroImage" alt="Zhang Jiarui Art" onerror="this.onerror=null; this.src='images/Cover.jpg';">
+        <img src="images/Cover.JPG" id="heroImage" alt="Zhang Jiarui Art" 
+             onerror="if (this.src.indexOf('.JPG') > -1) this.src='images/Cover.jpg'; else if (this.src.indexOf('Cover') > -1) this.src='images/cover.jpg';">
     </section>
 
     <div class="content-section reveal" id="eco-art">
@@ -237,7 +219,8 @@
         <div class="grid">
             <div class="project">
                 <div class="project-image-wrapper img-ratio">
-                    <img src="images/Work2.jpg" alt="Work 2" loading="lazy" onerror="this.onerror=null; this.src='images/Work2.JPG';">
+                    <img src="images/Work2.jpg" alt="Work 2" loading="lazy" 
+                         onerror="this.src='images/Work2.JPG';">
                 </div>
                 <div class="project-info">
                     <div class="project-title">Sculpture Installation</div>
@@ -289,15 +272,15 @@
         const heroImg = document.getElementById('heroImage');
         const nav = document.getElementById('navbar');
 
-        // 视差滚动
         window.addEventListener('scroll', () => {
             const scrollY = window.pageYOffset;
             
-            // 只有当 hero 在视口内才计算 transform 提升性能
-            if (scrollY < window.innerHeight) {
+            // 视差位移
+            if (heroImg) {
                 heroImg.style.transform = `translate3d(0, ${scrollY * 0.4}px, 0)`;
             }
 
+            // 导航栏
             if (scrollY > 100) {
                 nav.classList.add("nav-scrolled");
             } else {
@@ -317,9 +300,7 @@
                 }
             });
         }
-
         handleReveal();
     </script>
-
 </body>
 </html>
