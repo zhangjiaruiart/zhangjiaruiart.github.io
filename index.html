@@ -5,7 +5,305 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BIOGRAPHY | ZHANG JIARUI</title>
     <style>
-        body, html {
+        body, html {<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZHANG JIARUI | ARTIST</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            font-family: "Optima", "Didot", "Helvetica Neue", Helvetica, Arial, sans-serif;
+            background-color: #ffffff;
+            color: #111111;
+            scroll-behavior: smooth;
+        }
+
+        nav {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 50px 5%;
+            box-sizing: border-box;
+            z-index: 100;
+        }
+
+        .logo {
+            font-size: 20px;
+            font-weight: 300;
+            letter-spacing: 0.6em;
+            text-decoration: none;
+            color: #ffffff; 
+            text-transform: uppercase;
+        }
+
+        .nav-links a {
+            margin-left: 35px;
+            text-decoration: none;
+            color: #ffffff;
+            font-size: 11px;
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            font-weight: 300;
+            transition: opacity 0.3s;
+        }
+
+        .nav-links a:hover { opacity: 0.6; }
+
+        .hero {
+            height: 100vh;
+            width: 100%;
+            overflow: hidden;
+            position: relative;
+            background-color: #1a1a1a;
+        }
+
+        .hero img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: brightness(0.8);
+            display: block;
+        }
+
+        .content-section {
+            padding: 40px 5%; 
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .category-title {
+            font-size: 14px;
+            letter-spacing: 0.6em;
+            text-transform: uppercase;
+            margin-top: 20px;
+            margin-bottom: 40px;
+            text-align: left;
+            font-weight: 400;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 15px;
+            color: #111;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 50px 60px;
+            margin-bottom: 40px; 
+        }
+
+        .project {
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+
+        .project-image-wrapper {
+            overflow: hidden;
+            margin-bottom: 20px;
+            background-color: #f7f7f7;
+            position: relative;
+        }
+
+        .img-ratio { aspect-ratio: 4 / 5; }
+        .video-ratio { aspect-ratio: 16 / 9; background-color: #000; }
+
+        .project img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 1.5s cubic-bezier(0.15, 1, 0.3, 1);
+        }
+
+        .project-title {
+            font-size: 15px;
+            font-weight: 300;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            margin-top: 15px;
+        }
+
+        .project-meta {
+            font-size: 10px;
+            color: #999;
+            margin-top: 8px;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+
+        .contact-section {
+            padding: 60px 5%;
+            background-color: #ffffff;
+            margin-top: 20px;
+        }
+
+        .contact-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            border-top: 1px solid #eee; 
+            padding-top: 40px;
+        }
+
+        .contact-row {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .contact-label {
+            font-size: 10px;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: #999;
+        }
+
+        .contact-value {
+            font-size: 14px;
+            letter-spacing: 0.05em;
+            font-weight: 300;
+            color: #111;
+            text-decoration: none;
+            transition: opacity 0.3s;
+        }
+
+        .contact-value:hover { opacity: 0.5; }
+
+        .divider { color: #eee; font-size: 12px; }
+
+        footer {
+            padding: 50px 5% 40px;
+            text-align: center;
+            font-size: 9px;
+            letter-spacing: 0.4em;
+            color: #bbb;
+            text-transform: uppercase;
+        }
+
+        @media (max-width: 768px) {
+            .grid { grid-template-columns: 1fr; gap: 40px; }
+            .hero { height: 75vh; }
+            .nav-links { display: none; }
+            .contact-row { flex-direction: column; gap: 15px; align-items: flex-start; padding-left: 5%; }
+            .divider { display: none; }
+            .contact-item { gap: 15px; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <a href="index.html" class="logo">ZHANG JIARUI</a>
+        <div class="nav-links">
+            <a href="#eco-art">Ecological Art</a>
+            <a href="#sculpture">Sculpture</a>
+            <a href="#projects">Projects</a>
+            <a href="about.html">About</a>
+            <a href="biography.html">BIOGRAPHY</a>
+            <a href="#contact">Contact</a>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <img src="images/Cover.JPG" alt="Zhang Jiarui Art" onerror="this.src='images/cover.jpg'; this.onerror=null;">
+    </section>
+
+    <div class="content-section" id="eco-art">
+        <h2 class="category-title">Ecological Art</h2>
+        <div class="grid">
+            <div class="project">
+                <div class="project-image-wrapper video-ratio">
+                    <iframe width="100%" height="100%" src="https://www.youtube.com/embed/9rCY3guNSRg?rel=0" frameborder="0" allowfullscreen style="position: absolute; top: 0; left: 0;"></iframe>
+                </div>
+                <div class="project-info">
+                    <div class="project-title">Ice Burial</div>
+                    <div class="project-meta">Performance art / 2025 / China Southsea</div>
+                </div>
+            </div>
+            <div class="project">
+                <div class="project-image-wrapper video-ratio">
+                    <iframe width="100%" height="100%" src="https://www.youtube.com/embed/lfMcm-Hn3S4?rel=0" frameborder="0" allowfullscreen style="position: absolute; top: 0; left: 0;"></iframe>
+                </div>
+                <div class="project-info">
+                    <div class="project-title">4.5 Tons / Collaborate with Betta Liu</div>
+                    <div class="project-meta">Installation / 2024 / Inner Mongolia</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="content-section" id="sculpture">
+        <h2 class="category-title">Sculpture</h2>
+        <div class="grid">
+            <div class="project">
+                <div class="project-image-wrapper img-ratio">
+                    <img src="images/Work2.jpg" alt="Work 2" onerror="this.src='images/work2.jpg'">
+                </div>
+                <div class="project-info">
+                    <div class="project-title">Sculpture Installation</div>
+                    <div class="project-meta">Material / Year</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="content-section" id="projects">
+        <h2 class="category-title">Projects</h2>
+        <div class="grid">
+            <div class="project">
+                <div class="project-image-wrapper video-ratio">
+                    <iframe width="100%" height="100%" src="https://www.youtube.com/embed/OEZ3FvOwdjI?rel=0&enablejsapi=1" frameborder="0" allowfullscreen style="position: absolute; top: 0; left: 0;"></iframe>
+                    <iframe width="100%" height="100%" src="https://www.youtube.com/embed/OEZ3FvOwdjI?rel=0" frameborder="0" allowfullscreen style="position: absolute; top: 0; left: 0;"></iframe>
+                </div>
+                <div class="project-info">
+                    <div class="project-title">Coral Planting Project</div>
+                    <div class="project-meta">Documentary / 2026 / Xisha Islands</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="contact-section" id="contact">
+        <div class="contact-container">
+            <div class="contact-row">
+                <div class="contact-item">
+                    <span class="contact-label">Email</span>
+                    <a href="mailto:jerryzhang_arts@qq.com" class="contact-value">jerryzhang_arts@qq.com</a>
+                </div>
+                <span class="divider">·</span>
+                <div class="contact-item">
+                    <span class="contact-label">WeChat</span>
+                    <span class="contact-value">zjr5556699</span>
+                </div>
+                <span class="divider">·</span>
+                <div class="contact-item">
+                    <span class="contact-label">Phone</span>
+                    <a href="tel:+8615117988382" class="contact-value">(+86) 151 1798 8382</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        &copy; 2026 ZHANG JIARUI ART STUDIO.
+    </footer>
+
+</body>
+</html>
             margin: 0; padding: 0;
             font-family: "Optima", "Didot", "Helvetica Neue", Helvetica, Arial, sans-serif;
             background-color: #ffffff; color: #111111;
