@@ -18,7 +18,7 @@
             position: fixed;
             top: 0; left: 0; width: 100%;
             display: flex; justify-content: space-between; align-items: center;
-            padding: 40px 5%; 
+            padding: 30px 5%; 
             box-sizing: border-box;
             z-index: 1000;
             transition: all 0.5s cubic-bezier(0.2, 1, 0.3, 1);
@@ -28,7 +28,7 @@
             background: rgba(255, 255, 255, 0.85);
             backdrop-filter: blur(15px);
             -webkit-backdrop-filter: blur(15px);
-            padding: 20px 5%;
+            padding: 15px 5%;
             border-bottom: 1px solid rgba(0,0,0,0.05);
         }
 
@@ -64,7 +64,7 @@
         }
 
         @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(30px); }
+            from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
@@ -81,36 +81,37 @@
 
         .hero::after {
             content: 'SCROLL';
-            position: absolute; bottom: 40px; left: 50%;
+            position: absolute; bottom: 30px; left: 50%;
             transform: translateX(-50%);
             color: #fff; font-size: 9px; letter-spacing: 0.5em;
             opacity: 0.4; font-weight: 300;
         }
 
         .content-section {
-            padding: 120px 5% 40px;
+            padding: 80px 5% 20px; /* 进一步压缩版块间距 */
             max-width: 1400px; margin: 0 auto;
             animation: fadeInUp 1.2s cubic-bezier(0.15, 1, 0.3, 1) both;
         }
 
         .category-title {
             font-size: 13px; letter-spacing: 0.5em; text-transform: uppercase;
-            margin-bottom: 40px; font-weight: 400; 
-            border-bottom: 1px solid #f0f0f0; padding-bottom: 20px;
+            margin-bottom: 25px; /* 间距再次减半 */
+            font-weight: 400; 
+            border-bottom: 1px solid #f0f0f0; padding-bottom: 15px;
             color: #111;
         }
 
-        /* --- 3. 作品网格：间距已缩短一半 --- */
+        /* --- 3. 作品网格：极致压缩间距 --- */
         .grid {
             display: grid; grid-template-columns: repeat(2, 1fr);
-            gap: 40px 60px; /* 行间距从 80px 减小至 40px */
-            margin-bottom: 60px; 
+            gap: 20px 60px; /* 行间距缩短至 20px */
+            margin-bottom: 30px; 
         }
 
         .project { text-decoration: none; color: inherit; display: block; }
 
         .project-image-wrapper {
-            overflow: hidden; margin-bottom: 15px; /* 图片与文字间距缩小 */
+            overflow: hidden; margin-bottom: 8px; /* 图片与标题间距极致压缩 */
             background-color: #fcfcfc; position: relative;
         }
 
@@ -125,34 +126,34 @@
 
         .project-title {
             font-size: 14px; font-weight: 400; letter-spacing: 0.1em;
-            text-transform: uppercase; margin-top: 10px;
+            text-transform: uppercase; margin-top: 5px;
         }
 
         .project-meta {
-            font-size: 10px; color: #aaa; margin-top: 6px;
+            font-size: 10px; color: #aaa; margin-top: 4px;
             letter-spacing: 0.05em; text-transform: uppercase;
-            line-height: 1.5;
+            line-height: 1.4;
         }
 
         /* --- 4. 联系与页脚 --- */
-        .contact-section { padding: 100px 5% 60px; background-color: #fff; }
+        .contact-section { padding: 80px 5% 40px; background-color: #fff; }
         .contact-container { max-width: 1100px; margin: 0 auto; text-align: center; }
-        .contact-row { display: flex; justify-content: center; gap: 50px; flex-wrap: wrap; }
-        .contact-label { font-size: 9px; color: #bbb; text-transform: uppercase; display: block; margin-bottom: 8px; letter-spacing: 0.2em; }
+        .contact-row { display: flex; justify-content: center; gap: 40px; flex-wrap: wrap; }
+        .contact-label { font-size: 9px; color: #bbb; text-transform: uppercase; display: block; margin-bottom: 5px; letter-spacing: 0.2em; }
         .contact-value { font-size: 13px; color: #111; text-decoration: none; padding-bottom: 2px; border-bottom: 1px solid transparent; transition: all 0.3s; }
         .contact-value:hover { border-bottom: 1px solid #111; opacity: 0.7; }
         .divider { color: #eee; align-self: center; font-weight: 100; }
 
         footer {
-            padding: 80px 5% 50px; text-align: center; border-top: 1px solid #f9f9f9;
+            padding: 60px 5% 40px; text-align: center; border-top: 1px solid #f9f9f9;
             font-size: 9px; letter-spacing: 0.4em; color: #ccc; text-transform: uppercase;
         }
 
         @media (max-width: 900px) {
-            .grid { grid-template-columns: 1fr; gap: 40px; }
+            .grid { grid-template-columns: 1fr; gap: 25px; }
             .nav-links { display: none; }
             .logo { font-size: 14px; letter-spacing: 0.3em; }
-            .content-section { padding-top: 80px; }
+            .content-section { padding-top: 60px; }
         }
     </style>
 </head>
