@@ -7,21 +7,50 @@
     <style>
         body, html {
             margin: 0; padding: 0;
-            font-family: "Optima", "Didot", "Helvetica Neue", Helvetica, Arial, sans-serif;
-            background-color: #ffffff; color: #111111;
+            font-family: "Optima", "Didot", "Helvetica Neue", Helvetica, "PingFang SC", "Microsoft YaHei", Arial, sans-serif;
+            background-color: #ffffff; color: #111;
+            line-height: 1.6;
         }
+
         nav {
             width: 100%; display: flex; justify-content: space-between; align-items: center;
-            padding: 50px 5%; box-sizing: border-box; background-color: #fff;
+            padding: 50px 5%; box-sizing: border-box;
         }
         .logo { font-size: 20px; font-weight: 300; letter-spacing: 0.6em; text-decoration: none; color: #111; text-transform: uppercase; }
-        .nav-links a { margin-left: 35px; text-decoration: none; color: #111; font-size: 11px; letter-spacing: 0.25em; text-transform: uppercase; font-weight: 300; }
+        .nav-links a { margin-left: 35px; text-decoration: none; color: #111; font-size: 11px; letter-spacing: 0.25em; text-transform: uppercase; font-weight: 300; transition: opacity 0.3s; }
         .nav-links a:hover { opacity: 0.6; }
-        .bio-container { max-width: 800px; margin: 60px auto; padding: 0 5%; line-height: 2; letter-spacing: 0.05em; font-size: 14px; font-weight: 300; }
-        footer { padding: 50px 5%; text-align: center; font-size: 9px; letter-spacing: 0.4em; color: #bbb; text-transform: uppercase; }
+
+        .container { max-width: 1200px; margin: 40px auto; padding: 0 5%; display: grid; grid-template-columns: 1fr 1.5fr; gap: 80px; }
+
+        /* 左侧照片 */
+        .profile-image img { width: 100%; height: auto; display: block; }
+
+        /* 右侧信息 */
+        .about-text h1 { font-size: 28px; font-weight: 300; letter-spacing: 0.2em; margin: 0; line-height: 1.2; }
+        .birth-info { font-size: 12px; color: #999; margin: 15px 0 40px; letter-spacing: 0.1em; }
+
+        .statement { font-size: 14px; font-weight: 300; color: #333; text-align: justify; margin-bottom: 60px; }
+        .statement p { margin-bottom: 1.8em; line-height: 1.8; }
+
+        .cv-section { margin-bottom: 50px; }
+        .cv-section h2 { font-size: 12px; letter-spacing: 0.4em; text-transform: uppercase; color: #111; border-bottom: 1px solid #eee; padding-bottom: 10px; margin-bottom: 25px; font-weight: 400; }
+        
+        .cv-item { margin-bottom: 25px; display: flex; flex-direction: column; gap: 5px; }
+        .cv-year { font-size: 11px; color: #999; letter-spacing: 0.1em; margin-bottom: 2px; }
+        .cv-detail { font-size: 13px; font-weight: 300; color: #111; }
+
+        footer { padding: 80px 5% 40px; text-align: center; font-size: 9px; letter-spacing: 0.4em; color: #bbb; text-transform: uppercase; }
+
+        @media (max-width: 900px) {
+            .container { grid-template-columns: 1fr; gap: 40px; }
+            nav { flex-direction: column; gap: 20px; padding: 30px 5%; }
+            .nav-links { margin-left: 0; }
+            .nav-links a { margin: 0 10px; font-size: 10px; }
+        }
     </style>
 </head>
 <body>
+
     <nav>
         <a href="index.html" class="logo">ZHANG JIARUI</a>
         <div class="nav-links">
@@ -33,11 +62,66 @@
         </div>
     </nav>
 
-    <div class="bio-container">
-        <p>ZHANG JIARUI (b. 1990) is a contemporary artist based in China...</p>
-        <p>Working across sculpture, installation, and performance art, his practice focuses on ecological ethics and human intervention in natural landscapes.</p>
+    <div class="container">
+        <div class="profile-image">
+            <img src="images/profile.jpg" alt="Zhang Jiarui" onerror="this.src='https://via.placeholder.com/800x1000?text=Artist+Portrait';">
+        </div>
+
+        <div class="about-text">
+            <h1>张家瑞</h1>
+            <h1>Jerry</h1>
+            <div class="birth-info">b. 1990</div>
+
+            <div class="statement">
+                <p>张家瑞的艺术创作始终围绕两条相互交织的路径展开：一是“传统艺术的当代转化”，二是“生态艺术的现场实践”。这两条路径既有相对独立的探索方向，又在创作逻辑与方法论上形成互文，成为我持续艺术研究的重要支点。</p>
+                <p>其作品既是对中国传统美学的再生实验，也是对当代生态语境的介入实践。两者在深层逻辑上指向同一个问题：如何在全球生态危机与文化断裂的当下，使艺术重新成为连接传统与未来、人与自然、感性与伦理的桥梁。</p>
+                <hr style="border:none; border-top:1px solid #f9f9f9; margin: 30px 0;">
+                <p>Zhang Jiarui's artistic creation has always revolved around two intertwined paths: one is "the contemporary transformation of traditional art," and the other is "the on-site practice of ecological art." These two paths form an intertextuality in creative logic and methodology.</p>
+                <p>His works are both a regeneration experiment of traditional Chinese aesthetics and an intervention in the contemporary ecological context, pointing to how art can become a bridge connecting tradition and the future, humanity and nature.</p>
+            </div>
+
+            <div class="cv-section">
+                <h2>Education</h2>
+                
+                <div class="cv-item">
+                    <div class="cv-year">2025 - Now</div>
+                    <div class="cv-detail">中央美术学院，博士 (Ph.D.)</div>
+                    <div class="cv-detail">Central Academy of Fine Arts, Ph.D</div>
+                </div>
+
+                <div class="cv-item">
+                    <div class="cv-year">2017 - 2020</div>
+                    <div class="cv-detail">中央美术学院，硕士 (M.F.A.) — 雕塑</div>
+                    <div class="cv-detail">Central Academy of Fine Arts, MFA — Sculpture</div>
+                </div>
+
+                <div class="cv-item">
+                    <div class="cv-year">2010 - 2015</div>
+                    <div class="cv-detail">中央美术学院，学士 (B.F.A.) — 雕塑</div>
+                    <div class="cv-detail">Central Academy of Fine Arts, BFA — Sculpture</div>
+                </div>
+
+                <div class="cv-item">
+                    <div class="cv-year">2006 - 2010</div>
+                    <div class="cv-detail">中央美术学院附中</div>
+                    <div class="cv-detail">Central Academy of Fine Arts Affiliated High School</div>
+                </div>
+            </div>
+
+            <div class="cv-section">
+                <h2>Selected Exhibitions</h2>
+                <div class="cv-item">
+                    <div class="cv-year">2025</div>
+                    <div class="cv-detail">当代艺术年度展，北京</div>
+                    <div class="cv-detail">Annual Contemporary Art Exhibition, Beijing</div>
+                </div>
+                </div>
+        </div>
     </div>
 
-    <footer>&copy; 2026 ZHANG JIARUI ART STUDIO.</footer>
+    <footer>
+        &copy; 2026 ZHANG JIARUI ART STUDIO.
+    </footer>
+
 </body>
 </html>
