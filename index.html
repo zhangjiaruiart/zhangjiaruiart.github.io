@@ -3,30 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <title>ZHANG JIARUI | Contemporary Artist</title>
-    <meta name="description" content="Zhang Jiarui's Artworks - Ecological Art, Sculpture, and Contemporary Projects.">
-    <meta name="keywords" content="Zhang Jiarui, Artist, Ecological Art, Sculpture, Contemporary Art, CAFA">
-    
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400&family=Playfair+Display:ital@0;1&display=swap" rel="stylesheet">
-
+    <title>ZHANG JIARUI | ARTIST</title>
     <style>
-        :root {
-            --bg-color: #ffffff;
-            --text-main: #111111;
-            --text-dim: #aaa;
-            --accent-color: #f0f0f0;
-        }
-
         body, html {
             margin: 0; padding: 0;
-            font-family: 'Montserrat', sans-serif;
-            background-color: var(--bg-color); color: var(--text-main);
+            font-family: "Optima", "Didot", "Helvetica Neue", Helvetica, Arial, sans-serif;
+            background-color: #ffffff; color: #111111;
             scroll-behavior: smooth;
             overflow-x: hidden;
         }
 
-        /* --- 导航栏优化 --- */
+        /* --- 1. 导航栏 --- */
         nav {
             position: fixed;
             top: 0; left: 0; width: 100%;
@@ -34,44 +21,53 @@
             padding: 40px 5%; 
             box-sizing: border-box;
             z-index: 1000;
-            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: all 0.5s cubic-bezier(0.2, 1, 0.3, 1);
         }
 
         .nav-scrolled {
-            background: rgba(255, 255, 255, 0.9);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
             padding: 20px 5%;
-            border-bottom: 1px solid rgba(0,0,0,0.03);
+            border-bottom: 1px solid rgba(0,0,0,0.05);
         }
 
         .logo {
             font-size: 18px; font-weight: 300; letter-spacing: 0.5em;
             text-decoration: none; color: #ffffff; text-transform: uppercase;
             transition: color 0.4s ease;
-            font-family: 'Playfair Display', serif;
         }
 
         .nav-scrolled .logo, .nav-scrolled .nav-links a {
-            color: var(--text-main);
+            color: #111111;
         }
 
         .nav-links a {
             margin-left: 35px; text-decoration: none; color: #ffffff;
             font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase;
             font-weight: 300; position: relative; padding-bottom: 5px;
-            transition: opacity 0.4s ease;
+            transition: color 0.4s ease;
         }
         
         .nav-links a::after {
             content: ''; position: absolute; bottom: 0; left: 50%;
             width: 0; height: 1px; background: currentColor;
-            transition: all 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+            transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
             transform: translateX(-50%);
         }
         .nav-links a:hover::after { width: 100%; }
 
-        /* --- Hero 视觉增强 --- */
+        /* --- 2. 核心动画 --- */
+        @keyframes heroZoom {
+            from { transform: scale(1.1); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
         .hero {
             height: 100vh; width: 100%; overflow: hidden;
             position: relative; background-color: #000;
@@ -79,41 +75,43 @@
 
         .hero img {
             width: 100%; height: 100%; object-fit: cover;
-            filter: brightness(0.8);
-            transform: scale(1.05);
-            animation: heroReveal 2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            filter: brightness(0.85); display: block;
+            animation: heroZoom 2.5s cubic-bezier(0.15, 1, 0.3, 1) forwards;
         }
 
-        @keyframes heroReveal {
-            to { transform: scale(1); filter: brightness(0.85); }
+        .hero::after {
+            content: 'SCROLL';
+            position: absolute; bottom: 40px; left: 50%;
+            transform: translateX(-50%);
+            color: #fff; font-size: 9px; letter-spacing: 0.5em;
+            opacity: 0.4; font-weight: 300;
         }
 
         .content-section {
-            padding: 140px 5% 60px;
-            max-width: 1300px; margin: 0 auto;
+            padding: 120px 5% 40px;
+            max-width: 1400px; margin: 0 auto;
+            animation: fadeInUp 1.2s cubic-bezier(0.15, 1, 0.3, 1) both;
         }
 
         .category-title {
-            font-size: 12px; letter-spacing: 0.6em; text-transform: uppercase;
-            margin-bottom: 70px; font-weight: 400; 
-            border-bottom: 1px solid var(--accent-color); padding-bottom: 25px;
-            color: var(--text-main);
-            opacity: 0.8;
+            font-size: 13px; letter-spacing: 0.5em; text-transform: uppercase;
+            margin-bottom: 40px; font-weight: 400; 
+            border-bottom: 1px solid #f0f0f0; padding-bottom: 20px;
+            color: #111;
         }
 
-        /* --- 作品网格交互优化 --- */
+        /* --- 3. 作品网格：间距已缩短一半 --- */
         .grid {
             display: grid; grid-template-columns: repeat(2, 1fr);
-            gap: 100px 70px; margin-bottom: 100px; 
+            gap: 40px 60px; /* 行间距从 80px 减小至 40px */
+            margin-bottom: 60px; 
         }
 
-        .project { text-decoration: none; color: inherit; display: block; outline: none; }
+        .project { text-decoration: none; color: inherit; display: block; }
 
         .project-image-wrapper {
-            overflow: hidden; margin-bottom: 30px;
-            background-color: #fafafa; position: relative;
-            /* 增加进入视觉可见范围内的平滑过渡 */
-            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            overflow: hidden; margin-bottom: 15px; /* 图片与文字间距缩小 */
+            background-color: #fcfcfc; position: relative;
         }
 
         .img-ratio { aspect-ratio: 4 / 5; }
@@ -121,42 +119,40 @@
 
         .project img {
             width: 100%; height: 100%; object-fit: cover;
-            transition: transform 2s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: transform 1.8s cubic-bezier(0.15, 1, 0.3, 1);
         }
-        .project:hover img { transform: scale(1.06); }
+        .project:hover img { transform: scale(1.05); }
 
         .project-title {
-            font-size: 15px; font-weight: 400; letter-spacing: 0.1em;
-            text-transform: uppercase; margin-top: 20px;
-            font-family: 'Playfair Display', serif;
+            font-size: 14px; font-weight: 400; letter-spacing: 0.1em;
+            text-transform: uppercase; margin-top: 10px;
         }
 
         .project-meta {
-            font-size: 9px; color: var(--text-dim); margin-top: 10px;
-            letter-spacing: 0.1em; text-transform: uppercase;
+            font-size: 10px; color: #aaa; margin-top: 6px;
+            letter-spacing: 0.05em; text-transform: uppercase;
+            line-height: 1.5;
         }
 
-        /* --- 联系区域优化 --- */
-        .contact-section { padding: 150px 5%; background-color: #fff; }
-        .contact-container { max-width: 900px; margin: 0 auto; text-align: center; }
-        .contact-row { display: flex; justify-content: center; gap: 60px; flex-wrap: wrap; }
-        .contact-label { font-size: 8px; color: #ccc; text-transform: uppercase; display: block; margin-bottom: 10px; letter-spacing: 0.3em; }
-        .contact-value { font-size: 13px; color: var(--text-main); text-decoration: none; border-bottom: 1px solid transparent; transition: all 0.4s; font-weight: 300; }
-        .contact-value:hover { border-bottom: 1px solid var(--text-main); opacity: 0.6; }
+        /* --- 4. 联系与页脚 --- */
+        .contact-section { padding: 100px 5% 60px; background-color: #fff; }
+        .contact-container { max-width: 1100px; margin: 0 auto; text-align: center; }
+        .contact-row { display: flex; justify-content: center; gap: 50px; flex-wrap: wrap; }
+        .contact-label { font-size: 9px; color: #bbb; text-transform: uppercase; display: block; margin-bottom: 8px; letter-spacing: 0.2em; }
+        .contact-value { font-size: 13px; color: #111; text-decoration: none; padding-bottom: 2px; border-bottom: 1px solid transparent; transition: all 0.3s; }
+        .contact-value:hover { border-bottom: 1px solid #111; opacity: 0.7; }
+        .divider { color: #eee; align-self: center; font-weight: 100; }
 
         footer {
-            padding: 100px 5% 60px; text-align: center; 
-            font-size: 8px; letter-spacing: 0.5em; color: #ddd; 
-            text-transform: uppercase; border-top: 1px solid #fcfcfc;
+            padding: 80px 5% 50px; text-align: center; border-top: 1px solid #f9f9f9;
+            font-size: 9px; letter-spacing: 0.4em; color: #ccc; text-transform: uppercase;
         }
 
-        /* 移动端特殊优化 */
-        @media (max-width: 800px) {
-            .grid { grid-template-columns: 1fr; gap: 60px; }
-            .nav-links { display: none; } /* 可后续添加 Hamburger Menu */
+        @media (max-width: 900px) {
+            .grid { grid-template-columns: 1fr; gap: 40px; }
+            .nav-links { display: none; }
             .logo { font-size: 14px; letter-spacing: 0.3em; }
-            .content-section { padding-top: 100px; }
-            .contact-row { flex-direction: column; gap: 40px; }
+            .content-section { padding-top: 80px; }
         }
     </style>
 </head>
@@ -174,7 +170,7 @@
     </nav>
 
     <section class="hero">
-        <img src="images/Cover.JPG" alt="Zhang Jiarui Artwork" onerror="this.src='images/cover.jpg';">
+        <img src="images/Cover.JPG" alt="Zhang Jiarui Art" onerror="this.src='images/cover.jpg';">
     </section>
 
     <div class="content-section" id="eco-art">
@@ -182,7 +178,7 @@
         <div class="grid">
             <div class="project">
                 <div class="project-image-wrapper video-ratio">
-                    <iframe width="100%" height="100%" src="https://www.youtube.com/embed/9rCY3guNSRg?rel=0" frameborder="0" allowfullscreen style="border:none;"></iframe>
+                    <iframe width="100%" height="100%" src="https://www.youtube.com/embed/9rCY3guNSRg?rel=0" frameborder="0" allowfullscreen style="position: absolute; top: 0; left: 0; border: none;"></iframe>
                 </div>
                 <div class="project-info">
                     <div class="project-title">Ice Burial</div>
@@ -191,11 +187,11 @@
             </div>
             <div class="project">
                 <div class="project-image-wrapper video-ratio">
-                    <iframe width="100%" height="100%" src="https://www.youtube.com/embed/lfMcm-Hn3S4?rel=0" frameborder="0" allowfullscreen style="border:none;"></iframe>
+                    <iframe width="100%" height="100%" src="https://www.youtube.com/embed/lfMcm-Hn3S4?rel=0" frameborder="0" allowfullscreen style="position: absolute; top: 0; left: 0; border: none;"></iframe>
                 </div>
                 <div class="project-info">
                     <div class="project-title">4.5 Tons</div>
-                    <div class="project-meta">Installation / Collaboration with Betta Liu / 2024 / Inner Mongolia</div>
+                    <div class="project-meta">Installation / In Collaboration with Betta Liu / 2024 / Inner Mongolia</div>
                 </div>
             </div>
         </div>
@@ -206,7 +202,7 @@
         <div class="grid">
             <div class="project">
                 <div class="project-image-wrapper img-ratio">
-                    <img src="images/Work2.jpg" alt="Sculpture Installation" loading="lazy" onerror="this.src='images/work2.jpg'">
+                    <img src="images/Work2.jpg" alt="Work 2" onerror="this.src='images/work2.jpg'" loading="lazy">
                 </div>
                 <div class="project-info">
                     <div class="project-title">Sculpture Installation</div>
@@ -221,7 +217,7 @@
         <div class="grid">
             <div class="project">
                 <div class="project-image-wrapper video-ratio">
-                    <iframe width="100%" height="100%" src="https://www.youtube.com/embed/OEZ3FvOwdjI?rel=0" frameborder="0" allowfullscreen style="border:none;"></iframe>
+                    <iframe width="100%" height="100%" src="https://www.youtube.com/embed/OEZ3FvOwdjI?rel=0" frameborder="0" allowfullscreen style="position: absolute; top: 0; left: 0; border: none;"></iframe>
                 </div>
                 <div class="project-info">
                     <div class="project-title">Coral Planting Project</div>
@@ -238,10 +234,12 @@
                     <span class="contact-label">Email</span>
                     <a href="mailto:jerryzhang_arts@qq.com" class="contact-value">jerryzhang_arts@qq.com</a>
                 </div>
+                <span class="divider">/</span>
                 <div class="contact-item">
                     <span class="contact-label">WeChat</span>
                     <span class="contact-value">zjr5556699</span>
                 </div>
+                <span class="divider">/</span>
                 <div class="contact-item">
                     <span class="contact-label">Phone</span>
                     <a href="tel:+8615117988382" class="contact-value">(+86) 151 1798 8382</a>
@@ -255,18 +253,15 @@
     </footer>
 
     <script>
-        // 极致顺滑的导航栏交互
-        let lastScrollY = window.scrollY;
-        const nav = document.getElementById('navbar');
-
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 100) {
+        window.onscroll = function() {
+            var nav = document.getElementById('navbar');
+            if (window.pageYOffset > 100) {
                 nav.classList.add("nav-scrolled");
             } else {
                 nav.classList.remove("nav-scrolled");
             }
-            lastScrollY = window.scrollY;
-        }, { passive: true });
+        };
     </script>
+
 </body>
 </html>
