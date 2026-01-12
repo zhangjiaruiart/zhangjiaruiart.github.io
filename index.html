@@ -5,22 +5,159 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ZHANG JIARUI | ARTIST</title>
     <style>
-        body, html { margin: 0; padding: 0; font-family: "Optima", "Didot", "Helvetica Neue", Helvetica, Arial, sans-serif; background-color: #fff; color: #111; scroll-behavior: smooth; }
-        nav { position: absolute; top: 0; left: 0; width: 100%; display: flex; justify-content: space-between; align-items: center; padding: 50px 5%; box-sizing: border-box; z-index: 100; }
-        .logo { font-size: 20px; font-weight: 300; letter-spacing: 0.6em; text-decoration: none; color: #fff; text-transform: uppercase; }
-        .nav-links a { margin-left: 35px; text-decoration: none; color: #fff; font-size: 11px; letter-spacing: 0.25em; text-transform: uppercase; font-weight: 300; }
-        .hero { height: 100vh; width: 100%; overflow: hidden; position: relative; background-color: #1a1a1a; }
-        .hero img { width: 100%; height: 100%; object-fit: cover; filter: brightness(0.8); display: block; }
-        .content-section { padding: 100px 5%; max-width: 1400px; margin: 0 auto; }
-        .category-title { font-size: 14px; letter-spacing: 0.6em; text-transform: uppercase; margin-top: 60px; margin-bottom: 80px; text-align: left; font-weight: 400; border-bottom: 1px solid #eee; padding-bottom: 20px; }
-        .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 100px 60px; margin-bottom: 150px; }
-        .project { text-decoration: none; color: inherit; display: block; }
-        .project-image-wrapper { overflow: hidden; margin-bottom: 25px; background-color: #f7f7f7; aspect-ratio: 4 / 5; }
-        .project img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 1.5s cubic-bezier(0.15, 1, 0.3, 1); }
-        .project:hover img { transform: scale(1.05); }
-        .project-title { font-size: 15px; font-weight: 300; letter-spacing: 0.15em; text-transform: uppercase; }
-        footer { padding: 100px 5% 60px; text-align: center; font-size: 9px; letter-spacing: 0.4em; color: #bbb; text-transform: uppercase; border-top: 1px solid #f2f2f2; }
-        @media (max-width: 768px) { .grid { grid-template-columns: 1fr; } .hero { height: 75vh; } .nav-links { display: none; } }
+        /* 基础美学设定 */
+        body, html {
+            margin: 0;
+            padding: 0;
+            font-family: "Optima", "Didot", "Helvetica Neue", Helvetica, Arial, sans-serif;
+            background-color: #ffffff;
+            color: #111111;
+            scroll-behavior: smooth;
+        }
+
+        /* 导航栏 */
+        nav {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 50px 5%;
+            box-sizing: border-box;
+            z-index: 100;
+        }
+
+        .logo {
+            font-size: 20px;
+            font-weight: 300;
+            letter-spacing: 0.6em;
+            text-decoration: none;
+            color: #ffffff; 
+            text-transform: uppercase;
+        }
+
+        .nav-links a {
+            margin-left: 35px;
+            text-decoration: none;
+            color: #ffffff;
+            font-size: 11px;
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            font-weight: 300;
+            transition: opacity 0.3s;
+        }
+
+        .nav-links a:hover { opacity: 0.6; }
+
+        /* 首页大图 */
+        .hero {
+            height: 100vh;
+            width: 100%;
+            overflow: hidden;
+            position: relative;
+            background-color: #1a1a1a;
+        }
+
+        .hero img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: brightness(0.8);
+            display: block;
+        }
+
+        /* 内容板块 */
+        .content-section {
+            padding: 100px 5%;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .category-title {
+            font-size: 14px;
+            letter-spacing: 0.6em;
+            text-transform: uppercase;
+            margin-top: 60px;
+            margin-bottom: 80px;
+            text-align: left;
+            font-weight: 400;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 20px;
+            color: #111;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 100px 60px;
+            margin-bottom: 150px;
+        }
+
+        /* 作品卡片样式 */
+        .project {
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+
+        .project-image-wrapper {
+            overflow: hidden;
+            margin-bottom: 25px;
+            background-color: #f7f7f7;
+            position: relative;
+        }
+
+        /* 强制保持 4:5 比例用于图片 */
+        .img-ratio { aspect-ratio: 4 / 5; }
+
+        /* 强制保持 16:9 比例用于视频 */
+        .video-ratio { aspect-ratio: 16 / 9; background-color: #000; }
+
+        .project img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 1.5s cubic-bezier(0.15, 1, 0.3, 1);
+        }
+
+        .project:hover img {
+            transform: scale(1.05);
+        }
+
+        .project-title {
+            font-size: 15px;
+            font-weight: 300;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            margin-top: 15px;
+        }
+
+        .project-meta {
+            font-size: 10px;
+            color: #999;
+            margin-top: 8px;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+
+        footer {
+            padding: 100px 5% 60px;
+            text-align: center;
+            font-size: 9px;
+            letter-spacing: 0.4em;
+            color: #bbb;
+            text-transform: uppercase;
+            border-top: 1px solid #f2f2f2;
+        }
+
+        @media (max-width: 768px) {
+            .grid { grid-template-columns: 1fr; gap: 60px; }
+            .hero { height: 75vh; }
+            .nav-links { display: none; }
+        }
     </style>
 </head>
 <body>
@@ -36,34 +173,63 @@
     </nav>
 
     <section class="hero">
-        <img src="images/Cover.jpg" alt="Cover" onerror="this.src='images/cover.jpg'">
+        <img src="images/Cover.JPG" alt="Zhang Jiarui Art" onerror="this.src='images/Cover.jpg'">
     </section>
 
     <div class="content-section" id="eco-art">
         <h2 class="category-title">Ecological Art</h2>
         <div class="grid">
+            
             <div class="project">
-                <div class="project-image-wrapper">
+                <div class="project-image-wrapper video-ratio">
+                    <iframe 
+                        width="100%" 
+                        height="100%" 
+                        src="https://www.youtube.com/embed/9rCY3guNSRg?rel=0&modestbranding=1&showinfo=0&iv_load_policy=3" 
+                        title="Creation Process at CAFA" 
+                        frameborder="0" 
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                        allowfullscreen
+                        style="position: absolute; top: 0; left: 0;">
+                    </iframe>
+                </div>
+                <div class="project-info">
+                    <div class="project-title">Creation Process: Ecological Research</div>
+                    <div class="project-meta">Video / CAFA Studio / 2025</div>
+                </div>
+            </div>
+
+            <div class="project">
+                <div class="project-image-wrapper img-ratio">
                     <img src="images/Work1.jpg" alt="Work 1" onerror="this.src='images/work1.jpg'">
                 </div>
-                <div class="project-title">Ecological Project One</div>
+                <div class="project-info">
+                    <div class="project-title">Ecological Series No. 1</div>
+                    <div class="project-meta">Mixed Media / Size Variable</div>
+                </div>
             </div>
-            </div>
+
+        </div>
     </div>
 
     <div class="content-section" id="sculpture">
         <h2 class="category-title">Sculpture</h2>
         <div class="grid">
             <div class="project">
-                <div class="project-image-wrapper">
+                <div class="project-image-wrapper img-ratio">
                     <img src="images/Work2.jpg" alt="Work 2" onerror="this.src='images/work2.jpg'">
                 </div>
-                <div class="project-title">Sculpture Project One</div>
+                <div class="project-info">
+                    <div class="project-title">Sculpture Installation</div>
+                    <div class="project-meta">Material / Year</div>
+                </div>
             </div>
-            </div>
+        </div>
     </div>
 
-    <footer>&copy; 2026 ZHANG JIARUI ART STUDIO.</footer>
+    <footer>
+        &copy; 2026 ZHANG JIARUI ART STUDIO.
+    </footer>
 
 </body>
 </html>
