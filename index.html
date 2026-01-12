@@ -5,28 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ZHANG JIARUI | ARTIST</title>
     <style>
-        /* 1. 全局样式与平滑滚动 */
         body, html {
             margin: 0; padding: 0;
             font-family: "Optima", "Didot", "Helvetica Neue", Helvetica, Arial, sans-serif;
             background-color: #ffffff; color: #111111;
             scroll-behavior: smooth;
             overflow-x: hidden;
-            -webkit-font-smoothing: antialiased;
         }
 
         /* --- 1. 导航栏 --- */
-        /* 2. 增强型导航栏交互 */
         nav {
             position: fixed;
             top: 0; left: 0; width: 100%;
             display: flex; justify-content: space-between; align-items: center;
             padding: 30px 5%; 
-            padding: 40px 5%; 
             box-sizing: border-box;
             z-index: 1000;
             transition: all 0.5s cubic-bezier(0.2, 1, 0.3, 1);
-            transition: all 0.7s cubic-bezier(0.19, 1, 0.22, 1);
         }
 
         .nav-scrolled {
@@ -34,9 +29,6 @@
             backdrop-filter: blur(15px);
             -webkit-backdrop-filter: blur(15px);
             padding: 15px 5%;
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            padding: 20px 5%;
             border-bottom: 1px solid rgba(0,0,0,0.05);
         }
 
@@ -50,22 +42,17 @@
             color: #111111;
         }
 
-        /* 导航链接“排除法”高亮交互 */
-        .nav-links:hover a { opacity: 0.3; }
         .nav-links a {
             margin-left: 35px; text-decoration: none; color: #ffffff;
             font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase;
             font-weight: 300; position: relative; padding-bottom: 5px;
             transition: color 0.4s ease;
-            transition: all 0.4s ease;
         }
-        .nav-links a:hover { opacity: 1 !important; transform: translateY(-2px); }
 
         .nav-links a::after {
             content: ''; position: absolute; bottom: 0; left: 50%;
             width: 0; height: 1px; background: currentColor;
             transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
-            transition: all 0.5s cubic-bezier(0.19, 1, 0.22, 1);
             transform: translateX(-50%);
         }
         .nav-links a:hover::after { width: 100%; }
@@ -81,7 +68,6 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* 3. Hero 视差区域 */
         .hero {
             height: 100vh; width: 100%; overflow: hidden;
             position: relative; background-color: #000;
@@ -89,92 +75,51 @@
 
         .hero img {
             width: 100%; height: 100%; object-fit: cover;
-            width: 100%; height: 120%; /* 高度冗余用于视差位移 */
-            object-fit: cover;
             filter: brightness(0.85); display: block;
             animation: heroZoom 2.5s cubic-bezier(0.15, 1, 0.3, 1) forwards;
-            position: absolute; top: 0; left: 0;
-            will-change: transform;
         }
 
         .hero::after {
             content: 'SCROLL';
             position: absolute; bottom: 30px; left: 50%;
-            content: 'EXPLORE';
-            position: absolute; bottom: 40px; left: 50%;
             transform: translateX(-50%);
             color: #fff; font-size: 9px; letter-spacing: 0.5em;
             opacity: 0.4; font-weight: 300;
-            color: #fff; font-size: 9px; letter-spacing: 0.6em;
-            opacity: 0.5; font-weight: 300;
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0% { opacity: 0.2; transform: translate(-50%, 0); }
-            50% { opacity: 0.6; transform: translate(-50%, 10px); }
-            100% { opacity: 0.2; transform: translate(-50%, 0); }
-        }
-
-        /* 4. 内容入场动画 (Intersection Observer) */
-        .reveal {
-            opacity: 0;
-            transform: translateY(50px);
-            transition: all 1.2s cubic-bezier(0.19, 1, 0.22, 1);
-        }
-
-        .reveal.active {
-            opacity: 1;
-            transform: translateY(0);
         }
 
         .content-section {
+            padding: 80px 5% 20px; /* 进一步压缩版块间距 */
             padding: 80px 5% 20px; 
-            padding: 120px 5% 40px; 
             max-width: 1400px; margin: 0 auto;
             animation: fadeInUp 1.2s cubic-bezier(0.15, 1, 0.3, 1) both;
         }
 
         .category-title {
             font-size: 13px; letter-spacing: 0.5em; text-transform: uppercase;
+            margin-bottom: 25px; /* 间距再次减半 */
             margin-bottom: 25px; 
             font-weight: 400; 
             border-bottom: 1px solid #f0f0f0; padding-bottom: 15px;
             color: #111;
-            margin-bottom: 35px; font-weight: 400; color: #111;
-            position: relative; overflow: hidden;
-        }
-        
-        .category-title::after {
-            content: ''; position: absolute; bottom: 0; left: 0;
-            width: 100%; height: 1px; background: #eee;
         }
 
+        /* --- 3. 作品网格：极致压缩间距 --- */
         /* --- 3. 作品网格 --- */
-        /* 5. 作品网格与高级悬停状态 */
         .grid {
             display: grid; grid-template-columns: repeat(2, 1fr);
+            gap: 20px 60px; /* 行间距缩短至 20px */
             gap: 20px 60px; 
             margin-bottom: 30px; 
-            gap: 40px 80px; margin-bottom: 60px; 
         }
 
         .project { text-decoration: none; color: inherit; display: block; }
 
         .project-image-wrapper {
+            overflow: hidden; margin-bottom: 8px; /* 图片与标题间距极致压缩 */
             overflow: hidden; 
             margin-bottom: 20px; /* 已将此处的空隙增加，防止标题离图片太近 */
-            overflow: hidden; margin-bottom: 25px;
             background-color: #fcfcfc; position: relative;
         }
-
-        /* 悬停时的柔光遮罩 */
-        .project-image-wrapper::before {
-            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.08); opacity: 0; z-index: 1;
-            transition: opacity 0.6s ease;
-        }
-        .project:hover .project-image-wrapper::before { opacity: 1; }
 
         .img-ratio { aspect-ratio: 4 / 5; }
         .video-ratio { aspect-ratio: 16 / 9; background-color: #000; }
@@ -182,17 +127,13 @@
         .project img {
             width: 100%; height: 100%; object-fit: cover;
             transition: transform 1.8s cubic-bezier(0.15, 1, 0.3, 1);
-            transition: transform 1.5s cubic-bezier(0.19, 1, 0.22, 1);
         }
         .project:hover img { transform: scale(1.05); }
-        .project:hover img { transform: scale(1.06); }
 
         .project-title {
             font-size: 14px; font-weight: 400; letter-spacing: 0.1em;
             text-transform: uppercase; margin-top: 5px;
-            transition: color 0.3s ease;
         }
-        .project:hover .project-title { color: #888; }
 
         .project-meta {
             font-size: 10px; color: #aaa; margin-top: 4px;
@@ -202,33 +143,23 @@
 
         /* --- 4. 联系与页脚 --- */
         .contact-section { padding: 80px 5% 40px; background-color: #fff; }
-        /* 6. 联系部分交互 */
-        .contact-section { padding: 100px 5% 60px; background-color: #fff; }
         .contact-container { max-width: 1100px; margin: 0 auto; text-align: center; }
         .contact-row { display: flex; justify-content: center; gap: 40px; flex-wrap: wrap; }
         .contact-label { font-size: 9px; color: #bbb; text-transform: uppercase; display: block; margin-bottom: 5px; letter-spacing: 0.2em; }
-        .contact-row { display: flex; justify-content: center; gap: 60px; flex-wrap: wrap; }
-        .contact-item { transition: transform 0.3s ease; }
-        .contact-item:hover { transform: translateY(-5px); }
-        .contact-label { font-size: 9px; color: #bbb; text-transform: uppercase; display: block; margin-bottom: 10px; letter-spacing: 0.2em; }
         .contact-value { font-size: 13px; color: #111; text-decoration: none; padding-bottom: 2px; border-bottom: 1px solid transparent; transition: all 0.3s; }
         .contact-value:hover { border-bottom: 1px solid #111; opacity: 0.7; }
         .divider { color: #eee; align-self: center; font-weight: 100; }
-        .contact-value:hover { border-bottom: 1px solid #111; }
 
         footer {
             padding: 60px 5% 40px; text-align: center; border-top: 1px solid #f9f9f9;
-            padding: 80px 5% 40px; text-align: center; border-top: 1px solid #f9f9f9;
             font-size: 9px; letter-spacing: 0.4em; color: #ccc; text-transform: uppercase;
         }
 
         @media (max-width: 900px) {
             .grid { grid-template-columns: 1fr; gap: 25px; }
-            .grid { grid-template-columns: 1fr; gap: 40px; }
             .nav-links { display: none; }
             .logo { font-size: 14px; letter-spacing: 0.3em; }
             .content-section { padding-top: 60px; }
-            .content-section { padding-top: 80px; }
         }
     </style>
 </head>
@@ -247,11 +178,9 @@
 
     <section class="hero">
         <img src="images/Cover.JPG" alt="Zhang Jiarui Art" onerror="this.src='images/cover.jpg';">
-        <img src="images/Cover.JPG" id="heroImage" alt="Zhang Jiarui Art" onerror="this.src='images/cover.jpg';">
     </section>
 
     <div class="content-section" id="eco-art">
-    <div class="content-section reveal" id="eco-art">
         <h2 class="category-title">Ecological Art</h2>
         <div class="grid">
             <div class="project">
@@ -276,13 +205,11 @@
     </div>
 
     <div class="content-section" id="sculpture">
-    <div class="content-section reveal" id="sculpture">
         <h2 class="category-title">Sculpture</h2>
         <div class="grid">
             <div class="project">
                 <div class="project-image-wrapper img-ratio">
                     <img src="images/Work2.jpg" alt="Work 2" onerror="this.src='images/work2.jpg'" loading="lazy">
-                    <img src="images/Work2.jpg" alt="Work 2" loading="lazy">
                 </div>
                 <div class="project-info">
                     <div class="project-title">Sculpture Installation</div>
@@ -293,7 +220,6 @@
     </div>
 
     <div class="content-section" id="projects">
-    <div class="content-section reveal" id="projects">
         <h2 class="category-title">Projects</h2>
         <div class="grid">
             <div class="project">
@@ -309,7 +235,6 @@
     </div>
 
     <div class="contact-section" id="contact">
-    <div class="contact-section reveal" id="contact">
         <div class="contact-container">
             <div class="contact-row">
                 <div class="contact-item">
@@ -338,42 +263,11 @@
         window.onscroll = function() {
             var nav = document.getElementById('navbar');
             if (window.pageYOffset > 100) {
-        // 1. 视差滚动与导航栏监听
-        const heroImg = document.getElementById('heroImage');
-        const nav = document.getElementById('navbar');
-
-        window.addEventListener('scroll', () => {
-            const scrollY = window.pageYOffset;
-            
-            // 视差逻辑：图片移动速度为滚动速度的 40%
-            heroImg.style.transform = `translate3d(0, ${scrollY * 0.4}px, 0)`;
-
-            // 导航栏切换
-            if (scrollY > 100) {
                 nav.classList.add("nav-scrolled");
             } else {
                 nav.classList.remove("nav-scrolled");
             }
         };
-
-            // 触发入场动画
-            handleReveal();
-        });
-
-        // 2. 元素淡入揭幕逻辑
-        function handleReveal() {
-            const reveals = document.querySelectorAll('.reveal');
-            reveals.forEach(el => {
-                const elementTop = el.getBoundingClientRect().top;
-                const windowHeight = window.innerHeight;
-                if (elementTop < windowHeight - 100) {
-                    el.classList.add('active');
-                }
-            });
-        }
-
-        // 初始化检查
-        handleReveal();
     </script>
 
 </body>
