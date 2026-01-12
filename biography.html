@@ -1,115 +1,311 @@
 <!DOCTYPE html>
+<html lang="zh-CN">
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BIOGRAPHY | ZHANGJIARUI ARTWORKS</title>
+    <title>ZHANG JIARUI | ARTIST</title>
+    <title>BIOGRAPHY | ZHANG JIARUI</title>
     <style>
         body, html {
             margin: 0; padding: 0;
             font-family: "Optima", "Didot", "Helvetica Neue", Helvetica, Arial, sans-serif;
+            background-color: #ffffff; color: #111111;
+            scroll-behavior: smooth;
             background-color: #ffffff; color: #111;
             line-height: 1.6;
             overflow-x: hidden;
         }
 
+        /* 1. 导航栏交互优化 */
+        /* 1. 导航栏 - 保持一致的交互细节 */
         nav {
             position: absolute;
+            top: 0; left: 0; width: 100%;
             top: 0; left: 0; width: 100%; 
             display: flex; justify-content: space-between; align-items: center;
             padding: 50px 5%; box-sizing: border-box;
             z-index: 100;
         }
 
+        .logo {
+            font-size: 20px; font-weight: 300; letter-spacing: 0.6em;
+            text-decoration: none; color: #ffffff; text-transform: uppercase;
         .logo { 
-            font-size: 15px; font-weight: 300; letter-spacing: 0.4em; 
+            font-size: 20px; font-weight: 300; letter-spacing: 0.6em; 
             text-decoration: none; color: #111; text-transform: uppercase; 
             transition: transform 0.3s ease;
         }
+        .logo:active { transform: scale(0.95); } /* 点击缩放感 */
         .logo:active { transform: scale(0.95); }
 
+        .nav-links a {
+            margin-left: 35px; text-decoration: none; color: #ffffff;
+            font-size: 11px; letter-spacing: 0.25em; text-transform: uppercase;
         .nav-links a { 
             margin-left: 35px; text-decoration: none; color: #111; 
             font-size: 11px; letter-spacing: 0.25em; text-transform: uppercase; 
             font-weight: 300; position: relative; padding-bottom: 5px;
+            transition: opacity 0.3s;
+            transition: opacity 0.3s; 
         }
-        
+
+        /* 导航划过底线动画 */
         .nav-links a::after {
             content: ''; position: absolute; bottom: 0; left: 50%;
+            width: 0; height: 1px; background: #fff;
             width: 0; height: 1px; background: #111;
             transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
             transform: translateX(-50%);
         }
         .nav-links a:hover::after { width: 100%; }
 
+        /* 2. 入场加载动画 */
+        /* 2. 容器与布局 */
+        .container { 
+            max-width: 1200px; 
+            margin: 160px auto 40px; 
+            padding: 0 5%; 
+            display: grid; 
+            grid-template-columns: 1fr 1.5fr; 
+            gap: 80px; 
+            animation: fadeInUp 1.2s cubic-bezier(0.15, 1, 0.3, 1) both;
+        }
+
         @keyframes fadeInUp {
             from { opacity: 0; transform: translateY(30px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        .container { 
-            max-width: 1200px; margin: 160px auto 40px; padding: 0 5%; 
-            display: grid; grid-template-columns: 1fr 1.5fr; gap: 80px; 
-            animation: fadeInUp 1.2s cubic-bezier(0.15, 1, 0.3, 1) both;
+        .hero img {
+            width: 100%; height: 100%; object-fit: cover;
+            filter: brightness(0.8); display: block;
+            animation: fadeIn 2s ease;
+        /* 3. 图片悬停微动 */
+        .profile-image-wrapper {
+            width: 100%;
+            background-color: #f7f7f7;
+            aspect-ratio: 3 / 4; 
+            overflow: hidden;
         }
 
-        .profile-image-wrapper { width: 100%; background-color: #f7f7f7; aspect-ratio: 3 / 4; overflow: hidden; }
-        .profile-image-wrapper img { width: 100%; height: 100%; object-fit: cover; transition: transform 2s cubic-bezier(0.15, 1, 0.3, 1); }
-        .profile-image-wrapper:hover img { transform: scale(1.05); }
+        @keyframes fadeIn {
+            from { opacity: 0; } to { opacity: 1; }
+        .profile-image-wrapper img {
+            width: 100%; height: 100%; object-fit: cover; display: block;
+            transition: transform 2s cubic-bezier(0.15, 1, 0.3, 1);
+        }
 
-        .about-text h1 { font-size: 28px; font-weight: 300; letter-spacing: 0.2em; text-transform: uppercase; margin: 0; }
-        .birth-info { font-size: 12px; color: #999; margin: 15px 0 40px; }
+        .content-section {
+            padding: 40px 5%; max-width: 1400px; margin: 0 auto;
+            animation: fadeInUp 1.2s cubic-bezier(0.15, 1, 0.3, 1) both;
+        .profile-image-wrapper:hover img {
+            transform: scale(1.05);
+        }
 
+        .category-title {
+            font-size: 14px; letter-spacing: 0.6em; text-transform: uppercase;
+            margin: 40px 0; font-weight: 400; border-bottom: 1px solid #eee;
+            padding-bottom: 15px;
+        }
+
+        /* 3. 图片视差悬停效果 */
+        .project-image-wrapper {
+            overflow: hidden; margin-bottom: 20px;
+            background-color: #f7f7f7; position: relative;
+        }
+        /* 4. 文本细节优化 */
+        .about-text h1 { font-size: 28px; font-weight: 300; letter-spacing: 0.2em; margin: 0; text-transform: uppercase; }
+        .birth-info { font-size: 12px; color: #999; margin: 15px 0 40px; letter-spacing: 0.1em; }
+
+        .project img {
+            width: 100%; height: 100%; object-fit: cover;
+            display: block; 
+            transition: transform 1.8s cubic-bezier(0.15, 1, 0.3, 1); /* 极长的过渡让它更丝滑 */
+        }
         .statement { font-size: 14px; font-weight: 300; color: #333; text-align: justify; margin-bottom: 60px; }
-        .statement p { margin-bottom: 1.8em; line-height: 2; }
+        .statement p { margin-bottom: 1.8em; line-height: 2; letter-spacing: 0.02em; }
 
+        .project:hover img {
+            transform: scale(1.08); /* 悬停缓慢放大 */
         .cv-section { margin-bottom: 50px; }
-        .cv-section h2 { font-size: 12px; letter-spacing: 0.4em; text-transform: uppercase; border-bottom: 1px solid #eee; padding-bottom: 10px; margin-bottom: 25px; }
-        
-        .cv-item { margin-bottom: 25px; transition: transform 0.4s ease; }
-        .cv-item:hover { transform: translateX(10px); }
-        .cv-year { font-size: 11px; color: #999; }
-        .cv-detail { font-size: 13px; font-weight: 300; }
+        .cv-section h2 { 
+            font-size: 12px; letter-spacing: 0.4em; text-transform: uppercase; 
+            color: #111; border-bottom: 1px solid #eee; padding-bottom: 10px; 
+            margin-bottom: 25px; font-weight: 400; 
+        }
 
+        .grid {
+            display: grid; grid-template-columns: repeat(2, 1fr);
+            gap: 50px 60px; margin-bottom: 80px; 
+        }
+
+        .img-ratio { aspect-ratio: 4 / 5; }
+        .video-ratio { aspect-ratio: 16 / 9; background-color: #000; }
+
+        .project-title {
+            font-size: 15px; font-weight: 300; letter-spacing: 0.15em;
+            text-transform: uppercase; margin-top: 15px;
+            transition: opacity 0.3s;
+        
+        /* CV 条目悬停平移交互 */
+        .cv-item { 
+            margin-bottom: 25px; display: flex; flex-direction: column; gap: 5px; 
+            transition: transform 0.4s ease;
+        }
+        .project:hover .project-title { opacity: 0.6; }
+        .cv-item:hover { transform: translateX(10px); }
+
+        /* Contact Section 优化 */
+        .contact-container {
+            max-width: 1200px; margin: 0 auto;
+            border-top: 1px solid #eee; padding: 60px 0;
+            text-align: center;
+        }
+        .contact-row {
+            display: flex; justify-content: center; align-items: center; gap: 30px;
+        }
+        .contact-value {
+            font-size: 14px; font-weight: 300; text-decoration: none; color: #111;
+            padding-bottom: 2px; border-bottom: 1px solid transparent;
+            transition: border-color 0.3s;
+        }
+        .contact-value:hover { border-color: #111; }
+        .cv-year { font-size: 11px; color: #999; letter-spacing: 0.1em; }
+        .cv-detail { font-size: 13px; font-weight: 300; color: #111; }
+
+        footer { padding: 40px; text-align: center; font-size: 9px; letter-spacing: 0.4em; color: #bbb; text-transform: uppercase; }
         footer { padding: 80px 5% 40px; text-align: center; font-size: 9px; letter-spacing: 0.4em; color: #bbb; text-transform: uppercase; }
 
+        @media (max-width: 768px) {
+            .grid { grid-template-columns: 1fr; }
         @media (max-width: 900px) {
-            .container { grid-template-columns: 1fr; gap: 40px; }
+            .container { grid-template-columns: 1fr; gap: 40px; margin-top: 120px; }
+            nav { padding: 30px 5%; }
             .nav-links { display: none; }
-            .logo { font-size: 13px; letter-spacing: 0.3em; }
+            .hero { height: 70vh; }
         }
     </style>
 </head>
-<body>
+@@ -132,77 +115,66 @@
     <nav>
-        <a href="index.html" class="logo">ZHANGJIARUI ARTWORKS</a>
+        <a href="index.html" class="logo">ZHANG JIARUI</a>
         <div class="nav-links">
+            <a href="#eco-art">Ecological Art</a>
+            <a href="#sculpture">Sculpture</a>
+            <a href="#projects">Projects</a>
             <a href="index.html#eco-art">Ecological Art</a>
             <a href="index.html#sculpture">Sculpture</a>
             <a href="index.html#projects">Projects</a>
             <a href="biography.html">BIOGRAPHY</a>
+            <a href="#contact">Contact</a>
             <a href="index.html#contact">Contact</a>
         </div>
     </nav>
 
+    <section class="hero">
+        <img src="images/Cover.JPG" alt="Zhang Jiarui Art" onerror="this.src='images/cover.jpg';">
+    </section>
+
+    <div class="content-section" id="eco-art">
+        <h2 class="category-title">Ecological Art</h2>
+        <div class="grid">
+            <div class="project">
+                <div class="project-image-wrapper video-ratio">
+                    <iframe width="100%" height="100%" src="https://www.youtube.com/embed/9rCY3guNSRg?rel=0" frameborder="0" allowfullscreen style="position: absolute; top: 0; left: 0;"></iframe>
+                </div>
+                <div class="project-title">Ice Burial</div>
+                <div class="project-meta">Performance art / 2025 / China Southsea</div>
+            </div>
+            <div class="project">
+                <div class="project-image-wrapper video-ratio">
+                    <iframe width="100%" height="100%" src="https://www.youtube.com/embed/lfMcm-Hn3S4?rel=0" frameborder="0" allowfullscreen style="position: absolute; top: 0; left: 0;"></iframe>
+                </div>
+                <div class="project-title">4.5 Tons</div>
+                <div class="project-meta">Installation / 2024 / Inner Mongolia</div>
+            </div>
     <div class="container">
         <div class="profile-image-wrapper">
-            <img src="profile.jpg" alt="Zhang Jiarui" onerror="if (this.src.indexOf('profile.jpg') !== -1) this.src='profile.JPG';">
+            <img src="profile.jpg" alt="Zhang Jiarui" 
+                 onerror="if (this.src.indexOf('profile.jpg') !== -1) this.src='profile.JPG';">
         </div>
+    </div>
+
+    <div class="content-section" id="sculpture">
+        <h2 class="category-title">Sculpture</h2>
+        <div class="grid">
+            <div class="project">
+                <div class="project-image-wrapper img-ratio">
+                    <img src="images/Work2.jpg" alt="Work 2" onerror="this.src='images/work2.jpg'">
+                </div>
+                <div class="project-title">Sculpture Installation</div>
+                <div class="project-meta">Material / Year</div>
         <div class="about-text">
             <h1>Zhang Jiarui</h1>
             <div class="birth-info">b. 1990</div>
+
             <div class="statement">
-                <p>Zhang Jiarui's artistic creation revolves around two intertwined paths: "the contemporary transformation of traditional art" and "the on-site practice of ecological art."</p>
-                <p>His works represent both a regenerative experiment of traditional aesthetics and a critical intervention in the contemporary ecological context.</p>
-            </div>
-            <div class="cv-section">
-                <h2>Education</h2>
-                <div class="cv-item"><div class="cv-year">2025 - Present</div><div class="cv-detail">Central Academy of Fine Arts (CAFA), Ph.D</div></div>
-                <div class="cv-item"><div class="cv-year">2017 - 2020</div><div class="cv-detail">Central Academy of Fine Arts (CAFA), MFA</div></div>
+                <p>Zhang Jiarui's artistic creation revolves around two intertwined paths: "the contemporary transformation of traditional art" and "the on-site practice of ecological art." These two paths form a profound intertextuality in both creative logic and methodology, serving as the core pillars of his continuous artistic research.</p>
+                <p>His works represent both a regenerative experiment of traditional aesthetics and a critical intervention in the contemporary ecological context. They address a fundamental inquiry: how art can function as a bridge connecting tradition with the future, humanity with nature, and sensibility with ethics amidst global ecological crises and cultural shifts.</p>
             </div>
         </div>
     </div>
-    <footer>&copy; 2026 ZHANGJIARUI ARTWORKS.</footer>
+
+    <div class="content-section" id="projects">
+        <h2 class="category-title">Projects</h2>
+        <div class="grid">
+            <div class="project">
+                <div class="project-image-wrapper video-ratio">
+                    <iframe width="100%" height="100%" src="https://www.youtube.com/embed/OEZ3FvOwdjI?rel=0" frameborder="0" allowfullscreen style="position: absolute; top: 0; left: 0;"></iframe>
+            <div class="cv-section">
+                <h2>Education</h2>
+                <div class="cv-item">
+                    <div class="cv-year">2025 - Present</div>
+                    <div class="cv-detail">Central Academy of Fine Arts (CAFA), Ph.D</div>
+                </div>
+                <div class="cv-item">
+                    <div class="cv-year">2017 - 2020</div>
+                    <div class="cv-detail">Central Academy of Fine Arts (CAFA), MFA — Sculpture</div>
+                </div>
+                <div class="cv-item">
+                    <div class="cv-year">2010 - 2015</div>
+                    <div class="cv-detail">Central Academy of Fine Arts (CAFA), BFA — Sculpture</div>
+                </div>
+                <div class="cv-item">
+                    <div class="cv-year">2006 - 2010</div>
+                    <div class="cv-detail">Affiliated High School of Central Academy of Fine Arts</div>
+                </div>
+                <div class="project-title">Coral Planting Project</div>
+                <div class="project-meta">Documentary / 2026 / Xisha Islands</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="contact-section" id="contact">
+        <div class="contact-container">
+            <div class="contact-row">
+                <a href="mailto:jerryzhang_arts@qq.com" class="contact-value">jerryzhang_arts@qq.com</a>
+                <span style="color:#eee">·</span>
+                <span class="contact-value">WeChat: zjr5556699</span>
+                <span style="color:#eee">·</span>
+                <a href="tel:+8615117988382" class="contact-value">(+86) 151 1798 8382</a>
+            <div class="cv-section">
+                <h2>Selected Exhibitions</h2>
+                <div class="cv-item">
+                    <div class="cv-year">2025</div>
+                    <div class="cv-detail">Annual Contemporary Art Exhibition, Beijing</div>
+                </div>
+                <div class="cv-item">
+                    <div class="cv-year">2024</div>
+                    <div class="cv-detail">Ecological Art Residency Exhibition, Inner Mongolia</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>&copy; 2026 ZHANG JIARUI ART STUDIO.</footer>
+    <footer>
+        &copy; 2026 ZHANG JIARUI ART STUDIO.
+    </footer>
+
 </body>
-</html>
