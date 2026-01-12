@@ -3,79 +3,294 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SERIES 1 | ZHANG JIARUI</title>
+    <title>ZHANG JIARUI | ARTIST</title>
     <style>
         body, html {
             margin: 0; padding: 0;
             font-family: "Optima", "Didot", "Helvetica Neue", Helvetica, Arial, sans-serif;
             background-color: #ffffff; color: #111111;
+            scroll-behavior: smooth;
+            overflow-x: hidden;
         }
+
+        /* --- 1. 导航栏 --- */
         nav {
-            position: fixed; top: 0; left: 0; width: 100%;
+            position: fixed;
+            top: 0; left: 0; width: 100%;
             display: flex; justify-content: space-between; align-items: center;
-            padding: 15px 5%; box-sizing: border-box; z-index: 1000;
-            background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(15px);
+            padding: 30px 5%; 
+            box-sizing: border-box;
+            z-index: 1000;
+            transition: all 0.5s cubic-bezier(0.2, 1, 0.3, 1);
+        }
+
+        .nav-scrolled {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            padding: 15px 5%;
             border-bottom: 1px solid rgba(0,0,0,0.05);
         }
-        .logo { font-size: 18px; font-weight: 300; letter-spacing: 0.5em; text-decoration: none; color: #111; text-transform: uppercase; }
-        .nav-links a { margin-left: 35px; text-decoration: none; color: #111; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; font-weight: 300; }
-        
-        .content-section { padding: 120px 5% 40px; max-width: 1400px; margin: 0 auto; }
-        .detail-header { margin-bottom: 60px; border-bottom: 1px solid #f0f0f0; padding-bottom: 20px; }
-        .series-title { font-size: 24px; font-weight: 300; letter-spacing: 0.2em; text-transform: uppercase; }
-        .series-desc { font-size: 12px; color: #888; margin-top: 10px; letter-spacing: 0.05em; line-height: 1.8; max-width: 800px; }
 
-        /* 图片列表：大图展示细节 */
-        .image-list { display: flex; flex-direction: column; gap: 40px; }
-        .image-item img { width: 100%; height: auto; display: block; }
-        .image-caption { font-size: 10px; color: #aaa; margin-top: 10px; text-transform: uppercase; letter-spacing: 0.1em; }
+        .logo {
+            font-size: 18px; font-weight: 300; letter-spacing: 0.5em;
+            text-decoration: none; color: #ffffff; text-transform: uppercase;
+            transition: color 0.4s ease;
+        }
 
-        .back-link { display: inline-block; margin-top: 60px; font-size: 10px; color: #111; text-decoration: none; border-bottom: 1px solid #111; padding-bottom: 2px; text-transform: uppercase; letter-spacing: 0.2em; }
-        
-        footer { padding: 60px 5%; text-align: center; font-size: 9px; letter-spacing: 0.4em; color: #ccc; text-transform: uppercase; }
+        .nav-scrolled .logo, .nav-scrolled .nav-links a {
+            color: #111111;
+        }
+
+        .nav-links a {
+            margin-left: 35px; text-decoration: none; color: #ffffff;
+            font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase;
+            font-weight: 300; position: relative; padding-bottom: 5px;
+            transition: color 0.4s ease;
+        }
+
+        .nav-links a::after {
+            content: ''; position: absolute; bottom: 0; left: 50%;
+            width: 0; height: 1px; background: currentColor;
+            transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+            transform: translateX(-50%);
+        }
+        .nav-links a:hover::after { width: 100%; }
+
+        /* --- 2. 动画 --- */
+        @keyframes heroZoom {
+            from { transform: scale(1.1); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .hero {
+            height: 100vh; width: 100%; overflow: hidden;
+            position: relative; background-color: #000;
+        }
+
+        .hero img {
+            width: 100%; height: 100%; object-fit: cover;
+            filter: brightness(0.85); display: block;
+            animation: heroZoom 2.5s cubic-bezier(0.15, 1, 0.3, 1) forwards;
+        }
+
+        .hero::after {
+            content: 'SCROLL';
+            position: absolute; bottom: 30px; left: 50%;
+            transform: translateX(-50%);
+            color: #fff; font-size: 9px; letter-spacing: 0.5em;
+            opacity: 0.4; font-weight: 300;
+        }
+
+        .content-section {
+            padding: 80px 5% 20px; 
+            max-width: 1400px; margin: 0 auto;
+            animation: fadeInUp 1.2s cubic-bezier(0.15, 1, 0.3, 1) both;
+        }
+
+        .category-title {
+            font-size: 13px; letter-spacing: 0.5em; text-transform: uppercase;
+            margin-bottom: 25px; 
+            font-weight: 400; 
+            border-bottom: 1px solid #f0f0f0; padding-bottom: 15px;
+            color: #111;
+        }
+
+        .grid {
+            display: grid; grid-template-columns: repeat(2, 1fr);
+            gap: 20px 60px; 
+            margin-bottom: 30px; 
+        }
+
+        .project { text-decoration: none; color: inherit; display: block; }
+
+        .project-image-wrapper {
+            overflow: hidden; margin-bottom: 20px; 
+            background-color: #fcfcfc; position: relative;
+        }
+
+        .img-ratio { aspect-ratio: 4 / 5; }
+        .video-ratio { aspect-ratio: 16 / 9; background-color: #000; }
+
+        .project img {
+            width: 100%; height: 100%; object-fit: cover;
+            transition: transform 1.8s cubic-bezier(0.15, 1, 0.3, 1);
+        }
+        .project:hover img { transform: scale(1.05); }
+
+        .project-title {
+            font-size: 14px; font-weight: 400; letter-spacing: 0.1em;
+            text-transform: uppercase; margin-top: 5px;
+        }
+
+        .project-meta {
+            font-size: 10px; color: #aaa; margin-top: 4px;
+            letter-spacing: 0.05em; text-transform: uppercase;
+            line-height: 1.4;
+        }
+
+        /* --- 4. 联系与页脚 --- */
+        .contact-section { padding: 80px 5% 40px; background-color: #fff; }
+        .contact-container { max-width: 1100px; margin: 0 auto; text-align: center; }
+        .contact-row { display: flex; justify-content: center; gap: 40px; flex-wrap: wrap; }
+        .contact-label { font-size: 9px; color: #bbb; text-transform: uppercase; display: block; margin-bottom: 5px; letter-spacing: 0.2em; }
+        .contact-value { font-size: 13px; color: #111; text-decoration: none; padding-bottom: 2px; border-bottom: 1px solid transparent; transition: all 0.3s; }
+        .contact-value:hover { border-bottom: 1px solid #111; opacity: 0.7; }
+        .divider { color: #eee; align-self: center; font-weight: 100; }
+
+        footer {
+            padding: 60px 5% 40px; text-align: center; border-top: 1px solid #f9f9f9;
+            font-size: 9px; letter-spacing: 0.4em; color: #ccc; text-transform: uppercase;
+        }
+
+        @media (max-width: 900px) {
+            .grid { grid-template-columns: 1fr; gap: 25px; }
+            .nav-links { display: none; }
+            .logo { font-size: 14px; letter-spacing: 0.3em; }
+        }
     </style>
 </head>
 <body>
 
-    <nav>
+    <nav id="navbar">
         <a href="index.html" class="logo">ZHANGJIARUI ARTWORKS</a>
         <div class="nav-links">
-            <a href="index.html">Back to Home</a>
+            <a href="#eco-art">Ecological Art</a>
+            <a href="#sculpture">Sculpture</a>
+            <a href="#projects">Projects</a>
+            <a href="biography.html">BIOGRAPHY</a>
+            <a href="#contact">Contact</a>
         </div>
     </nav>
 
-    <div class="content-section">
-        <div class="detail-header">
-            <h1 class="series-title">Series 1: Project Name</h1>
-            <p class="series-desc">
-                这里可以填写该系列的创作理念。Material: Bronze, Glass / Year: 2024. <br>
-                Description: Deep exploration of ecological structures and sculptural forms.
-            </p>
-        </div>
+    <section class="hero">
+        <img src="images/Cover.JPG" alt="Zhang Jiarui Art" onerror="this.src='images/cover.jpg';">
+    </section>
 
-       <div class="image-list">
-    <div class="image-item">
-        <img src="images/sculpture_s1_detail_01.jpg" alt="Detail 01" onerror="this.src='images/Work2.jpg'">
-        <div class="image-caption">Overall View</div>
-    </div>
-    
-    <div class="image-item">
-        <img src="images/sculpture_s1_detail_02.jpg" alt="Detail 02" onerror="this.src='images/Work2.jpg'">
-        <div class="image-caption">Material Texture</div>
-    </div>
-</div>
-            <div class="image-item">
-                <img src="images/Series1_Detail3.jpg" alt="Detail 3" onerror="this.src='images/Work2.jpg'">
-                <div class="image-caption">Perspective View</div>
+    <div class="content-section" id="eco-art">
+        <h2 class="category-title">Ecological Art</h2>
+        <div class="grid">
+            <div class="project">
+                <div class="project-image-wrapper video-ratio">
+                    <iframe width="100%" height="100%" src="https://www.youtube.com/embed/9rCY3guNSRg?rel=0" frameborder="0" allowfullscreen style="position: absolute; top: 0; left: 0; border: none;"></iframe>
+                </div>
+                <div class="project-info">
+                    <div class="project-title">Ice Burial</div>
+                    <div class="project-meta">Performance art / 2025 / China Southsea</div>
+                </div>
+            </div>
+            <div class="project">
+                <div class="project-image-wrapper video-ratio">
+                    <iframe width="100%" height="100%" src="https://www.youtube.com/embed/lfMcm-Hn3S4?rel=0" frameborder="0" allowfullscreen style="position: absolute; top: 0; left: 0; border: none;"></iframe>
+                </div>
+                <div class="project-info">
+                    <div class="project-title">4.5 Tons</div>
+                    <div class="project-meta">Installation / In Collaboration with Betta Liu / 2024 / Inner Mongolia</div>
+                </div>
             </div>
         </div>
+    </div>
 
-        <a href="index.html#sculpture" class="back-link">Back to Gallery</a>
+    <div class="content-section" id="sculpture">
+        <h2 class="category-title">Sculpture</h2>
+        <div style="display: flex; flex-wrap: wrap; gap: 40px 60px;">
+            
+            <div style="flex: 1; min-width: 300px;">
+                <h3 style="font-size: 11px; letter-spacing: 0.3em; text-transform: uppercase; color: #888; margin: 20px 0 20px 0; font-weight: 300;">Series 1</h3>
+                <a href="series1.html" class="project">
+                    <div class="project-image-wrapper img-ratio">
+                        <img src="images/sculpture_s1_cover.jpg" alt="Series 1" onerror="this.src='images/Work2.jpg'">
+                    </div>
+                    <div class="project-info">
+                        <div class="project-title">Project Title (View Details)</div>
+                        <div class="project-meta">Material / Year</div>
+                    </div>
+                </a>
+            </div>
+
+            <div style="flex: 1; min-width: 300px;">
+                <h3 style="font-size: 11px; letter-spacing: 0.3em; text-transform: uppercase; color: #888; margin: 20px 0 20px 0; font-weight: 300;">Series 2</h3>
+                <a href="series2.html" class="project">
+                    <div class="project-image-wrapper img-ratio">
+                        <img src="images/sculpture_s2_cover.jpg" alt="Series 2" onerror="this.src='images/Work2.jpg'">
+                    </div>
+                    <div class="project-info">
+                        <div class="project-title">Project Title</div>
+                        <div class="project-meta">Material / Year</div>
+                    </div>
+                </a>
+            </div>
+
+            <div style="flex: 1; min-width: 300px;">
+                <h3 style="font-size: 11px; letter-spacing: 0.3em; text-transform: uppercase; color: #888; margin: 20px 0 20px 0; font-weight: 300;">Series 3</h3>
+                <a href="series3.html" class="project">
+                    <div class="project-image-wrapper img-ratio">
+                        <img src="images/sculpture_s3_cover.jpg" alt="Series 3" onerror="this.src='images/Work2.jpg'">
+                    </div>
+                    <div class="project-info">
+                        <div class="project-title">Project Title</div>
+                        <div class="project-meta">Material / Year</div>
+                    </div>
+                </a>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="content-section" id="projects">
+        <h2 class="category-title">Projects</h2>
+        <div class="grid">
+            <div class="project">
+                <div class="project-image-wrapper video-ratio">
+                    <iframe width="100%" height="100%" src="https://www.youtube.com/embed/OEZ3FvOwdjI?rel=0" frameborder="0" allowfullscreen style="position: absolute; top: 0; left: 0; border: none;"></iframe>
+                </div>
+                <div class="project-info">
+                    <div class="project-title">Coral Planting Project</div>
+                    <div class="project-meta">Documentary / 2025 / Xisha Islands</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="contact-section" id="contact">
+        <div class="contact-container">
+            <div class="contact-row">
+                <div class="contact-item">
+                    <span class="contact-label">Email</span>
+                    <a href="mailto:jerryzhang_arts@qq.com" class="contact-value">jerryzhang_arts@qq.com</a>
+                </div>
+                <span class="divider">/</span>
+                <div class="contact-item">
+                    <span class="contact-label">WeChat</span>
+                    <span class="contact-value">zjr5556699</span>
+                </div>
+                <span class="divider">/</span>
+                <div class="contact-item">
+                    <span class="contact-label">Phone</span>
+                    <a href="tel:+8615117988382" class="contact-value">(+86) 151 1798 8382</a>
+                </div>
+            </div>
+        </div>
     </div>
 
     <footer>
         &copy; 2026 ZHANGJIARUI ARTWORKS.
     </footer>
 
+    <script>
+        window.onscroll = function() {
+            var nav = document.getElementById('navbar');
+            if (window.pageYOffset > 100) {
+                nav.classList.add("nav-scrolled");
+            } else {
+                nav.classList.remove("nav-scrolled");
+            }
+        };
+    </script>
 </body>
 </html>
