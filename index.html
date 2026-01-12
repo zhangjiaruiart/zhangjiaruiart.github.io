@@ -1,13 +1,6 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BIOGRAPHY | ZHANG JIARUI</title>
-    <style>
-        body, html {<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ZHANG JIARUI | ARTIST</title>
@@ -138,6 +131,7 @@
             text-transform: uppercase;
         }
 
+        /* --- 优化后的 Contact 样式 --- */
         .contact-section {
             padding: 60px 5%;
             background-color: #ffffff;
@@ -147,6 +141,7 @@
         .contact-container {
             max-width: 1200px;
             margin: 0 auto;
+            border-top: 1px solid #eee; /* 增加顶部分割线 */
             border-top: 1px solid #eee; 
             padding-top: 40px;
         }
@@ -198,6 +193,8 @@
             .grid { grid-template-columns: 1fr; gap: 40px; }
             .hero { height: 75vh; }
             .nav-links { display: none; }
+            
+            /* 手机端紧凑三行 */
             .contact-row { flex-direction: column; gap: 15px; align-items: flex-start; padding-left: 5%; }
             .divider { display: none; }
             .contact-item { gap: 15px; }
@@ -213,7 +210,6 @@
             <a href="#sculpture">Sculpture</a>
             <a href="#projects">Projects</a>
             <a href="about.html">About</a>
-            <a href="biography.html">BIOGRAPHY</a>
             <a href="#contact">Contact</a>
         </div>
     </nav>
@@ -266,8 +262,8 @@
         <div class="grid">
             <div class="project">
                 <div class="project-image-wrapper video-ratio">
+                    <iframe width="100%" height="100%" src="https://www.youtube.com/embed/OEZ3FvOWDjI?rel=0" frameborder="0" allowfullscreen style="position: absolute; top: 0; left: 0;"></iframe>
                     <iframe width="100%" height="100%" src="https://www.youtube.com/embed/OEZ3FvOwdjI?rel=0&enablejsapi=1" frameborder="0" allowfullscreen style="position: absolute; top: 0; left: 0;"></iframe>
-                    <iframe width="100%" height="100%" src="https://www.youtube.com/embed/OEZ3FvOwdjI?rel=0" frameborder="0" allowfullscreen style="position: absolute; top: 0; left: 0;"></iframe>
                 </div>
                 <div class="project-info">
                     <div class="project-title">Coral Planting Project</div>
@@ -284,12 +280,16 @@
                     <span class="contact-label">Email</span>
                     <a href="mailto:jerryzhang_arts@qq.com" class="contact-value">jerryzhang_arts@qq.com</a>
                 </div>
+                
                 <span class="divider">·</span>
+
                 <div class="contact-item">
                     <span class="contact-label">WeChat</span>
                     <span class="contact-value">zjr5556699</span>
                 </div>
+
                 <span class="divider">·</span>
+
                 <div class="contact-item">
                     <span class="contact-label">Phone</span>
                     <a href="tel:+8615117988382" class="contact-value">(+86) 151 1798 8382</a>
@@ -303,152 +303,3 @@
     </footer>
 
 </body>
-</html>
-            margin: 0; padding: 0;
-            font-family: "Optima", "Didot", "Helvetica Neue", Helvetica, Arial, sans-serif;
-            background-color: #ffffff; color: #111111;
-        }
-
-        /* 导航栏 - 黑色字体版本 */
-        nav {
-            width: 100%; display: flex; justify-content: space-between; align-items: center;
-            padding: 50px 5%; box-sizing: border-box;
-        }
-        .logo { font-size: 20px; font-weight: 300; letter-spacing: 0.6em; text-decoration: none; color: #111; text-transform: uppercase; }
-        .nav-links a { margin-left: 35px; text-decoration: none; color: #111; font-size: 11px; letter-spacing: 0.25em; text-transform: uppercase; font-weight: 300; transition: opacity 0.3s; }
-        .nav-links a:hover { opacity: 0.6; }
-
-        .container { max-width: 1200px; margin: 40px auto; padding: 0 5%; }
-
-        /* 顶部个人图文区域 */
-        .profile-grid {
-            display: grid;
-            grid-template-columns: 1fr 1.2fr; /* 左图右文 */
-            gap: 80px;
-            margin-bottom: 100px;
-            align-items: flex-start;
-        }
-
-        .profile-image img {
-            width: 100%;
-            height: auto;
-            display: block;
-            filter: grayscale(20%); /* 略微去色，增加艺术感 */
-        }
-
-        .bio-text {
-            font-size: 15px;
-            font-weight: 300;
-            line-height: 2;
-            letter-spacing: 0.02em;
-            text-align: justify;
-        }
-
-        /* 履历与教育版块 */
-        .cv-section {
-            margin-bottom: 80px;
-        }
-
-        .section-title {
-            font-size: 13px;
-            letter-spacing: 0.5em;
-            text-transform: uppercase;
-            color: #111;
-            margin-bottom: 40px;
-            border-bottom: 1px solid #eee;
-            padding-bottom: 15px;
-            font-weight: 400;
-        }
-
-        .cv-item {
-            display: flex;
-            margin-bottom: 25px;
-            font-size: 14px;
-            font-weight: 300;
-        }
-
-        .cv-year { width: 100px; flex-shrink: 0; color: #999; }
-        .cv-content { color: #333; }
-
-        footer {
-            padding: 100px 5% 40px;
-            text-align: center;
-            font-size: 9px;
-            letter-spacing: 0.4em;
-            color: #bbb;
-            text-transform: uppercase;
-        }
-
-        @media (max-width: 768px) {
-            .profile-grid { grid-template-columns: 1fr; gap: 40px; }
-            nav { flex-direction: column; gap: 20px; padding: 30px 5%; }
-            .nav-links { margin-left: 0; }
-            .nav-links a { margin: 0 10px; font-size: 10px; }
-            .cv-year { width: 70px; }
-        }
-    </style>
-</head>
-<body>
-
-    <nav>
-        <a href="index.html" class="logo">ZHANG JIARUI</a>
-        <div class="nav-links">
-            <a href="index.html#eco-art">Ecological Art</a>
-            <a href="index.html#sculpture">Sculpture</a>
-            <a href="index.html#projects">Projects</a>
-            <a href="biography.html">BIOGRAPHY</a>
-            <a href="index.html#contact">Contact</a>
-        </div>
-    </nav>
-
-    <div class="container">
-        <div class="profile-grid">
-            <div class="profile-image">
-                <img src="images/profile.jpg" alt="Zhang Jiarui" onerror="this.src='https://via.placeholder.com/800x1000?text=Artist+Portrait';">
-            </div>
-            <div class="bio-text">
-                <h2 class="section-title" style="border:none; margin-bottom: 20px; padding:0;">Artist Statement</h2>
-                <p>Zhang Jiarui is a contemporary artist based in China, whose practice spans sculpture, installation, and performance art. His work is deeply rooted in the concept of "Ecological Ethics," exploring how human intervention reshapes the natural landscape.</p>
-                <p>By using materials sourced directly from the environment and executing site-specific projects in remote areas—from the inner Mongolian plains to the coral reefs of the South China Sea—his work serves as a bridge between industrial civilization and ecological preservation. He believes that art is not just a visual object, but a meditative process that prompts viewers to reconsider their footprint on Earth.</p>
-            </div>
-        </div>
-
-        <div class="cv-section">
-            <h2 class="section-title">Education</h2>
-            <div class="cv-item">
-                <span class="cv-year">2018 - 2022</span>
-                <span class="cv-content">Bachelor of Fine Arts (Sculpture), [Your University Name], China</span>
-            </div>
-            <div class="cv-item">
-                <span class="cv-year">2022 - 2024</span>
-                <span class="cv-content">Master of Fine Arts (Public Art), [Your Graduate School Name]</span>
-            </div>
-        </div>
-
-        <div class="cv-section">
-            <h2 class="section-title">Selected Exhibitions</h2>
-            <div class="cv-item">
-                <span class="cv-year">2026</span>
-                <span class="cv-content">Coral Planting Project (Solo), Xisha Islands, China</span>
-            </div>
-            <div class="cv-item">
-                <span class="cv-year">2025</span>
-                <span class="cv-content">"Ice Burial" Performance, South China Sea</span>
-            </div>
-            <div class="cv-item">
-                <span class="cv-year">2024</span>
-                <span class="cv-content">"4.5 Tons" Collaborative Installation, Inner Mongolia</span>
-            </div>
-            <div class="cv-item">
-                <span class="cv-year">2023</span>
-                <span class="cv-content">Young Artist Group Exhibition, [Gallery Name], Shanghai</span>
-            </div>
-        </div>
-    </div>
-
-    <footer>
-        &copy; 2026 ZHANG JIARUI ART STUDIO.
-    </footer>
-
-</body>
-</html>
