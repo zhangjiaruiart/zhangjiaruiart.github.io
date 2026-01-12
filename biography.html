@@ -22,10 +22,33 @@
 
         .container { max-width: 1200px; margin: 40px auto; padding: 0 5%; display: grid; grid-template-columns: 1fr 1.5fr; gap: 80px; }
 
-        /* 左侧照片 */
-        .profile-image img { width: 100%; height: auto; display: block; }
+        /* 图片区域 - 已适配根目录路径 */
+        .profile-image-wrapper {
+            width: 100%;
+            background-color: #f7f7f7;
+            aspect-ratio: 3 / 4; 
+            overflow: hidden;
+            position: relative;
+        }
 
-        /* 右侧信息 */
+        .profile-image-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .profile-image-wrapper::after {
+            content: "ZHANG JIARUI";
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 10px;
+            letter-spacing: 0.5em;
+            color: #ddd;
+            z-index: 0;
+        }
+
         .about-text h1 { font-size: 28px; font-weight: 300; letter-spacing: 0.2em; margin: 0; line-height: 1.2; }
         .birth-info { font-size: 12px; color: #999; margin: 15px 0 40px; letter-spacing: 0.1em; }
 
@@ -63,8 +86,8 @@
     </nav>
 
     <div class="container">
-        <div class="profile-image">
-            <img src="images/profile.jpg" alt="Zhang Jiarui" onerror="this.src='https://via.placeholder.com/800x1000?text=Artist+Portrait';">
+        <div class="profile-image-wrapper">
+            <img src="profile.jpg" alt="Zhang Jiarui">
         </div>
 
         <div class="about-text">
@@ -76,31 +99,27 @@
                 <p>张家瑞的艺术创作始终围绕两条相互交织的路径展开：一是“传统艺术的当代转化”，二是“生态艺术的现场实践”。这两条路径既有相对独立的探索方向，又在创作逻辑与方法论上形成互文，成为我持续艺术研究的重要支点。</p>
                 <p>其作品既是对中国传统美学的再生实验，也是对当代生态语境的介入实践。两者在深层逻辑上指向同一个问题：如何在全球生态危机与文化断裂的当下，使艺术重新成为连接传统与未来、人与自然、感性与伦理的桥梁。</p>
                 <hr style="border:none; border-top:1px solid #f9f9f9; margin: 30px 0;">
-                <p>Zhang Jiarui's artistic creation has always revolved around two intertwined paths: one is "the contemporary transformation of traditional art," and the other is "the on-site practice of ecological art." These two paths form an intertextuality in creative logic and methodology.</p>
-                <p>His works are both a regeneration experiment of traditional Chinese aesthetics and an intervention in the contemporary ecological context, pointing to how art can become a bridge connecting tradition and the future, humanity and nature.</p>
+                <p>Zhang Jiarui's artistic creation revolves around two intertwined paths: "the contemporary transformation of traditional art" and "the on-site practice of ecological art." These paths form an intertextuality in creative logic and methodology.</p>
+                <p>His works are both a regeneration experiment of traditional Chinese aesthetics and an intervention in the contemporary ecological context, exploring how art can bridge tradition and the future, humanity and nature.</p>
             </div>
 
             <div class="cv-section">
                 <h2>Education</h2>
-                
                 <div class="cv-item">
                     <div class="cv-year">2025 - Now</div>
                     <div class="cv-detail">中央美术学院，博士 (Ph.D.)</div>
                     <div class="cv-detail">Central Academy of Fine Arts, Ph.D</div>
                 </div>
-
                 <div class="cv-item">
                     <div class="cv-year">2017 - 2020</div>
                     <div class="cv-detail">中央美术学院，硕士 (M.F.A.) — 雕塑</div>
                     <div class="cv-detail">Central Academy of Fine Arts, MFA — Sculpture</div>
                 </div>
-
                 <div class="cv-item">
                     <div class="cv-year">2010 - 2015</div>
                     <div class="cv-detail">中央美术学院，学士 (B.F.A.) — 雕塑</div>
                     <div class="cv-detail">Central Academy of Fine Arts, BFA — Sculpture</div>
                 </div>
-
                 <div class="cv-item">
                     <div class="cv-year">2006 - 2010</div>
                     <div class="cv-detail">中央美术学院附中</div>
@@ -115,7 +134,7 @@
                     <div class="cv-detail">当代艺术年度展，北京</div>
                     <div class="cv-detail">Annual Contemporary Art Exhibition, Beijing</div>
                 </div>
-                </div>
+            </div>
         </div>
     </div>
 
