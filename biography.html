@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BIOGRAPHY | ZHANG JIARUI</title>
+    <title>BIOGRAPHY | ZHANGJIARUI ARTWORKS</title>
     <style>
         body, html {
             margin: 0; padding: 0;
@@ -13,7 +13,6 @@
             overflow-x: hidden;
         }
 
-        /* 1. 导航栏 - 保持一致的交互细节 */
         nav {
             position: absolute;
             top: 0; left: 0; width: 100%; 
@@ -23,7 +22,7 @@
         }
 
         .logo { 
-            font-size: 20px; font-weight: 300; letter-spacing: 0.6em; 
+            font-size: 15px; font-weight: 300; letter-spacing: 0.4em; 
             text-decoration: none; color: #111; text-transform: uppercase; 
             transition: transform 0.3s ease;
         }
@@ -33,10 +32,8 @@
             margin-left: 35px; text-decoration: none; color: #111; 
             font-size: 11px; letter-spacing: 0.25em; text-transform: uppercase; 
             font-weight: 300; position: relative; padding-bottom: 5px;
-            transition: opacity 0.3s; 
         }
         
-        /* 导航划过底线动画 */
         .nav-links a::after {
             content: ''; position: absolute; bottom: 0; left: 50%;
             width: 0; height: 1px; background: #111;
@@ -45,75 +42,47 @@
         }
         .nav-links a:hover::after { width: 100%; }
 
-        /* 2. 容器与布局 */
-        .container { 
-            max-width: 1200px; 
-            margin: 160px auto 40px; 
-            padding: 0 5%; 
-            display: grid; 
-            grid-template-columns: 1fr 1.5fr; 
-            gap: 80px; 
-            animation: fadeInUp 1.2s cubic-bezier(0.15, 1, 0.3, 1) both;
-        }
-
         @keyframes fadeInUp {
             from { opacity: 0; transform: translateY(30px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* 3. 图片悬停微动 */
-        .profile-image-wrapper {
-            width: 100%;
-            background-color: #f7f7f7;
-            aspect-ratio: 3 / 4; 
-            overflow: hidden;
+        .container { 
+            max-width: 1200px; margin: 160px auto 40px; padding: 0 5%; 
+            display: grid; grid-template-columns: 1fr 1.5fr; gap: 80px; 
+            animation: fadeInUp 1.2s cubic-bezier(0.15, 1, 0.3, 1) both;
         }
 
-        .profile-image-wrapper img {
-            width: 100%; height: 100%; object-fit: cover; display: block;
-            transition: transform 2s cubic-bezier(0.15, 1, 0.3, 1);
-        }
-        .profile-image-wrapper:hover img {
-            transform: scale(1.05);
-        }
+        .profile-image-wrapper { width: 100%; background-color: #f7f7f7; aspect-ratio: 3 / 4; overflow: hidden; }
+        .profile-image-wrapper img { width: 100%; height: 100%; object-fit: cover; transition: transform 2s cubic-bezier(0.15, 1, 0.3, 1); }
+        .profile-image-wrapper:hover img { transform: scale(1.05); }
 
-        /* 4. 文本细节优化 */
-        .about-text h1 { font-size: 28px; font-weight: 300; letter-spacing: 0.2em; margin: 0; text-transform: uppercase; }
-        .birth-info { font-size: 12px; color: #999; margin: 15px 0 40px; letter-spacing: 0.1em; }
+        .about-text h1 { font-size: 28px; font-weight: 300; letter-spacing: 0.2em; text-transform: uppercase; margin: 0; }
+        .birth-info { font-size: 12px; color: #999; margin: 15px 0 40px; }
 
         .statement { font-size: 14px; font-weight: 300; color: #333; text-align: justify; margin-bottom: 60px; }
-        .statement p { margin-bottom: 1.8em; line-height: 2; letter-spacing: 0.02em; }
+        .statement p { margin-bottom: 1.8em; line-height: 2; }
 
         .cv-section { margin-bottom: 50px; }
-        .cv-section h2 { 
-            font-size: 12px; letter-spacing: 0.4em; text-transform: uppercase; 
-            color: #111; border-bottom: 1px solid #eee; padding-bottom: 10px; 
-            margin-bottom: 25px; font-weight: 400; 
-        }
+        .cv-section h2 { font-size: 12px; letter-spacing: 0.4em; text-transform: uppercase; border-bottom: 1px solid #eee; padding-bottom: 10px; margin-bottom: 25px; }
         
-        /* CV 条目悬停平移交互 */
-        .cv-item { 
-            margin-bottom: 25px; display: flex; flex-direction: column; gap: 5px; 
-            transition: transform 0.4s ease;
-        }
+        .cv-item { margin-bottom: 25px; transition: transform 0.4s ease; }
         .cv-item:hover { transform: translateX(10px); }
-
-        .cv-year { font-size: 11px; color: #999; letter-spacing: 0.1em; }
-        .cv-detail { font-size: 13px; font-weight: 300; color: #111; }
+        .cv-year { font-size: 11px; color: #999; }
+        .cv-detail { font-size: 13px; font-weight: 300; }
 
         footer { padding: 80px 5% 40px; text-align: center; font-size: 9px; letter-spacing: 0.4em; color: #bbb; text-transform: uppercase; }
 
         @media (max-width: 900px) {
-            .container { grid-template-columns: 1fr; gap: 40px; margin-top: 120px; }
-            nav { padding: 30px 5%; }
+            .container { grid-template-columns: 1fr; gap: 40px; }
             .nav-links { display: none; }
+            .logo { font-size: 13px; letter-spacing: 0.3em; }
         }
     </style>
 </head>
 <body>
-
     <nav>
-        <a href="index.html" class="logo">ZHANG JIARUI</a>
+        <a href="index.html" class="logo">ZHANGJIARUI ARTWORKS</a>
         <div class="nav-links">
             <a href="index.html#eco-art">Ecological Art</a>
             <a href="index.html#sculpture">Sculpture</a>
@@ -125,56 +94,22 @@
 
     <div class="container">
         <div class="profile-image-wrapper">
-            <img src="profile.jpg" alt="Zhang Jiarui" 
-                 onerror="if (this.src.indexOf('profile.jpg') !== -1) this.src='profile.JPG';">
+            <img src="profile.jpg" alt="Zhang Jiarui" onerror="if (this.src.indexOf('profile.jpg') !== -1) this.src='profile.JPG';">
         </div>
-
         <div class="about-text">
             <h1>Zhang Jiarui</h1>
             <div class="birth-info">b. 1990</div>
-
             <div class="statement">
-                <p>Zhang Jiarui's artistic creation revolves around two intertwined paths: "the contemporary transformation of traditional art" and "the on-site practice of ecological art." These two paths form a profound intertextuality in both creative logic and methodology, serving as the core pillars of his continuous artistic research.</p>
-                <p>His works represent both a regenerative experiment of traditional aesthetics and a critical intervention in the contemporary ecological context. They address a fundamental inquiry: how art can function as a bridge connecting tradition with the future, humanity with nature, and sensibility with ethics amidst global ecological crises and cultural shifts.</p>
+                <p>Zhang Jiarui's artistic creation revolves around two intertwined paths: "the contemporary transformation of traditional art" and "the on-site practice of ecological art."</p>
+                <p>His works represent both a regenerative experiment of traditional aesthetics and a critical intervention in the contemporary ecological context.</p>
             </div>
-
             <div class="cv-section">
                 <h2>Education</h2>
-                <div class="cv-item">
-                    <div class="cv-year">2025 - Present</div>
-                    <div class="cv-detail">Central Academy of Fine Arts (CAFA), Ph.D</div>
-                </div>
-                <div class="cv-item">
-                    <div class="cv-year">2017 - 2020</div>
-                    <div class="cv-detail">Central Academy of Fine Arts (CAFA), MFA — Sculpture</div>
-                </div>
-                <div class="cv-item">
-                    <div class="cv-year">2010 - 2015</div>
-                    <div class="cv-detail">Central Academy of Fine Arts (CAFA), BFA — Sculpture</div>
-                </div>
-                <div class="cv-item">
-                    <div class="cv-year">2006 - 2010</div>
-                    <div class="cv-detail">Affiliated High School of Central Academy of Fine Arts</div>
-                </div>
-            </div>
-
-            <div class="cv-section">
-                <h2>Selected Exhibitions</h2>
-                <div class="cv-item">
-                    <div class="cv-year">2025</div>
-                    <div class="cv-detail">Annual Contemporary Art Exhibition, Beijing</div>
-                </div>
-                <div class="cv-item">
-                    <div class="cv-year">2024</div>
-                    <div class="cv-detail">Ecological Art Residency Exhibition, Inner Mongolia</div>
-                </div>
+                <div class="cv-item"><div class="cv-year">2025 - Present</div><div class="cv-detail">Central Academy of Fine Arts (CAFA), Ph.D</div></div>
+                <div class="cv-item"><div class="cv-year">2017 - 2020</div><div class="cv-detail">Central Academy of Fine Arts (CAFA), MFA</div></div>
             </div>
         </div>
     </div>
-
-    <footer>
-        &copy; 2026 ZHANG JIARUI ART STUDIO.
-    </footer>
-
+    <footer>&copy; 2026 ZHANGJIARUI ARTWORKS.</footer>
 </body>
 </html>
