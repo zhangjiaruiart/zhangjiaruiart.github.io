@@ -44,7 +44,6 @@
             color: #111111;
         }
 
-        /* 导航链接“排除法”高亮交互 */
         .nav-links:hover a { opacity: 0.3; }
         .nav-links a {
             margin-left: 35px; text-decoration: none; color: #ffffff;
@@ -62,14 +61,15 @@
         }
         .nav-links a:hover::after { width: 100%; }
 
-        /* 3. Hero 视差区域 */
+        /* 3. Hero 视差区域 - 修复层级 */
         .hero {
             height: 100vh; width: 100%; overflow: hidden;
             position: relative; background-color: #000;
+            z-index: 1; /* 确保不覆盖后续内容 */
         }
 
         .hero img {
-            width: 100%; height: 120%; /* 高度冗余用于视差位移 */
+            width: 100%; height: 120%; 
             object-fit: cover;
             filter: brightness(0.85); display: block;
             position: absolute; top: 0; left: 0;
@@ -83,6 +83,7 @@
             color: #fff; font-size: 9px; letter-spacing: 0.6em;
             opacity: 0.5; font-weight: 300;
             animation: pulse 2s infinite;
+            z-index: 2;
         }
 
         @keyframes pulse {
@@ -91,11 +92,13 @@
             100% { opacity: 0.2; transform: translate(-50%, 0); }
         }
 
-        /* 4. 内容入场动画 (Intersection Observer) */
+        /* 4. 内容入场动画 */
         .reveal {
             opacity: 0;
             transform: translateY(50px);
             transition: all 1.2s cubic-bezier(0.19, 1, 0.22, 1);
+            position: relative;
+            z-index: 5; /* 确保内容在 hero 之上 */
         }
 
         .reveal.active {
@@ -106,12 +109,14 @@
         .content-section {
             padding: 120px 5% 40px; 
             max-width: 1400px; margin: 0 auto;
+            background: #fff; /* 防止视差图片透过来 */
         }
 
         .category-title {
             font-size: 13px; letter-spacing: 0.5em; text-transform: uppercase;
             margin-bottom: 35px; font-weight: 400; color: #111;
             position: relative; overflow: hidden;
+            padding-bottom: 15px;
         }
         
         .category-title::after {
@@ -119,7 +124,7 @@
             width: 100%; height: 1px; background: #eee;
         }
 
-        /* 5. 作品网格与高级悬停状态 */
+        /* 5. 作品网格与图片显示修复 */
         .grid {
             display: grid; grid-template-columns: repeat(2, 1fr);
             gap: 40px 80px; margin-bottom: 60px; 
@@ -129,13 +134,13 @@
 
         .project-image-wrapper {
             overflow: hidden; margin-bottom: 25px;
-            background-color: #fcfcfc; position: relative;
+            background-color: #f7f7f7; position: relative;
+            display: block; /* 确保容器撑开 */
         }
 
-        /* 悬停时的柔光遮罩 */
         .project-image-wrapper::before {
             content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.08); opacity: 0; z-index: 1;
+            background: rgba(0,0,0,0.05); opacity: 0; z-index: 1;
             transition: opacity 0.6s ease;
         }
         .project:hover .project-image-wrapper::before { opacity: 1; }
@@ -144,7 +149,9 @@
         .video-ratio { aspect-ratio: 16 / 9; background-color: #000; }
 
         .project img {
-            width: 100%; height: 100%; object-fit: cover;
+            width: 100%; height: 100%; 
+            object-fit: cover;
+            display: block; /* 消除幽灵间隙 */
             transition: transform 1.5s cubic-bezier(0.19, 1, 0.22, 1);
         }
         .project:hover img { transform: scale(1.06); }
@@ -198,7 +205,7 @@
     </nav>
 
     <section class="hero">
-        <img src="images/Cover.JPG" id="heroImage" alt="Zhang Jiarui Art" onerror="this.src='images/cover.jpg';">
+        <img src="images/Cover.JPG" id="heroImage" alt="Zhang Jiarui Art" onerror="this.onerror=null; this.src='images/Cover.jpg';">
     </section>
 
     <div class="content-section reveal" id="eco-art">
@@ -230,7 +237,7 @@
         <div class="grid">
             <div class="project">
                 <div class="project-image-wrapper img-ratio">
-                    <img src="images/Work2.jpg" alt="Work 2" loading="lazy">
+                    <img src="images/Work2.jpg" alt="Work 2" loading="lazy" onerror="this.onerror=null; this.src='images/Work2.JPG';">
                 </div>
                 <div class="project-info">
                     <div class="project-title">Sculpture Installation</div>
@@ -279,28 +286,27 @@
     </footer>
 
     <script>
-        // 1. 视差滚动与导航栏监听
         const heroImg = document.getElementById('heroImage');
         const nav = document.getElementById('navbar');
 
+        // 视差滚动
         window.addEventListener('scroll', () => {
             const scrollY = window.pageYOffset;
             
-            // 视差逻辑：图片移动速度为滚动速度的 40%
-            heroImg.style.transform = `translate3d(0, ${scrollY * 0.4}px, 0)`;
+            // 只有当 hero 在视口内才计算 transform 提升性能
+            if (scrollY < window.innerHeight) {
+                heroImg.style.transform = `translate3d(0, ${scrollY * 0.4}px, 0)`;
+            }
 
-            // 导航栏切换
             if (scrollY > 100) {
                 nav.classList.add("nav-scrolled");
             } else {
                 nav.classList.remove("nav-scrolled");
             }
 
-            // 触发入场动画
             handleReveal();
         });
 
-        // 2. 元素淡入揭幕逻辑
         function handleReveal() {
             const reveals = document.querySelectorAll('.reveal');
             reveals.forEach(el => {
@@ -312,7 +318,6 @@
             });
         }
 
-        // 初始化检查
         handleReveal();
     </script>
 
