@@ -3,206 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ABOUT | 张家瑞</title>
+    <title>BIOGRAPHY | ZHANG JIARUI</title>
     <style>
-        body {
-            margin: 0;
-            padding: 0;
+        body, html {
+            margin: 0; padding: 0;
             font-family: "Optima", "Didot", "Helvetica Neue", Helvetica, Arial, sans-serif;
-            background-color: #ffffff;
-            color: #111111;
-            line-height: 1.8;
+            background-color: #ffffff; color: #111111;
         }
-
         nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 45px 5%;
+            width: 100%; display: flex; justify-content: space-between; align-items: center;
+            padding: 50px 5%; box-sizing: border-box; background-color: #fff;
         }
-
-        .logo {
-            font-size: 20px;
-            font-weight: 300;
-            letter-spacing: 0.5em;
-            text-decoration: none;
-            color: #000;
-            text-transform: uppercase;
-        }
-
-        .nav-links a {
-            margin-left: 35px;
-            text-decoration: none;
-            color: #666;
-            font-size: 11px;
-            letter-spacing: 0.2em;
-            text-transform: uppercase;
-            transition: color 0.3s;
-        }
-
-        .nav-links a:hover { color: #000; }
-
-        /* 重点修改：调整 About 布局比例 */
-        .about-container {
-            max-width: 1000px; /* 缩小总宽度，让内容更聚拢 */
-            margin: 60px auto 120px;
-            padding: 0 5%;
-            display: grid;
-            grid-template-columns: 300px 1fr; /* 固定图片宽度为300px，其余给文字 */
-            gap: 80px;
-        }
-
-        .about-image {
-            width: 100%;
-        }
-
-        .about-image img {
-            width: 100%; /* 宽度占满父容器（即300px） */
-            height: auto;
-            display: block;
-            filter: grayscale(100%); /* 保持高级黑白质感 */
-            opacity: 0.9;
-        }
-
-        .about-text h1 {
-            font-size: 24px;
-            font-weight: 300;
-            letter-spacing: 0.2em;
-            margin: 0 0 10px 0;
-            text-transform: uppercase;
-        }
-
-        .birth-info {
-            font-size: 13px;
-            color: #999;
-            letter-spacing: 0.1em;
-            margin-bottom: 40px;
-        }
-
-        .statement {
-            font-size: 14px; /* 稍微缩小字号，显得更专业精炼 */
-            color: #333;
-            margin-bottom: 60px;
-            text-align: justify;
-        }
-
-        .statement p { margin-bottom: 25px; }
-
-        .cv-section { margin-top: 50px; }
-
-        .cv-section h2 {
-            font-size: 11px;
-            letter-spacing: 0.3em;
-            text-transform: uppercase;
-            border-bottom: 1px solid #eee;
-            padding-bottom: 15px;
-            margin-bottom: 25px;
-            color: #888;
-            font-weight: 400;
-        }
-
-        .cv-item {
-            display: flex;
-            font-size: 13px;
-            margin-bottom: 15px;
-            align-items: baseline;
-        }
-
-        .cv-year {
-            width: 110px;
-            color: #bbb;
-            font-size: 11px;
-            letter-spacing: 0.1em;
-        }
-
-        .cv-detail { flex: 1; color: #444; }
-
-        footer {
-            padding: 80px 5%;
-            text-align: center;
-            font-size: 9px;
-            letter-spacing: 0.3em;
-            color: #ccc;
-            text-transform: uppercase;
-            border-top: 1px solid #f9f9f9;
-        }
-
-        /* 移动端适配：图片在上方，文字在下方 */
-        @media (max-width: 850px) {
-            .about-container { 
-                grid-template-columns: 1fr; 
-                gap: 40px; 
-            }
-            .about-image {
-                width: 200px; /* 移动端图片更小一点 */
-                margin: 0 auto;
-            }
-            nav { flex-direction: column; gap: 25px; }
-        }
+        .logo { font-size: 20px; font-weight: 300; letter-spacing: 0.6em; text-decoration: none; color: #111; text-transform: uppercase; }
+        .nav-links a { margin-left: 35px; text-decoration: none; color: #111; font-size: 11px; letter-spacing: 0.25em; text-transform: uppercase; font-weight: 300; }
+        .nav-links a:hover { opacity: 0.6; }
+        .bio-container { max-width: 800px; margin: 60px auto; padding: 0 5%; line-height: 2; letter-spacing: 0.05em; font-size: 14px; font-weight: 300; }
+        footer { padding: 50px 5%; text-align: center; font-size: 9px; letter-spacing: 0.4em; color: #bbb; text-transform: uppercase; }
     </style>
 </head>
 <body>
-
     <nav>
         <a href="index.html" class="logo">ZHANG JIARUI</a>
         <div class="nav-links">
-            <a href="index.html">Works</a>
-            <a href="about.html" style="color:#000; font-weight: 400;">About</a>
-            <a href="mailto:contact@zhangjiarui.art">Contact</a>
+            <a href="index.html#eco-art">Ecological Art</a>
+            <a href="index.html#sculpture">Sculpture</a>
+            <a href="index.html#projects">Projects</a>
+            <a href="biography.html">BIOGRAPHY</a>
+            <a href="index.html#contact">Contact</a>
         </div>
     </nav>
 
-    <div class="about-container">
-        <div class="about-image">
-            <img src="profile.jpg" alt="Zhang Jiarui" onerror="this.src='https://via.placeholder.com/600x800/F2F2F2/999999?text=PROFILE+IMAGE'">
-        </div>
-
-        <div class="about-text">
-            <h1>Jerry</h1>
-            <div class="birth-info">b. 1990</div>
-
-            <div class="statement">
-                <p>Zhang Jiarui's artistic creation has always revolved around two intertwined paths: one is "the contemporary transformation of traditional art," and the other is "the on-site practice of ecological art." These two paths are relatively independent directions of exploration, yet they form an intertextuality in creative logic and methodology, becoming an important fulcrum for my continuous art research.</p>
-                <p>His works are both a regeneration experiment of traditional Chinese aesthetics and an intervention in the contemporary ecological context. At a deeper level, both point to the same question: how to make art a bridge connecting tradition and the future, humanity and nature, and sensibility and ethics in the face of global ecological crisis and cultural rupture.</p>
-            </div>
-
-            <div class="cv-section">
-                <h2>Education</h2>
-                
-                <div class="cv-item">
-                    <div class="cv-year">2025 - Now</div>
-                    <div class="cv-detail">Central Academy of Fine Arts, Ph.D</div>
-                </div>
-
-                <div class="cv-item">
-                    <div class="cv-year">2017 - 2020</div>
-                    <div class="cv-detail">Central Academy of Fine Arts, MFA — sculpture</div>
-                </div>
-
-                <div class="cv-item">
-                    <div class="cv-year">2010 - 2015</div>
-                    <div class="cv-detail">Central Academy of Fine Arts, BFA — sculpture</div>
-                </div>
-
-                <div class="cv-item">
-                    <div class="cv-year">2006 - 2010</div>
-                    <div class="cv-detail">Central Academy of Fine Arts Affiliated High School</div>
-                </div>
-            </div>
-
-            <div class="cv-section">
-                <h2>Selected Exhibitions</h2>
-                <div class="cv-item">
-                    <div class="cv-year">2025</div>
-                    <div class="cv-detail">Annual Contemporary Art Exhibition, Beijing</div>
-                </div>
-            </div>
-        </div>
+    <div class="bio-container">
+        <p>ZHANG JIARUI (b. 1990) is a contemporary artist based in China...</p>
+        <p>Working across sculpture, installation, and performance art, his practice focuses on ecological ethics and human intervention in natural landscapes.</p>
     </div>
 
-    <footer>
-        &copy; 2026 ZHANG JIARUI ART STUDIO.
-    </footer>
-
+    <footer>&copy; 2026 ZHANG JIARUI ART STUDIO.</footer>
 </body>
 </html>
