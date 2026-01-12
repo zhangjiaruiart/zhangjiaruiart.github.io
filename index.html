@@ -75,7 +75,6 @@
 
         .hero img {
             width: 100%; height: 100%; object-fit: cover;
-            object-position: 50% 80%; /* 响应上一条指令：调整人物中心 */
             filter: brightness(0.85); display: block;
             animation: heroZoom 2.5s cubic-bezier(0.15, 1, 0.3, 1) forwards;
         }
@@ -89,47 +88,37 @@
         }
 
         .content-section {
-            padding: 80px 5% 40px; 
+            padding: 80px 5% 20px; /* 进一步压缩版块间距 */
+            padding: 80px 5% 20px; 
             max-width: 1400px; margin: 0 auto;
             animation: fadeInUp 1.2s cubic-bezier(0.15, 1, 0.3, 1) both;
         }
 
         .category-title {
             font-size: 13px; letter-spacing: 0.5em; text-transform: uppercase;
-            margin-bottom: 35px; 
+            margin-bottom: 25px; /* 间距再次减半 */
+            margin-bottom: 25px; 
             font-weight: 400; 
             border-bottom: 1px solid #f0f0f0; padding-bottom: 15px;
             color: #111;
         }
 
+        /* --- 3. 作品网格：极致压缩间距 --- */
         /* --- 3. 作品网格 --- */
         .grid {
             display: grid; grid-template-columns: repeat(2, 1fr);
-            gap: 60px 60px; 
-            margin-bottom: 50px; 
+            gap: 20px 60px; /* 行间距缩短至 20px */
+            gap: 20px 60px; 
+            margin-bottom: 30px; 
         }
 
         .project { text-decoration: none; color: inherit; display: block; }
 
         .project-image-wrapper {
+            overflow: hidden; margin-bottom: 8px; /* 图片与标题间距极致压缩 */
             overflow: hidden; 
-            margin-bottom: 20px;
+            margin-bottom: 20px; /* 已将此处的空隙增加，防止标题离图片太近 */
             background-color: #fcfcfc; position: relative;
-        }
-
-        /* 视频封面悬停效果 */
-        .video-ratio::after {
-            content: 'PLAY VIDEO';
-            position: absolute; top: 50%; left: 50%;
-            transform: translate(-50%, -50%);
-            color: #fff; font-size: 10px; letter-spacing: 0.2em;
-            opacity: 0; transition: all 0.4s;
-            z-index: 2; border: 1px solid #fff; padding: 10px 20px;
-        }
-        .project:hover .video-ratio::after { opacity: 1; }
-        .project:hover .video-ratio::before {
-            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.3); z-index: 1;
         }
 
         .img-ratio { aspect-ratio: 4 / 5; }
@@ -146,16 +135,10 @@
             text-transform: uppercase; margin-top: 5px;
         }
 
-        /* 新增：作品描述层级 */
-        .project-description {
-            font-size: 11px; color: #555; margin: 12px 0;
-            line-height: 1.8; letter-spacing: 0.02em;
-            max-width: 90%;
-        }
-
         .project-meta {
-            font-size: 9px; color: #aaa; 
+            font-size: 10px; color: #aaa; margin-top: 4px;
             letter-spacing: 0.05em; text-transform: uppercase;
+            line-height: 1.4;
         }
 
         /* --- 4. 联系与页脚 --- */
@@ -173,8 +156,9 @@
         }
 
         @media (max-width: 900px) {
-            .grid { grid-template-columns: 1fr; gap: 40px; }
+            .grid { grid-template-columns: 1fr; gap: 25px; }
             .nav-links { display: none; }
+            .logo { font-size: 14px; letter-spacing: 0.3em; }
             .content-section { padding-top: 60px; }
         }
     </style>
@@ -199,31 +183,24 @@
     <div class="content-section" id="eco-art">
         <h2 class="category-title">Ecological Art</h2>
         <div class="grid">
-            <a href="https://www.youtube.com/watch?v=9rCY3guNSRg" target="_blank" class="project">
+            <div class="project">
                 <div class="project-image-wrapper video-ratio">
-                    <img src="https://img.youtube.com/vi/9rCY3guNSRg/maxresdefault.jpg" alt="Ice Burial">
+                    <iframe width="100%" height="100%" src="https://www.youtube.com/embed/9rCY3guNSRg?rel=0" frameborder="0" allowfullscreen style="position: absolute; top: 0; left: 0; border: none;"></iframe>
                 </div>
                 <div class="project-info">
                     <div class="project-title">Ice Burial</div>
-                    <div class="project-description">
-                        这里是作品介绍：探讨冰川融化与生命痕迹的关系，通过行为艺术记录消逝的过程。这是该作品的核心哲学思考。（请替换为您的文字）
-                    </div>
                     <div class="project-meta">Performance art / 2025 / China Southsea</div>
                 </div>
-            </a>
-
-            <a href="https://www.youtube.com/watch?v=lfMcm-Hn3S4" target="_blank" class="project">
+            </div>
+            <div class="project">
                 <div class="project-image-wrapper video-ratio">
-                    <img src="https://img.youtube.com/vi/lfMcm-Hn3S4/maxresdefault.jpg" alt="4.5 Tons">
+                    <iframe width="100%" height="100%" src="https://www.youtube.com/embed/lfMcm-Hn3S4?rel=0" frameborder="0" allowfullscreen style="position: absolute; top: 0; left: 0; border: none;"></iframe>
                 </div>
                 <div class="project-info">
                     <div class="project-title">4.5 Tons</div>
-                    <div class="project-description">
-                        关于 4.5 Tons 的项目介绍：通过对工业废料的重新解构，反思人类文明对自然生态的重压。
-                    </div>
                     <div class="project-meta">Installation / In Collaboration with Betta Liu / 2024 / Inner Mongolia</div>
                 </div>
-            </a>
+            </div>
         </div>
     </div>
 
@@ -236,9 +213,6 @@
                 </div>
                 <div class="project-info">
                     <div class="project-title">Sculpture Installation</div>
-                    <div class="project-description">
-                        雕塑作品介绍：利用材料的质感表达空间与时间的对话。
-                    </div>
                     <div class="project-meta">Material / Year</div>
                 </div>
             </div>
@@ -248,18 +222,15 @@
     <div class="content-section" id="projects">
         <h2 class="category-title">Projects</h2>
         <div class="grid">
-            <a href="https://www.youtube.com/watch?v=OEZ3FvOwdjI" target="_blank" class="project">
+            <div class="project">
                 <div class="project-image-wrapper video-ratio">
-                    <img src="https://img.youtube.com/vi/OEZ3FvOwdjI/maxresdefault.jpg" alt="Coral Planting">
+                    <iframe width="100%" height="100%" src="https://www.youtube.com/embed/OEZ3FvOwdjI?rel=0" frameborder="0" allowfullscreen style="position: absolute; top: 0; left: 0; border: none;"></iframe>
                 </div>
                 <div class="project-info">
                     <div class="project-title">Coral Planting Project</div>
-                    <div class="project-description">
-                        纪录片介绍：记录在西沙群岛进行珊瑚修复的全过程，跨越艺术与科学的界限。
-                    </div>
                     <div class="project-meta">Documentary / 2025 / Xisha Islands</div>
                 </div>
-            </a>
+            </div>
         </div>
     </div>
 
