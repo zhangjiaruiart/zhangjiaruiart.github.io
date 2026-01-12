@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ZHANGJIARUI ARTWORKS</title>
+    <title>ZHANG JIARUI | ARTIST</title>
     <style>
         body, html {
             margin: 0; padding: 0;
@@ -13,7 +13,8 @@
             overflow-x: hidden;
         }
 
-        /* 导航栏交互 */
+        /* 导航栏样式 */
+        /* --- 1. 导航栏交互优化 --- */
         nav {
             position: absolute;
             top: 0; left: 0; width: 100%;
@@ -23,20 +24,21 @@
         }
 
         .logo {
-            font-size: 15px; font-weight: 300; letter-spacing: 0.4em;
+            font-size: 20px; font-weight: 300; letter-spacing: 0.6em;
             text-decoration: none; color: #ffffff; text-transform: uppercase;
             transition: transform 0.3s ease;
-            white-space: nowrap;
         }
-        .logo:active { transform: scale(0.95); }
+        .logo:active { transform: scale(0.95); } /* 点击缩放反馈 */
 
         .nav-links a {
             margin-left: 35px; text-decoration: none; color: #ffffff;
             font-size: 11px; letter-spacing: 0.25em; text-transform: uppercase;
+            font-weight: 300; transition: opacity 0.3s;
             font-weight: 300; position: relative; padding-bottom: 5px;
             transition: opacity 0.3s;
         }
         
+        /* 导航下划线动画 */
         .nav-links a::after {
             content: ''; position: absolute; bottom: 0; left: 50%;
             width: 0; height: 1px; background: #fff;
@@ -45,11 +47,18 @@
         }
         .nav-links a:hover::after { width: 100%; }
 
+        /* --- 2. 核心动画定义 --- */
         @keyframes fadeInUp {
             from { opacity: 0; transform: translateY(30px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
+        @keyframes fadeIn {
+            from { opacity: 0; } to { opacity: 1; }
+        }
+        .nav-links a:hover { opacity: 0.6; }
+
+        /* --- 3. 布局与内容交互 --- */
         .hero {
             height: 100vh; width: 100%; overflow: hidden;
             position: relative; background-color: #1a1a1a;
@@ -61,17 +70,18 @@
             animation: fadeIn 2s ease;
         }
 
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-
         .content-section {
             padding: 40px 5%; max-width: 1400px; margin: 0 auto;
+            /* 页面加载时淡入升起 */
             animation: fadeInUp 1.2s cubic-bezier(0.15, 1, 0.3, 1) both;
         }
 
         .category-title {
             font-size: 14px; letter-spacing: 0.6em; text-transform: uppercase;
-            margin: 40px 0; font-weight: 400; border-bottom: 1px solid #eee;
-            padding-bottom: 15px;
+            margin-top: 20px; margin-bottom: 40px; text-align: left;
+            margin-top: 40px; margin-bottom: 40px; text-align: left;
+            font-weight: 400; border-bottom: 1px solid #eee;
+            padding-bottom: 15px; color: #111;
         }
 
         .grid {
@@ -86,8 +96,13 @@
             background-color: #f7f7f7; position: relative;
         }
 
+        .img-ratio { aspect-ratio: 4 / 5; }
+        .video-ratio { aspect-ratio: 16 / 9; background-color: #000; }
+
+        /* 图片悬停平滑放大效果 */
         .project img {
             width: 100%; height: 100%; object-fit: cover;
+            display: block; transition: transform 1.5s cubic-bezier(0.15, 1, 0.3, 1);
             display: block; transition: transform 1.8s cubic-bezier(0.15, 1, 0.3, 1);
         }
         .project:hover img { transform: scale(1.08); }
@@ -102,26 +117,64 @@
         }
         .project:hover .project-title { opacity: 0.6; }
 
-        .project-meta { font-size: 10px; color: #999; margin-top: 8px; text-transform: uppercase; }
+        .project-meta {
+            font-size: 10px; color: #999; margin-top: 8px;
+            letter-spacing: 0.1em; text-transform: uppercase;
+        }
 
-        .contact-section { padding: 60px 5%; background-color: #ffffff; }
-        .contact-container { max-width: 1200px; margin: 0 auto; border-top: 1px solid #eee; padding-top: 40px; }
-        .contact-row { display: flex; justify-content: center; align-items: center; gap: 30px; flex-wrap: wrap; }
-        .contact-value { font-size: 14px; font-weight: 300; color: #111; text-decoration: none; transition: opacity 0.3s; }
+        /* --- 4. 联系区域交互 --- */
+        .contact-section {
+            padding: 60px 5%; background-color: #ffffff; margin-top: 20px;
+        }
+
+        .contact-container {
+            max-width: 1200px; margin: 0 auto;
+            border-top: 1px solid #eee; padding-top: 40px;
+        }
+
+        .contact-row {
+            display: flex; justify-content: center; align-items: center;
+            gap: 30px; flex-wrap: wrap;
+        }
+
+        .contact-item { display: flex; align-items: center; gap: 10px; }
+
+        .contact-label {
+            font-size: 10px; letter-spacing: 0.2em;
+            text-transform: uppercase; color: #999;
+        }
+
+        .contact-value {
+            font-size: 14px; letter-spacing: 0.05em; font-weight: 300;
+            color: #111; text-decoration: none; transition: opacity 0.3s;
+            color: #111; text-decoration: none; 
+            padding-bottom: 2px; border-bottom: 1px solid transparent;
+            transition: all 0.3s ease;
+        }
         .contact-value:hover { opacity: 0.5; }
 
-        footer { padding: 50px 5% 40px; text-align: center; font-size: 9px; letter-spacing: 0.4em; color: #bbb; text-transform: uppercase; }
+        .divider { color: #eee; font-size: 12px; }
+        .contact-value:hover { border-color: #111; opacity: 0.7; }
+
+        footer {
+            padding: 50px 5% 40px; text-align: center;
+            font-size: 9px; letter-spacing: 0.4em; color: #bbb;
+            text-transform: uppercase;
+        }
 
         @media (max-width: 768px) {
-            .grid { grid-template-columns: 1fr; }
+            .grid { grid-template-columns: 1fr; gap: 40px; }
+            .hero { height: 75vh; }
             .nav-links { display: none; }
-            .logo { font-size: 13px; letter-spacing: 0.3em; }
+            .contact-row { flex-direction: column; gap: 15px; align-items: flex-start; padding-left: 5%; }
+            .divider { display: none; }
         }
     </style>
 </head>
 <body>
+
     <nav>
-        <a href="index.html" class="logo">ZHANGJIARUI ARTWORKS</a>
+        <a href="index.html" class="logo">ZHANG JIARUI</a>
         <div class="nav-links">
             <a href="#eco-art">Ecological Art</a>
             <a href="#sculpture">Sculpture</a>
@@ -142,15 +195,35 @@
                 <div class="project-image-wrapper video-ratio">
                     <iframe width="100%" height="100%" src="https://www.youtube.com/embed/9rCY3guNSRg?rel=0" frameborder="0" allowfullscreen style="position: absolute; top: 0; left: 0;"></iframe>
                 </div>
-                <div class="project-title">Ice Burial</div>
-                <div class="project-meta">Performance art / 2025</div>
+                <div class="project-info">
+                    <div class="project-title">Ice Burial</div>
+                    <div class="project-meta">Performance art / 2025 / China Southsea</div>
+                </div>
             </div>
             <div class="project">
                 <div class="project-image-wrapper video-ratio">
                     <iframe width="100%" height="100%" src="https://www.youtube.com/embed/lfMcm-Hn3S4?rel=0" frameborder="0" allowfullscreen style="position: absolute; top: 0; left: 0;"></iframe>
                 </div>
-                <div class="project-title">4.5 Tons</div>
-                <div class="project-meta">Installation / 2024</div>
+                <div class="project-info">
+                    <div class="project-title">4.5 Tons / Collaborate with Betta Liu</div>
+                    <div class="project-title">4.5 Tons</div>
+                    <div class="project-meta">Installation / 2024 / Inner Mongolia</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="content-section" id="sculpture">
+        <h2 class="category-title">Sculpture</h2>
+        <div class="grid">
+            <div class="project">
+                <div class="project-image-wrapper img-ratio">
+                    <img src="images/Work2.jpg" alt="Work 2" onerror="this.src='images/work2.jpg'">
+                </div>
+                <div class="project-info">
+                    <div class="project-title">Sculpture Installation</div>
+                    <div class="project-meta">Material / Year</div>
+                </div>
             </div>
         </div>
     </div>
@@ -162,8 +235,10 @@
                 <div class="project-image-wrapper video-ratio">
                     <iframe width="100%" height="100%" src="https://www.youtube.com/embed/OEZ3FvOwdjI?rel=0" frameborder="0" allowfullscreen style="position: absolute; top: 0; left: 0;"></iframe>
                 </div>
-                <div class="project-title">Coral Planting Project</div>
-                <div class="project-meta">Documentary / 2026</div>
+                <div class="project-info">
+                    <div class="project-title">Coral Planting Project</div>
+                    <div class="project-meta">Documentary / 2026 / Xisha Islands</div>
+                </div>
             </div>
         </div>
     </div>
@@ -171,6 +246,20 @@
     <div class="contact-section" id="contact">
         <div class="contact-container">
             <div class="contact-row">
+                <div class="contact-item">
+                    <span class="contact-label">Email</span>
+                    <a href="mailto:jerryzhang_arts@qq.com" class="contact-value">jerryzhang_arts@qq.com</a>
+                </div>
+                <span class="divider">·</span>
+                <div class="contact-item">
+                    <span class="contact-label">WeChat</span>
+                    <span class="contact-value">zjr5556699</span>
+                </div>
+                <span class="divider">·</span>
+                <div class="contact-item">
+                    <span class="contact-label">Phone</span>
+                    <a href="tel:+8615117988382" class="contact-value">(+86) 151 1798 8382</a>
+                </div>
                 <a href="mailto:jerryzhang_arts@qq.com" class="contact-value">jerryzhang_arts@qq.com</a>
                 <span style="color:#eee">·</span>
                 <span class="contact-value">WeChat: zjr5556699</span>
@@ -180,6 +269,9 @@
         </div>
     </div>
 
-    <footer>&copy; 2026 ZHANGJIARUI ARTWORKS.</footer>
+    <footer>
+        &copy; 2026 ZHANG JIARUI ART STUDIO.
+    </footer>
+
 </body>
 </html>
