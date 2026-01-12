@@ -12,39 +12,46 @@
             line-height: 1.6;
         }
 
-        /* --- 导航栏样式升级 --- */
+        /* --- 导航栏：保持与 index.html 一致的绝对定位 --- */
         nav {
+            position: absolute; /* 改回绝对定位，与首页一致 */
+            top: 0;
+            left: 0;
             width: 100%; 
             display: flex; 
             justify-content: space-between; 
             align-items: center;
-            padding: 40px 5%; 
+            padding: 50px 5%; 
             box-sizing: border-box;
-            position: fixed; /* 固定位置 */
-            top: 0;
-            left: 0;
-            z-index: 1000;
-            transition: all 0.4s ease; /* 平滑过渡 */
-            background-color: rgba(255, 255, 255, 0); /* 初始透明 */
+            z-index: 100;
         }
 
-        /* 滚动后的样式 */
-        nav.scrolled {
-            padding: 15px 5%; 
-            background-color: rgba(255, 255, 255, 0.8); /* 半透明白 */
-            backdrop-filter: blur(10px); /* 毛玻璃效果 */
-            -webkit-backdrop-filter: blur(10px);
-            border-bottom: 1px solid rgba(0,0,0,0.05);
+        /* 统一字体样式 */
+        .logo { 
+            font-size: 20px; 
+            font-weight: 300; 
+            letter-spacing: 0.6em; 
+            text-decoration: none; 
+            color: #111; /* Bio页背景是白色的，所以设为黑色 */
+            text-transform: uppercase; 
         }
 
-        .logo { font-size: 20px; font-weight: 300; letter-spacing: 0.6em; text-decoration: none; color: #111; text-transform: uppercase; }
-        .nav-links a { margin-left: 35px; text-decoration: none; color: #111; font-size: 11px; letter-spacing: 0.25em; text-transform: uppercase; font-weight: 300; transition: opacity 0.3s; }
+        .nav-links a { 
+            margin-left: 35px; 
+            text-decoration: none; 
+            color: #111; 
+            font-size: 11px; 
+            letter-spacing: 0.25em; 
+            text-transform: uppercase; 
+            font-weight: 300; 
+            transition: opacity 0.3s; 
+        }
         .nav-links a:hover { opacity: 0.6; }
 
-        /* 修正正文间距，防止被固定导航栏遮挡 */
+        /* 内容布局 */
         .container { 
             max-width: 1200px; 
-            margin: 140px auto 40px; /* 增加了顶部 margin */
+            margin: 160px auto 40px; /* 留出足够的顶部空间 */
             padding: 0 5%; 
             display: grid; 
             grid-template-columns: 1fr 1.5fr; 
@@ -82,16 +89,15 @@
         footer { padding: 80px 5% 40px; text-align: center; font-size: 9px; letter-spacing: 0.4em; color: #bbb; text-transform: uppercase; }
 
         @media (max-width: 900px) {
-            .container { grid-template-columns: 1fr; gap: 40px; margin-top: 100px; }
-            nav { flex-direction: column; gap: 15px; padding: 20px 5%; }
-            .nav-links { margin-left: 0; }
-            .nav-links a { margin: 0 10px; font-size: 10px; }
+            .container { grid-template-columns: 1fr; gap: 40px; margin-top: 120px; }
+            nav { flex-direction: column; gap: 20px; padding: 30px 5%; }
+            .nav-links { display: none; } /* 移动端隐藏菜单，保持极简 */
         }
     </style>
 </head>
 <body>
 
-    <nav id="navbar">
+    <nav>
         <a href="index.html" class="logo">ZHANG JIARUI</a>
         <div class="nav-links">
             <a href="index.html#eco-art">Ecological Art</a>
@@ -104,7 +110,7 @@
 
     <div class="container">
         <div class="profile-image-wrapper">
-            <img src="profile.jpg" alt="Zhang Jiarui">
+            <img src="images/profile.jpg" alt="Zhang Jiarui" onerror="this.src='https://via.placeholder.com/600x800?text=Portrait';">
         </div>
 
         <div class="about-text">
@@ -149,17 +155,6 @@
     <footer>
         &copy; 2026 ZHANG JIARUI ART STUDIO.
     </footer>
-
-    <script>
-        window.addEventListener('scroll', function() {
-            const nav = document.getElementById('navbar');
-            if (window.scrollY > 50) {
-                nav.classList.add('scrolled');
-            } else {
-                nav.classList.remove('scrolled');
-            }
-        });
-    </script>
 
 </body>
 </html>
