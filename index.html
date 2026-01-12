@@ -4,14 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ZHANG JIARUI | ARTIST</title>
-    <style>
-        body, html {
-            margin: 0; padding: 0;
-            font-family: "Optima", "Didot", "Helvetica Neue", Helvetica, Arial, sans-serif;
-            background-color: #ffffff; color: #111111;
-            scroll-behavior: smooth;
-            overflow-x: hidden;
-        }
+   <style>
+    /* ... 其他代码保持不变 ... */
+
+    .hero img {
+        width: 100%; 
+        height: 100%; 
+        object-fit: cover;
+        /* 核心修复：调整显示重心 */
+        object-position: 50% 80%; 
+        filter: brightness(0.85); 
+        display: block;
+        animation: heroZoom 2.5s cubic-bezier(0.15, 1, 0.3, 1) forwards;
+    }
+    
+    /* ... 其他代码保持不变 ... */
+</style>
 
         /* --- 1. 导航栏 --- */
         nav {
