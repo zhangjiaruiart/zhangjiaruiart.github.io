@@ -10,61 +10,68 @@
             font-family: "Optima", "Didot", "Helvetica Neue", Helvetica, Arial, sans-serif;
             background-color: #ffffff; color: #111;
             line-height: 1.6;
+            scroll-behavior: smooth;
             overflow-x: hidden;
         }
 
-        /* 1. 导航栏 - 保持一致的交互细节 */
+        /* --- 1. 导航栏 (与首页完全同步) --- */
         nav {
-            position: absolute;
-            top: 0; left: 0; width: 100%; 
+            position: fixed;
+            top: 0; left: 0; width: 100%;
             display: flex; justify-content: space-between; align-items: center;
-            padding: 50px 5%; box-sizing: border-box;
-            z-index: 100;
+            padding: 40px 5%; 
+            box-sizing: border-box;
+            z-index: 1000;
+            transition: all 0.5s cubic-bezier(0.2, 1, 0.3, 1);
         }
 
-        .logo { 
-            font-size: 20px; font-weight: 300; letter-spacing: 0.6em; 
-            text-decoration: none; color: #111; text-transform: uppercase; 
-            transition: transform 0.3s ease;
+        .nav-scrolled {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            padding: 20px 5%;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
         }
-        .logo:active { transform: scale(0.95); }
 
-        .nav-links a { 
-            margin-left: 35px; text-decoration: none; color: #111; 
-            font-size: 11px; letter-spacing: 0.25em; text-transform: uppercase; 
+        .logo {
+            font-size: 18px; font-weight: 300; letter-spacing: 0.5em;
+            text-decoration: none; color: #111; text-transform: uppercase;
+        }
+
+        .nav-links a {
+            margin-left: 35px; text-decoration: none; color: #111;
+            font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase;
             font-weight: 300; position: relative; padding-bottom: 5px;
-            transition: opacity 0.3s; 
+            transition: color 0.4s ease;
         }
         
-        /* 导航划过底线动画 */
         .nav-links a::after {
             content: ''; position: absolute; bottom: 0; left: 50%;
-            width: 0; height: 1px; background: #111;
+            width: 0; height: 1px; background: currentColor;
             transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
             transform: translateX(-50%);
         }
         .nav-links a:hover::after { width: 100%; }
 
-        /* 2. 容器与布局 */
+        /* --- 2. 容器与布局 --- */
         .container { 
             max-width: 1200px; 
-            margin: 160px auto 40px; 
+            margin: 180px auto 60px; /* 增加顶部间距防止被导航遮挡 */
             padding: 0 5%; 
             display: grid; 
-            grid-template-columns: 1fr 1.5fr; 
+            grid-template-columns: 1fr 1.6fr; 
             gap: 80px; 
             animation: fadeInUp 1.2s cubic-bezier(0.15, 1, 0.3, 1) both;
         }
 
         @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(30px); }
+            from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* 3. 图片悬停微动 */
         .profile-image-wrapper {
             width: 100%;
-            background-color: #f7f7f7;
+            background-color: #fafafa;
             aspect-ratio: 3 / 4; 
             overflow: hidden;
         }
@@ -73,46 +80,66 @@
             width: 100%; height: 100%; object-fit: cover; display: block;
             transition: transform 2s cubic-bezier(0.15, 1, 0.3, 1);
         }
-        .profile-image-wrapper:hover img {
-            transform: scale(1.05);
-        }
+        .profile-image-wrapper:hover img { transform: scale(1.05); }
 
-        /* 4. 文本细节优化 */
-        .about-text h1 { font-size: 28px; font-weight: 300; letter-spacing: 0.2em; margin: 0; text-transform: uppercase; }
-        .birth-info { font-size: 12px; color: #999; margin: 15px 0 40px; letter-spacing: 0.1em; }
-
-        .statement { font-size: 14px; font-weight: 300; color: #333; text-align: justify; margin-bottom: 60px; }
-        .statement p { margin-bottom: 1.8em; line-height: 2; letter-spacing: 0.02em; }
-
-        .cv-section { margin-bottom: 50px; }
-        .cv-section h2 { 
-            font-size: 12px; letter-spacing: 0.4em; text-transform: uppercase; 
-            color: #111; border-bottom: 1px solid #eee; padding-bottom: 10px; 
-            margin-bottom: 25px; font-weight: 400; 
+        /* --- 3. 文本内容 --- */
+        .about-text h1 { 
+            font-size: 24px; font-weight: 400; letter-spacing: 0.3em; 
+            margin: 0; text-transform: uppercase; 
         }
         
-        /* CV 条目悬停平移交互 */
+        .birth-info { 
+            font-size: 11px; color: #aaa; margin: 10px 0 35px; 
+            letter-spacing: 0.2em; text-transform: uppercase;
+        }
+
+        .statement { 
+            font-size: 14px; font-weight: 300; color: #333; 
+            text-align: justify; margin-bottom: 50px; 
+        }
+        .statement p { margin-bottom: 1.5em; line-height: 1.8; letter-spacing: 0.03em; }
+
+        /* --- 4. CV 条目：优化后的紧凑设计 --- */
+        .cv-section { margin-bottom: 40px; }
+        .cv-section h2 { 
+            font-size: 11px; letter-spacing: 0.4em; text-transform: uppercase; 
+            color: #111; border-bottom: 1px solid #f0f0f0; padding-bottom: 12px; 
+            margin-bottom: 20px; font-weight: 400; 
+        }
+        
         .cv-item { 
-            margin-bottom: 25px; display: flex; flex-direction: column; gap: 5px; 
+            margin-bottom: 12px; /* 减小每个经历之间的间距 */
+            display: flex; align-items: baseline; gap: 20px;
             transition: transform 0.4s ease;
         }
-        .cv-item:hover { transform: translateX(10px); }
+        .cv-item:hover { transform: translateX(5px); }
 
-        .cv-year { font-size: 11px; color: #999; letter-spacing: 0.1em; }
-        .cv-detail { font-size: 13px; font-weight: 300; color: #111; }
+        .cv-year { 
+            font-size: 10px; color: #aaa; letter-spacing: 0.1em; 
+            min-width: 90px; flex-shrink: 0; /* 固定年份宽度使右侧对齐 */
+        }
+        .cv-detail { 
+            font-size: 12.5px; font-weight: 300; color: #111; 
+            line-height: 1.4;
+        }
 
-        footer { padding: 80px 5% 40px; text-align: center; font-size: 9px; letter-spacing: 0.4em; color: #bbb; text-transform: uppercase; }
+        footer { 
+            padding: 80px 5% 50px; text-align: center; 
+            font-size: 9px; letter-spacing: 0.4em; color: #ccc; 
+            text-transform: uppercase; border-top: 1px solid #f9f9f9;
+        }
 
         @media (max-width: 900px) {
             .container { grid-template-columns: 1fr; gap: 40px; margin-top: 120px; }
-            nav { padding: 30px 5%; }
+            nav { padding: 25px 5%; }
             .nav-links { display: none; }
+            .cv-item { flex-direction: column; gap: 2px; margin-bottom: 15px; }
         }
     </style>
 </head>
 <body>
 
-   <nav>
+    <nav id="navbar">
         <a href="index.html" class="logo">ZHANGJIARUI ARTWORKS</a>
         <div class="nav-links">
             <a href="index.html#eco-art">Ecological Art</a>
@@ -131,7 +158,7 @@
 
         <div class="about-text">
             <h1>Zhang Jiarui</h1>
-            <div class="birth-info">b. 1990</div>
+            <div class="birth-info">b. 1990, China</div>
 
             <div class="statement">
                 <p>Zhang Jiarui's artistic creation revolves around two intertwined paths: "the contemporary transformation of traditional art" and "the on-site practice of ecological art." These two paths form a profound intertextuality in both creative logic and methodology, serving as the core pillars of his continuous artistic research.</p>
@@ -141,7 +168,7 @@
             <div class="cv-section">
                 <h2>Education</h2>
                 <div class="cv-item">
-                    <div class="cv-year">2025 - Present</div>
+                    <div class="cv-year">2025 - PRES.</div>
                     <div class="cv-detail">Central Academy of Fine Arts (CAFA), Ph.D</div>
                 </div>
                 <div class="cv-item">
@@ -161,20 +188,32 @@
             <div class="cv-section">
                 <h2>Exhibitions</h2>
                 <div class="cv-item">
-                    <div class="cv-year">2015</div>
-                    <div class="cv-detail">CAFAM, Beijing</div>
+                    <div class="cv-year">2016</div>
+                    <div class="cv-detail">Pingshan Art Museum, Shenzhen, China</div>
                 </div>
                 <div class="cv-item">
-                    <div class="cv-year">2016</div>
-                    <div class="cv-detail">Pingshan Art Museum, Shenzhen</div>
+                    <div class="cv-year">2015</div>
+                    <div class="cv-detail">CAFAM, Beijing, China</div>
                 </div>
             </div>
         </div>
     </div>
 
     <footer>
-        &copy; 2026 ZHANG JIARUI ART STUDIO.
+        &copy; 2026 ZHANGJIARUI ARTWORKS.
     </footer>
+
+    <script>
+        // 与首页完全一致的滚动监听
+        window.onscroll = function() {
+            var nav = document.getElementById('navbar');
+            if (window.pageYOffset > 50) {
+                nav.classList.add("nav-scrolled");
+            } else {
+                nav.classList.remove("nav-scrolled");
+            }
+        };
+    </script>
 
 </body>
 </html>
