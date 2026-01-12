@@ -115,10 +115,6 @@
             transition: transform 1.5s cubic-bezier(0.15, 1, 0.3, 1);
         }
 
-        .project:hover img {
-            transform: scale(1.05);
-        }
-
         .project-title {
             font-size: 15px;
             font-weight: 300;
@@ -135,6 +131,45 @@
             text-transform: uppercase;
         }
 
+        /* --- New Contact Section Styles --- */
+        .contact-section {
+            padding: 100px 5%;
+            text-align: center;
+            background-color: #fafafa; /* 轻微背景区分 */
+            margin-top: 40px;
+        }
+
+        .contact-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .contact-info-item {
+            margin-bottom: 30px;
+        }
+
+        .contact-label {
+            font-size: 10px;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            color: #999;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .contact-value {
+            font-size: 18px;
+            letter-spacing: 0.1em;
+            font-weight: 300;
+            color: #111;
+            text-decoration: none;
+            transition: opacity 0.3s;
+        }
+
+        .contact-value:hover {
+            opacity: 0.5;
+        }
+
         footer {
             padding: 50px 5% 40px;
             text-align: center;
@@ -149,6 +184,7 @@
             .grid { grid-template-columns: 1fr; gap: 40px; }
             .hero { height: 75vh; }
             .nav-links { display: none; }
+            .contact-value { font-size: 15px; }
         }
     </style>
 </head>
@@ -161,7 +197,7 @@
             <a href="#sculpture">Sculpture</a>
             <a href="#projects">Projects</a>
             <a href="about.html">About</a>
-            <a href="mailto:contact@zhangjiarui.art">Contact</a>
+            <a href="#contact">Contact</a>
         </div>
     </nav>
 
@@ -217,8 +253,29 @@
                 </div>
                 <div class="project-info">
                     <div class="project-title">Coral Planting Project</div>
-                    <div class="project-meta">Documentary / 2025 / China Xisha Islands</div>
+                    <div class="project-meta">Documentary / 2026 / Xisha Islands</div>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="contact-section" id="contact">
+        <div class="contact-container">
+            <h2 class="category-title" style="text-align: center; border: none;">Contact</h2>
+            
+            <div class="contact-info-item">
+                <span class="contact-label">Email</span>
+                <a href="mailto:jerryzhang_arts@qq.com" class="contact-value">jerryzhang_arts@qq.com</a>
+            </div>
+
+            <div class="contact-info-item">
+                <span class="contact-label">WeChat</span>
+                <span class="contact-value">zjr5556699</span>
+            </div>
+
+            <div class="contact-info-item">
+                <span class="contact-label">Phone</span>
+                <a href="tel:+8615117988382" class="contact-value">(+86) 151 1798 8382</a>
             </div>
         </div>
     </div>
