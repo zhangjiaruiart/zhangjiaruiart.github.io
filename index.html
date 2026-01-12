@@ -12,7 +12,7 @@
             scroll-behavior: smooth;
         }
 
-        /* --- 导航栏样式升级 --- */
+        /* --- 导航栏修复 --- */
         nav {
             width: 100%; 
             display: flex; 
@@ -20,19 +20,19 @@
             align-items: center;
             padding: 40px 5%; 
             box-sizing: border-box;
-            position: fixed; /* 固定位置 */
+            position: fixed; /* 固定在顶部 */
             top: 0;
             left: 0;
             z-index: 1000;
-            transition: all 0.4s ease; /* 平滑过渡 */
+            transition: all 0.4s ease;
             background-color: rgba(255, 255, 255, 0); /* 初始透明 */
         }
 
-        /* 滚动后的样式 */
+        /* 滚动后的样式优化 */
         nav.scrolled {
             padding: 15px 5%; 
-            background-color: rgba(255, 255, 255, 0.8); /* 半透明白 */
-            backdrop-filter: blur(10px); /* 毛玻璃效果 */
+            background-color: rgba(255, 255, 255, 0.85); /* 稍微增加不透明度 */
+            backdrop-filter: blur(10px); 
             -webkit-backdrop-filter: blur(10px);
             border-bottom: 1px solid rgba(0,0,0,0.05);
         }
@@ -41,9 +41,10 @@
         .nav-links a { margin-left: 35px; text-decoration: none; color: #111; font-size: 11px; letter-spacing: 0.25em; text-transform: uppercase; font-weight: 300; transition: opacity 0.3s; }
         .nav-links a:hover { opacity: 0.6; }
 
-        /* 封面区域 */
+        /* 封面区域 - 确保高度撑满且不被遮挡 */
         .hero {
             height: 100vh;
+            width: 100%;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -52,33 +53,45 @@
         }
         .hero img { width: 100%; height: 100%; object-fit: cover; }
 
-        /* 正文区域间距 */
-        .section { padding: 100px 5%; max-width: 1200px; margin: 0 auto; }
+        /* 正文区域 - 增加 ID 偏移，防止点击导航跳转后标题被导航栏遮挡 */
+        .section { 
+            padding: 100px 5%; 
+            max-width: 1200px; 
+            margin: 0 auto; 
+            scroll-margin-top: 80px; /* 关键：解决跳转遮挡标题问题 */
+        }
         .section-title { font-size: 12px; letter-spacing: 0.5em; text-transform: uppercase; color: #999; margin-bottom: 50px; text-align: center; }
 
         /* 视频容器 */
-        .video-container { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; margin-bottom: 40px; }
+        .video-container { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; margin-bottom: 40px; background: #000; }
         .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
 
         /* 网格布局 */
         .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(400px, 1fr)); gap: 40px; }
         .grid-item { margin-bottom: 30px; }
-        .grid-item img { width: 100%; height: auto; display: block; transition: opacity 0.5s; }
+        .grid-item img { width: 100%; height: auto; display: block; transition: opacity 0.5s; cursor: pointer; }
         .grid-item img:hover { opacity: 0.8; }
         .item-info { font-size: 11px; letter-spacing: 0.1em; color: #666; margin-top: 15px; text-transform: uppercase; }
 
         /* 联系区域 */
-        .contact { text-align: center; padding: 150px 5%; background-color: #fafafa; }
+        .contact { text-align: center; padding: 150px 5%; background-color: #fafafa; scroll-margin-top: 80px; }
         .contact h2 { font-size: 14px; font-weight: 300; letter-spacing: 0.3em; margin-bottom: 30px; }
-        .contact p { font-size: 12px; color: #666; letter-spacing: 0.1em; }
+        .contact p { font-size: 12px; color: #666; letter-spacing: 0.1em; line-height: 2; }
 
         footer { padding: 50px 5%; text-align: center; font-size: 9px; letter-spacing: 0.4em; color: #bbb; text-transform: uppercase; }
 
+        /* 移动端适配修复 */
         @media (max-width: 768px) {
-            nav { flex-direction: column; gap: 15px; padding: 20px 5%; }
-            .nav-links { margin-left: 0; }
-            .nav-links a { margin: 0 10px; font-size: 10px; }
+            nav { 
+                flex-direction: row; /* 移动端保持横向排列或调整为以下样式 */
+                padding: 20px 5%;
+                background-color: rgba(255, 255, 255, 0.95); /* 移动端建议直接带背景 */
+            }
+            nav.scrolled { padding: 10px 5%; }
+            .logo { font-size: 14px; letter-spacing: 0.3em; }
+            .nav-links a { margin-left: 15px; font-size: 9px; letter-spacing: 0.1em; }
             .grid { grid-template-columns: 1fr; }
+            .section { padding: 60px 5%; }
         }
     </style>
 </head>
@@ -96,7 +109,7 @@
     </nav>
 
     <section class="hero">
-        <img src="hero.jpg" alt="Zhang Jiarui Artwork" onerror="this.src='https://via.placeholder.com/1920x1080?text=Artist+Cover';">
+        <img src="hero.jpg" alt="Zhang Jiarui Artwork" onerror="this.src='https://via.placeholder.com/1920x1080?text=ZHANG+JIARUI+ART';">
     </section>
 
     <section class="section" id="eco-art">
@@ -141,6 +154,7 @@
     </footer>
 
     <script>
+        // 控制导航栏滚动变色
         window.addEventListener('scroll', function() {
             const nav = document.getElementById('navbar');
             if (window.scrollY > 50) {
