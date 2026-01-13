@@ -14,21 +14,21 @@
         }
 
         /* 导航栏 */
-        nav { padding: 40px 5%; display: flex; justify-content: space-between; align-items: center; }
+        nav { padding: 40px 5% 20px; display: flex; justify-content: space-between; align-items: center; }
         .logo { font-size: 14px; font-weight: 300; letter-spacing: 0.5em; text-decoration: none; color: #111; text-transform: uppercase; }
         .back-link { font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; text-decoration: none; color: #aaa; }
 
         .container { max-width: 1400px; margin: 0 auto; padding: 0 5% 60px; }
 
-        .series-intro { margin: 40px 0 40px 0; max-width: 800px; } /* 缩短介绍下方间距 */
+        .series-intro { margin: 40px 0 40px 0; max-width: 800px; }
         .series-title { font-size: 26px; font-weight: 300; letter-spacing: 0.3em; text-transform: uppercase; margin-bottom: 20px; }
-        .series-description { font-size: 15px; color: #444; line-height: 2; font-weight: 300; }
+        .series-description { font-size: 15px; color: #444; line-height: 2; font-weight: 300; text-align: justify; }
 
         /* --- 基础动画与滤镜 --- */
         .work-item {
             opacity: 0; transform: translateY(30px);
             transition: opacity 1.2s ease, transform 1.2s ease;
-            margin-bottom: 40px; /* 【关键调整】从80px缩短至40px */
+            margin-bottom: 40px; /* 缩短后的基础间距 */
         }
         .work-item.visible { opacity: 1; transform: translateY(0); }
 
@@ -43,29 +43,39 @@
         .work-name { font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; }
         .work-detail { font-size: 10px; color: #999; text-transform: uppercase; margin-top: 4px; }
 
-        /* --- 布局结构调整 --- */
-        .layout-group-A { display: flex; gap: 40px; margin-bottom: 60px; } /* 【关键调整】从120px缩短至60px */
+        /* --- 布局结构 --- */
+        .layout-group-A { display: flex; gap: 40px; margin-bottom: 60px; }
         .main-A { flex: 2; margin-bottom: 0; }
-        .side-A { flex: 1; display: flex; flex-direction: column; gap: 20px; } /* 侧边微调图间距缩小至20px */
-        .side-A .work-item { margin-bottom: 0; } /* 移除侧边内部多余边距 */
+        .side-A { flex: 1; display: flex; flex-direction: column; gap: 20px; }
+        .side-A .work-item { margin-bottom: 0; }
 
-        /* 两列网格布局 */
         .grid-two-columns {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
             gap: 40px 4%;
-            margin-bottom: 40px; /* 【关键调整】从80px缩短至40px */
+            margin-bottom: 40px;
         }
         .grid-two-columns .work-item { margin-bottom: 0; }
 
-        /* 全宽样式 */
         .full-width { width: 100%; }
+
+        /* --- 核心优化：针对 s4_8 的裁切类 --- */
+        .crop-wrapper {
+            height: 65vh; /* 强制限制高度，裁掉多余留白 */
+            margin-top: -10px; /* 视觉补偿，离上方更近 */
+        }
+        .crop-wrapper img {
+            height: 100%;
+            object-fit: cover; /* 填充并裁切 */
+            object-position: center 30%; /* 向上偏移，保证雕塑主体在视觉中心 */
+        }
 
         footer { padding: 40px 0 40px; text-align: center; font-size: 9px; letter-spacing: 0.4em; color: #ccc; }
 
         @media (max-width: 900px) {
             .layout-group-A { flex-direction: column; gap: 40px; }
             .grid-two-columns { grid-template-columns: 1fr; gap: 40px; }
+            .crop-wrapper { height: 50vh; } /* 移动端高度调整 */
         }
     </style>
 </head>
@@ -79,15 +89,18 @@
     <div class="container">
         <header class="series-intro">
             <h1 class="series-title">Formless Series</h1>
-            <p class="series-description">I think the most attractive line in traditional Chinese modeling language is "curve".
-Religious sculptures since the Northern Dynasties have been ordered by lines in their volume, including the density of the lines, the shadows of the lines, the rhythm of the lines, and the tightness of the lines.
-The names and stories of this type of sculpture are the starting point for my creations.</p>
+            <p class="series-description">
+                I think the most attractive line in traditional Chinese modeling language is "curve". 
+                Religious sculptures since the Northern Dynasties have been ordered by lines in their volume, 
+                including the density of the lines, the shadows of the lines, the rhythm of the lines, and the tightness of the lines. 
+                The names and stories of this type of sculpture are the starting point for my creations.
+            </p>
         </header>
 
         <section class="layout-group-A">
             <div class="work-item main-A">
                 <div class="work-image-wrapper"><img src="images/sculpture/s4_1.jpg"></div>
-                <div class="work-info"><div class="work-name">At Ease </div><div class="work-detail">Transparent Resin / 2024</div></div>
+                <div class="work-info"><div class="work-name">At Ease</div><div class="work-detail">Transparent Resin / 2024</div></div>
             </div>
             <div class="side-A">
                 <div class="work-item"><div class="work-image-wrapper"><img src="images/sculpture/s4_2.jpg"></div><div class="work-info"><div class="work-name">At Ease</div></div></div>
@@ -116,7 +129,9 @@ The names and stories of this type of sculpture are the starting point for my cr
         </div>
 
         <div class="work-item full-width">
-            <div class="work-image-wrapper"><img src="images/sculpture/s4_8.jpg"></div>
+            <div class="work-image-wrapper crop-wrapper">
+                <img src="images/sculpture/s4_8.jpg">
+            </div>
             <div class="work-info">
                 <div class="work-name">Nirvana</div>
                 <div class="work-detail">Transparent Resin / 2024</div>
