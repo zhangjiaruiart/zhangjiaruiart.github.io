@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WATER SERIES | ZHANG JIARUI</title>
+    <style>
+        /* 全局样式 */
+        body, html {
+            margin: 0; padding: 0;
+            font-family: "Optima", "Didot", "Helvetica Neue", Helvetica, Arial, sans-serif;
+            background-color: #ffffff; color: #111111;
+            -webkit-font-smoothing: antialiased;
+            scroll-behavior: smooth;
+        }
+
+        /* 导航栏 - 保持与首页 Logo 绝对一致 */
+        nav {
+            padding: 40px 5%;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .logo {
+            font-size: 14px; 
+            font-weight: 300; 
+            letter-spacing: 0.5em; 
+            text-decoration: none; 
+            color: #111; 
+            text-transform: uppercase;
+        }
+        .back-link {
+            font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase;
+            text-decoration: none; color: #aaa; transition: all 0.3s ease;
+        }
+        .back-link:hover { color: #111; transform: translateX(-5px); }
+
+        /* 内容容器 */
+        .container { 
+            max-width: 1400px; 
+            margin: 0 auto; 
+            padding: 0 5% 100px; 
+        }
+
+        /* 顶部系列介绍 */
+        .series-intro {
+            margin: 40px 0 100px 0;
+            max-width: 800px;
+            animation: fadeIn 1.2s ease-out;
+        }
+        .series-title {
+            font-size: 26px; font-weight: 300; letter-spacing: 0.3em;
+            text-transform: uppercase; margin-bottom: 30px;
+        }
+        .series-description {
+            font-size: 15px; color: #444; line-height: 2;
+            font-weight: 300; text-align: justify;
+        }
+
+        /* 动态作品布局系统 */
+        .works-layout {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 120px 4%;
+            align-items: flex-start;
+        }
+
+        /* 基础作品块 */
+        .work-item {
+            flex: 1 1 100%;
+            display: flex;
+            flex-direction: column;
+            opacity: 0; 
+            transform: translateY(30px);
+            transition: opacity 1s ease, transform 1s ease;
+        }
+        
+        .work-item.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .work-item.slim {
+            flex: 1 1 48%; 
+        }
+
+        /* 图片交互容器 */
+        .work-image-wrapper {
+            width: 100%;
+            margin-bottom: 25px;
+            display: flex;
+            justify-content: center;
+            overflow: hidden;
+            cursor: pointer;
+        }
+        
+        .work-image-wrapper img {
+            width: 100%;
+            height: auto;
+            max-height: 85vh;
+            object-fit: contain;
+            display: block;
+            transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        .work-item:hover .work-image-wrapper img {
+            transform: scale(1.03);
+        }
+
+        /* 作品文字信息交互 */
+        .work-info {
+            padding-top: 15px;
+            border-top: 1px solid #eee;
+            transition: border-color 0.5s ease;
+        }
+        .work-item:hover .work-info {
+            border-top-color: #111;
+        }
+        .work-name {
+            font-size: 14px; font-weight: 400; letter-spacing: 0.15em;
+            text-transform: uppercase; margin-bottom: 8px;
+        }
+        .work-detail {
+            font-size: 11px; color: #999;
+            letter-spacing: 0.05em; text-transform: uppercase;
+            line-height: 1.6;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        footer {
+            padding: 100px 5% 40px; text-align: center;
+            font-size: 9px; letter-spacing: 0.4em; color: #ccc; text-transform: uppercase;
+        }
+
+        @media (max-width: 900px) {
+            .work-item.slim { flex: 1 1 100%; }
+            .series-intro { margin-bottom: 60px; }
+            .works-layout { gap: 80px 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <a href="index.html" class="logo">ZHANGJIARUI ARTWORKS</a>
+        <a href="index.html#sculpture" class="back-link">← Back to Series</a>
+    </nav>
+
+    <div class="container">
+        <header class="series-intro">
+            <h1 class="series-title">Water Series</h1>
+            <p class="series-description">
+                Water is the source of life. By utilizing transparent resin, I explore the visual properties of refraction and fluidity, attempting to sculpt the invisible "void" and the eternal flow of moments.
+            </p>
+        </header>
+
+        <div class="works-layout">
+            <div class="work-item">
+                <div class="work-image-wrapper">
+                    <img src="images/sculpture/s2_1.jpg" alt="Water 1" onerror="this.src='images/sculpture/s2_cover.jpg'">
+                </div>
+                <div class="work-info">
+                    <div class="work-name">Water 1</div>
+                    <div class="work-detail">Transparent Resin / 162 x 162 x 8 cm / 2024</div>
+                </div>
+            </div>
+
+            <div class="work-item slim">
+                <div class="work-image-wrapper">
+                    <img src="images/sculpture/s2_2.jpg" alt="Water 2" onerror="this.src='images/sculpture/s2_cover.jpg'">
+                </div>
+                <div class="work-info">
+                    <div class="work-name">Water 2</div>
+                    <div class="work-detail">Transparent Resin / 50 x 50 x 50 cm / 2024</div>
+                </div>
+            </div>
+
+            <div class="work-item slim">
+                <div class="work-image-wrapper">
+                    <img src="images/sculpture/s2_3.jpg" alt="Water 3" onerror="this.src='images/sculpture/s2_cover.jpg'">
+                </div>
+                <div class="work-info">
+                    <div class="work-name">Water 3</div>
+                    <div class="work-detail">Transparent Resin / 40 x 40 x 60 cm / 2024</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        &copy; 2026 ZHANGJIARUI ARTWORKS.
+    </footer>
+
+    <script>
+        const observerOptions = { threshold: 0.1 };
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.work-item').forEach(item => {
+            observer.observe(item);
+        });
+    </script>
+
+</body>
+</html>
