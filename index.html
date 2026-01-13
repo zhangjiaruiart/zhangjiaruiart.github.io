@@ -13,7 +13,7 @@
             overflow-x: hidden;
         }
 
-        /* --- 1. 导航栏优化 --- */
+        /* --- 1. 导航栏 --- */
         nav {
             position: fixed;
             top: 0; left: 0; width: 100%;
@@ -41,7 +41,6 @@
 
         .nav-scrolled .logo { color: #111111; }
 
-        /* 桌面端链接样式 */
         .nav-links { display: flex; align-items: center; }
         .nav-links a {
             margin-left: 35px; text-decoration: none; color: #ffffff;
@@ -59,7 +58,6 @@
         }
         .nav-links a:hover::after { width: 100%; }
 
-        /* 移动端汉堡菜单按钮 */
         .menu-toggle {
             display: none; flex-direction: column; gap: 6px;
             cursor: pointer; z-index: 2001;
@@ -70,7 +68,7 @@
         }
         .nav-scrolled .menu-toggle span { background-color: #111; }
 
-        /* --- 2. 核心封面 (Hero) --- */
+        /* --- 2. 封面 (Hero) --- */
         .hero {
             height: 100vh; width: 100%; overflow: hidden;
             position: relative; background-color: #000;
@@ -81,32 +79,45 @@
             animation: heroZoom 2.5s cubic-bezier(0.15, 1, 0.3, 1) forwards;
         }
 
-        /* --- 3. 响应式布局调整 --- */
+        /* --- 3. 核心手机端响应式修改 --- */
         @media (max-width: 900px) {
-            .hero { height: 85vh; } /* 移动端封面高度调整，避免遮挡内容 */
-            .hero img { object-position: center 20%; } /* 确保图片上半部分主体显示 */
-
-            .menu-toggle { display: flex; } /* 显示汉堡菜单 */
+            /* 封面人物居中：调整 70% 这个值可以微调人物左右位置 */
+            .hero img { object-position: 70% center; } 
+            
+            /* 导航 */
+            .menu-toggle { display: flex; }
             .logo { font-size: 14px; letter-spacing: 0.3em; }
-
-            /* 移动端导航菜单 */
             .nav-links {
                 position: fixed; top: 0; right: -100%; width: 100%; height: 100vh;
                 background: #ffffff; flex-direction: column; justify-content: center;
                 align-items: center; transition: 0.5s cubic-bezier(0.2, 1, 0.3, 1);
             }
             .nav-links.active { right: 0; }
-            .nav-links a {
-                color: #111111 !important; margin: 20px 0; font-size: 14px;
-            }
+            .nav-links a { color: #111111 !important; margin: 20px 0; font-size: 14px; }
 
-            /* 菜单开启时的汉堡图标变化 */
             .active-toggle span:nth-child(1) { transform: translateY(7px) rotate(45deg); background-color: #111 !important; }
             .active-toggle span:nth-child(2) { opacity: 0; }
             .active-toggle span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); background-color: #111 !important; }
-            
-            .grid { grid-template-columns: 1fr; gap: 40px; }
-            .content-section { padding-top: 60px; }
+
+            /* 视频纵向排列并占满空间 */
+            .grid { 
+                grid-template-columns: 1fr; 
+                gap: 50px; /* 增加视频之间的间距 */
+            }
+            .content-section { 
+                padding: 60px 0; /* 视频部分左右不留白，或者极小留白 */
+                width: 100%;
+            }
+            .category-title {
+                margin-left: 5%; margin-right: 5%;
+            }
+            .project-info {
+                padding: 0 5%; /* 文字部分保持留白 */
+            }
+            .video-ratio {
+                aspect-ratio: 16 / 9;
+                width: 100%;
+            }
         }
 
         /* 其余固定样式 */
@@ -183,7 +194,7 @@
 
     <div class="content-section" id="sculpture">
         <h2 class="category-title">Sculpture</h2>
-        <div style="display: flex; flex-wrap: wrap; gap: 40px 60px;">
+        <div style="display: flex; flex-wrap: wrap; gap: 40px 60px; padding: 0 5%;">
             <div style="flex: 1; min-width: 300px;">
                 <h3 style="font-size: 11px; letter-spacing: 0.3em; text-transform: uppercase; color: #888; margin: 20px 0 20px 0; font-weight: 300;">Wood Series</h3>
                 <a href="series1.html" class="project">
@@ -290,7 +301,6 @@
     <footer>&copy; 2026 ZHANGJIARUI ARTWORKS.</footer>
 
     <script>
-        // 导航栏背景逻辑
         window.onscroll = function() {
             var nav = document.getElementById('navbar');
             if (window.pageYOffset > 50) {
@@ -300,15 +310,12 @@
             }
         };
 
-        // 移动端菜单开关逻辑
         const navLinks = document.getElementById('navLinks');
         const menuToggle = document.getElementById('menuToggle');
 
         function toggleMenu() {
             navLinks.classList.toggle('active');
             menuToggle.classList.toggle('active-toggle');
-            
-            // 开启菜单时锁定背景滚动
             if (navLinks.classList.contains('active')) {
                 document.body.style.overflow = 'hidden';
             } else {
