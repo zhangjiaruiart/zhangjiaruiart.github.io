@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FORMLESS SERIES | ZHANG JIARUI</title>
     <style>
+        /* 全局样式 */
         body, html {
             margin: 0; padding: 0;
             font-family: "Optima", "Didot", "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -13,78 +14,117 @@
             scroll-behavior: smooth;
         }
 
-        /* 导航栏 */
-        nav { padding: 40px 5% 20px; display: flex; justify-content: space-between; align-items: center; }
+        /* 导航栏：增加高斯模糊与智能隐藏 */
+        nav {
+            padding: 30px 5%;
+            display: flex; justify-content: space-between; align-items: center;
+            position: fixed; top: 0; left: 0; right: 0;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(15px);
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        nav.hidden { transform: translateY(-100%); }
+
         .logo { font-size: 14px; font-weight: 300; letter-spacing: 0.5em; text-decoration: none; color: #111; text-transform: uppercase; }
-        .back-link { font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; text-decoration: none; color: #aaa; }
+        .back-link { font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; text-decoration: none; color: #aaa; transition: all 0.3s ease; }
+        .back-link:hover { color: #111; padding-left: 10px; }
 
-        .container { max-width: 1400px; margin: 0 auto; padding: 0 5% 60px; }
+        .container { max-width: 1400px; margin: 0 auto; padding: 120px 5% 60px; }
 
-        .series-intro { margin: 40px 0 40px 0; max-width: 800px; }
+        /* 系列介绍 */
+        .series-intro { margin: 40px 0 60px 0; max-width: 800px; }
         .series-title { font-size: 26px; font-weight: 300; letter-spacing: 0.3em; text-transform: uppercase; margin-bottom: 20px; }
         .series-description { font-size: 15px; color: #444; line-height: 2; font-weight: 300; text-align: justify; }
 
-        /* --- 动画优化：缩短过渡时间，减小位移 --- */
+        /* 作品项通用动画 */
         .work-item {
             opacity: 0; 
-            transform: translateY(10px); /* 减小位移距离，让显示更干脆 */
-            transition: opacity 0.6s ease-out, transform 0.6s ease-out; /* 缩短动画时间 */
+            transform: translateY(20px);
+            transition: opacity 1s ease, transform 1s cubic-bezier(0.16, 1, 0.3, 1);
             margin-bottom: 40px;
         }
         .work-item.visible { opacity: 1; transform: translateY(0); }
 
+        /* 图片容器与视差效果 */
         .work-image-wrapper {
-            width: 100%; overflow: hidden; background-color: #f9f9f9; /* 增加占位底色 */
-            filter: contrast(1.06) brightness(1.02);
+            width: 100%; overflow: hidden; background-color: #fcfcfc;
+            cursor: zoom-in; position: relative;
         }
-        .work-image-wrapper img { width: 100%; height: auto; display: block; transition: transform 0.8s; }
-        .work-item:hover img { transform: scale(1.01); }
+        .work-image-wrapper img { 
+            width: 100%; height: auto; display: block; 
+            transition: transform 0.15s linear; /* 视差快响应 */
+            will-change: transform;
+        }
 
-        .work-info { padding-top: 12px; border-top: 1px solid #eee; margin-top: 10px; }
-        .work-name { font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; }
-        .work-detail { font-size: 10px; color: #999; text-transform: uppercase; margin-top: 4px; }
+        /* 文字信息与底线黑线交互（同 Water Series） */
+        .work-info { 
+            padding-top: 15px; 
+            border-top: 1px solid #eee; 
+            margin-top: 10px; 
+            position: relative;
+            transition: all 0.8s ease 0.3s;
+            opacity: 0; transform: translateY(10px);
+        }
+        .work-item.visible .work-info { opacity: 1; transform: translateY(0); }
 
-        /* --- 布局结构 --- */
-        .layout-group-A { display: flex; gap: 40px; margin-bottom: 60px; }
+        /* 底线生长黑线 */
+        .work-info::after {
+            content: '';
+            position: absolute; top: -1px; left: 50%;
+            width: 0; height: 1.5px;
+            background-color: #111;
+            transition: all 0.6s cubic-bezier(0.19, 1, 0.22, 1);
+            transform: translateX(-50%);
+        }
+        .work-item:hover .work-info::after { width: 100%; }
+
+        .work-name { font-size: 13px; letter-spacing: 0.15em; text-transform: uppercase; transition: letter-spacing 0.4s ease; }
+        .work-item:hover .work-name { letter-spacing: 0.25em; }
+        .work-detail { font-size: 10px; color: #999; text-transform: uppercase; margin-top: 6px; letter-spacing: 0.05em; }
+
+        /* 全屏预览 Overlay */
+        #overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(255,255,255,0.95);
+            display: none; z-index: 2000; cursor: zoom-out;
+            justify-content: center; align-items: center;
+        }
+        #overlay img { max-width: 90%; max-height: 90%; object-fit: contain; }
+
+        /* 布局结构保持不变 */
+        .layout-group-A { display: flex; gap: 40px; margin-bottom: 80px; }
         .main-A { flex: 2; margin-bottom: 0; }
         .side-A { flex: 1; display: flex; flex-direction: column; gap: 20px; }
         .side-A .work-item { margin-bottom: 0; }
 
-        .grid-two-columns {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 40px 4%;
-            margin-bottom: 40px;
-        }
+        .grid-two-columns { display: grid; grid-template-columns: repeat(2, 1fr); gap: 60px 4%; margin-bottom: 60px; }
         .grid-two-columns .work-item { margin-bottom: 0; }
 
-        .full-width { width: 100%; }
+        .full-width { width: 100%; margin-bottom: 80px; }
 
-        .crop-wrapper {
-            height: 65vh;
-            margin-top: -10px;
-        }
-        .crop-wrapper img {
-            height: 100%;
-            object-fit: cover;
-            object-position: center 30%;
-        }
+        /* 特殊高度处理保持不变 */
+        .crop-wrapper { height: 75vh; }
+        .crop-wrapper img { height: 100%; object-fit: cover; object-position: center 30%; }
 
-        footer { padding: 40px 0 40px; text-align: center; font-size: 9px; letter-spacing: 0.4em; color: #ccc; }
+        footer { padding: 80px 0 40px; text-align: center; font-size: 9px; letter-spacing: 0.4em; color: #ccc; text-transform: uppercase; }
 
         @media (max-width: 900px) {
             .layout-group-A { flex-direction: column; gap: 40px; }
             .grid-two-columns { grid-template-columns: 1fr; gap: 40px; }
             .crop-wrapper { height: 50vh; }
+            .container { padding-top: 100px; }
         }
     </style>
 </head>
 <body>
 
-    <nav>
+    <nav id="navbar">
         <a href="index.html" class="logo">ZHANGJIARUI ARTWORKS</a>
         <a href="index.html#sculpture" class="back-link">← Back to Series</a>
     </nav>
+
+    <div id="overlay"><img src="" alt="Full View"></div>
 
     <div class="container">
         <header class="series-intro">
@@ -99,18 +139,30 @@
 
         <section class="layout-group-A">
             <div class="work-item main-A">
-                <div class="work-image-wrapper"><img src="images/sculpture/s4_1.jpg" loading="eager"></div>
-                <div class="work-info"><div class="work-name">At Ease</div><div class="work-detail">Transparent Resin / 45 x 23 x 75 cm / 2024</div></div>
+                <div class="work-image-wrapper"><img src="images/sculpture/s4_1.jpg" class="parallax-img"></div>
+                <div class="work-info">
+                    <div class="work-name">At Ease</div>
+                    <div class="work-detail">Transparent Resin / 45 x 23 x 75 cm / 2024</div>
+                </div>
             </div>
             <div class="side-A">
-                <div class="work-item"><div class="work-image-wrapper"><img src="images/sculpture/s4_2.jpg" loading="eager"></div><div class="work-info"><div class="work-name">At Ease</div></div></div>
-                <div class="work-item"><div class="work-image-wrapper"><img src="images/sculpture/s4_3.jpg"></div><div class="work-info"><div class="work-name">At Ease</div></div></div>
-                <div class="work-item"><div class="work-image-wrapper"><img src="images/sculpture/s4_4.jpg"></div><div class="work-info"><div class="work-name">At Ease</div></div></div>
+                <div class="work-item">
+                    <div class="work-image-wrapper"><img src="images/sculpture/s4_2.jpg" class="parallax-img"></div>
+                    <div class="work-info"><div class="work-name">At Ease</div></div>
+                </div>
+                <div class="work-item">
+                    <div class="work-image-wrapper"><img src="images/sculpture/s4_3.jpg" class="parallax-img"></div>
+                    <div class="work-info"><div class="work-name">At Ease</div></div>
+                </div>
+                <div class="work-item">
+                    <div class="work-image-wrapper"><img src="images/sculpture/s4_4.jpg" class="parallax-img"></div>
+                    <div class="work-info"><div class="work-name">At Ease</div></div>
+                </div>
             </div>
         </section>
 
         <div class="work-item full-width">
-            <div class="work-image-wrapper"><img src="images/sculpture/s4_5.jpg" loading="lazy"></div>
+            <div class="work-image-wrapper"><img src="images/sculpture/s4_5.jpg" class="parallax-img"></div>
             <div class="work-info">
                 <div class="work-name">Nirvana</div>
                 <div class="work-detail">Transparent Resin / 80 x 30 x 28 cm / 2023</div>
@@ -119,18 +171,18 @@
 
         <div class="grid-two-columns">
             <div class="work-item">
-                <div class="work-image-wrapper"><img src="images/sculpture/s4_6.jpg" loading="lazy"></div>
+                <div class="work-image-wrapper"><img src="images/sculpture/s4_6.jpg" class="parallax-img"></div>
                 <div class="work-info"><div class="work-name">Nirvana</div></div>
             </div>
             <div class="work-item">
-                <div class="work-image-wrapper"><img src="images/sculpture/s4_7.jpg" loading="lazy"></div>
+                <div class="work-image-wrapper"><img src="images/sculpture/s4_7.jpg" class="parallax-img"></div>
                 <div class="work-info"><div class="work-name">Nirvana</div></div>
             </div>
         </div>
 
         <div class="work-item full-width">
             <div class="work-image-wrapper crop-wrapper">
-                <img src="images/sculpture/s4_8.jpg" loading="lazy">
+                <img src="images/sculpture/s4_8.jpg" class="parallax-img">
             </div>
             <div class="work-info">
                 <div class="work-name">Nirvana</div>
@@ -138,9 +190,11 @@
         </div>
 
         <div class="work-item full-width">
-            <div class="work-image-wrapper"><img src="images/sculpture/s4_9.jpg" loading="lazy"></div>
-            <div class="work-info"><div class="work-name">Present</div></div>
-            <div class="work-detail">Transparent Resin / 105 x 20 x 20 cm / 2023</div>
+            <div class="work-image-wrapper"><img src="images/sculpture/s4_9.jpg" class="parallax-img"></div>
+            <div class="work-info">
+                <div class="work-name">Present</div>
+                <div class="work-detail">Transparent Resin / 105 x 20 x 20 cm / 2023</div>
+            </div>
         </div>
 
     </div>
@@ -148,23 +202,58 @@
     <footer>&copy; 2026 ZHANGJIARUI ARTWORKS.</footer>
 
     <script>
-        // 降低阈值(threshold)至0.05，让图片还没完全进入视口就开始显示
+        // 1. 滚动淡入 (Intersection Observer)
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('visible');
-                    observer.unobserve(entry.target); // 显示后立即停止监听，节省性能
                 }
             });
-        }, { threshold: 0.05, rootMargin: "0px 0px 200px 0px" }); // 提前200px触发加载
-
+        }, { threshold: 0.1 });
         document.querySelectorAll('.work-item').forEach(item => observer.observe(item));
 
-        // 如果5秒内没有触发动画（网络极慢），强制显示，防止页面留白
-        window.addEventListener('load', () => {
-            setTimeout(() => {
-                document.querySelectorAll('.work-item').forEach(item => item.classList.add('visible'));
-            }, 3000);
+        // 2. 鼠标视差跟随效果 (Parallax)
+        document.querySelectorAll('.work-image-wrapper').forEach(wrapper => {
+            wrapper.addEventListener('mousemove', (e) => {
+                const img = wrapper.querySelector('img');
+                const rect = wrapper.getBoundingClientRect();
+                const x = (e.clientX - rect.left) / rect.width - 0.5;
+                const y = (e.clientY - rect.top) / rect.height - 0.5;
+                // 细微平移
+                img.style.transform = `scale(1.03) translate(${x * 15}px, ${y * 15}px)`;
+            });
+            wrapper.addEventListener('mouseleave', (e) => {
+                const img = wrapper.querySelector('img');
+                img.style.transform = `scale(1) translate(0, 0)`;
+            });
+        });
+
+        // 3. 智能导航栏隐藏
+        let lastScroll = 0;
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            const currentScroll = window.pageYOffset;
+            if (currentScroll > lastScroll && currentScroll > 200) {
+                navbar.classList.add('hidden');
+            } else {
+                navbar.classList.remove('hidden');
+            }
+            lastScroll = currentScroll;
+        });
+
+        // 4. 点击预览大图
+        const overlay = document.getElementById('overlay');
+        const overlayImg = overlay.querySelector('img');
+        document.querySelectorAll('.work-image-wrapper img').forEach(img => {
+            img.addEventListener('click', () => {
+                overlayImg.src = img.src;
+                overlay.style.display = 'flex';
+                document.body.style.overflow = 'hidden';
+            });
+        });
+        overlay.addEventListener('click', () => {
+            overlay.style.display = 'none';
+            document.body.style.overflow = 'auto';
         });
     </script>
 </body>
