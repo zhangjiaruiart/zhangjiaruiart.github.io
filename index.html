@@ -89,7 +89,7 @@
 
         .content-section {
             padding: 80px 5% 20px; 
-            max-width: 1260px; /* 比例缩小 10% (原1400px) */
+            max-width: 1260px; 
             margin: 0 auto;
             animation: fadeInUp 1.2s cubic-bezier(0.15, 1, 0.3, 1) both;
         }
@@ -202,7 +202,6 @@
 
     <div class="content-section" id="sculpture">
         <h2 class="category-title">Sculpture</h2>
-
         <div style="display: flex; flex-wrap: wrap; gap: 40px 60px;">
 
             <div style="flex: 1; min-width: 300px;">
@@ -234,8 +233,8 @@
             <div style="flex: 1; min-width: 300px;">
                 <h3 style="font-size: 11px; letter-spacing: 0.3em; text-transform: uppercase; color: #888; margin: 20px 0 20px 0; font-weight: 300;">Line Series</h3>
                 <a href="series5.html" class="project">
-                    <div class="project-image-wrapper img-ratio" style="background-color: #ffffff;">
-                        <img src="images/sculpture/s5_cover.jpg" alt="Series 5" onerror="this.src='images/Work2.jpg'" loading="lazy" style="object-fit: contain;">
+                    <div class="project-image-wrapper img-ratio" style="background-color: #ffffff; display: flex; align-items: center; justify-content: center;">
+                        <img src="images/sculpture/s5_cover.jpg" alt="Series 5" onerror="this.src='images/Work2.jpg'" loading="lazy" style="object-fit: contain; transform: scale(0.8); transition: transform 0.5s ease;">
                     </div>
                     <div class="project-info">
                         <div class="project-title">X</div>
