@@ -18,23 +18,23 @@
         .logo { font-size: 14px; font-weight: 300; letter-spacing: 0.5em; text-decoration: none; color: #111; text-transform: uppercase; }
         .back-link { font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; text-decoration: none; color: #aaa; }
 
-        .container { max-width: 1400px; margin: 0 auto; padding: 0 5% 100px; }
+        .container { max-width: 1400px; margin: 0 auto; padding: 0 5% 60px; }
 
-        .series-intro { margin: 40px 0 80px 0; max-width: 800px; }
-        .series-title { font-size: 26px; font-weight: 300; letter-spacing: 0.3em; text-transform: uppercase; margin-bottom: 30px; }
+        .series-intro { margin: 40px 0 40px 0; max-width: 800px; } /* 缩短介绍下方间距 */
+        .series-title { font-size: 26px; font-weight: 300; letter-spacing: 0.3em; text-transform: uppercase; margin-bottom: 20px; }
         .series-description { font-size: 15px; color: #444; line-height: 2; font-weight: 300; }
 
         /* --- 基础动画与滤镜 --- */
         .work-item {
             opacity: 0; transform: translateY(30px);
             transition: opacity 1.2s ease, transform 1.2s ease;
-            margin-bottom: 80px; /* 增加作品间的间距 */
+            margin-bottom: 40px; /* 【关键调整】从80px缩短至40px */
         }
         .work-item.visible { opacity: 1; transform: translateY(0); }
 
         .work-image-wrapper {
             width: 100%; overflow: hidden; background-color: #fff;
-            filter: contrast(1.06) brightness(1.02); /* 净化背景杂色 */
+            filter: contrast(1.06) brightness(1.02);
         }
         .work-image-wrapper img { width: 100%; height: auto; display: block; transition: 0.8s; }
         .work-item:hover img { transform: scale(1.01); }
@@ -43,27 +43,29 @@
         .work-name { font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; }
         .work-detail { font-size: 10px; color: #999; text-transform: uppercase; margin-top: 4px; }
 
-        /* --- 布局结构 --- */
-        .layout-group-A { display: flex; gap: 40px; margin-bottom: 120px; }
-        .main-A { flex: 2; }
-        .side-A { flex: 1; display: flex; flex-direction: column; gap: 30px; }
+        /* --- 布局结构调整 --- */
+        .layout-group-A { display: flex; gap: 40px; margin-bottom: 60px; } /* 【关键调整】从120px缩短至60px */
+        .main-A { flex: 2; margin-bottom: 0; }
+        .side-A { flex: 1; display: flex; flex-direction: column; gap: 20px; } /* 侧边微调图间距缩小至20px */
+        .side-A .work-item { margin-bottom: 0; } /* 移除侧边内部多余边距 */
 
         /* 两列网格布局 */
         .grid-two-columns {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
             gap: 40px 4%;
-            margin-bottom: 80px;
+            margin-bottom: 40px; /* 【关键调整】从80px缩短至40px */
         }
+        .grid-two-columns .work-item { margin-bottom: 0; }
 
         /* 全宽样式 */
         .full-width { width: 100%; }
 
-        footer { padding: 80px 0 40px; text-align: center; font-size: 9px; letter-spacing: 0.4em; color: #ccc; }
+        footer { padding: 40px 0 40px; text-align: center; font-size: 9px; letter-spacing: 0.4em; color: #ccc; }
 
         @media (max-width: 900px) {
-            .layout-group-A { flex-direction: column; }
-            .grid-two-columns { grid-template-columns: 1fr; }
+            .layout-group-A { flex-direction: column; gap: 40px; }
+            .grid-two-columns { grid-template-columns: 1fr; gap: 40px; }
         }
     </style>
 </head>
