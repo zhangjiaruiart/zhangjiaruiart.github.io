@@ -24,19 +24,20 @@
         .series-title { font-size: 26px; font-weight: 300; letter-spacing: 0.3em; text-transform: uppercase; margin-bottom: 20px; }
         .series-description { font-size: 15px; color: #444; line-height: 2; font-weight: 300; text-align: justify; }
 
-        /* --- 基础动画与滤镜 --- */
+        /* --- 动画优化：缩短过渡时间，减小位移 --- */
         .work-item {
-            opacity: 0; transform: translateY(30px);
-            transition: opacity 1.2s ease, transform 1.2s ease;
-            margin-bottom: 40px; /* 缩短后的基础间距 */
+            opacity: 0; 
+            transform: translateY(10px); /* 减小位移距离，让显示更干脆 */
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out; /* 缩短动画时间 */
+            margin-bottom: 40px;
         }
         .work-item.visible { opacity: 1; transform: translateY(0); }
 
         .work-image-wrapper {
-            width: 100%; overflow: hidden; background-color: #fff;
+            width: 100%; overflow: hidden; background-color: #f9f9f9; /* 增加占位底色 */
             filter: contrast(1.06) brightness(1.02);
         }
-        .work-image-wrapper img { width: 100%; height: auto; display: block; transition: 0.8s; }
+        .work-image-wrapper img { width: 100%; height: auto; display: block; transition: transform 0.8s; }
         .work-item:hover img { transform: scale(1.01); }
 
         .work-info { padding-top: 12px; border-top: 1px solid #eee; margin-top: 10px; }
@@ -59,15 +60,14 @@
 
         .full-width { width: 100%; }
 
-        /* --- 核心优化：针对 s4_8 的裁切类 --- */
         .crop-wrapper {
-            height: 65vh; /* 强制限制高度，裁掉多余留白 */
-            margin-top: -10px; /* 视觉补偿，离上方更近 */
+            height: 65vh;
+            margin-top: -10px;
         }
         .crop-wrapper img {
             height: 100%;
-            object-fit: cover; /* 填充并裁切 */
-            object-position: center 30%; /* 向上偏移，保证雕塑主体在视觉中心 */
+            object-fit: cover;
+            object-position: center 30%;
         }
 
         footer { padding: 40px 0 40px; text-align: center; font-size: 9px; letter-spacing: 0.4em; color: #ccc; }
@@ -75,7 +75,7 @@
         @media (max-width: 900px) {
             .layout-group-A { flex-direction: column; gap: 40px; }
             .grid-two-columns { grid-template-columns: 1fr; gap: 40px; }
-            .crop-wrapper { height: 50vh; } /* 移动端高度调整 */
+            .crop-wrapper { height: 50vh; }
         }
     </style>
 </head>
@@ -99,18 +99,18 @@
 
         <section class="layout-group-A">
             <div class="work-item main-A">
-                <div class="work-image-wrapper"><img src="images/sculpture/s4_1.jpg"></div>
+                <div class="work-image-wrapper"><img src="images/sculpture/s4_1.jpg" loading="eager"></div>
                 <div class="work-info"><div class="work-name">At Ease</div><div class="work-detail">Transparent Resin / 45 x 23 x 75 cm / 2024</div></div>
             </div>
             <div class="side-A">
-                <div class="work-item"><div class="work-image-wrapper"><img src="images/sculpture/s4_2.jpg"></div><div class="work-info"><div class="work-name">At Ease</div></div></div>
+                <div class="work-item"><div class="work-image-wrapper"><img src="images/sculpture/s4_2.jpg" loading="eager"></div><div class="work-info"><div class="work-name">At Ease</div></div></div>
                 <div class="work-item"><div class="work-image-wrapper"><img src="images/sculpture/s4_3.jpg"></div><div class="work-info"><div class="work-name">At Ease</div></div></div>
                 <div class="work-item"><div class="work-image-wrapper"><img src="images/sculpture/s4_4.jpg"></div><div class="work-info"><div class="work-name">At Ease</div></div></div>
             </div>
         </section>
 
         <div class="work-item full-width">
-            <div class="work-image-wrapper"><img src="images/sculpture/s4_5.jpg"></div>
+            <div class="work-image-wrapper"><img src="images/sculpture/s4_5.jpg" loading="lazy"></div>
             <div class="work-info">
                 <div class="work-name">Nirvana</div>
                 <div class="work-detail">Transparent Resin / 80 x 30 x 28 cm / 2023</div>
@@ -119,18 +119,18 @@
 
         <div class="grid-two-columns">
             <div class="work-item">
-                <div class="work-image-wrapper"><img src="images/sculpture/s4_6.jpg"></div>
+                <div class="work-image-wrapper"><img src="images/sculpture/s4_6.jpg" loading="lazy"></div>
                 <div class="work-info"><div class="work-name">Nirvana</div></div>
             </div>
             <div class="work-item">
-                <div class="work-image-wrapper"><img src="images/sculpture/s4_7.jpg"></div>
+                <div class="work-image-wrapper"><img src="images/sculpture/s4_7.jpg" loading="lazy"></div>
                 <div class="work-info"><div class="work-name">Nirvana</div></div>
             </div>
         </div>
 
         <div class="work-item full-width">
             <div class="work-image-wrapper crop-wrapper">
-                <img src="images/sculpture/s4_8.jpg">
+                <img src="images/sculpture/s4_8.jpg" loading="lazy">
             </div>
             <div class="work-info">
                 <div class="work-name">Nirvana</div>
@@ -138,9 +138,9 @@
         </div>
 
         <div class="work-item full-width">
-            <div class="work-image-wrapper"><img src="images/sculpture/s4_9.jpg"></div>
+            <div class="work-image-wrapper"><img src="images/sculpture/s4_9.jpg" loading="lazy"></div>
             <div class="work-info"><div class="work-name">Present</div></div>
-              <div class="work-detail">Transparent Resin / 105 x 20 x 20 cm / 2023</div>
+            <div class="work-detail">Transparent Resin / 105 x 20 x 20 cm / 2023</div>
         </div>
 
     </div>
@@ -148,12 +148,24 @@
     <footer>&copy; 2026 ZHANGJIARUI ARTWORKS.</footer>
 
     <script>
+        // 降低阈值(threshold)至0.05，让图片还没完全进入视口就开始显示
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
-                if (entry.isIntersecting) entry.target.classList.add('visible');
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target); // 显示后立即停止监听，节省性能
+                }
             });
-        }, { threshold: 0.1 });
+        }, { threshold: 0.05, rootMargin: "0px 0px 200px 0px" }); // 提前200px触发加载
+
         document.querySelectorAll('.work-item').forEach(item => observer.observe(item));
+
+        // 如果5秒内没有触发动画（网络极慢），强制显示，防止页面留白
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.querySelectorAll('.work-item').forEach(item => item.classList.add('visible'));
+            }, 3000);
+        });
     </script>
 </body>
 </html>
