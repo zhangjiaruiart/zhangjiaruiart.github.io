@@ -168,26 +168,9 @@
         </div>
     </nav>
 
-   <section class="hero" style="background-color: #111;">
-        <img src="http://t8sz9vbqf.hb-bkt.clouddn.com/cover.jpg?imageView2/2/w/1920/q/80" 
-             alt="Zhang Jiarui Art" 
-             id="heroImg"
-             style="opacity: 0; transform: scale(1.05); transition: opacity 1.5s ease, transform 2.5s cubic-bezier(0.15, 1, 0.3, 1);">
+    <section class="hero">
+        <img src="images/Cover.JPG" alt="Zhang Jiarui Art" onerror="this.src='images/cover.jpg';">
     </section>
-
-    <script>
-        (function() {
-            var img = new Image();
-            img.src = "http://t8sz9vbqf.hb-bkt.clouddn.com/cover.jpg?imageView2/2/w/1920/q/80";
-            img.onload = function() {
-                var hero = document.getElementById('heroImg');
-                if(hero) {
-                    hero.style.opacity = '1';
-                    hero.style.transform = 'scale(1)';
-                }
-            };
-        })();
-    </script>
 
     <div class="content-section" id="eco-art">
         <h2 class="category-title">Ecological Art</h2>
