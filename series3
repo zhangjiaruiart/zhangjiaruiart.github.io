@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SERIES 3 | ZHANG JIARUI</title>
+    <style>
+        /* 全局样式 */
+        body, html {
+            margin: 0; padding: 0;
+            font-family: "Optima", "Didot", "Helvetica Neue", Helvetica, Arial, sans-serif;
+            background-color: #ffffff; color: #111111;
+            -webkit-font-smoothing: antialiased;
+            scroll-behavior: smooth;
+        }
+
+        /* 导航栏：智能隐藏与高斯模糊 */
+        nav {
+            padding: 30px 5%;
+            display: flex; justify-content: space-between; align-items: center;
+            position: fixed; top: 0; left: 0; right: 0;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(15px);
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        nav.hidden { transform: translateY(-100%); }
+
+        .logo { font-size: 14px; font-weight: 300; letter-spacing: 0.5em; text-decoration: none; color: #111; text-transform: uppercase; }
+        .back-link { font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; text-decoration: none; color: #aaa; transition: all 0.3s ease; }
+        .back-link:hover { color: #111; padding-left: 10px; }
+
+        /* 内容容器 */
+        .container { 
+            max-width: 1400px; 
+            margin: 0 auto; 
+            padding: 120px 5% 100px; 
+        }
+
+        /* 系列介绍 */
+        .series-intro { margin: 40px 0 100px 0; max-width: 800px; }
+        .series-title { font-size: 26px; font-weight: 300; letter-spacing: 0.3em; text-transform: uppercase; margin-bottom: 30px; }
+        .series-description { font-size: 15px; color: #444; line-height: 2; font-weight: 300; text-align: justify; }
+
+        /* 动态作品布局：三列网格 */
+        .works-layout {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 100px 4%;
+            align-items: flex-start;
+        }
+
+        /* 作品项基础与动画 */
+        .work-item {
+            flex: 1 1 30.6%; /* 每组3件，100% / 3 减去 gap */
+            display: flex;
+            flex-direction: column;
+            opacity: 0; 
+            transform: translateY(30px);
+            transition: all 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        .work-item.visible { opacity: 1; transform: translateY(0); }
+
+        /* --- 核心交互 CSS --- */
+        .work-image-wrapper {
+            width: 100%;
+            margin-bottom: 25px;
+            overflow: hidden;
+            background-color: #fcfcfc;
+            position: relative;
+            cursor: zoom-in;
+        }
+        
+        .work-image-wrapper img {
+            width: 100%;
+            height: auto;
+            max-height: 70vh;
+            object-fit: contain;
+            display: block;
+            filter: grayscale(0.2) brightness(0.95);
+            transition: filter 0.5s ease, transform 0.8s cubic-bezier(0.165, 0.84, 0.44, 1);
+            will-change: transform;
+        }
+
+        .work-item:hover img {
+            filter: grayscale(0) brightness(1);
+            transform: scale(1.03);
+        }
+
+        /* 聚光灯效果 */
+        .spotlight {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
+            background: radial-gradient(circle 150px at var(--x) var(--y), rgba(255,255,255,0.2) 0%, rgba(255,255,255,0) 100%);
+            opacity: 0; transition: opacity 0.5s ease; z-index: 2;
+        }
+        .work-image-wrapper:hover .spotlight { opacity: 1; }
+
+        /* 文字信息交互 */
+        .work-info {
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+            position: relative;
+            transition: all 0.6s ease;
+        }
+        .work-item:hover .work-info { transform: translateY(-5px); }
+
+        .work-info::after {
+            content: ''; position: absolute; top: -1px; left: 50%;
+            width: 0; height: 1.5px; background-color: #111;
+            transition: all 0.6s cubic-bezier(0.19, 1, 0.22, 1);
+            transform: translateX(-50%);
+        }
+        .work-item:hover .work-info::after { width: 100%; }
+
+        .work-name { font-size: 13px; font-weight: 400; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 8px; transition: letter-spacing 0.4s ease; }
+        .work-item:hover .work-name { letter-spacing: 0.25em; }
+        .work-detail { font-size: 10px; color: #999; letter-spacing: 0.05em; text-transform: uppercase; line-height: 1.6; }
+
+        /* 全屏预览 Overlay */
+        #overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(255,255,255,0.95);
+            display: none; z-index: 2000; cursor: zoom-out;
+            justify-content: center; align-items: center;
+        }
+        #overlay img { max-width: 90%; max-height: 90%; object-fit: contain; }
+
+        footer { padding: 100px 5% 40px; text-align: center; font-size: 9px; letter-spacing: 0.4em; color: #ccc; text-transform: uppercase; }
+
+        @media (max-width: 900px) {
+            .work-item { flex: 1 1 100%; }
+            .works-layout { gap: 60px 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav id="navbar">
+        <a href="index.html" class="logo">ZHANGJIARUI ARTWORKS</a>
+        <a href="index.html#sculpture" class="back-link">← Back to Series</a>
+    </nav>
+
+    <div id="overlay"><img src="" alt="Full View"></div>
+
+    <div class="container">
+        <header class="series-intro">
+            <h1 class="series-title">Series 3</h1>
+            <p class="series-description">
+                Exploring the boundaries of space and material through repetitive forms and structural precision. This series investigates the dialogue between void and substance.
+            </p>
+        </header>
+
+        <div class="works-layout">
+            <div class="work-item"><div class="work-image-wrapper"><div class="spotlight"></div><img src="images/sculpture/s3_1.jpg"></div><div class="work-info"><div class="work-name">Work 3.01</div><div class="work-detail">Material / Size / 2024</div></div></div>
+            <div class="work-item"><div class="work-image-wrapper"><div class="spotlight"></div><img src="images/sculpture/s3_2.jpg"></div><div class="work-info"><div class="work-name">Work 3.02</div><div class="work-detail">Material / Size / 2024</div></div></div>
+            <div class="work-item"><div class="work-image-wrapper"><div class="spotlight"></div><img src="images/sculpture/s3_3.jpg"></div><div class="work-info"><div class="work-name">Work 3.03</div><div class="work-detail">Material / Size / 2024</div></div></div>
+
+            <div class="work-item"><div class="work-image-wrapper"><div class="spotlight"></div><img src="images/sculpture/s3_4.jpg"></div><div class="work-info"><div class="work-name">Work 3.04</div><div class="work-detail">Material / Size / 2024</div></div></div>
+            <div class="work-item"><div class="work-image-wrapper"><div class="spotlight"></div><img src="images/sculpture/s3_5.jpg"></div><div class="work-info"><div class="work-name">Work 3.05</div><div class="work-detail">Material / Size / 2024</div></div></div>
+            <div class="work-item"><div class="work-image-wrapper"><div class="spotlight"></div><img src="images/sculpture/s3_6.jpg"></div><div class="work-info"><div class="work-name">Work 3.06</div><div class="work-detail">Material / Size / 2024</div></div></div>
+
+            <div class="work-item"><div class="work-image-wrapper"><div class="spotlight"></div><img src="images/sculpture/s3_7.jpg"></div><div class="work-info"><div class="work-name">Work 3.07</div><div class="work-detail">Material / Size / 2024</div></div></div>
+            <div class="work-item"><div class="work-image-wrapper"><div class="spotlight"></div><img src="images/sculpture/s3_8.jpg"></div><div class="work-info"><div class="work-name">Work 3.08</div><div class="work-detail">Material / Size / 2024</div></div></div>
+            <div class="work-item"><div class="work-image-wrapper"><div class="spotlight"></div><img src="images/sculpture/s3_9.jpg"></div><div class="work-info"><div class="work-name">Work 3.09</div><div class="work-detail">Material / Size / 2024</div></div></div>
+
+            <div class="work-item"><div class="work-image-wrapper"><div class="spotlight"></div><img src="images/sculpture/s3_10.jpg"></div><div class="work-info"><div class="work-name">Work 3.10</div><div class="work-detail">Material / Size / 2024</div></div></div>
+            <div class="work-item"><div class="work-image-wrapper"><div class="spotlight"></div><img src="images/sculpture/s3_11.jpg"></div><div class="work-info"><div class="work-name">Work 3.11</div><div class="work-detail">Material / Size / 2024</div></div></div>
+            <div class="work-item"><div class="work-image-wrapper"><div class="spotlight"></div><img src="images/sculpture/s3_12.jpg"></div><div class="work-info"><div class="work-name">Work 3.12</div><div class="work-detail">Material / Size / 2024</div></div></div>
+
+            <div class="work-item"><div class="work-image-wrapper"><div class="spotlight"></div><img src="images/sculpture/s3_13.jpg"></div><div class="work-info"><div class="work-name">Work 3.13</div><div class="work-detail">Material / Size / 2024</div></div></div>
+            <div class="work-item"><div class="work-image-wrapper"><div class="spotlight"></div><img src="images/sculpture/s3_14.jpg"></div><div class="work-info"><div class="work-name">Work 3.14</div><div class="work-detail">Material / Size / 2024</div></div></div>
+            <div class="work-item"><div class="work-image-wrapper"><div class="spotlight"></div><img src="images/sculpture/s3_15.jpg"></div><div class="work-info"><div class="work-name">Work 3.15</div><div class="work-detail">Material / Size / 2024</div></div></div>
+
+            <div class="work-item"><div class="work-image-wrapper"><div class="spotlight"></div><img src="images/sculpture/s3_16.jpg"></div><div class="work-info"><div class="work-name">Work 3.16</div><div class="work-detail">Material / Size / 2024</div></div></div>
+            <div class="work-item"><div class="work-image-wrapper"><div class="spotlight"></div><img src="images/sculpture/s3_17.jpg"></div><div class="work-info"><div class="work-name">Work 3.17</div><div class="work-detail">Material / Size / 2024</div></div></div>
+            <div class="work-item"><div class="work-image-wrapper"><div class="spotlight"></div><img src="images/sculpture/s3_18.jpg"></div><div class="work-info"><div class="work-name">Work 3.18</div><div class="work-detail">Material / Size / 2024</div></div></div>
+        </div>
+    </div>
+
+    <footer>&copy; 2026 ZHANGJIARUI ARTWORKS.</footer>
+
+    <script>
+        // 1. 聚光灯探照坐标与视差微移
+        document.querySelectorAll('.work-image-wrapper').forEach(wrapper => {
+            wrapper.addEventListener('mousemove', e => {
+                const rect = wrapper.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                wrapper.style.setProperty('--x', x + 'px');
+                wrapper.style.setProperty('--y', y + 'px');
+
+                const img = wrapper.querySelector('img');
+                const moveX = (x / rect.width - 0.5) * 15;
+                const moveY = (y / rect.height - 0.5) * 15;
+                img.style.transform = `scale(1.03) translate(${moveX}px, ${moveY}px)`;
+            });
+
+            wrapper.addEventListener('mouseleave', () => {
+                const img = wrapper.querySelector('img');
+                img.style.transform = `scale(1) translate(0, 0)`;
+            });
+        });
+
+        // 2. 滚动淡入
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) entry.target.classList.add('visible');
+            });
+        }, { threshold: 0.1 });
+        document.querySelectorAll('.work-item').forEach(item => observer.observe(item));
+
+        // 3. 智能导航隐藏
+        let lastScroll = 0;
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            const currentScroll = window.pageYOffset;
+            if (currentScroll > lastScroll && currentScroll > 200) navbar.classList.add('hidden');
+            else navbar.classList.remove('hidden');
+            lastScroll = currentScroll;
+        });
+
+        // 4. 全屏大图
+        const overlay = document.getElementById('overlay');
+        const overlayImg = overlay.querySelector('img');
+        document.querySelectorAll('.work-image-wrapper img').forEach(img => {
+            img.addEventListener('click', () => {
+                overlayImg.src = img.src;
+                overlay.style.display = 'flex';
+                document.body.style.overflow = 'hidden';
+            });
+        });
+        overlay.addEventListener('click', () => {
+            overlay.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        });
+    </script>
+</body>
+</html>
