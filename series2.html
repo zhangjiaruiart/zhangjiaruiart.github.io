@@ -104,6 +104,7 @@
             justify-content: center;
             overflow: hidden;
             background-color: #fcfcfc;
+            cursor: crosshair; /* 增加趣味性光标 */
         }
         
         .work-image-wrapper img {
@@ -112,26 +113,55 @@
             max-height: 85vh;
             object-fit: contain;
             display: block;
-            transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+            transition: transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
         }
 
+        /* 趣味交互：图片缩放 */
         .work-item:hover .work-image-wrapper img,
         .work-combination:hover .main-featured img {
-            transform: scale(1.02);
+            transform: scale(1.04);
         }
 
-        /* 文字信息 */
+        /* 文字信息与底线黑线交互 */
         .work-info {
             padding-top: 15px;
             border-top: 1px solid #eee;
+            position: relative; /* 为伪元素定位 */
             transition: border-color 0.5s ease;
         }
+
+        /* 核心需求：底线显示一条黑线的功能 */
+        .work-info::after {
+            content: '';
+            position: absolute;
+            top: -1px; /* 覆盖在原有的 border-top 上 */
+            left: 50%;
+            width: 0;
+            height: 1.5px;
+            background-color: #111;
+            transition: all 0.6s cubic-bezier(0.19, 1, 0.22, 1);
+            transform: translateX(-50%);
+        }
+
+        /* 当鼠标悬停在整个作品项上时，黑线生长 */
+        .work-item:hover .work-info::after,
+        .work-combination:hover .work-info::after {
+            width: 100%;
+        }
+
         .full-width-info { flex: 1 1 100%; margin-top: 10px; }
 
         .work-name {
             font-size: 14px; font-weight: 400; letter-spacing: 0.15em;
             text-transform: uppercase; margin-bottom: 8px;
+            transition: letter-spacing 0.4s ease;
         }
+        /* 悬停时文字间距微调 */
+        .work-item:hover .work-name,
+        .work-combination:hover .work-name {
+            letter-spacing: 0.25em;
+        }
+
         .work-detail {
             font-size: 11px; color: #999;
             letter-spacing: 0.05em; text-transform: uppercase;
@@ -220,7 +250,7 @@
                 </div>
                 <div class="work-info">
                     <div class="work-name">Water 4</div>
-                    <div class="work-detail">Transparent Resin / 480 x 40 x 5 cm /2024</div>
+                    <div class="work-detail">Transparent Resin / 480 x 40 x 5 cm / 2024</div>
                 </div>
             </div>
 
@@ -232,6 +262,7 @@
     </footer>
 
     <script>
+        // 滚动淡入观察器
         const observerOptions = { threshold: 0.1 };
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
@@ -241,9 +272,26 @@
             });
         }, observerOptions);
 
-        // 观察所有需要淡入效果的作品项
         document.querySelectorAll('.work-item, .work-combination').forEach(item => {
             observer.observe(item);
+        });
+
+        // 趣味交互：鼠标位置影响图片细微偏移（视差感）
+        document.querySelectorAll('.work-image-wrapper').forEach(wrapper => {
+            wrapper.addEventListener('mousemove', (e) => {
+                const img = wrapper.querySelector('img');
+                const rect = wrapper.getBoundingClientRect();
+                const x = (e.clientX - rect.left) / rect.width - 0.5;
+                const y = (e.clientY - rect.top) / rect.height - 0.5;
+                
+                // 限制平移范围在 10px 以内，保持高级感
+                img.style.transform = `scale(1.04) translate(${x * 10}px, ${y * 10}px)`;
+            });
+
+            wrapper.addEventListener('mouseleave', (e) => {
+                const img = wrapper.querySelector('img');
+                img.style.transform = `scale(1) translate(0, 0)`;
+            });
         });
     </script>
 
