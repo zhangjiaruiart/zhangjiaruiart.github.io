@@ -14,18 +14,14 @@
             scroll-behavior: smooth;
         }
 
-        /* 导航栏 - 保持与首页 Logo 绝对一致 */
+        /* 导航栏 */
         nav {
             padding: 40px 5%;
             display: flex; justify-content: space-between; align-items: center;
         }
         .logo {
-            font-size: 14px; 
-            font-weight: 300; 
-            letter-spacing: 0.5em; 
-            text-decoration: none; 
-            color: #111; 
-            text-transform: uppercase;
+            font-size: 14px; font-weight: 300; letter-spacing: 0.5em;
+            text-decoration: none; color: #111; text-transform: uppercase;
         }
         .back-link {
             font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase;
@@ -78,9 +74,11 @@
             transform: translateY(0);
         }
 
-        .work-item.slim {
-            flex: 1 1 48%; 
-        }
+        .work-item.slim { flex: 1 1 48%; }
+        
+        /* 细节图专用样式：去除底部边框以形成视觉组合 */
+        .no-border .work-info { border-top: none; padding-top: 0; }
+        .detail-caption { font-size: 9px; color: #ccc; margin-bottom: 10px; letter-spacing: 0.1em; }
 
         /* 图片交互容器 */
         .work-image-wrapper {
@@ -105,15 +103,13 @@
             transform: scale(1.03);
         }
 
-        /* 作品文字信息交互 */
+        /* 作品文字信息 */
         .work-info {
             padding-top: 15px;
             border-top: 1px solid #eee;
             transition: border-color 0.5s ease;
         }
-        .work-item:hover .work-info {
-            border-top-color: #111;
-        }
+        .work-item:hover .work-info { border-top-color: #111; }
         .work-name {
             font-size: 14px; font-weight: 400; letter-spacing: 0.15em;
             text-transform: uppercase; margin-bottom: 8px;
@@ -136,7 +132,6 @@
 
         @media (max-width: 900px) {
             .work-item.slim { flex: 1 1 100%; }
-            .series-intro { margin-bottom: 60px; }
             .works-layout { gap: 80px 0; }
         }
     </style>
@@ -157,6 +152,7 @@
         </header>
 
         <div class="works-layout">
+            
             <div class="work-item">
                 <div class="work-image-wrapper">
                     <img src="images/sculpture/s2_1.jpg" alt="Water 1" onerror="this.src='images/sculpture/s2_cover.jpg'">
@@ -167,25 +163,70 @@
                 </div>
             </div>
 
-            <div class="work-item slim">
+            <div class="work-item slim no-border">
+                <div class="detail-caption">Detail View I</div>
                 <div class="work-image-wrapper">
-                    <img src="images/sculpture/s2_2.jpg" alt="Water 2" onerror="this.src='images/sculpture/s2_cover.jpg'">
+                    <img src="images/sculpture/s2_2.jpg" alt="Water 1 Detail" onerror="this.src='images/sculpture/s2_cover.jpg'">
+                </div>
+            </div>
+
+            <div class="work-item slim no-border">
+                <div class="detail-caption">Detail View II</div>
+                <div class="work-image-wrapper">
+                    <img src="images/sculpture/s2_3.jpg" alt="Water 1 Detail" onerror="this.src='images/sculpture/s2_cover.jpg'">
+                </div>
+            </div>
+
+            <div class="work-item">
+                <div class="work-image-wrapper">
+                    <img src="images/sculpture/s2_4.jpg" alt="Water 2" onerror="this.src='images/sculpture/s2_cover.jpg'">
                 </div>
                 <div class="work-info">
                     <div class="work-name">Water 2</div>
-                    <div class="work-detail">Transparent Resin / 50 x 50 x 50 cm / 2024</div>
+                    <div class="work-detail">Transparent Resin / 80 x 40 x 40 cm / 2024</div>
                 </div>
             </div>
 
             <div class="work-item slim">
                 <div class="work-image-wrapper">
-                    <img src="images/sculpture/s2_3.jpg" alt="Water 3" onerror="this.src='images/sculpture/s2_cover.jpg'">
+                    <img src="images/sculpture/s2_5.jpg" alt="Water 3" onerror="this.src='images/sculpture/s2_cover.jpg'">
                 </div>
                 <div class="work-info">
                     <div class="work-name">Water 3</div>
-                    <div class="work-detail">Transparent Resin / 40 x 40 x 60 cm / 2024</div>
+                    <div class="work-detail">Resin / 2024</div>
                 </div>
             </div>
+
+            <div class="work-item slim">
+                <div class="work-image-wrapper">
+                    <img src="images/sculpture/s2_6.jpg" alt="Water 4" onerror="this.src='images/sculpture/s2_cover.jpg'">
+                </div>
+                <div class="work-info">
+                    <div class="work-name">Water 4</div>
+                    <div class="work-detail">Resin / 2024</div>
+                </div>
+            </div>
+
+            <div class="work-item">
+                <div class="work-image-wrapper">
+                    <img src="images/sculpture/s2_7.jpg" alt="Water 5" onerror="this.src='images/sculpture/s2_cover.jpg'">
+                </div>
+                <div class="work-info">
+                    <div class="work-name">Water 5</div>
+                    <div class="work-detail">Resin / 2024</div>
+                </div>
+            </div>
+
+            <div class="work-item">
+                <div class="work-image-wrapper">
+                    <img src="images/sculpture/s2_8.jpg" alt="Water 6" onerror="this.src='images/sculpture/s2_cover.jpg'">
+                </div>
+                <div class="work-info">
+                    <div class="work-name">Water 6</div>
+                    <div class="work-detail">Resin / 2024</div>
+                </div>
+            </div>
+
         </div>
     </div>
 
