@@ -51,12 +51,31 @@
             font-weight: 300; text-align: justify;
         }
 
-        /* 动态作品布局系统 */
+        /* 动态布局系统 */
         .works-layout {
             display: flex;
             flex-wrap: wrap;
             gap: 120px 4%;
             align-items: flex-start;
+        }
+
+        /* 组合布局 (主图+侧边细节) */
+        .work-combination {
+            flex: 1 1 100%;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 1s ease;
+        }
+
+        .main-featured { flex: 2; min-width: 60%; }
+        .side-details { 
+            flex: 0.8; 
+            display: flex; 
+            flex-direction: column; 
+            gap: 20px; 
         }
 
         /* 基础作品块 */
@@ -69,25 +88,21 @@
             transition: opacity 1s ease, transform 1s ease;
         }
         
-        .work-item.visible {
+        .work-item.visible, .work-combination.visible {
             opacity: 1;
             transform: translateY(0);
         }
 
         .work-item.slim { flex: 1 1 48%; }
-        
-        /* 细节图专用样式：去除底部边框以形成视觉组合 */
-        .no-border .work-info { border-top: none; padding-top: 0; }
-        .detail-caption { font-size: 9px; color: #ccc; margin-bottom: 10px; letter-spacing: 0.1em; }
 
-        /* 图片交互容器 */
+        /* 图片容器 */
         .work-image-wrapper {
             width: 100%;
             margin-bottom: 25px;
             display: flex;
             justify-content: center;
             overflow: hidden;
-            cursor: pointer;
+            background-color: #f9f9f9;
         }
         
         .work-image-wrapper img {
@@ -99,17 +114,19 @@
             transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
         }
 
-        .work-item:hover .work-image-wrapper img {
-            transform: scale(1.03);
+        .work-item:hover .work-image-wrapper img,
+        .work-combination:hover .main-featured img {
+            transform: scale(1.02);
         }
 
-        /* 作品文字信息 */
+        /* 文字信息 */
         .work-info {
             padding-top: 15px;
             border-top: 1px solid #eee;
             transition: border-color 0.5s ease;
         }
-        .work-item:hover .work-info { border-top-color: #111; }
+        .full-width-info { flex: 1 1 100%; margin-top: 10px; }
+
         .work-name {
             font-size: 14px; font-weight: 400; letter-spacing: 0.15em;
             text-transform: uppercase; margin-bottom: 8px;
@@ -130,8 +147,11 @@
             font-size: 9px; letter-spacing: 0.4em; color: #ccc; text-transform: uppercase;
         }
 
+        /* 移动端适配 */
         @media (max-width: 900px) {
             .work-item.slim { flex: 1 1 100%; }
+            .work-combination { flex-direction: column; }
+            .side-details { flex-direction: row; }
             .works-layout { gap: 80px 0; }
         }
     </style>
@@ -153,27 +173,23 @@
 
         <div class="works-layout">
             
-            <div class="work-item">
-                <div class="work-image-wrapper">
-                    <img src="images/sculpture/s2_1.jpg" alt="Water 1" onerror="this.src='images/sculpture/s2_cover.jpg'">
+            <div class="work-combination">
+                <div class="main-featured">
+                    <div class="work-image-wrapper">
+                        <img src="images/sculpture/s2_1.jpg" alt="Water 1 Main" onerror="this.src='images/sculpture/s2_cover.jpg'">
+                    </div>
                 </div>
-                <div class="work-info">
+                <div class="side-details">
+                    <div class="work-image-wrapper">
+                        <img src="images/sculpture/s2_2.jpg" alt="Detail 1" onerror="this.src='images/sculpture/s2_cover.jpg'">
+                    </div>
+                    <div class="work-image-wrapper">
+                        <img src="images/sculpture/s2_3.jpg" alt="Detail 2" onerror="this.src='images/sculpture/s2_cover.jpg'">
+                    </div>
+                </div>
+                <div class="work-info full-width-info">
                     <div class="work-name">Water 1</div>
                     <div class="work-detail">Transparent Resin / 162 x 162 x 8 cm / 2024</div>
-                </div>
-            </div>
-
-            <div class="work-item slim no-border">
-                <div class="detail-caption">Detail View I</div>
-                <div class="work-image-wrapper">
-                    <img src="images/sculpture/s2_2.jpg" alt="Water 1 Detail" onerror="this.src='images/sculpture/s2_cover.jpg'">
-                </div>
-            </div>
-
-            <div class="work-item slim no-border">
-                <div class="detail-caption">Detail View II</div>
-                <div class="work-image-wrapper">
-                    <img src="images/sculpture/s2_3.jpg" alt="Water 1 Detail" onerror="this.src='images/sculpture/s2_cover.jpg'">
                 </div>
             </div>
 
@@ -189,17 +205,16 @@
 
             <div class="work-item slim">
                 <div class="work-image-wrapper">
-                    <img src="images/sculpture/s2_5.jpg" alt="Water 3" onerror="this.src='images/sculpture/s2_cover.jpg'">
+                    <img src="images/sculpture/s2_5.jpg" alt="Water 3">
                 </div>
                 <div class="work-info">
                     <div class="work-name">Water 3</div>
                     <div class="work-detail">Resin / 2024</div>
                 </div>
             </div>
-
             <div class="work-item slim">
                 <div class="work-image-wrapper">
-                    <img src="images/sculpture/s2_6.jpg" alt="Water 4" onerror="this.src='images/sculpture/s2_cover.jpg'">
+                    <img src="images/sculpture/s2_6.jpg" alt="Water 4">
                 </div>
                 <div class="work-info">
                     <div class="work-name">Water 4</div>
@@ -209,7 +224,7 @@
 
             <div class="work-item">
                 <div class="work-image-wrapper">
-                    <img src="images/sculpture/s2_7.jpg" alt="Water 5" onerror="this.src='images/sculpture/s2_cover.jpg'">
+                    <img src="images/sculpture/s2_7.jpg" alt="Water 5">
                 </div>
                 <div class="work-info">
                     <div class="work-name">Water 5</div>
@@ -219,10 +234,39 @@
 
             <div class="work-item">
                 <div class="work-image-wrapper">
-                    <img src="images/sculpture/s2_8.jpg" alt="Water 6" onerror="this.src='images/sculpture/s2_cover.jpg'">
+                    <img src="images/sculpture/s2_8.jpg" alt="Water 6">
                 </div>
                 <div class="work-info">
                     <div class="work-name">Water 6</div>
+                    <div class="work-detail">Resin / 2024</div>
+                </div>
+            </div>
+
+            <div class="work-item">
+                <div class="work-image-wrapper">
+                    <img src="images/sculpture/s2_9.jpg" alt="Water 7">
+                </div>
+                <div class="work-info">
+                    <div class="work-name">Water 7</div>
+                    <div class="work-detail">Resin / 2024</div>
+                </div>
+            </div>
+
+            <div class="work-item slim">
+                <div class="work-image-wrapper">
+                    <img src="images/sculpture/s2_10.jpg" alt="Water 8">
+                </div>
+                <div class="work-info">
+                    <div class="work-name">Water 8</div>
+                    <div class="work-detail">Resin / 2024</div>
+                </div>
+            </div>
+            <div class="work-item slim">
+                <div class="work-image-wrapper">
+                    <img src="images/sculpture/s2_11.jpg" alt="Water 9">
+                </div>
+                <div class="work-info">
+                    <div class="work-name">Water 9</div>
                     <div class="work-detail">Resin / 2024</div>
                 </div>
             </div>
@@ -244,7 +288,8 @@
             });
         }, observerOptions);
 
-        document.querySelectorAll('.work-item').forEach(item => {
+        // 观察所有作品项和组合项
+        document.querySelectorAll('.work-item, .work-combination').forEach(item => {
             observer.observe(item);
         });
     </script>
