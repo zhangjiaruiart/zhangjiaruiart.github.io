@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WOOD SERIES | ZHANG JIARUI</title>
     <style>
-        /* 全局样式 */
         body, html {
             margin: 0; padding: 0;
             font-family: "Optima", "Didot", "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -13,103 +12,40 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        /* 导航栏 */
-        nav {
-            padding: 40px 5%;
-            display: flex; justify-content: space-between; align-items: center;
-        }
-        .logo {
-            font-size: 14px; font-weight: 300; letter-spacing: 0.5em;
-            text-decoration: none; color: #111; text-transform: uppercase;
-        }
-        .back-link {
-            font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase;
-            text-decoration: none; color: #aaa; transition: color 0.3s;
-        }
-        .back-link:hover { color: #111; }
+        nav { padding: 40px 5%; display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-size: 14px; font-weight: 300; letter-spacing: 0.5em; text-decoration: none; color: #111; text-transform: uppercase; }
+        .back-link { font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; text-decoration: none; color: #aaa; }
+        
+        .container { max-width: 1400px; margin: 0 auto; padding: 0 5% 100px; }
 
-        /* 内容容器 */
-        .container { 
-            max-width: 1400px; 
-            margin: 0 auto; 
-            padding: 0 5% 100px; 
-        }
+        .series-intro { margin: 40px 0 80px 0; max-width: 800px; }
+        .series-title { font-size: 26px; font-weight: 300; letter-spacing: 0.3em; text-transform: uppercase; margin-bottom: 30px; }
+        .series-description { font-size: 15px; color: #444; line-height: 2; font-weight: 300; }
 
-        /* 顶部系列介绍 */
-        .series-intro {
-            margin: 40px 0 100px 0;
-            max-width: 800px;
-        }
-        .series-title {
-            font-size: 26px; font-weight: 300; letter-spacing: 0.3em;
-            text-transform: uppercase; margin-bottom: 30px;
-        }
-        .series-description {
-            font-size: 15px; color: #444; line-height: 2;
-            font-weight: 300; text-align: justify;
+        /* 布局系统 */
+        .works-layout { display: flex; flex-wrap: wrap; gap: 100px 4%; align-items: flex-start; }
+
+        /* 默认占满全宽 */
+        .work-item { flex: 1 1 100%; display: flex; flex-direction: column; }
+
+        /* 用于并排展示的类 */
+        .work-item.side-by-side { flex: 1 1 48%; }
+
+        .work-image-wrapper { width: 100%; margin-bottom: 25px; display: flex; justify-content: center; }
+        .work-image-wrapper img { 
+            width: 100%; height: auto; 
+            max-height: 85vh; object-fit: contain; display: block; 
         }
 
-        /* 动态作品布局系统 */
-        .works-layout {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 120px 4%; /* 垂直间距120px，水平间距4% */
-            align-items: flex-start;
-        }
+        .work-info { padding-top: 15px; border-top: 1px solid #eee; }
+        .work-name { font-size: 14px; font-weight: 400; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 8px; }
+        .work-detail { font-size: 11px; color: #999; letter-spacing: 0.05em; text-transform: uppercase; line-height: 1.6; }
 
-        /* 基础作品块 */
-        .work-item {
-            flex: 1 1 100%; /* 默认全宽（适合大体量或横向作品） */
-            display: flex;
-            flex-direction: column;
-        }
+        footer { padding: 100px 5% 40px; text-align: center; font-size: 9px; letter-spacing: 0.4em; color: #ccc; }
 
-        /* 针对细长比例的作品（如 Line, Square），在桌面端并排 */
-        .work-item.slim {
-            flex: 1 1 48%; 
-        }
-
-        /* 图片包装器 */
-        .work-image-wrapper {
-            width: 100%;
-            margin-bottom: 25px;
-            display: flex;
-            justify-content: center;
-        }
-        .work-image-wrapper img {
-            width: 100%;
-            height: auto;
-            max-height: 85vh; /* 限制高度，防止极细长作品撑破屏幕 */
-            object-fit: contain;
-            display: block;
-        }
-
-        /* 作品文字信息 */
-        .work-info {
-            padding-top: 15px;
-            border-top: 1px solid #eee; /* 极简分割线 */
-        }
-        .work-name {
-            font-size: 14px; font-weight: 400; letter-spacing: 0.15em;
-            text-transform: uppercase; margin-bottom: 8px;
-        }
-        .work-detail {
-            font-size: 11px; color: #999;
-            letter-spacing: 0.05em; text-transform: uppercase;
-            line-height: 1.6;
-        }
-
-        /* 页脚 */
-        footer {
-            padding: 100px 5% 40px; text-align: center;
-            font-size: 9px; letter-spacing: 0.4em; color: #ccc; text-transform: uppercase;
-        }
-
-        /* 移动端适配 */
         @media (max-width: 900px) {
-            .work-item.slim { flex: 1 1 100%; }
-            .series-intro { margin-bottom: 60px; }
-            .works-layout { gap: 80px 0; }
+            .work-item.side-by-side { flex: 1 1 100%; }
+            .works-layout { gap: 60px 0; }
         }
     </style>
 </head>
@@ -121,7 +57,6 @@
     </nav>
 
     <div class="container">
-        
         <header class="series-intro">
             <h1 class="series-title">Wood Series</h1>
             <p class="series-description">
@@ -133,16 +68,6 @@
 
             <div class="work-item">
                 <div class="work-image-wrapper">
-                    <img src="images/sculpture/s1_3.jpg" alt="Circle" onerror="this.src='images/sculpture/s1_cover.jpg'">
-                </div>
-                <div class="work-info">
-                    <div class="work-name">Circle</div>
-                    <div class="work-detail">Wood / 162 x 162 x 8 cm / 2024</div>
-                </div>
-            </div>
-
-            <div class="work-item slim">
-                <div class="work-image-wrapper">
                     <img src="images/sculpture/s1_1.jpg" alt="Line" onerror="this.src='images/sculpture/s1_cover.jpg'">
                 </div>
                 <div class="work-info">
@@ -151,7 +76,17 @@
                 </div>
             </div>
 
-            <div class="work-item slim">
+            <div class="work-item">
+                <div class="work-image-wrapper">
+                    <img src="images/sculpture/s1_3.jpg" alt="Circle" onerror="this.src='images/sculpture/s1_cover.jpg'">
+                </div>
+                <div class="work-info">
+                    <div class="work-name">Circle</div>
+                    <div class="work-detail">Wood / 162 x 162 x 8 cm / 2024</div>
+                </div>
+            </div>
+
+            <div class="work-item side-by-side">
                 <div class="work-image-wrapper">
                     <img src="images/sculpture/s1_2.jpg" alt="Square" onerror="this.src='images/sculpture/s1_cover.jpg'">
                 </div>
@@ -161,8 +96,8 @@
                 </div>
             </div>
 
-            <div class="work-item">
-                <div class="work-image-wrapper" style="max-width: 500px; margin-left: 0;">
+            <div class="work-item side-by-side">
+                <div class="work-image-wrapper">
                     <img src="images/sculpture/s1_4.jpg" alt="Line 2" onerror="this.src='images/sculpture/s1_cover.jpg'">
                 </div>
                 <div class="work-info">
@@ -174,9 +109,7 @@
         </div>
     </div>
 
-    <footer>
-        &copy; 2026 ZHANGJIARUI ARTWORKS.
-    </footer>
+    <footer>&copy; 2026 ZHANGJIARUI ARTWORKS.</footer>
 
 </body>
 </html>
