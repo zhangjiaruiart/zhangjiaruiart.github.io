@@ -79,12 +79,12 @@
             animation: heroZoom 2.5s cubic-bezier(0.15, 1, 0.3, 1) forwards;
         }
 
-        /* --- 3. 核心手机端响应式修改 --- */
+        /* --- 3. 手机端专项调整 --- */
         @media (max-width: 900px) {
-            /* 封面人物居中：调整 70% 这个值可以微调人物左右位置 */
+            /* 1. 封面人物居中 */
             .hero img { object-position: 70% center; } 
             
-            /* 导航 */
+            /* 2. 导航栏 */
             .menu-toggle { display: flex; }
             .logo { font-size: 14px; letter-spacing: 0.3em; }
             .nav-links {
@@ -94,30 +94,34 @@
             }
             .nav-links.active { right: 0; }
             .nav-links a { color: #111111 !important; margin: 20px 0; font-size: 14px; }
-
             .active-toggle span:nth-child(1) { transform: translateY(7px) rotate(45deg); background-color: #111 !important; }
             .active-toggle span:nth-child(2) { opacity: 0; }
             .active-toggle span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); background-color: #111 !important; }
 
-            /* 视频纵向排列并占满空间 */
-            .grid { 
-                grid-template-columns: 1fr; 
-                gap: 50px; /* 增加视频之间的间距 */
-            }
+            /* 3. 视频和项目占满宽度并上下排列 */
             .content-section { 
-                padding: 60px 0; /* 视频部分左右不留白，或者极小留白 */
-                width: 100%;
+                padding: 40px 0 20px 0 !important; /* 左右内边距设为0，让视频撑满屏 */
+            }
+            .grid { 
+                display: block !important; /* 强制取消网格，改用块状布局实现自动上下堆叠 */
+            }
+            .project {
+                width: 100% !important;
+                margin-bottom: 40px; /* 视频之间的间距 */
             }
             .category-title {
-                margin-left: 5%; margin-right: 5%;
+                margin: 0 5% 25px 5%; /* 标题保持5%的边距 */
             }
             .project-info {
-                padding: 0 5%; /* 文字部分保持留白 */
+                padding: 0 5%; /* 文字介绍保持边距 */
             }
-            .video-ratio {
-                aspect-ratio: 16 / 9;
-                width: 100%;
+            .project-image-wrapper {
+                margin-bottom: 15px;
             }
+            
+            /* 雕塑部分的特殊处理（保持两列展示） */
+            #sculpture .content-section { padding: 40px 5% !important; }
+            #sculpture > div { gap: 20px !important; }
         }
 
         /* 其余固定样式 */
@@ -194,7 +198,7 @@
 
     <div class="content-section" id="sculpture">
         <h2 class="category-title">Sculpture</h2>
-        <div style="display: flex; flex-wrap: wrap; gap: 40px 60px; padding: 0 5%;">
+        <div style="display: flex; flex-wrap: wrap; gap: 40px 60px;">
             <div style="flex: 1; min-width: 300px;">
                 <h3 style="font-size: 11px; letter-spacing: 0.3em; text-transform: uppercase; color: #888; margin: 20px 0 20px 0; font-weight: 300;">Wood Series</h3>
                 <a href="series1.html" class="project">
