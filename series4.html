@@ -8,113 +8,63 @@
         body, html {
             margin: 0; padding: 0;
             font-family: "Optima", "Didot", "Helvetica Neue", Helvetica, Arial, sans-serif;
-            background-color: #ffffff; color: #111111;
+            background-color: #ffffff; color: #111;
             -webkit-font-smoothing: antialiased;
-            scroll-behavior: smooth;
         }
 
-        nav {
-            padding: 40px 5%;
-            display: flex; justify-content: space-between; align-items: center;
-        }
-        .logo {
-            font-size: 14px; font-weight: 300; letter-spacing: 0.5em;
-            text-decoration: none; color: #111; text-transform: uppercase;
-        }
-        .back-link {
-            font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase;
-            text-decoration: none; color: #aaa; transition: all 0.3s ease;
-        }
-        .back-link:hover { color: #111; transform: translateX(-5px); }
+        /* 导航与容器 */
+        nav { padding: 40px 5%; display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-size: 14px; letter-spacing: 0.5em; text-decoration: none; color: #111; text-transform: uppercase; font-weight: 300; }
+        .back-link { font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; text-decoration: none; color: #aaa; }
+        .container { max-width: 1400px; margin: 0 auto; padding: 0 5% 100px; }
 
-        .container { 
-            max-width: 1400px; 
-            margin: 0 auto; 
-            padding: 0 5% 100px; 
-        }
+        /* 顶部介绍 */
+        .series-intro { margin: 40px 0 80px 0; max-width: 800px; }
+        .series-title { font-size: 26px; font-weight: 300; letter-spacing: 0.3em; text-transform: uppercase; margin-bottom: 30px; }
+        .series-description { font-size: 15px; color: #444; line-height: 2; font-weight: 300; text-align: justify; }
 
-        .series-intro {
-            margin: 40px 0 100px 0;
-            max-width: 800px;
-            animation: fadeInHeader 1.2s ease-out forwards;
-        }
-        .series-title {
-            font-size: 26px; font-weight: 300; letter-spacing: 0.3em;
-            text-transform: uppercase; margin-bottom: 30px;
-        }
-        .series-description {
-            font-size: 15px; color: #444; line-height: 2;
-            font-weight: 300; text-align: justify;
-        }
-
-        /* --- 核心布局：主图与细节图并排 --- */
+        /* --- 核心布局：主图与细节 --- */
         .featured-section {
-            display: flex;
-            gap: 4%;
-            margin-bottom: 120px;
-            align-items: flex-start;
+            display: flex; gap: 50px; margin-bottom: 120px; align-items: flex-start;
         }
-        .main-work {
-            flex: 2; /* 左侧主图占较大空间 */
-        }
-        .detail-gallery {
-            flex: 1; /* 右侧细节图占较小空间 */
-            display: flex;
-            flex-direction: column;
-            gap: 40px;
+        .main-work { flex: 2; }
+        .detail-gallery { 
+            flex: 1; display: flex; flex-direction: column; gap: 30px; 
         }
 
-        /* 通用作品样式 */
-        .works-layout {
-            display: flex; flex-wrap: wrap;
-            gap: 120px 4%; align-items: flex-start;
+        /* --- 视觉优化：图像清洗器 --- */
+        .image-cleaner {
+            width: 100%;
+            background-color: #fff;
+            overflow: hidden;
+            /* 关键滤镜：提升对比度压制背景噪点，微调亮度让背景更纯净 */
+            filter: contrast(1.1) brightness(1.02);
+            mix-blend-mode: multiply; /* 让图片中的纯白与网页背景融合 */
+            transition: all 0.8s ease;
         }
-        .work-item {
-            display: flex; flex-direction: column;
-            opacity: 0; transform: translateY(30px);
-            transition: opacity 1.2s ease, transform 1.2s ease;
+        
+        .image-cleaner img {
+            width: 100%; height: auto; display: block;
+            transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+            /* 针对透明材质，稍微锐化 */
         }
-        .work-item.full { flex: 1 1 100%; }
-        .work-item.slim { flex: 1 1 48%; }
+
+        /* 悬停效果 */
+        .work-item:hover .image-cleaner img { transform: scale(1.05); }
+        .work-item:hover .image-cleaner { filter: contrast(1.15) brightness(1.05); }
+
+        /* 文字信息样式 */
+        .work-info { margin-top: 15px; border-top: 1px solid #eee; padding-top: 10px; }
+        .work-name { font-size: 13px; letter-spacing: 0.1em; text-transform: uppercase; }
+        .work-detail { font-size: 10px; color: #999; margin-top: 4px; }
+
+        /* 动画 */
+        .work-item { opacity: 0; transform: translateY(20px); transition: all 1s ease; }
         .work-item.visible { opacity: 1; transform: translateY(0); }
 
-        .work-image-wrapper {
-            width: 100%; margin-bottom: 20px;
-            overflow: hidden; cursor: crosshair;
-            background-color: #f9f9f9;
-        }
-        .work-image-wrapper img {
-            width: 100%; height: auto; display: block;
-            transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
-        }
-        .work-item:hover .work-image-wrapper img { transform: scale(1.02); }
-
-        .work-info {
-            padding-top: 12px; border-top: 1px solid #eee;
-        }
-        .work-name {
-            font-size: 13px; font-weight: 400; letter-spacing: 0.15em;
-            text-transform: uppercase; margin-bottom: 5px;
-        }
-        .work-detail {
-            font-size: 10px; color: #999; text-transform: uppercase;
-        }
-
-        @keyframes fadeInHeader {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        footer {
-            padding: 100px 5% 40px; text-align: center;
-            font-size: 9px; letter-spacing: 0.4em; color: #ccc; text-transform: uppercase;
-        }
-
-        /* 移动端适配 */
         @media (max-width: 900px) {
-            .featured-section { flex-direction: column; gap: 80px; }
-            .work-item.slim { flex: 1 1 100%; }
-            .works-layout { gap: 80px 0; }
+            .featured-section { flex-direction: column; }
+            .detail-gallery { flex-direction: row; gap: 15px; }
         }
     </style>
 </head>
@@ -129,14 +79,14 @@
         <header class="series-intro">
             <h1 class="series-title">Formless Series</h1>
             <p class="series-description">
-                Exploring the fluidity of transparent resin, this series captures the moment of transition between solid and liquid states, where boundaries dissolve into light and shadow.
+                Exploring the fluidity of transparent resin, this series captures the moment of transition between solid and liquid states...
             </p>
         </header>
 
         <section class="featured-section">
             <div class="work-item main-work">
-                <div class="work-image-wrapper">
-                    <img src="images/sculpture/s4_1.jpg" alt="At Ease I" onerror="handleError(this)">
+                <div class="image-cleaner">
+                    <img src="images/sculpture/s4_1.jpg" alt="At Ease I">
                 </div>
                 <div class="work-info">
                     <div class="work-name">At Ease I</div>
@@ -146,24 +96,24 @@
 
             <div class="detail-gallery">
                 <div class="work-item">
-                    <div class="work-image-wrapper">
-                        <img src="images/sculpture/s4_2.jpg" alt="Detail II" onerror="handleError(this)">
+                    <div class="image-cleaner">
+                        <img src="images/sculpture/s4_2.jpg" alt="Detail II">
                     </div>
                     <div class="work-info">
                         <div class="work-name">At Ease II (Detail)</div>
                     </div>
                 </div>
                 <div class="work-item">
-                    <div class="work-image-wrapper">
-                        <img src="images/sculpture/s4_3.jpg" alt="Detail III" onerror="handleError(this)">
+                    <div class="image-cleaner">
+                        <img src="images/sculpture/s4_3.jpg" alt="Detail III">
                     </div>
                     <div class="work-info">
                         <div class="work-name">At Ease III (Detail)</div>
                     </div>
                 </div>
                 <div class="work-item">
-                    <div class="work-image-wrapper">
-                        <img src="images/sculpture/s4_4.jpg" alt="Detail IV" onerror="handleError(this)">
+                    <div class="image-cleaner">
+                        <img src="images/sculpture/s4_4.jpg" alt="Detail IV">
                     </div>
                     <div class="work-info">
                         <div class="work-name">At Ease IV (Detail)</div>
@@ -171,80 +121,15 @@
                 </div>
             </div>
         </section>
-
-        <div class="works-layout">
-            <div class="work-item full">
-                <div class="work-image-wrapper">
-                    <img src="images/sculpture/s4_5.jpg" alt="At Ease V" onerror="handleError(this)">
-                </div>
-                <div class="work-info">
-                    <div class="work-name">At Ease V</div>
-                    <div class="work-detail">Transparent Resin / 2024</div>
-                </div>
-            </div>
-
-            <div class="work-item slim">
-                <div class="work-image-wrapper">
-                    <img src="images/sculpture/s4_6.jpg" alt="At Ease VI" onerror="handleError(this)">
-                </div>
-                <div class="work-info">
-                    <div class="work-name">At Ease VI</div>
-                    <div class="work-detail">Transparent Resin / 2024</div>
-                </div>
-            </div>
-            <div class="work-item slim">
-                <div class="work-image-wrapper">
-                    <img src="images/sculpture/s4_7.jpg" alt="At Ease VII" onerror="handleError(this)">
-                </div>
-                <div class="work-info">
-                    <div class="work-name">At Ease VII</div>
-                    <div class="work-detail">Transparent Resin / 2024</div>
-                </div>
-            </div>
-
-            <div class="work-item slim">
-                <div class="work-image-wrapper">
-                    <img src="images/sculpture/s4_8.jpg" alt="At Ease VIII" onerror="handleError(this)">
-                </div>
-                <div class="work-info">
-                    <div class="work-name">At Ease VIII</div>
-                    <div class="work-detail">Transparent Resin / 2024</div>
-                </div>
-            </div>
-            <div class="work-item slim">
-                <div class="work-image-wrapper">
-                    <img src="images/sculpture/s4_9.jpg" alt="At Ease IX" onerror="handleError(this)">
-                </div>
-                <div class="work-info">
-                    <div class="work-name">At Ease IX</div>
-                    <div class="work-detail">Transparent Resin / 2024</div>
-                </div>
-            </div>
-        </div>
     </div>
 
-    <footer>
-        &copy; 2026 ZHANGJIARUI ARTWORKS.
-    </footer>
-
     <script>
-        function handleError(img) {
-            console.error("Image not found:", img.src);
-            img.style.display = "none";
-        }
-
-        const observerOptions = { threshold: 0.1 };
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                }
+                if (entry.isIntersecting) entry.target.classList.add('visible');
             });
-        }, observerOptions);
-
-        document.querySelectorAll('.work-item').forEach(item => {
-            observer.observe(item);
-        });
+        }, { threshold: 0.1 });
+        document.querySelectorAll('.work-item').forEach(item => observer.observe(item));
     </script>
 </body>
 </html>
