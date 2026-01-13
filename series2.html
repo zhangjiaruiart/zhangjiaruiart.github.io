@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WATER SERIES | ZHANG JIARUI</title>
     <style>
-        /* 全局样式 */
+        /* 全局基础样式 */
         body, html {
             margin: 0; padding: 0;
             font-family: "Optima", "Didot", "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -14,185 +14,125 @@
             scroll-behavior: smooth;
         }
 
-        /* 导航栏 */
+        /* 导航栏：同步 Series 4 的智能隐藏与高斯模糊 */
         nav {
-            padding: 40px 5%;
+            padding: 30px 5%;
             display: flex; justify-content: space-between; align-items: center;
+            position: fixed; top: 0; left: 0; right: 0;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(15px);
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        .logo {
-            font-size: 14px; font-weight: 300; letter-spacing: 0.5em;
-            text-decoration: none; color: #111; text-transform: uppercase;
-        }
-        .back-link {
-            font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase;
-            text-decoration: none; color: #aaa; transition: all 0.3s ease;
-        }
-        .back-link:hover { color: #111; transform: translateX(-5px); }
+        nav.hidden { transform: translateY(-100%); }
 
-        /* 内容容器 */
-        .container { 
-            max-width: 1400px; 
-            margin: 0 auto; 
-            padding: 0 5% 100px; 
-        }
+        .logo { font-size: 14px; font-weight: 300; letter-spacing: 0.5em; text-decoration: none; color: #111; text-transform: uppercase; }
+        .back-link { font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; text-decoration: none; color: #aaa; transition: all 0.3s ease; }
+        .back-link:hover { color: #111; padding-left: 10px; }
 
-        /* 顶部系列介绍 */
-        .series-intro {
-            margin: 40px 0 100px 0;
-            max-width: 800px;
-            animation: fadeIn 1.2s ease-out;
-        }
-        .series-title {
-            font-size: 26px; font-weight: 300; letter-spacing: 0.3em;
-            text-transform: uppercase; margin-bottom: 30px;
-        }
-        .series-description {
-            font-size: 15px; color: #444; line-height: 2;
-            font-weight: 300; text-align: justify;
-        }
+        .container { max-width: 1400px; margin: 0 auto; padding: 120px 5% 100px; }
+
+        /* 系列介绍 */
+        .series-intro { margin: 40px 0 100px 0; max-width: 800px; }
+        .series-title { font-size: 26px; font-weight: 300; letter-spacing: 0.3em; text-transform: uppercase; margin-bottom: 30px; }
+        .series-description { font-size: 15px; color: #444; line-height: 2; font-weight: 300; text-align: justify; }
 
         /* 动态布局系统 */
-        .works-layout {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 120px 4%;
-            align-items: flex-start;
-        }
+        .works-layout { display: flex; flex-wrap: wrap; gap: 120px 4%; align-items: flex-start; }
 
-        /* 组合布局 (主图+侧边细节) */
-        .work-combination {
-            flex: 1 1 100%;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-            opacity: 0;
-            transform: translateY(30px);
-            transition: all 1s ease;
-        }
-
-        .main-featured { flex: 2; min-width: 60%; }
-        .side-details { 
-            flex: 0.8; 
-            display: flex; 
-            flex-direction: column; 
-            gap: 20px; 
-        }
-
-        /* 基础作品块 */
-        .work-item {
-            flex: 1 1 100%;
-            display: flex;
-            flex-direction: column;
+        /* 作品项通用动画 */
+        .work-item, .work-combination {
             opacity: 0; 
             transform: translateY(30px);
-            transition: opacity 1s ease, transform 1s ease;
+            transition: all 1.2s cubic-bezier(0.22, 1, 0.36, 1);
         }
-        
-        .work-item.visible, .work-combination.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
+        .work-item.visible, .work-combination.visible { opacity: 1; transform: translateY(0); }
 
-        /* 并排样式 */
+        /* 组合布局逻辑 */
+        .work-combination { flex: 1 1 100%; display: flex; flex-wrap: wrap; gap: 20px; }
+        .main-featured { flex: 2; min-width: 60%; }
+        .side-details { flex: 0.8; display: flex; flex-direction: column; gap: 20px; }
         .work-item.slim { flex: 1 1 48%; }
+        .work-item { flex: 1 1 100%; display: flex; flex-direction: column; }
 
-        /* 图片容器 */
+        /* --- 核心交互 CSS (同步 Series 4) --- */
         .work-image-wrapper {
-            width: 100%;
-            margin-bottom: 25px;
-            display: flex;
-            justify-content: center;
-            overflow: hidden;
-            background-color: #fcfcfc;
-            cursor: crosshair; /* 增加趣味性光标 */
+            width: 100%; overflow: hidden; background-color: #fcfcfc;
+            position: relative; cursor: zoom-in;
         }
-        
+
         .work-image-wrapper img {
-            width: 100%;
-            height: auto;
-            max-height: 85vh;
-            object-fit: contain;
-            display: block;
-            transition: transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+            width: 100%; height: auto; display: block;
+            filter: grayscale(0.2) brightness(0.95);
+            transition: filter 0.5s ease, transform 0.8s cubic-bezier(0.165, 0.84, 0.44, 1);
+            will-change: transform;
         }
 
-        /* 趣味交互：图片缩放 */
-        .work-item:hover .work-image-wrapper img,
-        .work-combination:hover .main-featured img {
-            transform: scale(1.04);
+        /* 悬停提亮与缩放 */
+        .work-item:hover img, .work-combination:hover img {
+            filter: grayscale(0) brightness(1);
+            transform: scale(1.03);
         }
 
-        /* 文字信息与底线黑线交互 */
+        /* 聚光灯探照效果 */
+        .spotlight {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
+            background: radial-gradient(circle 200px at var(--x) var(--y), rgba(255,255,255,0.15) 0%, rgba(255,255,255,0) 100%);
+            opacity: 0; transition: opacity 0.5s ease; z-index: 2;
+        }
+        .work-image-wrapper:hover .spotlight { opacity: 1; }
+
+        /* 文字信息交互：浮动上升感与黑线生长 */
         .work-info {
-            padding-top: 15px;
-            border-top: 1px solid #eee;
-            position: relative; /* 为伪元素定位 */
-            transition: border-color 0.5s ease;
+            padding-top: 20px; border-top: 1px solid #eee; margin-top: 15px;
+            position: relative; transition: all 0.6s ease;
+        }
+        .work-item:hover .work-info, .work-combination:hover .work-info {
+            transform: translateY(-5px);
         }
 
-        /* 核心需求：底线显示一条黑线的功能 */
         .work-info::after {
-            content: '';
-            position: absolute;
-            top: -1px; /* 覆盖在原有的 border-top 上 */
-            left: 50%;
-            width: 0;
-            height: 1.5px;
-            background-color: #111;
+            content: ''; position: absolute; top: -1px; left: 50%;
+            width: 0; height: 1.5px; background-color: #111;
             transition: all 0.6s cubic-bezier(0.19, 1, 0.22, 1);
             transform: translateX(-50%);
         }
+        .work-item:hover .work-info::after, .work-combination:hover .work-info::after { width: 100%; }
 
-        /* 当鼠标悬停在整个作品项上时，黑线生长 */
-        .work-item:hover .work-info::after,
-        .work-combination:hover .work-info::after {
-            width: 100%;
+        .work-name { font-size: 14px; font-weight: 400; letter-spacing: 0.15em; text-transform: uppercase; transition: letter-spacing 0.4s ease; }
+        .work-item:hover .work-name, .work-combination:hover .work-name { letter-spacing: 0.25em; }
+        .work-detail { font-size: 11px; color: #999; letter-spacing: 0.05em; text-transform: uppercase; margin-top: 8px; }
+        .full-width-info { flex: 1 1 100%; }
+
+        /* 全屏预览 Overlay */
+        #overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(255,255,255,0.95);
+            display: none; z-index: 2000; cursor: zoom-out;
+            justify-content: center; align-items: center;
         }
+        #overlay img { max-width: 90%; max-height: 90%; object-fit: contain; }
 
-        .full-width-info { flex: 1 1 100%; margin-top: 10px; }
+        footer { padding: 100px 5% 40px; text-align: center; font-size: 9px; letter-spacing: 0.4em; color: #ccc; text-transform: uppercase; }
 
-        .work-name {
-            font-size: 14px; font-weight: 400; letter-spacing: 0.15em;
-            text-transform: uppercase; margin-bottom: 8px;
-            transition: letter-spacing 0.4s ease;
-        }
-        /* 悬停时文字间距微调 */
-        .work-item:hover .work-name,
-        .work-combination:hover .work-name {
-            letter-spacing: 0.25em;
-        }
-
-        .work-detail {
-            font-size: 11px; color: #999;
-            letter-spacing: 0.05em; text-transform: uppercase;
-            line-height: 1.6;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        footer {
-            padding: 100px 5% 40px; text-align: center;
-            font-size: 9px; letter-spacing: 0.4em; color: #ccc; text-transform: uppercase;
-        }
-
-        /* 移动端适配 */
         @media (max-width: 900px) {
             .work-item.slim { flex: 1 1 100%; }
             .work-combination { flex-direction: column; }
             .side-details { flex-direction: row; }
             .works-layout { gap: 80px 0; }
+            .container { padding-top: 100px; }
         }
     </style>
 </head>
 <body>
 
-    <nav>
+    <nav id="navbar">
         <a href="index.html" class="logo">ZHANGJIARUI ARTWORKS</a>
         <a href="index.html#sculpture" class="back-link">← Back to Series</a>
     </nav>
+
+    <div id="overlay"><img src="" alt="Full View"></div>
 
     <div class="container">
         <header class="series-intro">
@@ -207,15 +147,18 @@
             <div class="work-combination">
                 <div class="main-featured">
                     <div class="work-image-wrapper">
-                        <img src="images/sculpture/s2_1.jpg" alt="Water 1 Main" onerror="this.src='images/sculpture/s2_cover.jpg'">
+                        <div class="spotlight"></div>
+                        <img src="images/sculpture/s2_1.jpg" onerror="this.src='images/sculpture/s2_cover.jpg'">
                     </div>
                 </div>
                 <div class="side-details">
                     <div class="work-image-wrapper">
-                        <img src="images/sculpture/s2_2.jpg" alt="Detail 1" onerror="this.src='images/sculpture/s2_cover.jpg'">
+                        <div class="spotlight"></div>
+                        <img src="images/sculpture/s2_2.jpg" onerror="this.src='images/sculpture/s2_cover.jpg'">
                     </div>
                     <div class="work-image-wrapper">
-                        <img src="images/sculpture/s2_3.jpg" alt="Detail 2" onerror="this.src='images/sculpture/s2_cover.jpg'">
+                        <div class="spotlight"></div>
+                        <img src="images/sculpture/s2_3.jpg" onerror="this.src='images/sculpture/s2_cover.jpg'">
                     </div>
                 </div>
                 <div class="work-info full-width-info">
@@ -226,7 +169,8 @@
 
             <div class="work-item slim">
                 <div class="work-image-wrapper">
-                    <img src="images/sculpture/s2_4.jpg" alt="Water 2" onerror="this.src='images/sculpture/s2_cover.jpg'">
+                    <div class="spotlight"></div>
+                    <img src="images/sculpture/s2_4.jpg" onerror="this.src='images/sculpture/s2_cover.jpg'">
                 </div>
                 <div class="work-info">
                     <div class="work-name">Water 2</div>
@@ -236,7 +180,8 @@
 
             <div class="work-item slim">
                 <div class="work-image-wrapper">
-                    <img src="images/sculpture/s2_5.jpg" alt="Water 3" onerror="this.src='images/sculpture/s2_cover.jpg'">
+                    <div class="spotlight"></div>
+                    <img src="images/sculpture/s2_5.jpg" onerror="this.src='images/sculpture/s2_cover.jpg'">
                 </div>
                 <div class="work-info">
                     <div class="work-name">Water 3</div>
@@ -246,7 +191,8 @@
 
             <div class="work-item">
                 <div class="work-image-wrapper">
-                    <img src="images/sculpture/s2_6.jpg" alt="Water 4" onerror="this.src='images/sculpture/s2_cover.jpg'">
+                    <div class="spotlight"></div>
+                    <img src="images/sculpture/s2_6.jpg" onerror="this.src='images/sculpture/s2_cover.jpg'">
                 </div>
                 <div class="work-info">
                     <div class="work-name">Water 4</div>
@@ -257,41 +203,67 @@
         </div>
     </div>
 
-    <footer>
-        &copy; 2026 ZHANGJIARUI ARTWORKS.
-    </footer>
+    <footer>&copy; 2026 ZHANGJIARUI ARTWORKS.</footer>
 
     <script>
-        // 滚动淡入观察器
-        const observerOptions = { threshold: 0.1 };
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                }
-            });
-        }, observerOptions);
-
-        document.querySelectorAll('.work-item, .work-combination').forEach(item => {
-            observer.observe(item);
-        });
-
-        // 趣味交互：鼠标位置影响图片细微偏移（视差感）
+        // 1. 聚光灯探照坐标跟随
         document.querySelectorAll('.work-image-wrapper').forEach(wrapper => {
-            wrapper.addEventListener('mousemove', (e) => {
-                const img = wrapper.querySelector('img');
+            wrapper.addEventListener('mousemove', e => {
                 const rect = wrapper.getBoundingClientRect();
-                const x = (e.clientX - rect.left) / rect.width - 0.5;
-                const y = (e.clientY - rect.top) / rect.height - 0.5;
-                
-                // 限制平移范围在 10px 以内，保持高级感
-                img.style.transform = `scale(1.04) translate(${x * 10}px, ${y * 10}px)`;
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                wrapper.style.setProperty('--x', x + 'px');
+                wrapper.style.setProperty('--y', y + 'px');
+
+                // 配合视差微移 (Parallax)
+                const img = wrapper.querySelector('img');
+                const moveX = (x / rect.width - 0.5) * 15;
+                const moveY = (y / rect.height - 0.5) * 15;
+                img.style.transform = `scale(1.03) translate(${moveX}px, ${moveY}px)`;
             });
 
             wrapper.addEventListener('mouseleave', (e) => {
                 const img = wrapper.querySelector('img');
                 img.style.transform = `scale(1) translate(0, 0)`;
             });
+        });
+
+        // 2. 滚动淡入观察器
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1 });
+        document.querySelectorAll('.work-item, .work-combination').forEach(item => observer.observe(item));
+
+        // 3. 智能导航栏隐藏
+        let lastScroll = 0;
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            const currentScroll = window.pageYOffset;
+            if (currentScroll > lastScroll && currentScroll > 200) {
+                navbar.classList.add('hidden');
+            } else {
+                navbar.classList.remove('hidden');
+            }
+            lastScroll = currentScroll;
+        });
+
+        // 4. 点击预览大图
+        const overlay = document.getElementById('overlay');
+        const overlayImg = overlay.querySelector('img');
+        document.querySelectorAll('.work-image-wrapper img').forEach(img => {
+            img.addEventListener('click', () => {
+                overlayImg.src = img.src;
+                overlay.style.display = 'flex';
+                document.body.style.overflow = 'hidden';
+            });
+        });
+        overlay.addEventListener('click', () => {
+            overlay.style.display = 'none';
+            document.body.style.overflow = 'auto';
         });
     </script>
 
