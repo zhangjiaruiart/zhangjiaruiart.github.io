@@ -9,135 +9,174 @@
             margin: 0; padding: 0;
             font-family: "Optima", "Didot", "Helvetica Neue", Helvetica, Arial, sans-serif;
             background-color: #ffffff; color: #111111;
+            -webkit-font-smoothing: antialiased;
             scroll-behavior: smooth;
         }
 
-        /* --- 导航 --- */
-        .back-nav {
-            position: fixed; top: 40px; left: 5%;
-            z-index: 1000;
+        nav {
+            padding: 40px 5%;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .logo {
+            font-size: 14px; font-weight: 300; letter-spacing: 0.5em;
+            text-decoration: none; color: #111; text-transform: uppercase;
         }
         .back-link {
-            text-decoration: none; color: #111; font-size: 10px;
-            letter-spacing: 0.2em; text-transform: uppercase;
-            padding-bottom: 5px; border-bottom: 1px solid #eee;
-            transition: all 0.4s;
+            font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase;
+            text-decoration: none; color: #aaa; transition: all 0.3s ease;
         }
-        .back-link:hover { border-bottom: 1px solid #111; opacity: 0.6; }
+        .back-link:hover { color: #111; transform: translateX(-5px); }
 
-        /* --- 动画 --- */
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(30px); }
+        .container { 
+            max-width: 1400px; 
+            margin: 0 auto; 
+            padding: 0 5% 100px; 
+        }
+
+        .series-intro {
+            margin: 40px 0 100px 0;
+            max-width: 800px;
+            animation: fadeIn 1.2s ease-out;
+        }
+        .series-title {
+            font-size: 26px; font-weight: 300; letter-spacing: 0.3em;
+            text-transform: uppercase; margin-bottom: 30px;
+        }
+        .series-description {
+            font-size: 15px; color: #444; line-height: 2;
+            font-weight: 300; text-align: justify;
+        }
+
+        .works-layout {
+            display: flex; flex-wrap: wrap;
+            gap: 120px 4%; align-items: flex-start;
+        }
+
+        .work-item {
+            flex: 1 1 100%;
+            display: flex; flex-direction: column;
+            opacity: 0; transform: translateY(30px);
+            transition: opacity 1s ease, transform 1s ease;
+        }
+        
+        .work-item.visible { opacity: 1; transform: translateY(0); }
+        .work-item.slim { flex: 1 1 48%; }
+
+        .work-image-wrapper {
+            width: 100%; margin-bottom: 25px;
+            display: flex; justify-content: center;
+            overflow: hidden; cursor: pointer;
+        }
+        
+        .work-image-wrapper img {
+            width: 100%; height: auto;
+            max-height: 85vh; object-fit: contain;
+            display: block;
+            transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        .work-item:hover .work-image-wrapper img { transform: scale(1.03); }
+
+        .work-info {
+            padding-top: 15px; border-top: 1px solid #eee;
+            transition: border-color 0.5s ease;
+        }
+        .work-item:hover .work-info { border-top-color: #111; }
+        .work-name {
+            font-size: 14px; font-weight: 400; letter-spacing: 0.15em;
+            text-transform: uppercase; margin-bottom: 8px;
+        }
+        .work-detail {
+            font-size: 11px; color: #999;
+            letter-spacing: 0.05em; text-transform: uppercase;
+            line-height: 1.6;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* --- 标题与阐述 --- */
-        .project-header {
-            padding: 160px 5% 80px;
-            max-width: 800px; margin: 0 auto;
-            text-align: center;
-            animation: fadeInUp 1.2s cubic-bezier(0.15, 1, 0.3, 1) both;
-        }
-
-        .series-title {
-            font-size: 11px; letter-spacing: 0.4em; color: #aaa;
-            text-transform: uppercase; margin-bottom: 15px;
-        }
-
-        .work-title {
-            font-size: 24px; font-weight: 300; letter-spacing: 0.15em;
-            text-transform: uppercase; margin-bottom: 25px;
-        }
-
-        .work-meta {
-            font-size: 11px; color: #888; letter-spacing: 0.1em;
-            line-height: 1.8; margin-bottom: 40px;
-        }
-
-        /* --- 图片展示区域 --- */
-        .details-container {
-            padding: 0 5% 100px;
-            max-width: 1260px; /* 保持与主页缩小的比例一致 */
-            margin: 0 auto;
-        }
-
-        .detail-item {
-            width: 100%; margin-bottom: 60px;
-            animation: fadeInUp 1.5s cubic-bezier(0.15, 1, 0.3, 1) both;
-        }
-
-        .detail-item img {
-            width: 100%; height: auto; display: block;
-            background-color: #fcfcfc;
-        }
-
         footer {
-            padding: 80px 5% 40px; text-align: center;
-            font-size: 9px; letter-spacing: 0.4em; color: #ccc;
-            text-transform: uppercase; border-top: 1px solid #f9f9f9;
+            padding: 100px 5% 40px; text-align: center;
+            font-size: 9px; letter-spacing: 0.4em; color: #ccc; text-transform: uppercase;
         }
 
-        @media (max-width: 768px) {
-            .project-header { padding-top: 120px; }
-            .work-title { font-size: 18px; }
+        @media (max-width: 900px) {
+            .work-item.slim { flex: 1 1 100%; }
+            .works-layout { gap: 80px 0; }
         }
     </style>
 </head>
 <body>
 
-    <nav class="back-nav">
-        <a href="index.html#sculpture" class="back-link">← Back</a>
+    <nav>
+        <a href="index.html" class="logo">ZHANGJIARUI ARTWORKS</a>
+        <a href="index.html#sculpture" class="back-link">← Back to Series</a>
     </nav>
 
-    <header class="project-header">
-        <div class="series-title">Sculpture</div>
-        <h1 class="work-title">Formless Series</h1>
-        <div class="work-meta">
-            Transparent resin / 2024
-        </div>
-    </header>
+    <div class="container">
+        <header class="series-intro">
+            <h1 class="series-title">Formless Series</h1>
+            <p class="series-description">
+                Exploring the fluidity of transparent resin, this series captures the moment of transition between solid and liquid states, where boundaries dissolve into light and shadow.
+            </p>
+        </header>
 
-    <main class="details-container">
-        <div class="detail-item">
-            <img src="images/sculpture/s4_1.jpg" alt="Formless Series 1" onerror="this.src='images/Work2.jpg'">
-        </div>
+        <div class="works-layout">
+            <div class="work-item">
+                <div class="work-image-wrapper">
+                    <img src="images/sculpture/s4_1.jpg" alt="At Ease 1" onerror="this.src='images/sculpture/s4_cover.jpg'">
+                </div>
+                <div class="work-info">
+                    <div class="work-name">At Ease I</div>
+                    <div class="work-detail">Transparent Resin / 2024</div>
+                </div>
+            </div>
 
-        <div class="detail-item">
-            <img src="images/sculpture/s4_2.jpg" alt="Formless Series 2" onerror="this.src='images/Work2.jpg'">
-        </div>
+            <div class="work-item slim">
+                <div class="work-image-wrapper">
+                    <img src="images/sculpture/s4_2.jpg" alt="At Ease 2" onerror="this.src='images/sculpture/s4_cover.jpg'">
+                </div>
+                <div class="work-info">
+                    <div class="work-name">At Ease II</div>
+                    <div class="work-detail">Transparent Resin / 2024</div>
+                </div>
+            </div>
 
-        <div class="detail-item">
-            <img src="images/sculpture/s4_3.jpg" alt="Formless Series 3" onerror="this.src='images/Work2.jpg'">
-        </div>
+            <div class="work-item slim">
+                <div class="work-image-wrapper">
+                    <img src="images/sculpture/s4_3.jpg" alt="At Ease 3" onerror="this.src='images/sculpture/s4_cover.jpg'">
+                </div>
+                <div class="work-info">
+                    <div class="work-name">At Ease III</div>
+                    <div class="work-detail">Transparent Resin / 2024</div>
+                </div>
+            </div>
 
-        <div class="detail-item">
-            <img src="images/sculpture/s4_4.jpg" alt="Formless Series 4" onerror="this.src='images/Work2.jpg'">
-        </div>
+            <div class="work-item">
+                <div class="work-image-wrapper">
+                    <img src="images/sculpture/s4_4.jpg" alt="At Ease 4" onerror="this.src='images/sculpture/s4_cover.jpg'">
+                </div>
+                <div class="work-info">
+                    <div class="work-name">At Ease IV</div>
+                    <div class="work-detail">Transparent Resin / 2024</div>
+                </div>
+            </div>
 
-        <div class="detail-item">
-            <img src="images/sculpture/s4_5.jpg" alt="Formless Series 5" onerror="this.src='images/Work2.jpg'">
-        </div>
+            <div class="work-item slim">
+                <div class="work-image-wrapper">
+                    <img src="images/sculpture/s4_5.jpg" alt="At Ease 5" onerror="this.src='images/sculpture/s4_cover.jpg'">
+                </div>
+                <div class="work-info">
+                    <div class="work-name">At Ease V</div>
+                    <div class="work-detail">Transparent Resin / 2024</div>
+                </div>
+            </div>
 
-        <div class="detail-item">
-            <img src="images/sculpture/s4_6.jpg" alt="Formless Series 6" onerror="this.src='images/Work2.jpg'">
-        </div>
-
-        <div class="detail-item">
-            <img src="images/sculpture/s4_7.jpg" alt="Formless Series 7" onerror="this.src='images/Work2.jpg'">
-        </div>
-
-        <div class="detail-item">
-            <img src="images/sculpture/s4_8.jpg" alt="Formless Series 8" onerror="this.src='images/Work2.jpg'">
-        </div>
-
-        <div class="detail-item">
-            <img src="images/sculpture/s4_9.jpg" alt="Formless Series 9" onerror="this.src='images/Work2.jpg'">
-        </div>
-    </main>
-
-    <footer>
-        &copy; 2026 ZHANGJIARUI ARTWORKS.
-    </footer>
-
-</body>
-</html>
+            <div class="work-item slim">
+                <div class="work-image-wrapper">
+                    <img src="images/sculpture/s4_6.jpg" alt="At Ease 6" onerror="this.src='images/sculpture/s4_cover.jpg'">
+                </div>
+                <div class="work-info">
+                    <div class="work-name">At Ease VI
