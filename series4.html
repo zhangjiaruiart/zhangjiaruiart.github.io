@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FORMLESS SERIES | ZHANG JIARUI</title>
     <style>
+        /* --- 1. 全局基础样式 --- */
         body, html {
             margin: 0; padding: 0;
             font-family: "Optima", "Didot", "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -13,6 +14,7 @@
             scroll-behavior: smooth;
         }
 
+        /* --- 2. 导航栏 (同步 Series 1) --- */
         nav {
             padding: 40px 5%;
             display: flex; justify-content: space-between; align-items: center;
@@ -27,6 +29,7 @@
         }
         .back-link:hover { color: #111; transform: translateX(-5px); }
 
+        /* --- 3. 容器布局 --- */
         .container { 
             max-width: 1400px; 
             margin: 0 auto; 
@@ -36,7 +39,7 @@
         .series-intro {
             margin: 40px 0 100px 0;
             max-width: 800px;
-            animation: fadeIn 1.2s ease-out;
+            animation: fadeInHeader 1.2s ease-out forwards;
         }
         .series-title {
             font-size: 26px; font-weight: 300; letter-spacing: 0.3em;
@@ -47,25 +50,32 @@
             font-weight: 300; text-align: justify;
         }
 
+        /* --- 4. 作品网格系统 --- */
         .works-layout {
             display: flex; flex-wrap: wrap;
             gap: 120px 4%; align-items: flex-start;
         }
 
+        /* 默认全宽 */
         .work-item {
             flex: 1 1 100%;
             display: flex; flex-direction: column;
             opacity: 0; transform: translateY(30px);
-            transition: opacity 1s ease, transform 1s ease;
+            transition: opacity 1.2s ease, transform 1.2s ease;
         }
         
-        .work-item.visible { opacity: 1; transform: translateY(0); }
+        /* 半宽样式 */
         .work-item.slim { flex: 1 1 48%; }
 
+        /* 动画激活状态 */
+        .work-item.visible { opacity: 1; transform: translateY(0); }
+
+        /* --- 5. 图片交互 --- */
         .work-image-wrapper {
             width: 100%; margin-bottom: 25px;
             display: flex; justify-content: center;
-            overflow: hidden; cursor: pointer;
+            overflow: hidden; cursor: crosshair;
+            background-color: #f9f9f9; /* 占位背景色 */
         }
         
         .work-image-wrapper img {
@@ -75,8 +85,9 @@
             transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
         }
 
-        .work-item:hover .work-image-wrapper img { transform: scale(1.03); }
+        .work-item:hover .work-image-wrapper img { transform: scale(1.02); }
 
+        /* --- 6. 文字信息 --- */
         .work-info {
             padding-top: 15px; border-top: 1px solid #eee;
             transition: border-color 0.5s ease;
@@ -92,7 +103,7 @@
             line-height: 1.6;
         }
 
-        @keyframes fadeIn {
+        @keyframes fadeInHeader {
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
@@ -126,7 +137,7 @@
         <div class="works-layout">
             <div class="work-item">
                 <div class="work-image-wrapper">
-                    <img src="images/sculpture/s4_1.jpg" alt="At Ease 1" onerror="this.src='images/sculpture/s4_cover.jpg'">
+                    <img src="images/sculpture/s4_1.jpg" alt="At Ease 1" onerror="handleError(this)">
                 </div>
                 <div class="work-info">
                     <div class="work-name">At Ease I</div>
@@ -136,17 +147,16 @@
 
             <div class="work-item slim">
                 <div class="work-image-wrapper">
-                    <img src="images/sculpture/s4_2.jpg" alt="At Ease 2" onerror="this.src='images/sculpture/s4_cover.jpg'">
+                    <img src="images/sculpture/s4_2.jpg" alt="At Ease 2" onerror="handleError(this)">
                 </div>
                 <div class="work-info">
                     <div class="work-name">At Ease II</div>
                     <div class="work-detail">Transparent Resin / 2024</div>
                 </div>
             </div>
-
             <div class="work-item slim">
                 <div class="work-image-wrapper">
-                    <img src="images/sculpture/s4_3.jpg" alt="At Ease 3" onerror="this.src='images/sculpture/s4_cover.jpg'">
+                    <img src="images/sculpture/s4_3.jpg" alt="At Ease 3" onerror="handleError(this)">
                 </div>
                 <div class="work-info">
                     <div class="work-name">At Ease III</div>
@@ -156,7 +166,7 @@
 
             <div class="work-item">
                 <div class="work-image-wrapper">
-                    <img src="images/sculpture/s4_4.jpg" alt="At Ease 4" onerror="this.src='images/sculpture/s4_cover.jpg'">
+                    <img src="images/sculpture/s4_4.jpg" alt="At Ease 4" onerror="handleError(this)">
                 </div>
                 <div class="work-info">
                     <div class="work-name">At Ease IV</div>
@@ -166,17 +176,92 @@
 
             <div class="work-item slim">
                 <div class="work-image-wrapper">
-                    <img src="images/sculpture/s4_5.jpg" alt="At Ease 5" onerror="this.src='images/sculpture/s4_cover.jpg'">
+                    <img src="images/sculpture/s4_5.jpg" alt="At Ease 5" onerror="handleError(this)">
                 </div>
                 <div class="work-info">
                     <div class="work-name">At Ease V</div>
                     <div class="work-detail">Transparent Resin / 2024</div>
                 </div>
             </div>
+            <div class="work-item slim">
+                <div class="work-image-wrapper">
+                    <img src="images/sculpture/s4_6.jpg" alt="At Ease 6" onerror="handleError(this)">
+                </div>
+                <div class="work-info">
+                    <div class="work-name">At Ease VI</div>
+                    <div class="work-detail">Transparent Resin / 2024</div>
+                </div>
+            </div>
+
+            <div class="work-item">
+                <div class="work-image-wrapper">
+                    <img src="images/sculpture/s4_7.jpg" alt="At Ease 7" onerror="handleError(this)">
+                </div>
+                <div class="work-info">
+                    <div class="work-name">At Ease VII</div>
+                    <div class="work-detail">Transparent Resin / 2024</div>
+                </div>
+            </div>
 
             <div class="work-item slim">
                 <div class="work-image-wrapper">
-                    <img src="images/sculpture/s4_6.jpg" alt="At Ease 6" onerror="this.src='images/sculpture/s4_cover.jpg'">
+                    <img src="images/sculpture/s4_8.jpg" alt="At Ease 8" onerror="handleError(this)">
                 </div>
                 <div class="work-info">
-                    <div class="work-name">At Ease VI
+                    <div class="work-name">At Ease VIII</div>
+                    <div class="work-detail">Transparent Resin / 2024</div>
+                </div>
+            </div>
+            <div class="work-item slim">
+                <div class="work-image-wrapper">
+                    <img src="images/sculpture/s4_9.jpg" alt="At Ease 9" onerror="handleError(this)">
+                </div>
+                <div class="work-info">
+                    <div class="work-name">At Ease IX</div>
+                    <div class="work-detail">Transparent Resin / 2024</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        &copy; 2026 ZHANGJIARUI ARTWORKS.
+    </footer>
+
+    <script>
+        // --- 图片加载报错排查函数 ---
+        function handleError(img) {
+            console.error("图片加载失败，请检查文件是否存在及大小写是否匹配:", img.src);
+            img.style.border = "1px dashed #ccc";
+            // 如果你有封面图，可以取消下面这行的注释作为备用
+            // img.src = 'images/sculpture/s4_cover.jpg'; 
+        }
+
+        // --- 滚动淡入动画脚本 ---
+        const observerOptions = {
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        // 绑定监听
+        document.querySelectorAll('.work-item').forEach(item => {
+            observer.observe(item);
+        });
+
+        // 兜底检查：如果在 2 秒内动画没触发，强制显示图片（防止JS执行环境问题）
+        setTimeout(() => {
+            document.querySelectorAll('.work-item').forEach(item => {
+                item.classList.add('visible');
+            });
+        }, 2000);
+    </script>
+
+</body>
+</html>
