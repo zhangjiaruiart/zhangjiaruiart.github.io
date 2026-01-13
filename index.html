@@ -68,7 +68,7 @@
         }
         .nav-scrolled .menu-toggle span { background-color: #111; }
 
-        /* --- 2. 封面 (Hero) - 核心修复区 --- */
+        /* --- 2. 封面 (Hero) --- */
         .hero {
             height: 100vh; width: 100%; overflow: hidden;
             position: relative; background-color: #000;
@@ -76,17 +76,15 @@
         .hero img {
             width: 100%; height: 100%; object-fit: cover;
             filter: brightness(0.85); display: block;
-            /* 修复：初始状态设为可见，防止电脑端因动画失败而不显示 */
-            opacity: 1; 
-            object-position: center; /* 修复：默认居中 */
             animation: heroZoom 2.5s cubic-bezier(0.15, 1, 0.3, 1) forwards;
         }
 
         /* --- 3. 手机端专项调整 --- */
         @media (max-width: 900px) {
-            /* 修复：移除 70% 的偏移，解决手机端图片只显一半的问题 */
-            .hero img { object-position: center; } 
+            /* 1. 封面人物居中 */
+            .hero img { object-position: 70% center; } 
             
+            /* 2. 导航栏 */
             .menu-toggle { display: flex; }
             .logo { font-size: 14px; letter-spacing: 0.3em; }
             .nav-links {
@@ -100,25 +98,35 @@
             .active-toggle span:nth-child(2) { opacity: 0; }
             .active-toggle span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); background-color: #111 !important; }
 
-            .content-section { padding: 40px 0 20px 0 !important; }
-            .grid { display: block !important; }
-            .project { width: 100% !important; margin-bottom: 40px; }
-            .category-title { margin: 0 5% 25px 5%; }
-            .project-info { padding: 0 5%; }
-            .project-image-wrapper { margin-bottom: 15px; }
+            /* 3. 视频和项目占满宽度并上下排列 */
+            .content-section { 
+                padding: 40px 0 20px 0 !important; /* 左右内边距设为0，让视频撑满屏 */
+            }
+            .grid { 
+                display: block !important; /* 强制取消网格，改用块状布局实现自动上下堆叠 */
+            }
+            .project {
+                width: 100% !important;
+                margin-bottom: 40px; /* 视频之间的间距 */
+            }
+            .category-title {
+                margin: 0 5% 25px 5%; /* 标题保持5%的边距 */
+            }
+            .project-info {
+                padding: 0 5%; /* 文字介绍保持边距 */
+            }
+            .project-image-wrapper {
+                margin-bottom: 15px;
+            }
             
+            /* 雕塑部分的特殊处理（保持两列展示） */
             #sculpture .content-section { padding: 40px 5% !important; }
             #sculpture > div { gap: 20px !important; }
         }
 
         /* 其余固定样式 */
-        /* 修复：动画起始 opacity 设为 0，结束设为 1，确保平滑过渡 */
-        @keyframes heroZoom { 
-            from { transform: scale(1.1); opacity: 0; } 
-            to { transform: scale(1); opacity: 1; } 
-        }
+        @keyframes heroZoom { from { transform: scale(1.1); opacity: 0; } to { transform: scale(1); opacity: 1; } }
         @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-        
         .content-section { padding: 80px 5% 20px; max-width: 1260px; margin: 0 auto; animation: fadeInUp 1.2s cubic-bezier(0.15, 1, 0.3, 1) both; }
         .category-title { font-size: 13px; letter-spacing: 0.5em; text-transform: uppercase; margin-bottom: 25px; border-bottom: 1px solid #f0f0f0; padding-bottom: 15px; color: #111; }
         .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px 60px; margin-bottom: 30px; }
@@ -160,14 +168,9 @@
         </div>
     </nav>
 
-  <section class="hero">
-    <img 
-        src="https://t8sz9vbqf.hb-bkt.clouddn.com/cover.jpg"
-        alt="Zhang Jiarui Art"
-        referrerpolicy="no-referrer"
-    >
-</section>
-
+    <section class="hero">
+        <img src="images/Cover.JPG" alt="Zhang Jiarui Art" onerror="this.src='images/cover.jpg';">
+    </section>
 
     <div class="content-section" id="eco-art">
         <h2 class="category-title">Ecological Art</h2>
@@ -208,6 +211,7 @@
                     </div>
                 </a>
             </div>
+
             <div style="flex: 1; min-width: 300px;">
                 <h3 style="font-size: 11px; letter-spacing: 0.3em; text-transform: uppercase; color: #888; margin: 20px 0 20px 0; font-weight: 300;">Water Series</h3>
                 <a href="series2.html" class="project">
@@ -220,7 +224,61 @@
                     </div>
                 </a>
             </div>
+
+            <div style="flex: 1; min-width: 300px;">
+                <h3 style="font-size: 11px; letter-spacing: 0.3em; text-transform: uppercase; color: #888; margin: 20px 0 20px 0; font-weight: 300;">Line Series</h3>
+                <a href="series5.html" class="project">
+                    <div class="project-image-wrapper img-ratio" style="background-color: #ffffff; display: flex; align-items: center; justify-content: center;">
+                        <img src="images/sculpture/s5_cover.jpg" alt="Series 5" onerror="this.src='images/Work2.jpg'" loading="lazy" style="object-fit: contain; transform: scale(0.8); transition: transform 0.5s ease;">
+                    </div>
+                    <div class="project-info">
+                        <div class="project-title">X</div>
+                        <div class="project-meta">Acrylic, Handmade dyeing / 2024</div>
+                    </div>
+                </a>
             </div>
+
+            <div style="flex: 1; min-width: 300px;">
+                <h3 style="font-size: 11px; letter-spacing: 0.3em; text-transform: uppercase; color: #888; margin: 20px 0 20px 0; font-weight: 300;">Formless Series</h3>
+                <a href="series4.html" class="project">
+                    <div class="project-image-wrapper img-ratio">
+                        <img src="images/sculpture/s4_cover.jpg" alt="Series 4" onerror="this.src='images/Work2.jpg'" loading="lazy">
+                    </div>
+                    <div class="project-info">
+                        <div class="project-title">At ease</div>
+                        <div class="project-meta">Transparent resin / 2023</div>
+                    </div>
+                </a>
+            </div>
+
+            <div style="flex: 1; min-width: 300px;">
+                <h3 style="font-size: 11px; letter-spacing: 0.3em; text-transform: uppercase; color: #888; margin: 20px 0 20px 0; font-weight: 300;">Gold Series</h3>
+                <a href="series3.html" class="project">
+                    <div class="project-image-wrapper img-ratio">
+                        <img src="images/sculpture/s3_cover.jpg" alt="Series 3" onerror="this.src='images/Work2.jpg'" loading="lazy">
+                    </div>
+                    <div class="project-info">
+                        <div class="project-title">New Eighteenth Arhat</div>
+                        <div class="project-meta">Goldenleaf resin / 2015</div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="content-section" id="projects">
+        <h2 class="category-title">Projects</h2>
+        <div class="grid">
+            <div class="project">
+                <div class="project-image-wrapper video-ratio">
+                    <iframe width="100%" height="100%" src="https://www.youtube.com/embed/OEZ3FvOwdjI?rel=0" frameborder="0" allowfullscreen style="position: absolute; top: 0; left: 0; border: none;"></iframe>
+                </div>
+                <div class="project-info">
+                    <div class="project-title">Coral Planting Project</div>
+                    <div class="project-meta">Documentary / 2025 / Xisha Islands</div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <div class="contact-section" id="contact">
