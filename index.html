@@ -81,8 +81,10 @@
 
         /* --- 3. 手机端专项调整 --- */
         @media (max-width: 900px) {
+            /* 1. 封面人物居中 */
             .hero img { object-position: 70% center; } 
             
+            /* 2. 导航栏 */
             .menu-toggle { display: flex; }
             .logo { font-size: 14px; letter-spacing: 0.3em; }
             .nav-links {
@@ -96,26 +98,28 @@
             .active-toggle span:nth-child(2) { opacity: 0; }
             .active-toggle span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); background-color: #111 !important; }
 
+            /* 3. 视频和项目占满宽度并上下排列 */
             .content-section { 
-                padding: 40px 0 20px 0 !important; 
+                padding: 40px 0 20px 0 !important; /* 左右内边距设为0，让视频撑满屏 */
             }
             .grid { 
-                display: block !important; 
+                display: block !important; /* 强制取消网格，改用块状布局实现自动上下堆叠 */
             }
             .project {
                 width: 100% !important;
-                margin-bottom: 40px;
+                margin-bottom: 40px; /* 视频之间的间距 */
             }
             .category-title {
-                margin: 0 5% 25px 5%; 
+                margin: 0 5% 25px 5%; /* 标题保持5%的边距 */
             }
             .project-info {
-                padding: 0 5%; 
+                padding: 0 5%; /* 文字介绍保持边距 */
             }
             .project-image-wrapper {
                 margin-bottom: 15px;
             }
             
+            /* 雕塑部分的特殊处理（保持两列展示） */
             #sculpture .content-section { padding: 40px 5% !important; }
             #sculpture > div { gap: 20px !important; }
         }
@@ -164,8 +168,8 @@
         </div>
     </nav>
 
-   <section class="hero" style="background-color: #000;">
-       <img src="//t8sz9vbqf.hb-bkt.clouddn.com/cover.jpg" alt="Zhang Jiarui Art">
+    <section class="hero">
+        <img src="images/Cover.JPG" alt="Zhang Jiarui Art" onerror="this.src='images/cover.jpg';">
     </section>
 
     <div class="content-section" id="eco-art">
