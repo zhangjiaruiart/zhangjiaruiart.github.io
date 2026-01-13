@@ -5,190 +5,223 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WOOD SERIES | ZHANG JIARUI</title>
     <style>
-        :root {
-            --bg-color: #ffffff;
-            --text-main: #111111;
-            --text-muted: #999999;
-            --accent-line: #eeeeee;
-        }
-
+        /* 全局样式 */
         body, html {
             margin: 0; padding: 0;
             font-family: "Optima", "Didot", "Helvetica Neue", Helvetica, Arial, sans-serif;
-            background-color: var(--bg-color); color: var(--text-main);
+            background-color: #ffffff; color: #111111;
             -webkit-font-smoothing: antialiased;
-            overflow-x: hidden;
+            scroll-behavior: smooth;
         }
 
-        /* --- 背景装饰文字 --- */
-        .bg-watermark {
-            position: fixed; top: 20%; right: -5%;
-            font-size: 15vw; font-weight: 900; color: rgba(0,0,0,0.03);
-            text-transform: uppercase; pointer-events: none; z-index: -1;
-            white-space: nowrap; letter-spacing: 0.2em;
+        /* 导航栏 */
+        nav {
+            padding: 40px 5%;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .logo {
+            font-size: 14px; font-weight: 300; letter-spacing: 0.5em;
+            text-decoration: none; color: #111; text-transform: uppercase;
+        }
+        .back-link {
+            font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase;
+            text-decoration: none; color: #aaa; transition: all 0.3s ease;
+        }
+        .back-link:hover { color: #111; transform: translateX(-5px); }
+
+        /* 内容容器 */
+        .container { 
+            max-width: 1400px; 
+            margin: 0 auto; 
+            padding: 0 5% 100px; 
         }
 
-        nav { padding: 40px 5%; display: flex; justify-content: space-between; align-items: center; position: relative; z-index: 10; }
-        .logo { font-size: 13px; font-weight: 300; letter-spacing: 0.5em; text-decoration: none; color: var(--text-main); text-transform: uppercase; }
-        .back-link { font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; text-decoration: none; color: var(--text-muted); transition: 0.4s ease; }
-        .back-link:hover { color: var(--text-main); letter-spacing: 0.3em; }
+        /* 顶部系列介绍 */
+        .series-intro {
+            margin: 40px 0 100px 0;
+            max-width: 800px;
+            animation: fadeIn 1.2s ease-out;
+        }
+        .series-title {
+            font-size: 26px; font-weight: 300; letter-spacing: 0.3em;
+            text-transform: uppercase; margin-bottom: 30px;
+        }
+        .series-description {
+            font-size: 15px; color: #444; line-height: 2;
+            font-weight: 300; text-align: justify;
+        }
 
-        .container { max-width: 1300px; margin: 0 auto; padding: 0 5% 100px; }
+        /* 动态作品布局系统 */
+        .works-layout {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 120px 4%;
+            align-items: flex-start;
+        }
 
-        .series-intro { margin: 80px 0 150px 0; max-width: 750px; }
-        .series-title { font-size: clamp(30px, 5vw, 42px); font-weight: 300; letter-spacing: 0.4em; text-transform: uppercase; margin-bottom: 40px; }
-        .series-description { font-size: 16px; color: #444; line-height: 2.2; font-weight: 300; border-left: 1px solid #111; padding-left: 30px; }
-
-        /* --- 核心布局 --- */
-        .works-layout { display: flex; flex-wrap: wrap; gap: 180px 6%; align-items: flex-start; }
-
+        /* 基础作品块 */
         .work-item {
-            flex: 1 1 100%; display: flex; flex-direction: column;
-            opacity: 0; transform: translateY(60px) scale(0.98);
-            transition: all 1.4s cubic-bezier(0.16, 1, 0.3, 1);
+            flex: 1 1 100%;
+            display: flex;
+            flex-direction: column;
+            opacity: 0; /* 初始透明，配合JS动画 */
+            transform: translateY(30px);
+            transition: opacity 1s ease, transform 1s ease;
         }
-        .work-item.visible { opacity: 1; transform: translateY(0) scale(1); }
-        .work-item.slim { flex: 1 1 45%; }
+        
+        /* 激活后的状态 */
+        .work-item.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
 
-        /* --- 图片光影交互 --- */
+        .work-item.slim {
+            flex: 1 1 48%; 
+        }
+
+        /* 图片交互容器 */
         .work-image-wrapper {
-            width: 100%; margin-bottom: 35px;
-            position: relative; overflow: hidden;
-            background: #fcfcfc;
-            cursor: crosshair;
+            width: 100%;
+            margin-bottom: 25px;
+            display: flex;
+            justify-content: center;
+            overflow: hidden; /* 保证缩放不超出边界 */
+            cursor: pointer;
         }
         
         .work-image-wrapper img {
-            width: 100%; height: auto; max-height: 88vh;
-            object-fit: contain; display: block;
-            transition: transform 0.8s cubic-bezier(0.2, 0, 0.2, 1);
+            width: 100%;
+            height: auto;
+            max-height: 85vh;
+            object-fit: contain;
+            display: block;
+            transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
         }
 
-        /* 模拟射灯效果 */
-        .spotlight {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(circle at var(--x, 50%) var(--y, 50%), rgba(255,255,255,0.4) 0%, rgba(255,255,255,0) 60%);
-            pointer-events: none; opacity: 0; transition: opacity 0.5s;
+        /* 悬停图片轻微放大 */
+        .work-item:hover .work-image-wrapper img {
+            transform: scale(1.03);
         }
-        .work-image-wrapper:hover .spotlight { opacity: 1; }
 
-        /* --- 文字排版优化 --- */
-        .work-info { padding-top: 25px; position: relative; }
-        .work-info-line { 
-            position: absolute; top: 0; left: 0; width: 40px; height: 1px; 
-            background: #111; transition: width 0.6s cubic-bezier(0.19, 1, 0.22, 1); 
+        /* 作品文字信息交互 */
+        .work-info {
+            padding-top: 15px;
+            border-top: 1px solid #eee;
+            transition: border-color 0.5s ease;
         }
-        .work-item:hover .work-info-line { width: 100%; }
+        .work-item:hover .work-info {
+            border-top-color: #111; /* 悬停时线条变深 */
+        }
+        .work-name {
+            font-size: 14px; font-weight: 400; letter-spacing: 0.15em;
+            text-transform: uppercase; margin-bottom: 8px;
+        }
+        .work-detail {
+            font-size: 11px; color: #999;
+            letter-spacing: 0.05em; text-transform: uppercase;
+            line-height: 1.6;
+        }
 
-        .work-name { font-size: 15px; font-weight: 400; letter-spacing: 0.25em; text-transform: uppercase; margin-bottom: 12px; }
-        .work-detail { font-size: 11px; color: var(--text-muted); letter-spacing: 0.12em; line-height: 1.8; }
+        /* 动画关键帧 */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
 
-        footer { padding: 150px 5% 60px; text-align: center; font-size: 10px; letter-spacing: 0.6em; color: #eee; }
+        /* 页脚 */
+        footer {
+            padding: 100px 5% 40px; text-align: center;
+            font-size: 9px; letter-spacing: 0.4em; color: #ccc; text-transform: uppercase;
+        }
 
+        /* 移动端适配 */
         @media (max-width: 900px) {
             .work-item.slim { flex: 1 1 100%; }
-            .series-intro { border-left: none; padding-left: 0; }
-            .works-layout { gap: 100px 0; }
-            .bg-watermark { display: none; }
+            .series-intro { margin-bottom: 60px; }
+            .works-layout { gap: 80px 0; }
         }
     </style>
 </head>
 <body>
 
-    <div class="bg-watermark" id="watermark">WOOD</div>
-
     <nav>
-        <a href="index.html" class="logo">ZHANGJIARUI</a>
-        <a href="index.html#sculpture" class="back-link">Explore Series</a>
+        <a href="index.html" class="logo">ZHANGJIARUI ARTWORKS</a>
+        <a href="index.html#sculpture" class="back-link">← Back to Series</a>
     </nav>
 
     <div class="container">
         <header class="series-intro">
-            <h1 class="series-title">Wood Series / 01</h1>
+            <h1 class="series-title">Wood Series</h1>
             <p class="series-description">
-                对话自然，是剥离繁复的过程。我通过推敲材料的纹理、利用榫卯结构的穿插，尝试在静止的木材中寻找呼吸的节奏。每一件作品都是时间与手工磨合的切片。
+                By removing excess branches, refining complex forms, carefully polishing the surface textures, and connecting elements through mortise-and-tenon joints, I engage in an ongoing dialogue with natural materials.
             </p>
         </header>
 
         <div class="works-layout">
             <div class="work-item">
                 <div class="work-image-wrapper">
-                    <div class="spotlight"></div>
                     <img src="images/sculpture/s1_1.jpg" alt="Line" onerror="this.src='images/sculpture/s1_cover.jpg'">
                 </div>
                 <div class="work-info">
-                    <div class="work-info-line"></div>
                     <div class="work-name">Line</div>
-                    <div class="work-detail">NATURAL WOOD / 240 x 13 x 6 cm / 2024</div>
+                    <div class="work-detail">Wood / 240 x 13 x 6 cm / 2024</div>
                 </div>
             </div>
 
             <div class="work-item">
                 <div class="work-image-wrapper">
-                    <div class="spotlight"></div>
                     <img src="images/sculpture/s1_3.jpg" alt="Circle" onerror="this.src='images/sculpture/s1_cover.jpg'">
                 </div>
                 <div class="work-info">
-                    <div class="work-info-line"></div>
                     <div class="work-name">Circle</div>
-                    <div class="work-detail">NATURAL WOOD / 162 x 162 x 8 cm / 2024</div>
+                    <div class="work-detail">Wood / 162 x 162 x 8 cm / 2024</div>
                 </div>
             </div>
 
             <div class="work-item slim">
                 <div class="work-image-wrapper">
-                    <div class="spotlight"></div>
                     <img src="images/sculpture/s1_2.jpg" alt="Square" onerror="this.src='images/sculpture/s1_cover.jpg'">
                 </div>
                 <div class="work-info">
-                    <div class="work-info-line"></div>
                     <div class="work-name">Square</div>
-                    <div class="work-detail">NATURAL WOOD / 177 x 4 x 13 cm / 2024</div>
+                    <div class="work-detail">Wood / 177 x 4 x 13 cm / 2024</div>
                 </div>
             </div>
 
             <div class="work-item slim">
                 <div class="work-image-wrapper">
-                    <div class="spotlight"></div>
                     <img src="images/sculpture/s1_4.jpg" alt="Line 2" onerror="this.src='images/sculpture/s1_cover.jpg'">
                 </div>
                 <div class="work-info">
-                    <div class="work-info-line"></div>
                     <div class="work-name">Line 2</div>
-                    <div class="work-detail">NATURAL WOOD / 26 x 7 x 2 cm / 2024</div>
+                    <div class="work-detail">Wood / 26 x 7 x 2 cm / 2024</div>
                 </div>
             </div>
         </div>
     </div>
 
-    <footer>&copy; 2026 ZHANGJIARUI ARTWORKS.</footer>
+    <footer>
+        &copy; 2026 ZHANGJIARUI ARTWORKS.
+    </footer>
 
     <script>
-        // 1. 滚动披露 + 视差文字
-        const watermark = document.getElementById('watermark');
+        // 滚动进入触发动画
+        const observerOptions = {
+            threshold: 0.1
+        };
+
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
-                if (entry.isIntersecting) entry.target.classList.add('visible');
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
             });
-        }, { threshold: 0.15 });
+        }, observerOptions);
 
-        document.querySelectorAll('.work-item').forEach(item => observer.observe(item));
-
-        window.addEventListener('scroll', () => {
-            const offset = window.pageYOffset;
-            watermark.style.transform = `translateX(${offset * -0.05}px)`;
-        });
-
-        // 2. Spotlight 高光跟随脚本
-        document.querySelectorAll('.work-image-wrapper').forEach(wrapper => {
-            wrapper.addEventListener('mousemove', e => {
-                const rect = wrapper.getBoundingClientRect();
-                const x = ((e.clientX - rect.left) / rect.width) * 100;
-                const y = ((e.clientY - rect.top) / rect.height) * 100;
-                wrapper.style.setProperty('--x', `${x}%`);
-                wrapper.style.setProperty('--y', `${y}%`);
-            });
+        document.querySelectorAll('.work-item').forEach(item => {
+            observer.observe(item);
         });
     </script>
+
 </body>
 </html>
