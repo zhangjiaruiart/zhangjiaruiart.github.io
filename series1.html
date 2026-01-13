@@ -14,37 +14,33 @@
             scroll-behavior: smooth;
         }
 
-        /* 导航栏 - 已调整为与首页 Logo 位置、字体及大小完全一致 */
+        /* 导航栏：增加高斯模糊与智能隐藏 */
         nav {
-            padding: 40px 5%; /* 保持与首页一致的间距 */
+            padding: 30px 5%;
             display: flex; justify-content: space-between; align-items: center;
+            position: fixed; top: 0; left: 0; right: 0;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(15px);
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        .logo {
-            font-size: 14px; /* 首页标准字号 */
-            font-weight: 300; 
-            letter-spacing: 0.5em; /* 首页标准字间距 */
-            text-decoration: none; 
-            color: #111; 
-            text-transform: uppercase;
-        }
-        .back-link {
-            font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase;
-            text-decoration: none; color: #aaa; transition: all 0.3s ease;
-        }
-        .back-link:hover { color: #111; transform: translateX(-5px); }
+        nav.hidden { transform: translateY(-100%); }
+
+        .logo { font-size: 14px; font-weight: 300; letter-spacing: 0.5em; text-decoration: none; color: #111; text-transform: uppercase; }
+        .back-link { font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; text-decoration: none; color: #aaa; transition: all 0.3s ease; }
+        .back-link:hover { color: #111; padding-left: 10px; }
 
         /* 内容容器 */
         .container { 
             max-width: 1400px; 
             margin: 0 auto; 
-            padding: 0 5% 100px; 
+            padding: 120px 5% 100px; 
         }
 
         /* 顶部系列介绍 */
         .series-intro {
             margin: 40px 0 100px 0;
             max-width: 800px;
-            animation: fadeIn 1.2s ease-out;
         }
         .series-title {
             font-size: 26px; font-weight: 300; letter-spacing: 0.3em;
@@ -63,34 +59,30 @@
             align-items: flex-start;
         }
 
-        /* 基础作品块 */
+        /* 作品项通用动画 */
         .work-item {
             flex: 1 1 100%;
             display: flex;
             flex-direction: column;
-            opacity: 0; /* 初始透明，配合JS动画 */
+            opacity: 0; 
             transform: translateY(30px);
-            transition: opacity 1s ease, transform 1s ease;
+            transition: all 1.2s cubic-bezier(0.22, 1, 0.36, 1);
         }
-        
-        /* 激活后的状态 */
         .work-item.visible {
             opacity: 1;
             transform: translateY(0);
         }
 
-        .work-item.slim {
-            flex: 1 1 48%; 
-        }
+        .work-item.slim { flex: 1 1 48%; }
 
-        /* 图片交互容器 */
+        /* --- 核心交互 CSS (同步 Series 2/4) --- */
         .work-image-wrapper {
             width: 100%;
             margin-bottom: 25px;
-            display: flex;
-            justify-content: center;
-            overflow: hidden; /* 保证缩放不超出边界 */
-            cursor: pointer;
+            overflow: hidden;
+            background-color: #fcfcfc;
+            position: relative;
+            cursor: zoom-in;
         }
         
         .work-image-wrapper img {
@@ -99,59 +91,87 @@
             max-height: 85vh;
             object-fit: contain;
             display: block;
-            transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+            filter: grayscale(0.2) brightness(0.95); /* 默认沉稳感 */
+            transition: filter 0.5s ease, transform 0.8s cubic-bezier(0.165, 0.84, 0.44, 1);
+            will-change: transform;
         }
 
-        /* 悬停图片轻微放大 */
-        .work-item:hover .work-image-wrapper img {
+        /* 悬停提亮与缩放 */
+        .work-item:hover img {
+            filter: grayscale(0) brightness(1);
             transform: scale(1.03);
         }
 
-        /* 作品文字信息交互 */
+        /* 聚光灯探照效果 */
+        .spotlight {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
+            background: radial-gradient(circle 200px at var(--x) var(--y), rgba(255,255,255,0.15) 0%, rgba(255,255,255,0) 100%);
+            opacity: 0; transition: opacity 0.5s ease; z-index: 2;
+        }
+        .work-image-wrapper:hover .spotlight { opacity: 1; }
+
+        /* 文字信息交互：上浮感与黑线生长 */
         .work-info {
-            padding-top: 15px;
+            padding-top: 20px;
             border-top: 1px solid #eee;
-            transition: border-color 0.5s ease;
+            position: relative;
+            transition: all 0.6s ease;
         }
         .work-item:hover .work-info {
-            border-top-color: #111; /* 悬停时线条变深 */
+            transform: translateY(-5px);
         }
+
+        .work-info::after {
+            content: ''; position: absolute; top: -1px; left: 50%;
+            width: 0; height: 1.5px; background-color: #111;
+            transition: all 0.6s cubic-bezier(0.19, 1, 0.22, 1);
+            transform: translateX(-50%);
+        }
+        .work-item:hover .work-info::after { width: 100%; }
+
         .work-name {
             font-size: 14px; font-weight: 400; letter-spacing: 0.15em;
             text-transform: uppercase; margin-bottom: 8px;
+            transition: letter-spacing 0.4s ease;
         }
+        .work-item:hover .work-name { letter-spacing: 0.25em; }
+
         .work-detail {
             font-size: 11px; color: #999;
             letter-spacing: 0.05em; text-transform: uppercase;
             line-height: 1.6;
         }
 
-        /* 动画关键帧 */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+        /* 全屏预览 Overlay */
+        #overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(255,255,255,0.95);
+            display: none; z-index: 2000; cursor: zoom-out;
+            justify-content: center; align-items: center;
         }
+        #overlay img { max-width: 90%; max-height: 90%; object-fit: contain; }
 
-        /* 页脚 */
         footer {
             padding: 100px 5% 40px; text-align: center;
             font-size: 9px; letter-spacing: 0.4em; color: #ccc; text-transform: uppercase;
         }
 
-        /* 移动端适配 */
         @media (max-width: 900px) {
             .work-item.slim { flex: 1 1 100%; }
-            .series-intro { margin-bottom: 60px; }
             .works-layout { gap: 80px 0; }
+            .container { padding-top: 100px; }
         }
     </style>
 </head>
 <body>
 
-    <nav>
+    <nav id="navbar">
         <a href="index.html" class="logo">ZHANGJIARUI ARTWORKS</a>
         <a href="index.html#sculpture" class="back-link">← Back to Series</a>
     </nav>
+
+    <div id="overlay"><img src="" alt="Full View"></div>
 
     <div class="container">
         <header class="series-intro">
@@ -164,6 +184,7 @@
         <div class="works-layout">
             <div class="work-item">
                 <div class="work-image-wrapper">
+                    <div class="spotlight"></div>
                     <img src="images/sculpture/s1_1.jpg" alt="Line" onerror="this.src='images/sculpture/s1_cover.jpg'">
                 </div>
                 <div class="work-info">
@@ -174,6 +195,7 @@
 
             <div class="work-item">
                 <div class="work-image-wrapper">
+                    <div class="spotlight"></div>
                     <img src="images/sculpture/s1_3.jpg" alt="Circle" onerror="this.src='images/sculpture/s1_cover.jpg'">
                 </div>
                 <div class="work-info">
@@ -184,6 +206,7 @@
 
             <div class="work-item slim">
                 <div class="work-image-wrapper">
+                    <div class="spotlight"></div>
                     <img src="images/sculpture/s1_2.jpg" alt="Square" onerror="this.src='images/sculpture/s1_cover.jpg'">
                 </div>
                 <div class="work-info">
@@ -194,6 +217,7 @@
 
             <div class="work-item slim">
                 <div class="work-image-wrapper">
+                    <div class="spotlight"></div>
                     <img src="images/sculpture/s1_4.jpg" alt="Line 2" onerror="this.src='images/sculpture/s1_cover.jpg'">
                 </div>
                 <div class="work-info">
@@ -209,21 +233,63 @@
     </footer>
 
     <script>
-        // 滚动进入触发动画
-        const observerOptions = {
-            threshold: 0.1
-        };
+        // 1. 聚光灯探照与视差微移
+        document.querySelectorAll('.work-image-wrapper').forEach(wrapper => {
+            wrapper.addEventListener('mousemove', e => {
+                const rect = wrapper.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                wrapper.style.setProperty('--x', x + 'px');
+                wrapper.style.setProperty('--y', y + 'px');
 
+                const img = wrapper.querySelector('img');
+                const moveX = (x / rect.width - 0.5) * 15;
+                const moveY = (y / rect.height - 0.5) * 15;
+                img.style.transform = `scale(1.03) translate(${moveX}px, ${moveY}px)`;
+            });
+
+            wrapper.addEventListener('mouseleave', (e) => {
+                const img = wrapper.querySelector('img');
+                img.style.transform = `scale(1) translate(0, 0)`;
+            });
+        });
+
+        // 2. 滚动淡入观察器
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('visible');
                 }
             });
-        }, observerOptions);
+        }, { threshold: 0.1 });
+        document.querySelectorAll('.work-item').forEach(item => observer.observe(item));
 
-        document.querySelectorAll('.work-item').forEach(item => {
-            observer.observe(item);
+        // 3. 智能导航栏隐藏
+        let lastScroll = 0;
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            const currentScroll = window.pageYOffset;
+            if (currentScroll > lastScroll && currentScroll > 200) {
+                navbar.classList.add('hidden');
+            } else {
+                navbar.classList.remove('hidden');
+            }
+            lastScroll = currentScroll;
+        });
+
+        // 4. 全屏预览大图
+        const overlay = document.getElementById('overlay');
+        const overlayImg = overlay.querySelector('img');
+        document.querySelectorAll('.work-image-wrapper img').forEach(img => {
+            img.addEventListener('click', () => {
+                overlayImg.src = img.src;
+                overlay.style.display = 'flex';
+                document.body.style.overflow = 'hidden';
+            });
+        });
+        overlay.addEventListener('click', () => {
+            overlay.style.display = 'none';
+            document.body.style.overflow = 'auto';
         });
     </script>
 
