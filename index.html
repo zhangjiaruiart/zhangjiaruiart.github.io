@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>ZHANG JIARUI | ARTIST</title>
     <style>
         body, html {
@@ -68,22 +68,30 @@
         }
         .nav-scrolled .menu-toggle span { background-color: #111; }
 
-        /* --- 2. 封面 (Hero) --- */
+        /* --- 2. 封面 (Hero) - 重点修复区 --- */
         .hero {
             height: 100vh; width: 100%; overflow: hidden;
             position: relative; background-color: #000;
         }
         .hero img {
-            width: 100%; height: 100%; object-fit: cover;
-            filter: brightness(0.85); display: block;
-            /* 确保初始可见性，配合动画 */
-            opacity: 0;
+            width: 100%; height: 100%; 
+            object-fit: cover; /* 自动撑满屏幕且不缩放变形 */
+            object-position: center; /* 确保图片中心在正中间 */
+            filter: brightness(0.85); 
+            display: block;
+            opacity: 1; /* 修复：初始可见，防止电脑端不显示 */
             animation: heroZoom 2.5s cubic-bezier(0.15, 1, 0.3, 1) forwards;
+        }
+
+        @keyframes heroZoom { 
+            from { transform: scale(1.15); opacity: 0; } 
+            to { transform: scale(1); opacity: 1; } 
         }
 
         /* --- 3. 手机端专项调整 --- */
         @media (max-width: 900px) {
-            .hero img { object-position: 70% center; } 
+            /* 修复：移除 70% 的偏移，改为居中显示 */
+            .hero img { object-position: center; } 
             
             .menu-toggle { display: flex; }
             .logo { font-size: 14px; letter-spacing: 0.3em; }
@@ -98,32 +106,18 @@
             .active-toggle span:nth-child(2) { opacity: 0; }
             .active-toggle span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); background-color: #111 !important; }
 
-            .content-section { 
-                padding: 40px 0 20px 0 !important; 
-            }
-            .grid { 
-                display: block !important; 
-            }
-            .project {
-                width: 100% !important;
-                margin-bottom: 40px;
-            }
-            .category-title {
-                margin: 0 5% 25px 5%; 
-            }
-            .project-info {
-                padding: 0 5%; 
-            }
-            .project-image-wrapper {
-                margin-bottom: 15px;
-            }
+            .content-section { padding: 40px 0 20px 0 !important; }
+            .grid { display: block !important; }
+            .project { width: 100% !important; margin-bottom: 40px; }
+            .category-title { margin: 0 5% 25px 5%; }
+            .project-info { padding: 0 5%; }
+            .project-image-wrapper { margin-bottom: 15px; }
             
             #sculpture .content-section { padding: 40px 5% !important; }
             #sculpture > div { gap: 20px !important; }
         }
 
-        /* 其余固定样式 */
-        @keyframes heroZoom { from { transform: scale(1.1); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        /* --- 其他内容样式 --- */
         @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
         .content-section { padding: 80px 5% 20px; max-width: 1260px; margin: 0 auto; animation: fadeInUp 1.2s cubic-bezier(0.15, 1, 0.3, 1) both; }
         .category-title { font-size: 13px; letter-spacing: 0.5em; text-transform: uppercase; margin-bottom: 25px; border-bottom: 1px solid #f0f0f0; padding-bottom: 15px; color: #111; }
@@ -188,122 +182,13 @@
                 </div>
                 <div class="project-info">
                     <div class="project-title">4.5 Tons</div>
-                    <div class="project-meta">Installation / In Collaboration with Betta Liu / 2024 / Inner Mongolia</div>
+                    <div class="project-meta">Installation / 2024 / Inner Mongolia</div>
                 </div>
             </div>
         </div>
     </div>
-
-    <div class="content-section" id="sculpture">
-        <h2 class="category-title">Sculpture</h2>
-        <div style="display: flex; flex-wrap: wrap; gap: 40px 60px;">
-            <div style="flex: 1; min-width: 300px;">
-                <h3 style="font-size: 11px; letter-spacing: 0.3em; text-transform: uppercase; color: #888; margin: 20px 0 20px 0; font-weight: 300;">Wood Series</h3>
-                <a href="series1.html" class="project">
-                    <div class="project-image-wrapper img-ratio">
-                        <img src="images/sculpture/s1_cover.jpg" alt="Series 1" onerror="this.src='images/Work2.jpg'" loading="lazy">
-                    </div>
-                    <div class="project-info">
-                        <div class="project-title">Triangle</div>
-                        <div class="project-meta">Wood / 2024</div>
-                    </div>
-                </a>
-            </div>
-
-            <div style="flex: 1; min-width: 300px;">
-                <h3 style="font-size: 11px; letter-spacing: 0.3em; text-transform: uppercase; color: #888; margin: 20px 0 20px 0; font-weight: 300;">Water Series</h3>
-                <a href="series2.html" class="project">
-                    <div class="project-image-wrapper img-ratio">
-                        <img src="images/sculpture/s2_cover.jpg" alt="Series 2" onerror="this.src='images/Work2.jpg'" loading="lazy">
-                    </div>
-                    <div class="project-info">
-                        <div class="project-title">Water1</div>
-                        <div class="project-meta">Transparent resin / 2024</div>
-                    </div>
-                </a>
-            </div>
-
-            <div style="flex: 1; min-width: 300px;">
-                <h3 style="font-size: 11px; letter-spacing: 0.3em; text-transform: uppercase; color: #888; margin: 20px 0 20px 0; font-weight: 300;">Line Series</h3>
-                <a href="series5.html" class="project">
-                    <div class="project-image-wrapper img-ratio" style="background-color: #ffffff; display: flex; align-items: center; justify-content: center;">
-                        <img src="images/sculpture/s5_cover.jpg" alt="Series 5" onerror="this.src='images/Work2.jpg'" loading="lazy" style="object-fit: contain; transform: scale(0.8); transition: transform 0.5s ease;">
-                    </div>
-                    <div class="project-info">
-                        <div class="project-title">X</div>
-                        <div class="project-meta">Acrylic, Handmade dyeing / 2024</div>
-                    </div>
-                </a>
-            </div>
-
-            <div style="flex: 1; min-width: 300px;">
-                <h3 style="font-size: 11px; letter-spacing: 0.3em; text-transform: uppercase; color: #888; margin: 20px 0 20px 0; font-weight: 300;">Formless Series</h3>
-                <a href="series4.html" class="project">
-                    <div class="project-image-wrapper img-ratio">
-                        <img src="images/sculpture/s4_cover.jpg" alt="Series 4" onerror="this.src='images/Work2.jpg'" loading="lazy">
-                    </div>
-                    <div class="project-info">
-                        <div class="project-title">At ease</div>
-                        <div class="project-meta">Transparent resin / 2023</div>
-                    </div>
-                </a>
-            </div>
-
-            <div style="flex: 1; min-width: 300px;">
-                <h3 style="font-size: 11px; letter-spacing: 0.3em; text-transform: uppercase; color: #888; margin: 20px 0 20px 0; font-weight: 300;">Gold Series</h3>
-                <a href="series3.html" class="project">
-                    <div class="project-image-wrapper img-ratio">
-                        <img src="images/sculpture/s3_cover.jpg" alt="Series 3" onerror="this.src='images/Work2.jpg'" loading="lazy">
-                    </div>
-                    <div class="project-info">
-                        <div class="project-title">New Eighteenth Arhat</div>
-                        <div class="project-meta">Goldenleaf resin / 2015</div>
-                    </div>
-                </a>
-            </div>
-        </div>
-    </div>
-
-    <div class="content-section" id="projects">
-        <h2 class="category-title">Projects</h2>
-        <div class="grid">
-            <div class="project">
-                <div class="project-image-wrapper video-ratio">
-                    <iframe width="100%" height="100%" src="https://www.youtube.com/embed/OEZ3FvOwdjI?rel=0" frameborder="0" allowfullscreen style="position: absolute; top: 0; left: 0; border: none;"></iframe>
-                </div>
-                <div class="project-info">
-                    <div class="project-title">Coral Planting Project</div>
-                    <div class="project-meta">Documentary / 2025 / Xisha Islands</div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="contact-section" id="contact">
-        <div class="contact-container">
-            <div class="contact-row">
-                <div class="contact-item">
-                    <span class="contact-label">Email</span>
-                    <a href="mailto:jerryzhang_arts@qq.com" class="contact-value">jerryzhang_arts@qq.com</a>
-                </div>
-                <span class="divider">/</span>
-                <div class="contact-item">
-                    <span class="contact-label">WeChat</span>
-                    <span class="contact-value">zjr5556699</span>
-                </div>
-                <span class="divider">/</span>
-                <div class="contact-item">
-                    <span class="contact-label">Phone</span>
-                    <a href="tel:+8615117988382" class="contact-value">(+86) 151 1798 8382</a>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <footer>&copy; 2026 ZHANGJIARUI ARTWORKS.</footer>
 
     <script>
-        // 导航栏滚动效果
         window.onscroll = function() {
             var nav = document.getElementById('navbar');
             if (window.pageYOffset > 50) {
@@ -316,18 +201,12 @@
         const navLinks = document.getElementById('navLinks');
         const menuToggle = document.getElementById('menuToggle');
 
-        // 手机端菜单切换
         function toggleMenu() {
             navLinks.classList.toggle('active');
             menuToggle.classList.toggle('active-toggle');
-            if (navLinks.classList.contains('active')) {
-                document.body.style.overflow = 'hidden';
-            } else {
-                document.body.style.overflow = 'auto';
-            }
+            document.body.style.overflow = navLinks.classList.contains('active') ? 'hidden' : 'auto';
         }
 
-        // 点击链接后自动关闭菜单
         function closeMenu() {
             navLinks.classList.remove('active');
             menuToggle.classList.remove('active-toggle');
