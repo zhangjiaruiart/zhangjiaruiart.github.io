@@ -28,6 +28,7 @@
         .work-item {
             opacity: 0; transform: translateY(30px);
             transition: opacity 1.2s ease, transform 1.2s ease;
+            margin-bottom: 80px; /* 增加作品间的间距 */
         }
         .work-item.visible { opacity: 1; transform: translateY(0); }
 
@@ -36,35 +37,33 @@
             filter: contrast(1.06) brightness(1.02); /* 净化背景杂色 */
         }
         .work-image-wrapper img { width: 100%; height: auto; display: block; transition: 0.8s; }
-        .work-item:hover img { transform: scale(1.02); }
+        .work-item:hover img { transform: scale(1.01); }
 
         .work-info { padding-top: 12px; border-top: 1px solid #eee; margin-top: 10px; }
         .work-name { font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; }
         .work-detail { font-size: 10px; color: #999; text-transform: uppercase; margin-top: 4px; }
 
-        /* --- 布局 A：1主 + 3小 (左右并排) --- */
-        .layout-group-A {
-            display: flex; gap: 40px; margin-bottom: 150px;
-        }
+        /* --- 布局结构 --- */
+        .layout-group-A { display: flex; gap: 40px; margin-bottom: 120px; }
         .main-A { flex: 2; }
         .side-A { flex: 1; display: flex; flex-direction: column; gap: 30px; }
 
-        /* --- 布局 B：1主 + 4小 (上下两列排列) --- */
-        .layout-group-B {
-            margin-bottom: 150px;
-        }
-        .main-B { width: 100%; margin-bottom: 60px; }
-        .grid-B {
+        /* 两列网格布局 */
+        .grid-two-columns {
             display: grid;
-            grid-template-columns: repeat(2, 1fr); /* 强制两列排列 */
-            gap: 60px 4%;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 40px 4%;
+            margin-bottom: 80px;
         }
+
+        /* 全宽样式 */
+        .full-width { width: 100%; }
 
         footer { padding: 80px 0 40px; text-align: center; font-size: 9px; letter-spacing: 0.4em; color: #ccc; }
 
         @media (max-width: 900px) {
             .layout-group-A { flex-direction: column; }
-            .grid-B { grid-template-columns: 1fr; }
+            .grid-two-columns { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -93,34 +92,37 @@
             </div>
         </section>
 
-        <section class="layout-group-B">
-            <div class="work-item main-B">
-                <div class="work-image-wrapper"><img src="images/sculpture/s4_5.jpg"></div>
-                <div class="work-info">
-                    <div class="work-name">At Ease V (Full Form)</div>
-                    <div class="work-detail">Transparent Resin / 2024</div>
-                </div>
+        <div class="work-item full-width">
+            <div class="work-image-wrapper"><img src="images/sculpture/s4_5.jpg"></div>
+            <div class="work-info">
+                <div class="work-name">At Ease V</div>
+                <div class="work-detail">Transparent Resin / 2024</div>
             </div>
+        </div>
 
-            <div class="grid-B">
-                <div class="work-item">
-                    <div class="work-image-wrapper"><img src="images/sculpture/s4_6.jpg"></div>
-                    <div class="work-info"><div class="work-name">Angle VI</div></div>
-                </div>
-                <div class="work-item">
-                    <div class="work-image-wrapper"><img src="images/sculpture/s4_7.jpg"></div>
-                    <div class="work-info"><div class="work-name">Angle VII</div></div>
-                </div>
-                <div class="work-item">
-                    <div class="work-image-wrapper"><img src="images/sculpture/s4_8.jpg"></div>
-                    <div class="work-info"><div class="work-name">Angle VIII</div></div>
-                </div>
-                <div class="work-item">
-                    <div class="work-image-wrapper"><img src="images/sculpture/s4_9.jpg"></div>
-                    <div class="work-info"><div class="work-name">Angle IX</div></div>
-                </div>
+        <div class="grid-two-columns">
+            <div class="work-item">
+                <div class="work-image-wrapper"><img src="images/sculpture/s4_6.jpg"></div>
+                <div class="work-info"><div class="work-name">Angle VI</div></div>
             </div>
-        </section>
+            <div class="work-item">
+                <div class="work-image-wrapper"><img src="images/sculpture/s4_7.jpg"></div>
+                <div class="work-info"><div class="work-name">Angle VII</div></div>
+            </div>
+        </div>
+
+        <div class="work-item full-width">
+            <div class="work-image-wrapper"><img src="images/sculpture/s4_8.jpg"></div>
+            <div class="work-info">
+                <div class="work-name">At Ease VIII (Detail Focus)</div>
+                <div class="work-detail">Transparent Resin / 2024</div>
+            </div>
+        </div>
+
+        <div class="work-item full-width">
+            <div class="work-image-wrapper"><img src="images/sculpture/s4_9.jpg"></div>
+            <div class="work-info"><div class="work-name">Angle IX</div></div>
+        </div>
 
     </div>
 
@@ -133,11 +135,6 @@
             });
         }, { threshold: 0.1 });
         document.querySelectorAll('.work-item').forEach(item => observer.observe(item));
-        
-        // 确保所有图片最终都会显示
-        setTimeout(() => {
-            document.querySelectorAll('.work-item').forEach(item => item.classList.add('visible'));
-        }, 1500);
     </script>
 </body>
 </html>
