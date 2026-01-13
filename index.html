@@ -76,6 +76,8 @@
         .hero img {
             width: 100%; height: 100%; object-fit: cover;
             filter: brightness(0.85); display: block;
+            /* 确保初始可见性，配合动画 */
+            opacity: 0;
             animation: heroZoom 2.5s cubic-bezier(0.15, 1, 0.3, 1) forwards;
         }
 
@@ -165,7 +167,7 @@
     </nav>
 
     <section class="hero">
-        <img src="https://t8sz9vbqf.hb-bkt.clouddn.com/cover.jpg" alt="Zhang Jiarui Art">
+        <img src="http://t8sz9vbqf.hb-bkt.clouddn.com/cover.jpg" alt="Zhang Jiarui Art">
     </section>
 
     <div class="content-section" id="eco-art">
@@ -301,6 +303,7 @@
     <footer>&copy; 2026 ZHANGJIARUI ARTWORKS.</footer>
 
     <script>
+        // 导航栏滚动效果
         window.onscroll = function() {
             var nav = document.getElementById('navbar');
             if (window.pageYOffset > 50) {
@@ -313,6 +316,7 @@
         const navLinks = document.getElementById('navLinks');
         const menuToggle = document.getElementById('menuToggle');
 
+        // 手机端菜单切换
         function toggleMenu() {
             navLinks.classList.toggle('active');
             menuToggle.classList.toggle('active-toggle');
@@ -323,6 +327,7 @@
             }
         }
 
+        // 点击链接后自动关闭菜单
         function closeMenu() {
             navLinks.classList.remove('active');
             menuToggle.classList.remove('active-toggle');
