@@ -55,12 +55,12 @@
         .works-layout {
             display: flex;
             flex-wrap: wrap;
-            gap: 120px 4%; /* 上下间距120px，左右间距4% */
+            gap: 120px 4%; /* 默认间距 */
             align-items: flex-start;
         }
 
         .work-item {
-            flex: 1 1 100%; /* 默认全宽（大图展示） */
+            flex: 1 1 100%; /* 默认单独展示 (Line 9) */
             display: flex;
             flex-direction: column;
             opacity: 0; 
@@ -68,16 +68,13 @@
             transition: all 1s cubic-bezier(0.2, 1, 0.3, 1);
         }
 
-        /* 淡入动画激活类 */
-        .work-item.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
+        .work-item.visible { opacity: 1; transform: translateY(0); }
 
-        /* 一行两张的布局类 */
-        .work-item.slim {
-            flex: 1 1 48%;
-        }
+        /* 并列两件 (Line 1, 2) */
+        .work-item.slim { flex: 1 1 48%; }
+
+        /* 并列三件 (Line 3, 4, 5 & 6, 7, 8) */
+        .work-item.triple { flex: 1 1 30.6%; }
 
         /* 图片容器 */
         .work-image-wrapper {
@@ -92,46 +89,30 @@
         .work-image-wrapper img {
             width: 100%;
             height: auto;
-            max-height: 85vh; /* 限制图片最大高度，防止纵向溢出 */
+            max-height: 80vh;
             object-fit: contain;
             display: block;
             transition: transform 0.8s ease;
         }
 
-        .work-item:hover .work-image-wrapper img {
-            transform: scale(1.02);
-        }
+        .work-item:hover .work-image-wrapper img { transform: scale(1.02); }
 
         /* 文字信息 */
-        .work-info {
-            padding-top: 15px;
-            border-top: 1px solid #eee;
-        }
-        .work-name {
-            font-size: 14px; font-weight: 400; letter-spacing: 0.15em;
-            text-transform: uppercase; margin-bottom: 8px;
-        }
-        .work-detail {
-            font-size: 11px; color: #999;
-            letter-spacing: 0.05em; text-transform: uppercase;
-            line-height: 1.6;
-        }
+        .work-info { padding-top: 15px; border-top: 1px solid #eee; }
+        .work-name { font-size: 13px; font-weight: 400; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 8px; }
+        .work-detail { font-size: 10px; color: #999; letter-spacing: 0.05em; text-transform: uppercase; line-height: 1.6; }
 
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        footer {
-            padding: 100px 5% 40px; text-align: center;
-            font-size: 9px; letter-spacing: 0.4em; color: #ccc; text-transform: uppercase;
-        }
+        footer { padding: 100px 5% 40px; text-align: center; font-size: 9px; letter-spacing: 0.4em; color: #ccc; text-transform: uppercase; }
 
         /* 移动端适配 */
         @media (max-width: 900px) {
-            .work-item.slim { flex: 1 1 100%; }
+            .work-item.slim, .work-item.triple { flex: 1 1 100%; }
             .works-layout { gap: 80px 0; }
-            .series-title { font-size: 20px; }
         }
     </style>
 </head>
@@ -146,19 +127,19 @@
         <header class="series-intro">
             <h1 class="series-title">Line Series</h1>
             <p class="series-description">
-                Exploring the rhythmic intersection of form and color. Through acrylic and manual dyeing techniques, the "Line" series translates abstract emotions into physical dimensions, capturing the tension between controlled precision and organic fluidity.
+                Exploring the rhythmic intersection of form and color. Through acrylic and manual dyeing techniques, the "Line" series translates abstract emotions into physical dimensions.
             </p>
         </header>
 
         <div class="works-layout">
             
-            <div class="work-item">
+            <div class="work-item slim">
                 <div class="work-image-wrapper">
                     <img src="images/sculpture/s5_1.jpg" alt="Line 1" onerror="this.src='images/sculpture/s5_cover.jpg'">
                 </div>
                 <div class="work-info">
-                    <div class="work-name">Line 1 / X</div>
-                    <div class="work-detail">Acrylic, Handmade dyeing / 120 x 80 cm / 2024</div>
+                    <div class="work-name">Line 1</div>
+                    <div class="work-detail">Acrylic, Handmade dyeing / 2024</div>
                 </div>
             </div>
 
@@ -172,7 +153,7 @@
                 </div>
             </div>
 
-            <div class="work-item slim">
+            <div class="work-item triple">
                 <div class="work-image-wrapper">
                     <img src="images/sculpture/s5_3.jpg" alt="Line 3">
                 </div>
@@ -182,7 +163,7 @@
                 </div>
             </div>
 
-            <div class="work-item">
+            <div class="work-item triple">
                 <div class="work-image-wrapper">
                     <img src="images/sculpture/s5_4.jpg" alt="Line 4">
                 </div>
@@ -192,7 +173,7 @@
                 </div>
             </div>
 
-            <div class="work-item slim">
+            <div class="work-item triple">
                 <div class="work-image-wrapper">
                     <img src="images/sculpture/s5_5.jpg" alt="Line 5">
                 </div>
@@ -202,7 +183,7 @@
                 </div>
             </div>
 
-            <div class="work-item slim">
+            <div class="work-item triple">
                 <div class="work-image-wrapper">
                     <img src="images/sculpture/s5_6.jpg" alt="Line 6">
                 </div>
@@ -212,7 +193,7 @@
                 </div>
             </div>
 
-            <div class="work-item">
+            <div class="work-item triple">
                 <div class="work-image-wrapper">
                     <img src="images/sculpture/s5_7.jpg" alt="Line 7">
                 </div>
@@ -222,7 +203,7 @@
                 </div>
             </div>
 
-            <div class="work-item slim">
+            <div class="work-item triple">
                 <div class="work-image-wrapper">
                     <img src="images/sculpture/s5_8.jpg" alt="Line 8">
                 </div>
@@ -232,13 +213,13 @@
                 </div>
             </div>
 
-            <div class="work-item slim">
+            <div class="work-item">
                 <div class="work-image-wrapper">
                     <img src="images/sculpture/s5_9.jpg" alt="Line 9">
                 </div>
                 <div class="work-info">
                     <div class="work-name">Line 9</div>
-                    <div class="work-detail">Acrylic, Handmade dyeing / 2024</div>
+                    <div class="work-detail">Acrylic, Handmade dyeing / 160 x 120 cm / 2024</div>
                 </div>
             </div>
 
@@ -250,11 +231,7 @@
     </footer>
 
     <script>
-        // Intersection Observer 实现滚动淡入效果
-        const observerOptions = {
-            threshold: 0.1
-        };
-
+        const observerOptions = { threshold: 0.1 };
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
