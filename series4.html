@@ -12,7 +12,7 @@
             scroll-behavior: smooth;
         }
 
-        /* --- 1. 返回导航 --- */
+        /* --- 导航 --- */
         .back-nav {
             position: fixed; top: 40px; left: 5%;
             z-index: 1000;
@@ -25,13 +25,13 @@
         }
         .back-link:hover { border-bottom: 1px solid #111; opacity: 0.6; }
 
-        /* --- 2. 核心动画 --- */
+        /* --- 动画 --- */
         @keyframes fadeInUp {
             from { opacity: 0; transform: translateY(30px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* --- 3. 作品描述区块 --- */
+        /* --- 标题与阐述 --- */
         .project-header {
             padding: 160px 5% 80px;
             max-width: 800px; margin: 0 auto;
@@ -54,16 +54,10 @@
             line-height: 1.8; margin-bottom: 40px;
         }
 
-        .work-statement {
-            font-size: 13px; line-height: 2; color: #444;
-            max-width: 600px; margin: 0 auto;
-            text-align: justify; letter-spacing: 0.05em;
-        }
-
-        /* --- 4. 详情图像区块 --- */
+        /* --- 图片展示区域 --- */
         .details-container {
             padding: 0 5% 100px;
-            max-width: 1260px; /* 与主页缩小的比例保持一致 */
+            max-width: 1260px; /* 保持与主页缩小的比例一致 */
             margin: 0 auto;
         }
 
@@ -74,7 +68,7 @@
 
         .detail-item img {
             width: 100%; height: auto; display: block;
-            background-color: #f9f9f9;
+            background-color: #fcfcfc;
         }
 
         footer {
@@ -86,7 +80,6 @@
         @media (max-width: 768px) {
             .project-header { padding-top: 120px; }
             .work-title { font-size: 18px; }
-            .work-statement { font-size: 12px; }
         }
     </style>
 </head>
@@ -97,28 +90,48 @@
     </nav>
 
     <header class="project-header">
-        <div class="series-title">Formless Series</div>
-        <h1 class="work-title">At Ease</h1>
+        <div class="series-title">Sculpture</div>
+        <h1 class="work-title">Formless Series</h1>
         <div class="work-meta">
-            Transparent Resin / 2024<br>
-            Dimensions variable
+            Transparent resin / 2024
         </div>
-        <p class="work-statement">
-            "At Ease" 探讨了物质从固态到液态视觉转化的瞬间。树脂的透明度与无规律的形态交织，创造出一种游离于重力之外的轻盈感。艺术家试图捕获捕捉那些“不可定义”的形状，让观众在静止的作品中感受到流动的永恒。
-        </p>
     </header>
 
     <main class="details-container">
         <div class="detail-item">
-            <img src="images/sculpture/s4_detail1.jpg" alt="At Ease Detail 1" onerror="this.src='images/Work2.jpg'">
+            <img src="images/sculpture/s4_1.jpg" alt="Formless Series 1" onerror="this.src='images/Work2.jpg'">
         </div>
 
         <div class="detail-item">
-            <img src="images/sculpture/s4_detail2.jpg" alt="At Ease Detail 2" onerror="this.src='images/Work2.jpg'">
+            <img src="images/sculpture/s4_2.jpg" alt="Formless Series 2" onerror="this.src='images/Work2.jpg'">
         </div>
 
         <div class="detail-item">
-            <img src="images/sculpture/s4_cover.jpg" alt="At Ease Cover" onerror="this.src='images/Work2.jpg'">
+            <img src="images/sculpture/s4_3.jpg" alt="Formless Series 3" onerror="this.src='images/Work2.jpg'">
+        </div>
+
+        <div class="detail-item">
+            <img src="images/sculpture/s4_4.jpg" alt="Formless Series 4" onerror="this.src='images/Work2.jpg'">
+        </div>
+
+        <div class="detail-item">
+            <img src="images/sculpture/s4_5.jpg" alt="Formless Series 5" onerror="this.src='images/Work2.jpg'">
+        </div>
+
+        <div class="detail-item">
+            <img src="images/sculpture/s4_6.jpg" alt="Formless Series 6" onerror="this.src='images/Work2.jpg'">
+        </div>
+
+        <div class="detail-item">
+            <img src="images/sculpture/s4_7.jpg" alt="Formless Series 7" onerror="this.src='images/Work2.jpg'">
+        </div>
+
+        <div class="detail-item">
+            <img src="images/sculpture/s4_8.jpg" alt="Formless Series 8" onerror="this.src='images/Work2.jpg'">
+        </div>
+
+        <div class="detail-item">
+            <img src="images/sculpture/s4_9.jpg" alt="Formless Series 9" onerror="this.src='images/Work2.jpg'">
         </div>
     </main>
 
