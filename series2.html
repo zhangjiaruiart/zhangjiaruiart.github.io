@@ -14,7 +14,7 @@
             scroll-behavior: smooth;
         }
 
-        /* 导航栏：同步 Series 4 的智能隐藏与高斯模糊 */
+        /* 导航栏 */
         nav {
             padding: 30px 5%;
             display: flex; justify-content: space-between; align-items: center;
@@ -55,7 +55,7 @@
         .work-item.slim { flex: 1 1 48%; }
         .work-item { flex: 1 1 100%; display: flex; flex-direction: column; }
 
-        /* --- 核心交互 CSS (同步 Series 4) --- */
+        /* 核心交互 CSS */
         .work-image-wrapper {
             width: 100%; overflow: hidden; background-color: #fcfcfc;
             position: relative; cursor: zoom-in;
@@ -68,13 +68,11 @@
             will-change: transform;
         }
 
-        /* 悬停提亮与缩放 */
         .work-item:hover img, .work-combination:hover img {
             filter: grayscale(0) brightness(1);
             transform: scale(1.03);
         }
 
-        /* 聚光灯探照效果 */
         .spotlight {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             pointer-events: none;
@@ -83,7 +81,6 @@
         }
         .work-image-wrapper:hover .spotlight { opacity: 1; }
 
-        /* 文字信息交互：浮动上升感与黑线生长 */
         .work-info {
             padding-top: 20px; border-top: 1px solid #eee; margin-top: 15px;
             position: relative; transition: all 0.6s ease;
@@ -105,7 +102,6 @@
         .work-detail { font-size: 11px; color: #999; letter-spacing: 0.05em; text-transform: uppercase; margin-top: 8px; }
         .full-width-info { flex: 1 1 100%; }
 
-        /* 全屏预览 Overlay */
         #overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(255,255,255,0.95);
@@ -148,17 +144,17 @@
                 <div class="main-featured">
                     <div class="work-image-wrapper">
                         <div class="spotlight"></div>
-                        <img src="images/sculpture/s2_1.jpg" onerror="this.src='images/sculpture/s2_cover.jpg'">
+                        <img src="images/sculpture/s2_1.webp" loading="lazy" decoding="async" onerror="this.src='images/sculpture/s2_cover.jpg'">
                     </div>
                 </div>
                 <div class="side-details">
                     <div class="work-image-wrapper">
                         <div class="spotlight"></div>
-                        <img src="images/sculpture/s2_2.jpg" onerror="this.src='images/sculpture/s2_cover.jpg'">
+                        <img src="images/sculpture/s2_2.webp" loading="lazy" decoding="async" onerror="this.src='images/sculpture/s2_cover.jpg'">
                     </div>
                     <div class="work-image-wrapper">
                         <div class="spotlight"></div>
-                        <img src="images/sculpture/s2_3.jpg" onerror="this.src='images/sculpture/s2_cover.jpg'">
+                        <img src="images/sculpture/s2_3.webp" loading="lazy" decoding="async" onerror="this.src='images/sculpture/s2_cover.jpg'">
                     </div>
                 </div>
                 <div class="work-info full-width-info">
@@ -170,7 +166,7 @@
             <div class="work-item slim">
                 <div class="work-image-wrapper">
                     <div class="spotlight"></div>
-                    <img src="images/sculpture/s2_4.jpg" onerror="this.src='images/sculpture/s2_cover.jpg'">
+                    <img src="images/sculpture/s2_4.webp" loading="lazy" decoding="async" onerror="this.src='images/sculpture/s2_cover.jpg'">
                 </div>
                 <div class="work-info">
                     <div class="work-name">Water 2</div>
@@ -181,7 +177,7 @@
             <div class="work-item slim">
                 <div class="work-image-wrapper">
                     <div class="spotlight"></div>
-                    <img src="images/sculpture/s2_5.jpg" onerror="this.src='images/sculpture/s2_cover.jpg'">
+                    <img src="images/sculpture/s2_5.webp" loading="lazy" decoding="async" onerror="this.src='images/sculpture/s2_cover.jpg'">
                 </div>
                 <div class="work-info">
                     <div class="work-name">Water 3</div>
@@ -192,7 +188,7 @@
             <div class="work-item">
                 <div class="work-image-wrapper">
                     <div class="spotlight"></div>
-                    <img src="images/sculpture/s2_6.jpg" onerror="this.src='images/sculpture/s2_cover.jpg'">
+                    <img src="images/sculpture/s2_6.webp" loading="lazy" decoding="async" onerror="this.src='images/sculpture/s2_cover.jpg'">
                 </div>
                 <div class="work-info">
                     <div class="work-name">Water 4</div>
@@ -206,7 +202,7 @@
     <footer>&copy; 2026 ZHANGJIARUI ARTWORKS.</footer>
 
     <script>
-        // 1. 聚光灯探照坐标跟随
+        // 1. 聚光灯与视差
         document.querySelectorAll('.work-image-wrapper').forEach(wrapper => {
             wrapper.addEventListener('mousemove', e => {
                 const rect = wrapper.getBoundingClientRect();
@@ -215,7 +211,6 @@
                 wrapper.style.setProperty('--x', x + 'px');
                 wrapper.style.setProperty('--y', y + 'px');
 
-                // 配合视差微移 (Parallax)
                 const img = wrapper.querySelector('img');
                 const moveX = (x / rect.width - 0.5) * 15;
                 const moveY = (y / rect.height - 0.5) * 15;
@@ -228,7 +223,7 @@
             });
         });
 
-        // 2. 滚动淡入观察器
+        // 2. 淡入
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
@@ -238,7 +233,7 @@
         }, { threshold: 0.1 });
         document.querySelectorAll('.work-item, .work-combination').forEach(item => observer.observe(item));
 
-        // 3. 智能导航栏隐藏
+        // 3. 导航隐藏
         let lastScroll = 0;
         const navbar = document.getElementById('navbar');
         window.addEventListener('scroll', () => {
@@ -251,7 +246,7 @@
             lastScroll = currentScroll;
         });
 
-        // 4. 点击预览大图
+        // 4. 全屏预览
         const overlay = document.getElementById('overlay');
         const overlayImg = overlay.querySelector('img');
         document.querySelectorAll('.work-image-wrapper img').forEach(img => {
