@@ -5,28 +5,95 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ice Burial | ZHANG JIARUI</title>
     <style>
-        body, html { margin: 0; padding: 0; font-family: "Optima", sans-serif; background: #fff; color: #111; line-height: 1.6; }
-        nav { padding: 30px 5%; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #f2f2f2; }
-        .logo { font-size: 14px; letter-spacing: 0.4em; text-decoration: none; color: #111; text-transform: uppercase; }
-        .back { font-size: 10px; letter-spacing: 0.2em; text-decoration: none; color: #888; text-transform: uppercase; }
-        .container { max-width: 1100px; margin: 60px auto; padding: 0 5%; }
-        .video-container { position: relative; padding-bottom: 56.25%; height: 0; background: #000; margin-bottom: 30px; }
+        /* 全局样式：极简艺术风格 */
+        body, html { 
+            margin: 0; padding: 0; 
+            font-family: "Optima", "Didot", "Helvetica Neue", Helvetica, Arial, sans-serif; 
+            background: #fff; color: #111; 
+            -webkit-font-smoothing: antialiased;
+            scroll-behavior: smooth;
+        }
+
+        /* 导航栏：智能高斯模糊 */
+        nav { 
+            padding: 30px 5%; 
+            display: flex; justify-content: space-between; align-items: center; 
+            position: fixed; top: 0; left: 0; right: 0;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(15px);
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .logo { font-size: 14px; font-weight: 300; letter-spacing: 0.5em; text-decoration: none; color: #111; text-transform: uppercase; }
+        .back { font-size: 10px; letter-spacing: 0.2em; text-decoration: none; color: #aaa; text-transform: uppercase; transition: color 0.3s; }
+        .back:hover { color: #111; }
+
+        /* 容器调整 */
+        .container { max-width: 1100px; margin: 120px auto 80px; padding: 0 5%; }
+
+        /* 视频容器 */
+        .video-container { 
+            position: relative; padding-bottom: 56.25%; height: 0; 
+            background: #f9f9f9; margin-bottom: 60px; 
+            box-shadow: 0 20px 40px rgba(0,0,0,0.05);
+        }
         .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
-        .title { font-size: 18px; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 10px; font-weight: 400; }
-        .meta { font-size: 11px; color: #aaa; text-transform: uppercase; letter-spacing: 0.05em; }
+
+        /* 项目信息区域 */
+        .project-info { max-width: 850px; text-align: left; }
+        .title { 
+            font-size: 24px; font-weight: 300; letter-spacing: 0.3em; 
+            text-transform: uppercase; margin-bottom: 15px; 
+        }
+        .meta { 
+            font-size: 11px; color: #999; text-transform: uppercase; 
+            letter-spacing: 0.1em; margin-bottom: 40px; display: block;
+        }
+
+        /* 文字内容排版 */
+        .description { 
+            font-size: 14px; color: #444; line-height: 2.2; 
+            font-weight: 300; text-align: justify;
+        }
+        /* 三段落间距 */
+        .description p { margin-bottom: 2.5em; }
+        .description strong { color: #111; font-weight: 400; }
+
+        footer { padding: 60px 0 40px; text-align: center; font-size: 9px; letter-spacing: 0.4em; color: #ccc; text-transform: uppercase; }
+
+        /* 移动端适配 */
+        @media (max-width: 768px) {
+            .container { margin-top: 100px; }
+            .title { font-size: 20px; }
+        }
     </style>
 </head>
 <body>
     <nav>
-        <a href="index.html" class="logo">ZHANGJIARUI ARTWORKS</a>
+        <a href="index.html" class="logo">ZHANG JIARUI</a>
         <a href="index.html" class="back">← BACK</a>
     </nav>
+
     <div class="container">
         <div class="video-container">
-            <iframe src="https://www.youtube.com/embed/9rCY3guNSRg?rel=0&autoplay=1" allowfullscreen></iframe>
+            <iframe src="https://www.youtube.com/embed/9rCY3guNSRg?rel=0" allowfullscreen></iframe>
         </div>
-        <h1 class="title">Ice Burial</h1>
-        <p class="meta">Performance art / 2025 / China Southsea</p>
+
+        <section class="project-info">
+            <h1 class="title">Ice Burial</h1>
+            <span class="meta">Performance art / 2025 / China Southsea</span>
+
+            <div class="description">
+                <p>On June 26, 2025, in the South China Sea near the Xisha Islands, I dove to a depth of six meters with a brick of ice made from local seawater. Underwater, I carved the words “You, Me, Him” into its smooth surface with my fingernail. As the ice melted in the 26°C water, the words slowly disappeared. When the ice was gone, I surfaced—ending this quiet ritual.</p>
+
+                <p>The ice, once liquid, is a trace of time. Its melting echoes the loss of polar ice in the climate crisis and the fleeting nature of human existence. Though ephemeral, the act of inscription affirms our desire to leave a mark. “You, Me, Him” is not just a phrase—it evokes the shared fate of humankind and asks: Who are we, together, in this disappearing world?</p>
+
+                <p>This is not a spectacle, but a gesture—a moment of co-existence with nature. The ice returns to the sea, the words are washed away. What remains is the question itself.</p>
+            </div>
+        </section>
     </div>
+
+    <footer>&copy; 2026 ZHANGJIARUI ARTWORKS.</footer>
 </body>
 </html>
