@@ -75,7 +75,7 @@
 
         .work-item.slim { flex: 1 1 48%; }
 
-        /* --- 核心交互 CSS (同步 Series 2/4) --- */
+        /* --- 核心交互 CSS --- */
         .work-image-wrapper {
             width: 100%;
             margin-bottom: 25px;
@@ -91,18 +91,16 @@
             max-height: 85vh;
             object-fit: contain;
             display: block;
-            filter: grayscale(0.2) brightness(0.95); /* 默认沉稳感 */
+            filter: grayscale(0.2) brightness(0.95);
             transition: filter 0.5s ease, transform 0.8s cubic-bezier(0.165, 0.84, 0.44, 1);
             will-change: transform;
         }
 
-        /* 悬停提亮与缩放 */
         .work-item:hover img {
             filter: grayscale(0) brightness(1);
             transform: scale(1.03);
         }
 
-        /* 聚光灯探照效果 */
         .spotlight {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             pointer-events: none;
@@ -111,7 +109,6 @@
         }
         .work-image-wrapper:hover .spotlight { opacity: 1; }
 
-        /* 文字信息交互：上浮感与黑线生长 */
         .work-info {
             padding-top: 20px;
             border-top: 1px solid #eee;
@@ -143,7 +140,6 @@
             line-height: 1.6;
         }
 
-        /* 全屏预览 Overlay */
         #overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(255,255,255,0.95);
@@ -185,7 +181,11 @@
             <div class="work-item">
                 <div class="work-image-wrapper">
                     <div class="spotlight"></div>
-                    <img src="images/sculpture/s1_1.jpg" alt="Line" onerror="this.src='images/sculpture/s1_cover.jpg'">
+                    <img src="images/sculpture/s1_1.webp" 
+                         alt="Line" 
+                         loading="lazy"
+                         decoding="async"
+                         onerror="this.onerror=null; this.src='images/sculpture/s1_1.jpg';">
                 </div>
                 <div class="work-info">
                     <div class="work-name">Line</div>
@@ -196,7 +196,11 @@
             <div class="work-item">
                 <div class="work-image-wrapper">
                     <div class="spotlight"></div>
-                    <img src="images/sculpture/s1_3.jpg" alt="Circle" onerror="this.src='images/sculpture/s1_cover.jpg'">
+                    <img src="images/sculpture/s1_3.webp" 
+                         alt="Circle" 
+                         loading="lazy"
+                         decoding="async"
+                         onerror="this.onerror=null; this.src='images/sculpture/s1_3.jpg';">
                 </div>
                 <div class="work-info">
                     <div class="work-name">Circle</div>
@@ -207,7 +211,11 @@
             <div class="work-item slim">
                 <div class="work-image-wrapper">
                     <div class="spotlight"></div>
-                    <img src="images/sculpture/s1_2.jpg" alt="Square" onerror="this.src='images/sculpture/s1_cover.jpg'">
+                    <img src="images/sculpture/s1_2.webp" 
+                         alt="Square" 
+                         loading="lazy"
+                         decoding="async"
+                         onerror="this.onerror=null; this.src='images/sculpture/s1_2.jpg';">
                 </div>
                 <div class="work-info">
                     <div class="work-name">Square</div>
@@ -218,7 +226,11 @@
             <div class="work-item slim">
                 <div class="work-image-wrapper">
                     <div class="spotlight"></div>
-                    <img src="images/sculpture/s1_4.jpg" alt="Line 2" onerror="this.src='images/sculpture/s1_cover.jpg'">
+                    <img src="images/sculpture/s1_4.webp" 
+                         alt="Line 2" 
+                         loading="lazy"
+                         decoding="async"
+                         onerror="this.onerror=null; this.src='images/sculpture/s1_4.jpg';">
                 </div>
                 <div class="work-info">
                     <div class="work-name">Line 2</div>
