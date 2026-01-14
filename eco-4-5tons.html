@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>4.5 TONS | ZHANG JIARUI</title>
     <style>
-        /* 全局样式：同步系列页面的极简艺术风格 */
         body, html {
             margin: 0; padding: 0;
             font-family: "Optima", "Didot", "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -14,7 +13,6 @@
             scroll-behavior: smooth;
         }
 
-        /* 导航栏：智能高斯模糊 */
         nav {
             padding: 30px 5%;
             display: flex; justify-content: space-between; align-items: center;
@@ -31,37 +29,60 @@
 
         .container { max-width: 1400px; margin: 0 auto; padding: 120px 5% 60px; }
 
-        /* 视频容器：保持 16:9 比例 */
-        .video-section { margin-bottom: 60px; }
+        .video-section { margin-bottom: 80px; }
         .video-container { 
             position: relative; padding-bottom: 56.25%; height: 0; 
             background: #f9f9f9; overflow: hidden;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.05);
         }
         .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
 
-        /* 项目信息与描述排版 */
-        .project-info { max-width: 900px; margin: 0 auto 80px; }
-        .title { font-size: 24px; font-weight: 300; letter-spacing: 0.3em; text-transform: uppercase; margin-bottom: 15px; }
-        .meta { font-size: 11px; color: #999; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 40px; display: block; }
+        /* 文字解释改为右对齐布局 */
+        .project-info { 
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end; /* 整体右对齐 */
+            text-align: right;    /* 文字右对齐 */
+            margin-bottom: 100px;
+        }
+        .title { font-size: 26px; font-weight: 300; letter-spacing: 0.3em; text-transform: uppercase; margin-bottom: 15px; }
+        .meta { font-size: 11px; color: #999; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 40px; }
         
         .description { 
-            font-size: 15px; color: #444; line-height: 2.1; 
-            font-weight: 300; text-align: justify; 
+            max-width: 700px; /* 限制宽度防止文字太长影响阅读 */
+            font-size: 14px; color: #444; line-height: 2.2; 
+            font-weight: 300;
         }
         .description p { margin-bottom: 2em; }
-        .description strong { color: #111; font-weight: 400; }
-        .description em { font-style: italic; }
 
-        /* 图片网格：核心修改 - 并排 6 张 */
-        .image-grid {
-            display: grid;
-            grid-template-columns: repeat(6, 1fr); /* 6列布局 */
-            gap: 15px;
-            margin-top: 80px;
+        /* 图片显示逻辑 */
+        .section-label { 
+            font-size: 9px; letter-spacing: 0.2em; color: #ccc; 
+            text-transform: uppercase; margin-bottom: 20px; display: block;
         }
 
-        /* 图片交互效果 */
+        /* 横图网格：统一尺寸裁切 */
+        .landscape-grid {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr); 
+            gap: 10px;
+            margin-bottom: 60px;
+        }
+        .landscape-grid .image-wrapper {
+            aspect-ratio: 3 / 2; /* 强制所有横图比例统一 */
+        }
+
+        /* 竖图展示：放在最后 */
+        .portrait-section {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr); /* 竖图并排4张或更少 */
+            gap: 20px;
+            justify-content: flex-start;
+        }
+        .portrait-section .image-wrapper {
+            aspect-ratio: 2 / 3; /* 竖图比例 */
+        }
+
+        /* 通用图片包装器 */
         .work-item {
             opacity: 0; transform: translateY(20px);
             transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
@@ -69,16 +90,18 @@
         .work-item.visible { opacity: 1; transform: translateY(0); }
 
         .image-wrapper {
-            width: 100%; overflow: hidden; background-color: #fcfcfc;
+            width: 100%; overflow: hidden; background-color: #f7f7f7;
             position: relative; cursor: zoom-in;
         }
         .image-wrapper img {
-            width: 100%; height: auto; display: block;
+            width: 100%; height: 100%; 
+            object-fit: cover; /* 核心：裁切图片填充容器 */
+            display: block;
             transition: transform 0.8s cubic-bezier(0.165, 0.84, 0.44, 1);
         }
-        .work-item:hover img { transform: scale(1.1); }
+        .work-item:hover img { transform: scale(1.05); }
 
-        /* 全屏预览层 */
+        /* 全屏预览 */
         #overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(255,255,255,0.98);
@@ -87,16 +110,15 @@
         }
         #overlay img { max-width: 90%; max-height: 90%; object-fit: contain; }
 
-        footer { padding: 80px 0 40px; text-align: center; font-size: 9px; letter-spacing: 0.4em; color: #ccc; text-transform: uppercase; }
+        footer { padding: 100px 0 40px; text-align: center; font-size: 9px; letter-spacing: 0.4em; color: #ccc; text-transform: uppercase; }
 
-        /* 响应式适配 */
-        @media (max-width: 1200px) {
-            .image-grid { grid-template-columns: repeat(3, 1fr); gap: 20px; } /* 中等屏幕3列 */
+        @media (max-width: 1024px) {
+            .landscape-grid { grid-template-columns: repeat(3, 1fr); }
+            .portrait-section { grid-template-columns: repeat(2, 1fr); }
         }
         @media (max-width: 768px) {
-            .image-grid { grid-template-columns: repeat(2, 1fr); } /* 手机端2列 */
-            .title { font-size: 20px; }
-            .container { padding-top: 100px; }
+            .project-info { align-items: flex-start; text-align: left; } /* 手机端恢复左对齐方便阅读 */
+            .landscape-grid { grid-template-columns: repeat(2, 1fr); }
         }
     </style>
 </head>
@@ -121,52 +143,41 @@
             <span class="meta">Installation / In Collaboration with Betta Liu / 2024 / Inner Mongolia</span>
             
             <div class="description">
-                <p><strong>4.5 Tons</strong> is an ecological art installation completed in the autumn of 2024 in the Kubuqi Desert of Inner Mongolia, a collaboration between the author and artist Betta Liu. A temporary wall composed of approximately 4.5 tons of ice was positioned in a desert no-man's-land. During its brief 21-hour lifespan, it became an abrupt yet emotionally resonant presence. Passersby touched the icy surface and even pressed their ears against the mass to listen to the sound of the melting water, re-summoning the human body into a state of direct sensory connection with nature.</p>
+                <p><strong>4.5 Tons</strong> is an ecological art installation completed in the autumn of 2024 in the Kubuqi Desert of Inner Mongolia, a collaboration between the author and artist Betta Liu. A temporary wall composed of approximately 4.5 tons of ice was positioned in a desert no-man's-land. During its brief 21-hour lifespan, it became an abrupt yet emotionally resonant presence.</p>
 
-                <p>From an ecological art perspective, <em>4.5 Tons</em> explicitly rejects the aesthetic cult of permanence and monumentality found in traditional sculpture. As a material, ice naturally carries an unstable certainty. Under the desert’s intense sunlight and ground heat, the ice wall undergoes a complete cycle: the establishment of form, the loosening of structure, partial collapse, and final disappearance. Ultimately, it leaves only a faint, transient mark on the sand—pointing toward a state of existence that is both solemn and fragile.</p>
+                <p>From an ecological art perspective, <em>4.5 Tons</em> explicitly rejects the aesthetic cult of permanence. As a material, ice naturally carries an unstable certainty. Under the desert’s intense sunlight and ground heat, the ice wall undergoes a complete cycle: the establishment of form, the loosening of structure, partial collapse, and final disappearance. Ultimately, it leaves only a faint, transient mark on the sand—pointing toward a state of existence that is both solemn and fragile.</p>
 
-                <p>This dynamic process shares a profound philosophical resonance with the concept of the <strong>"Rhizome"</strong> proposed by Deleuze and Guattari. <em>4.5 Tons</em> presents a quintessential rhizomatic existence: it is a momentary intersection of heterogeneous matter (ice, water, air, desert) and subjects. Melting no longer signifies mere disappearance, but a classic rupture-regeneration mechanism: while the form collapses, new energy and relationships are being generated and diffused.</p>
-
-                <p>The physical engagement of the audience—approaching, touching, smelling—is a vital force in the expansion of this ecological structure. Human body heat and breath directly participate in the temperature changes and evaporation. In this sense, <em>4.5 Tons</em> offers a more authentic understanding of symbiosis: not as an idealized harmony, but as a coexistence that maintains tension between rupture and generation. The work disintegrates at the material level but continues to spread across relational, perceptual, and cultural dimensions.</p>
+                <p>This dynamic process shares a profound philosophical resonance with the concept of the <strong>"Rhizome"</strong> proposed by Deleuze and Guattari. Melting no longer signifies mere disappearance, but a classic rupture-regeneration mechanism: while the form collapses, new energy and relationships are being generated and diffused. The work disintegrates at the material level but continues to spread across relational, perceptual, and cultural dimensions.</p>
             </div>
         </section>
 
-        <section class="image-grid">
-            <div class="work-item">
-                <div class="image-wrapper"><img src="images/4.5tons/1.webp" onerror="this.src='images/4.5tons/1.jpg'"></div>
-            </div>
-            <div class="work-item">
-                <div class="image-wrapper"><img src="images/4.5tons/2.webp" onerror="this.src='images/4.5tons/2.jpg'"></div>
-            </div>
-            <div class="work-item">
-                <div class="image-wrapper"><img src="images/4.5tons/3.webp" onerror="this.src='images/4.5tons/3.jpg'"></div>
-            </div>
-            <div class="work-item">
-                <div class="image-wrapper"><img src="images/4.5tons/4.webp" onerror="this.src='images/4.5tons/4.jpg'"></div>
-            </div>
-            <div class="work-item">
-                <div class="image-wrapper"><img src="images/4.5tons/5.webp" onerror="this.src='images/4.5tons/5.jpg'"></div>
-            </div>
-            <div class="work-item">
-                <div class="image-wrapper"><img src="images/4.5tons/6.webp" onerror="this.src='images/4.5tons/6.jpg'"></div>
-            </div>
+        <span class="section-label">Process & Form</span>
+        <section class="landscape-grid">
+            <div class="work-item"><div class="image-wrapper"><img src="images/4.5tons/1.webp" onerror="this.src='images/4.5tons/1.jpg'"></div></div>
+            <div class="work-item"><div class="image-wrapper"><img src="images/4.5tons/2.webp" onerror="this.src='images/4.5tons/2.jpg'"></div></div>
+            <div class="work-item"><div class="image-wrapper"><img src="images/4.5tons/3.webp" onerror="this.src='images/4.5tons/3.jpg'"></div></div>
+            <div class="work-item"><div class="image-wrapper"><img src="images/4.5tons/4.webp" onerror="this.src='images/4.5tons/4.jpg'"></div></div>
+            <div class="work-item"><div class="image-wrapper"><img src="images/4.5tons/5.webp" onerror="this.src='images/4.5tons/5.jpg'"></div></div>
+            <div class="work-item"><div class="image-wrapper"><img src="images/4.5tons/6.webp" onerror="this.src='images/4.5tons/6.jpg'"></div></div>
+        </section>
+
+        <span class="section-label">Details</span>
+        <section class="portrait-section">
+            <div class="work-item"><div class="image-wrapper"><img src="images/4.5tons/7.webp" onerror="this.src='images/4.5tons/7.jpg'"></div></div>
+            <div class="work-item"><div class="image-wrapper"><img src="images/4.5tons/8.webp" onerror="this.src='images/4.5tons/8.jpg'"></div></div>
         </section>
     </div>
 
     <footer>&copy; 2026 ZHANGJIARUI ARTWORKS.</footer>
 
     <script>
-        // 滚动淡入效果
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                }
+                if (entry.isIntersecting) { entry.target.classList.add('visible'); }
             });
         }, { threshold: 0.1 });
         document.querySelectorAll('.work-item').forEach(item => observer.observe(item));
 
-        // 全屏预览功能
         const overlay = document.getElementById('overlay');
         const overlayImg = overlay.querySelector('img');
         document.querySelectorAll('.image-wrapper img').forEach(img => {
