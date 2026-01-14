@@ -5,28 +5,93 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Coral Planting Project | ZHANG JIARUI</title>
     <style>
-        body, html { margin: 0; padding: 0; font-family: "Optima", sans-serif; background: #fff; color: #111; line-height: 1.6; }
-        nav { padding: 30px 5%; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #f2f2f2; }
-        .logo { font-size: 14px; letter-spacing: 0.4em; text-decoration: none; color: #111; text-transform: uppercase; }
-        .back { font-size: 10px; letter-spacing: 0.2em; text-decoration: none; color: #888; text-transform: uppercase; }
-        .container { max-width: 1100px; margin: 60px auto; padding: 0 5%; }
-        .video-container { position: relative; padding-bottom: 56.25%; height: 0; background: #000; margin-bottom: 30px; }
+        /* 全局样式同步 */
+        body, html { 
+            margin: 0; padding: 0; 
+            font-family: "Optima", "Didot", "Helvetica Neue", Helvetica, Arial, sans-serif; 
+            background: #fff; color: #111; 
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* 导航栏：增加高斯模糊与一致性 */
+        nav { 
+            padding: 30px 5%; 
+            display: flex; justify-content: space-between; align-items: center; 
+            position: fixed; top: 0; left: 0; right: 0;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(15px);
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .logo { font-size: 14px; font-weight: 300; letter-spacing: 0.5em; text-decoration: none; color: #111; text-transform: uppercase; }
+        .back { font-size: 10px; letter-spacing: 0.2em; text-decoration: none; color: #aaa; text-transform: uppercase; transition: color 0.3s; }
+        .back:hover { color: #111; }
+
+        /* 容器调整：预留导航栏高度 */
+        .container { max-width: 1100px; margin: 120px auto 80px; padding: 0 5%; }
+
+        /* 视频容器 */
+        .video-container { 
+            position: relative; padding-bottom: 56.25%; height: 0; 
+            background: #f9f9f9; margin-bottom: 60px; 
+            box-shadow: 0 20px 40px rgba(0,0,0,0.05);
+        }
         .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
-        .title { font-size: 18px; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 10px; font-weight: 400; }
-        .meta { font-size: 11px; color: #aaa; text-transform: uppercase; letter-spacing: 0.05em; }
+
+        /* 项目信息区域：左对齐 */
+        .project-info { max-width: 850px; text-align: left; }
+        .title { 
+            font-size: 24px; font-weight: 300; letter-spacing: 0.3em; 
+            text-transform: uppercase; margin-bottom: 15px; 
+        }
+        .meta { 
+            font-size: 11px; color: #999; text-transform: uppercase; 
+            letter-spacing: 0.1em; margin-bottom: 40px; display: block;
+        }
+
+        /* 文字内容排版 */
+        .description { 
+            font-size: 14px; color: #444; line-height: 2.2; 
+            font-weight: 300; text-align: justify;
+        }
+        .description p { margin-bottom: 2em; }
+        .description strong { color: #111; font-weight: 400; }
+
+        footer { padding: 60px 0 40px; text-align: center; font-size: 9px; letter-spacing: 0.4em; color: #ccc; text-transform: uppercase; }
+
+        /* 移动端适配 */
+        @media (max-width: 768px) {
+            .container { margin-top: 100px; }
+            .title { font-size: 20px; }
+        }
     </style>
 </head>
 <body>
     <nav>
-        <a href="index.html" class="logo">ZHANGJIARUI ARTWORKS</a>
+        <a href="index.html" class="logo">ZHANG JIARUI</a>
         <a href="index.html" class="back">← BACK</a>
     </nav>
+
     <div class="container">
         <div class="video-container">
-            <iframe src="https://www.youtube.com/embed/OEZ3FvOwdjI?rel=0&autoplay=1" allowfullscreen></iframe>
+            <iframe src="https://www.youtube.com/embed/OEZ3FvOwdjI?rel=0" allowfullscreen></iframe>
         </div>
-        <h1 class="title">Coral Planting Project</h1>
-        <p class="meta">Documentary / 2025 / Xisha Islands</p>
+
+        <section class="project-info">
+            <h1 class="title">Coral Planting Project</h1>
+            <span class="meta">Documentary / 2025 / Xisha Islands</span>
+
+            <div class="description">
+                <p>The <strong>Coral Planting Project</strong> is a visual documentation of ecological restoration filmed in the Xisha Islands in 2025. This project captures the delicate process of "reforesting" the seabed, focusing on the symbiotic relationship between human intervention and marine regeneration. Through the lens, the act of planting coral fragments becomes a meditative performance—a slow, silent commitment to the revival of a fragile ecosystem.</p>
+
+                <p>Unlike traditional nature documentaries, this work emphasizes the <strong>rhythmic silence</strong> of the underwater world and the technical precision of the restoration team. It explores the concept of "assisted recovery," where the boundary between the artificial and the natural blurs. Each coral seedling fixed to the nursery frames represents a point of hope in a vast, threatened landscape, reflecting the urgent need for a new ecological consciousness.</p>
+
+                <p>By recording the growth and structural complexity of the coral colonies, the film serves as both a scientific record and an artistic contemplation on time and survival. It invites the viewer to witness the invisible labor performed beneath the surface, fostering a deep sensory connection with the ocean’s enduring yet vulnerable life force.</p>
+            </div>
+        </section>
     </div>
+
+    <footer>&copy; 2026 ZHANGJIARUI ARTWORKS.</footer>
 </body>
 </html>
