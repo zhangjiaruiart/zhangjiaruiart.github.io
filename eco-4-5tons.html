@@ -3,30 +3,175 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>4.5 Tons | ZHANG JIARUI</title>
+    <title>4.5 TONS | ZHANG JIARUI</title>
     <style>
-        body, html { margin: 0; padding: 0; font-family: "Optima", sans-serif; background: #fff; color: #111; line-height: 1.6; }
-        nav { padding: 30px 5%; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #f2f2f2; }
-        .logo { font-size: 14px; letter-spacing: 0.4em; text-decoration: none; color: #111; text-transform: uppercase; }
-        .back { font-size: 10px; letter-spacing: 0.2em; text-decoration: none; color: #888; text-transform: uppercase; }
-        .container { max-width: 1100px; margin: 60px auto; padding: 0 5%; }
-        .video-container { position: relative; padding-bottom: 56.25%; height: 0; background: #000; margin-bottom: 30px; }
+        /* 全局样式同步 */
+        body, html {
+            margin: 0; padding: 0;
+            font-family: "Optima", "Didot", "Helvetica Neue", Helvetica, Arial, sans-serif;
+            background-color: #ffffff; color: #111111;
+            -webkit-font-smoothing: antialiased;
+            scroll-behavior: smooth;
+        }
+
+        /* 导航栏样式同步 */
+        nav {
+            padding: 30px 5%;
+            display: flex; justify-content: space-between; align-items: center;
+            position: fixed; top: 0; left: 0; right: 0;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(15px);
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .logo { font-size: 14px; font-weight: 300; letter-spacing: 0.5em; text-decoration: none; color: #111; text-transform: uppercase; }
+        .back-link { font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; text-decoration: none; color: #aaa; transition: all 0.3s ease; }
+        .back-link:hover { color: #111; padding-left: 10px; }
+
+        .container { max-width: 1400px; margin: 0 auto; padding: 120px 5% 60px; }
+
+        /* 视频容器 */
+        .video-section { margin-bottom: 60px; }
+        .video-container { 
+            position: relative; padding-bottom: 56.25%; height: 0; 
+            background: #f9f9f9; overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.05);
+        }
         .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
-        .title { font-size: 18px; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 10px; font-weight: 400; }
-        .meta { font-size: 11px; color: #aaa; text-transform: uppercase; letter-spacing: 0.05em; }
+
+        /* 文字描述区 */
+        .project-info { max-width: 800px; margin-bottom: 80px; }
+        .title { font-size: 24px; font-weight: 300; letter-spacing: 0.3em; text-transform: uppercase; margin-bottom: 15px; }
+        .meta { font-size: 11px; color: #999; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 30px; display: block; }
+        .description { font-size: 15px; color: #444; line-height: 2; font-weight: 300; text-align: justify; }
+
+        /* 图片网格布局：并排4张 */
+        .image-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr); /* 核心：并排4张 */
+            gap: 20px;
+            margin-top: 60px;
+        }
+
+        /* 作品项样式同步 (Series 2 风格) */
+        .work-item {
+            opacity: 0; transform: translateY(20px);
+            transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .work-item.visible { opacity: 1; transform: translateY(0); }
+
+        .image-wrapper {
+            width: 100%; overflow: hidden; background-color: #fcfcfc;
+            position: relative; cursor: zoom-in;
+        }
+        .image-wrapper img {
+            width: 100%; height: auto; display: block;
+            transition: transform 0.8s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+        .work-item:hover img { transform: scale(1.08); }
+
+        /* 全屏预览 Overlay */
+        #overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(255,255,255,0.98);
+            display: none; z-index: 2000; cursor: zoom-out;
+            justify-content: center; align-items: center;
+        }
+        #overlay img { max-width: 90%; max-height: 90%; object-fit: contain; }
+
+        footer { padding: 80px 0 40px; text-align: center; font-size: 9px; letter-spacing: 0.4em; color: #ccc; text-transform: uppercase; }
+
+        /* 响应式适配 */
+        @media (max-width: 1100px) {
+            .image-grid { grid-template-columns: repeat(2, 1fr); } /* 平板端2列 */
+        }
+        @media (max-width: 600px) {
+            .image-grid { grid-template-columns: 1fr; } /* 手机端1列 */
+            .container { padding-top: 100px; }
+        }
     </style>
 </head>
 <body>
+
     <nav>
         <a href="index.html" class="logo">ZHANG JIARUI</a>
-        <a href="index.html" class="back">← BACK</a>
+        <a href="index.html" class="back-link">← BACK</a>
     </nav>
+
+    <div id="overlay"><img src="" alt="Full View"></div>
+
     <div class="container">
-        <div class="video-container">
-            <iframe src="https://www.youtube.com/embed/lfMcm-Hn3S4?rel=0&autoplay=1" allowfullscreen></iframe>
-        </div>
-        <h1 class="title">4.5 Tons</h1>
-        <p class="meta">Installation / In Collaboration with Betta Liu / 2024 / Inner Mongolia</p>
+        <section class="video-section">
+            <div class="video-container">
+                <iframe src="https://www.youtube.com/embed/lfMcm-Hn3S4?rel=0" allowfullscreen></iframe>
+            </div>
+        </section>
+
+        <section class="project-info">
+            <h1 class="title">4.5 Tons</h1>
+            <span class="meta">Installation / In Collaboration with Betta Liu / 2024 / Inner Mongolia</span>
+            <div class="description">
+                <p>This installation explores the weight of industrial existence within the vast natural landscape of Inner Mongolia. By placing a 4.5-ton structure in the silence of the wilderness, the work initiates a dialogue between human intervention and the primordial environment.</p>
+                <p>The contrast of the geometric form against the organic horizon serves as a meditation on the permanence of material and the transience of human presence.</p>
+            </div>
+        </section>
+
+        <section class="image-grid">
+            <div class="work-item">
+                <div class="image-wrapper"><img src="images/4.5tons/1.webp" class="zoom-img" onerror="this.src='images/4.5tons/1.jpg'"></div>
+            </div>
+            <div class="work-item">
+                <div class="image-wrapper"><img src="images/4.5tons/2.webp" class="zoom-img" onerror="this.src='images/4.5tons/2.jpg'"></div>
+            </div>
+            <div class="work-item">
+                <div class="image-wrapper"><img src="images/4.5tons/3.webp" class="zoom-img" onerror="this.src='images/4.5tons/3.jpg'"></div>
+            </div>
+            <div class="work-item">
+                <div class="image-wrapper"><img src="images/4.5tons/4.webp" class="zoom-img" onerror="this.src='images/4.5tons/4.jpg'"></div>
+            </div>
+            <div class="work-item">
+                <div class="image-wrapper"><img src="images/4.5tons/5.webp" class="zoom-img" onerror="this.src='images/4.5tons/5.jpg'"></div>
+            </div>
+            <div class="work-item">
+                <div class="image-wrapper"><img src="images/4.5tons/6.webp" class="zoom-img" onerror="this.src='images/4.5tons/6.jpg'"></div>
+            </div>
+            <div class="work-item">
+                <div class="image-wrapper"><img src="images/4.5tons/7.webp" class="zoom-img" onerror="this.src='images/4.5tons/7.jpg'"></div>
+            </div>
+            <div class="work-item">
+                <div class="image-wrapper"><img src="images/4.5tons/8.webp" class="zoom-img" onerror="this.src='images/4.5tons/8.jpg'"></div>
+            </div>
+        </section>
     </div>
+
+    <footer>&copy; 2026 ZHANGJIARUI ARTWORKS.</footer>
+
+    <script>
+        // 1. 滚动淡入观察器
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1 });
+        document.querySelectorAll('.work-item').forEach(item => observer.observe(item));
+
+        // 2. 全屏预览功能
+        const overlay = document.getElementById('overlay');
+        const overlayImg = overlay.querySelector('img');
+        document.querySelectorAll('.image-wrapper img').forEach(img => {
+            img.addEventListener('click', () => {
+                overlayImg.src = img.src;
+                overlay.style.display = 'flex';
+                document.body.style.overflow = 'hidden';
+            });
+        });
+        overlay.addEventListener('click', () => {
+            overlay.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        });
+    </script>
 </body>
 </html>
