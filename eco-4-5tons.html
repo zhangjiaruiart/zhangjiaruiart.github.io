@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>4.5 TONS | ZHANG JIARUI</title>
     <style>
+        /* 基础样式 */
         body, html {
             margin: 0; padding: 0;
             font-family: "Optima", "Didot", "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -13,6 +14,7 @@
             scroll-behavior: smooth;
         }
 
+        /* 导航栏 */
         nav {
             padding: 30px 5%;
             display: flex; justify-content: space-between; align-items: center;
@@ -29,6 +31,7 @@
 
         .container { max-width: 1400px; margin: 0 auto; padding: 120px 5% 60px; }
 
+        /* 视频区域 */
         .video-section { margin-bottom: 80px; }
         .video-container { 
             position: relative; padding-bottom: 56.25%; height: 0; 
@@ -36,53 +39,29 @@
         }
         .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
 
-        /* 文字解释改为右对齐布局 */
+        /* 文字解释：回归左对齐 */
         .project-info { 
-            display: flex;
-            flex-direction: column;
-            align-items: flex-end; /* 整体右对齐 */
-            text-align: right;    /* 文字右对齐 */
+            max-width: 800px;
+            text-align: left;
             margin-bottom: 100px;
         }
         .title { font-size: 26px; font-weight: 300; letter-spacing: 0.3em; text-transform: uppercase; margin-bottom: 15px; }
-        .meta { font-size: 11px; color: #999; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 40px; }
+        .meta { font-size: 11px; color: #999; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 40px; display: block; }
         
         .description { 
-            max-width: 700px; /* 限制宽度防止文字太长影响阅读 */
             font-size: 14px; color: #444; line-height: 2.2; 
             font-weight: 300;
         }
         .description p { margin-bottom: 2em; }
 
-        /* 图片显示逻辑 */
-        .section-label { 
-            font-size: 9px; letter-spacing: 0.2em; color: #ccc; 
-            text-transform: uppercase; margin-bottom: 20px; display: block;
-        }
-
-        /* 横图网格：统一尺寸裁切 */
-        .landscape-grid {
+        /* 图片网格：并排 6 张且裁切统一 */
+        .image-grid {
             display: grid;
             grid-template-columns: repeat(6, 1fr); 
-            gap: 10px;
-            margin-bottom: 60px;
-        }
-        .landscape-grid .image-wrapper {
-            aspect-ratio: 3 / 2; /* 强制所有横图比例统一 */
+            gap: 12px;
+            margin-top: 60px;
         }
 
-        /* 竖图展示：放在最后 */
-        .portrait-section {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr); /* 竖图并排4张或更少 */
-            gap: 20px;
-            justify-content: flex-start;
-        }
-        .portrait-section .image-wrapper {
-            aspect-ratio: 2 / 3; /* 竖图比例 */
-        }
-
-        /* 通用图片包装器 */
         .work-item {
             opacity: 0; transform: translateY(20px);
             transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
@@ -90,18 +69,23 @@
         .work-item.visible { opacity: 1; transform: translateY(0); }
 
         .image-wrapper {
-            width: 100%; overflow: hidden; background-color: #f7f7f7;
-            position: relative; cursor: zoom-in;
+            width: 100%; 
+            aspect-ratio: 3 / 2; /* 强制所有图片比例统一为 3:2 */
+            overflow: hidden; 
+            background-color: #f7f7f7;
+            position: relative; 
+            cursor: zoom-in;
         }
+        
         .image-wrapper img {
             width: 100%; height: 100%; 
-            object-fit: cover; /* 核心：裁切图片填充容器 */
+            object-fit: cover; /* 核心：裁切图片填充 3:2 的容器 */
             display: block;
             transition: transform 0.8s cubic-bezier(0.165, 0.84, 0.44, 1);
         }
-        .work-item:hover img { transform: scale(1.05); }
+        .work-item:hover img { transform: scale(1.08); }
 
-        /* 全屏预览 */
+        /* 全屏预览层 */
         #overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(255,255,255,0.98);
@@ -112,13 +96,13 @@
 
         footer { padding: 100px 0 40px; text-align: center; font-size: 9px; letter-spacing: 0.4em; color: #ccc; text-transform: uppercase; }
 
-        @media (max-width: 1024px) {
-            .landscape-grid { grid-template-columns: repeat(3, 1fr); }
-            .portrait-section { grid-template-columns: repeat(2, 1fr); }
+        /* 响应式适配 */
+        @media (max-width: 1100px) {
+            .image-grid { grid-template-columns: repeat(3, 1fr); } /* 平板端 3x2 */
         }
-        @media (max-width: 768px) {
-            .project-info { align-items: flex-start; text-align: left; } /* 手机端恢复左对齐方便阅读 */
-            .landscape-grid { grid-template-columns: repeat(2, 1fr); }
+        @media (max-width: 600px) {
+            .image-grid { grid-template-columns: repeat(2, 1fr); } /* 手机端 2x3 */
+            .container { padding-top: 100px; }
         }
     </style>
 </head>
@@ -151,33 +135,42 @@
             </div>
         </section>
 
-        <span class="section-label">Process & Form</span>
-        <section class="landscape-grid">
-            <div class="work-item"><div class="image-wrapper"><img src="images/4.5tons/1.webp" onerror="this.src='images/4.5tons/1.jpg'"></div></div>
-            <div class="work-item"><div class="image-wrapper"><img src="images/4.5tons/2.webp" onerror="this.src='images/4.5tons/2.jpg'"></div></div>
-            <div class="work-item"><div class="image-wrapper"><img src="images/4.5tons/3.webp" onerror="this.src='images/4.5tons/3.jpg'"></div></div>
-            <div class="work-item"><div class="image-wrapper"><img src="images/4.5tons/4.webp" onerror="this.src='images/4.5tons/4.jpg'"></div></div>
-            <div class="work-item"><div class="image-wrapper"><img src="images/4.5tons/5.webp" onerror="this.src='images/4.5tons/5.jpg'"></div></div>
-            <div class="work-item"><div class="image-wrapper"><img src="images/4.5tons/6.webp" onerror="this.src='images/4.5tons/6.jpg'"></div></div>
-        </section>
-
-        <span class="section-label">Details</span>
-        <section class="portrait-section">
-            <div class="work-item"><div class="image-wrapper"><img src="images/4.5tons/7.webp" onerror="this.src='images/4.5tons/7.jpg'"></div></div>
-            <div class="work-item"><div class="image-wrapper"><img src="images/4.5tons/8.webp" onerror="this.src='images/4.5tons/8.jpg'"></div></div>
+        <section class="image-grid">
+            <div class="work-item">
+                <div class="image-wrapper"><img src="images/4.5tons/1.webp" onerror="this.src='images/4.5tons/1.jpg'"></div>
+            </div>
+            <div class="work-item">
+                <div class="image-wrapper"><img src="images/4.5tons/2.webp" onerror="this.src='images/4.5tons/2.jpg'"></div>
+            </div>
+            <div class="work-item">
+                <div class="image-wrapper"><img src="images/4.5tons/3.webp" onerror="this.src='images/4.5tons/3.jpg'"></div>
+            </div>
+            <div class="work-item">
+                <div class="image-wrapper"><img src="images/4.5tons/4.webp" onerror="this.src='images/4.5tons/4.jpg'"></div>
+            </div>
+            <div class="work-item">
+                <div class="image-wrapper"><img src="images/4.5tons/5.webp" onerror="this.src='images/4.5tons/5.jpg'"></div>
+            </div>
+            <div class="work-item">
+                <div class="image-wrapper"><img src="images/4.5tons/6.webp" onerror="this.src='images/4.5tons/6.jpg'"></div>
+            </div>
         </section>
     </div>
 
     <footer>&copy; 2026 ZHANGJIARUI ARTWORKS.</footer>
 
     <script>
+        // 淡入观察器
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
-                if (entry.isIntersecting) { entry.target.classList.add('visible'); }
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
             });
         }, { threshold: 0.1 });
         document.querySelectorAll('.work-item').forEach(item => observer.observe(item));
 
+        // 全屏预览
         const overlay = document.getElementById('overlay');
         const overlayImg = overlay.querySelector('img');
         document.querySelectorAll('.image-wrapper img').forEach(img => {
