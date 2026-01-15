@@ -71,14 +71,14 @@
         }
         .nav-scrolled .menu-toggle span { background-color: #111; }
 
-        /* --- 封面动态效果 & 悬浮文字 --- */
+        /* --- 封面效果 --- */
         .hero {
             height: 100vh; width: 100%; overflow: hidden;
             position: relative; background-color: #000;
         }
         .hero img {
             width: 100%; height: 100%; object-fit: cover;
-            /* 关键修改：向下裁切多10%，定位在 60% 位置 */
+            /* 关键点：向下移动重心 */
             object-position: center 60%; 
             filter: brightness(0.75); display: block;
             animation: kenBurns 20s ease-in-out infinite alternate;
@@ -100,7 +100,7 @@
 
         .hero-title {
             color: #ffffff;
-            font-size: 18px; /* 文字加大 */
+            font-size: 18px;
             font-weight: 300;
             letter-spacing: 0.6em;
             text-transform: uppercase;
@@ -111,7 +111,7 @@
 
         @keyframes fadeInText {
             from { opacity: 0; transform: translateY(15px); }
-            to { opacity: 0.8; transform: translateY(0); } /* 透明度80% */
+            to { opacity: 0.8; transform: translateY(0); }
         }
 
         .scroll-indicator {
@@ -133,7 +133,7 @@
             60% { transform: translateY(-5px) rotate(45deg); opacity: 0.6; }
         }
 
-        /* --- 布局 --- */
+        /* --- 布局优化 --- */
         .content-section { 
             padding: 80px 5% 20px; max-width: 1260px; margin: 0 auto; 
             animation: fadeInUp 1.2s cubic-bezier(0.15, 1, 0.3, 1) both;
@@ -164,12 +164,21 @@
             display: flex; align-items: center; justify-content: center;
             background: rgba(0,0,0,0.1); transition: background 0.3s;
         }
+        .play-button {
+            width: 50px; height: 50px; border: 1px solid #fff; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center; backdrop-filter: blur(5px);
+        }
+        .play-button::after {
+            content: ''; width: 0; height: 0; 
+            border-top: 8px solid transparent; border-bottom: 8px solid transparent; border-left: 12px solid #fff;
+            margin-left: 4px;
+        }
+
         .project-title { font-size: 14px; font-weight: 400; letter-spacing: 0.1em; text-transform: uppercase; margin-top: 5px; }
         .project-meta { font-size: 10px; color: #aaa; margin-top: 4px; letter-spacing: 0.05em; text-transform: uppercase; line-height: 1.4; }
 
         @media (max-width: 900px) {
             .hero img { object-position: center 60%; }
-            .hero-title { font-size: 12px; letter-spacing: 0.4em; }
             .menu-toggle { display: flex; }
             .nav-links {
                 position: fixed; top: 0; right: -100%; width: 100%; height: 100vh;
@@ -178,9 +187,6 @@
             }
             .nav-links.active { right: 0; }
             .nav-links a { color: #111111 !important; margin: 20px 0; font-size: 14px; }
-            .active-toggle span:nth-child(1) { transform: translateY(7px) rotate(45deg); background-color: #111 !important; }
-            .active-toggle span:nth-child(2) { opacity: 0; }
-            .active-toggle span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); background-color: #111 !important; }
             .content-section { padding: 40px 0 20px 0 !important; }
             .grid { display: block !important; }
             .project { width: 100% !important; margin-bottom: 40px; }
@@ -193,6 +199,7 @@
         .contact-row { display: flex; justify-content: center; gap: 40px; flex-wrap: wrap; }
         .contact-label { font-size: 9px; color: #bbb; text-transform: uppercase; display: block; margin-bottom: 5px; letter-spacing: 0.2em; }
         .contact-value { font-size: 13px; color: #111; text-decoration: none; padding-bottom: 2px; border-bottom: 1px solid transparent; transition: all 0.3s; }
+        .divider { color: #eee; align-self: center; font-weight: 100; }
         footer { padding: 60px 5% 40px; text-align: center; border-top: 1px solid #f9f9f9; font-size: 9px; letter-spacing: 0.4em; color: #ccc; text-transform: uppercase; }
     </style>
 </head>
@@ -293,6 +300,32 @@
                         <div class="project-info">
                             <h4 class="project-title">X</h4>
                             <p class="project-meta">Acrylic / 2023</p>
+                        </div>
+                    </a>
+                </article>
+
+                <article style="flex: 1; min-width: 300px;">
+                    <h3 style="font-size: 11px; letter-spacing: 0.3em; text-transform: uppercase; color: #888; margin: 20px 0 20px 0; font-weight: 300;">Formless Series</h3>
+                    <a href="series4.html" class="project">
+                        <div class="project-image-wrapper img-ratio">
+                            <img src="images/sculpture/s4_cover.webp" alt="At ease" onerror="this.src='images/sculpture/s4_cover.jpg'">
+                        </div>
+                        <div class="project-info">
+                            <h4 class="project-title">At ease</h4>
+                            <p class="project-meta">Transparent resin / 2023</p>
+                        </div>
+                    </a>
+                </article>
+
+                <article style="flex: 1; min-width: 300px;">
+                    <h3 style="font-size: 11px; letter-spacing: 0.3em; text-transform: uppercase; color: #888; margin: 20px 0 20px 0; font-weight: 300;">Gold Series</h3>
+                    <a href="series3.html" class="project">
+                        <div class="project-image-wrapper img-ratio">
+                            <img src="images/sculpture/s3_cover.webp" alt="New Eighteenth Arhat" onerror="this.src='images/sculpture/s3_cover.jpg'">
+                        </div>
+                        <div class="project-info">
+                            <h4 class="project-title">New Eighteenth Arhat</h4>
+                            <p class="project-meta">Goldenleaf resin / 2015</p>
                         </div>
                     </a>
                 </article>
