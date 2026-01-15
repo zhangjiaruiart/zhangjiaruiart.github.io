@@ -5,7 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ZHANG JIARUI | ARTIST</title>
     <meta name="description" content="Zhang Jiarui Artworks - Ecological Art, Sculpture, and Artistic Projects.">
-    <link rel="icon" type="image/png" href="favicon.png"> <style>
+    <link rel="icon" type="image/png" href="favicon.png"> 
+    <style>
         /* 保持您原有的所有样式不变 */
         body, html {
             margin: 0; padding: 0;
@@ -71,7 +72,7 @@
         }
         .nav-scrolled .menu-toggle span { background-color: #111; }
 
-        /* --- 封面 --- */
+        /* --- 封面更新：Ken Burns 动画 --- */
         .hero {
             height: 100vh; width: 100%; overflow: hidden;
             position: relative; background-color: #000;
@@ -79,7 +80,13 @@
         .hero img {
             width: 100%; height: 100%; object-fit: cover;
             filter: brightness(0.85); display: block;
-            animation: heroZoom 2.5s cubic-bezier(0.15, 1, 0.3, 1) forwards;
+            /* 应用您的缩放动画：20秒循环往复 */
+            animation: kenBurns 20s ease-in-out infinite alternate;
+        }
+
+        @keyframes kenBurns {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.15); } /* 缓慢放大 15% */
         }
 
         .scroll-indicator {
@@ -105,7 +112,7 @@
         .content-section { 
             padding: 80px 5% 20px; max-width: 1260px; margin: 0 auto; 
             animation: fadeInUp 1.2s cubic-bezier(0.15, 1, 0.3, 1) both;
-            content-visibility: auto; /* 性能优化：延迟渲染非首屏内容 */
+            content-visibility: auto;
         }
         
         .category-title { 
@@ -146,7 +153,7 @@
         .project-title { font-size: 14px; font-weight: 400; letter-spacing: 0.1em; text-transform: uppercase; margin-top: 5px; }
         .project-meta { font-size: 10px; color: #aaa; margin-top: 4px; letter-spacing: 0.05em; text-transform: uppercase; line-height: 1.4; }
 
-        /* 响应式样式保持不变 */
+        /* 响应式样式 */
         @media (max-width: 900px) {
             .hero img { object-position: 70% center; }
             .menu-toggle { display: flex; }
@@ -169,7 +176,6 @@
             .scroll-arrow { width: 12px; height: 12px; }
         }
 
-        @keyframes heroZoom { from { transform: scale(1.1); opacity: 0; } to { transform: scale(1); opacity: 1; } }
         @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
         .contact-section { padding: 80px 5% 40px; background-color: #fff; }
@@ -257,105 +263,14 @@
                         </div>
                     </a>
                 </article>
-
-                <article style="flex: 1; min-width: 300px;">
-                    <h3 style="font-size: 11px; letter-spacing: 0.3em; text-transform: uppercase; color: #888; margin: 20px 0 20px 0; font-weight: 300;">Water Series</h3>
-                    <a href="series2.html" class="project">
-                        <div class="project-image-wrapper img-ratio">
-                            <img src="images/sculpture/s2_cover.webp" alt="Water1 - Water Series" loading="lazy" decoding="async" onerror="this.src='images/sculpture/s2_cover.jpg'">
-                        </div>
-                        <div class="project-info">
-                            <h4 class="project-title">Water1</h4>
-                            <p class="project-meta">Transparent resin / 2023</p>
-                        </div>
-                    </a>
-                </article>
-
-                <article style="flex: 1; min-width: 300px;">
-                    <h3 style="font-size: 11px; letter-spacing: 0.3em; text-transform: uppercase; color: #888; margin: 20px 0 20px 0; font-weight: 300;">Line Series</h3>
-                    <a href="series5.html" class="project">
-                        <div class="project-image-wrapper img-ratio" style="background-color: #ffffff; display: flex; align-items: center; justify-content: center;">
-                            <img src="images/sculpture/s5_cover.webp" alt="X - Line Series" loading="lazy" decoding="async" onerror="this.src='images/sculpture/s5_cover.jpg'" style="object-fit: contain; transform: scale(0.8); transition: transform 0.5s ease;">
-                        </div>
-                        <div class="project-info">
-                            <h4 class="project-title">X</h4>
-                            <p class="project-meta">Acrylic, Handmade dyeing / 2023</p>
-                        </div>
-                    </a>
-                </article>
-
-                <article style="flex: 1; min-width: 300px;">
-                    <h3 style="font-size: 11px; letter-spacing: 0.3em; text-transform: uppercase; color: #888; margin: 20px 0 20px 0; font-weight: 300;">Formless Series</h3>
-                    <a href="series4.html" class="project">
-                        <div class="project-image-wrapper img-ratio">
-                            <img src="images/sculpture/s4_cover.webp" alt="At ease - Formless Series" loading="lazy" decoding="async" onerror="this.src='images/sculpture/s4_cover.jpg'">
-                        </div>
-                        <div class="project-info">
-                            <h4 class="project-title">At ease</h4>
-                            <p class="project-meta">Transparent resin / 2023</p>
-                        </div>
-                    </a>
-                </article>
-
-                <article style="flex: 1; min-width: 300px;">
-                    <h3 style="font-size: 11px; letter-spacing: 0.3em; text-transform: uppercase; color: #888; margin: 20px 0 20px 0; font-weight: 300;">Gold Series</h3>
-                    <a href="series3.html" class="project">
-                        <div class="project-image-wrapper img-ratio">
-                            <img src="images/sculpture/s3_cover.webp" alt="New Eighteenth Arhat - Gold Series" loading="lazy" decoding="async" onerror="this.src='images/sculpture/s3_cover.jpg'">
-                        </div>
-                        <div class="project-info">
-                            <h4 class="project-title">New Eighteenth Arhat</h4>
-                            <p class="project-meta">Goldenleaf resin / 2015</p>
-                        </div>
-                    </a>
-                </article>
-            </div>
-        </section>
-
-        <section class="content-section" id="projects">
-            <h2 class="category-title">Projects</h2>
-            <div class="grid">
-                <article>
-                    <a href="project-coral.html" class="project">
-                        <div class="project-image-wrapper video-ratio">
-                            <img src="images/projects/coral_cover.webp" alt="Coral Planting Project" loading="lazy" decoding="async" onerror="this.src='images/projects/coral_cover.jpg'">
-                            <div class="play-overlay"><div class="play-button"></div></div>
-                        </div>
-                        <div class="project-info">
-                            <h3 class="project-title">Coral Planting Project</h3>
-                            <p class="project-meta">Documentary / 2025 / Xisha Islands</p>
-                        </div>
-                    </a>
-                </article>
-            </div>
-        </section>
-
-        <section class="contact-section" id="contact">
-            <div class="contact-container">
-                <div class="contact-row">
-                    <div class="contact-item">
-                        <span class="contact-label">Email</span>
-                        <a href="mailto:jerryzhang_arts@qq.com" class="contact-value">jerryzhang_arts@qq.com</a>
-                    </div>
-                    <span class="divider">/</span>
-                    <div class="contact-item">
-                        <span class="contact-label">WeChat</span>
-                        <span class="contact-value">zjr5556699</span>
-                    </div>
-                    <span class="divider">/</span>
-                    <div class="contact-item">
-                        <span class="contact-label">Phone</span>
-                        <a href="tel:+8615117988382" class="contact-value">(+86) 151 1798 8382</a>
-                    </div>
                 </div>
-            </div>
         </section>
-    </main>
+
+        </main>
 
     <footer>&copy; 2026 ZHANGJIARUI ARTWORKS.</footer>
 
     <script>
-        // 保持原有逻辑
         window.onscroll = function() {
             var nav = document.getElementById('navbar');
             if (window.pageYOffset > 50) {
