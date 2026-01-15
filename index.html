@@ -7,7 +7,6 @@
     <meta name="description" content="Zhang Jiarui Artworks - Ecological Art, Sculpture, and Artistic Projects.">
     <link rel="icon" type="image/png" href="favicon.png"> 
     <style>
-        /* 保持您原有的所有样式不变 */
         body, html {
             margin: 0; padding: 0;
             font-family: "Optima", "Didot", "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -72,7 +71,7 @@
         }
         .nav-scrolled .menu-toggle span { background-color: #111; }
 
-        /* --- 封面更新：Ken Burns 动画 --- */
+        /* --- 封面动态效果 --- */
         .hero {
             height: 100vh; width: 100%; overflow: hidden;
             position: relative; background-color: #000;
@@ -80,13 +79,13 @@
         .hero img {
             width: 100%; height: 100%; object-fit: cover;
             filter: brightness(0.85); display: block;
-            /* 应用您的缩放动画：20秒循环往复 */
+            /* 关键改动：添加缩放动画 */
             animation: kenBurns 20s ease-in-out infinite alternate;
         }
 
         @keyframes kenBurns {
             0% { transform: scale(1); }
-            100% { transform: scale(1.15); } /* 缓慢放大 15% */
+            100% { transform: scale(1.15); }
         }
 
         .scroll-indicator {
@@ -153,7 +152,6 @@
         .project-title { font-size: 14px; font-weight: 400; letter-spacing: 0.1em; text-transform: uppercase; margin-top: 5px; }
         .project-meta { font-size: 10px; color: #aaa; margin-top: 4px; letter-spacing: 0.05em; text-transform: uppercase; line-height: 1.4; }
 
-        /* 响应式样式 */
         @media (max-width: 900px) {
             .hero img { object-position: 70% center; }
             .menu-toggle { display: flex; }
@@ -173,7 +171,6 @@
             .project { width: 100% !important; margin-bottom: 40px; }
             .category-title, .project-info { padding: 0 5%; }
             #sculpture .content-section { padding: 40px 5% !important; }
-            .scroll-arrow { width: 12px; height: 12px; }
         }
 
         @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
@@ -208,12 +205,8 @@
 
     <main>
         <section class="hero">
-            <img src="images/cover.webp" 
-                 alt="Zhang Jiarui Artwork - Main Cover" 
-                 fetchpriority="high"
-                 decoding="async" 
-                 onerror="this.src='images/Cover.JPG';">
-            <a href="#eco-art" class="scroll-indicator" aria-label="Scroll down">
+            <img src="images/cover.webp" alt="Zhang Jiarui Artwork" onerror="this.src='images/Cover.JPG';">
+            <a href="#eco-art" class="scroll-indicator">
                 <div class="scroll-arrow"></div>
             </a>
         </section>
@@ -224,7 +217,7 @@
                 <article>
                     <a href="eco-ice-burial.html" class="project">
                         <div class="project-image-wrapper video-ratio">
-                            <img src="images/eco/ice_burial_cover.webp" alt="Ice Burial" loading="lazy" decoding="async" onerror="this.src='images/eco/ice_burial_cover.jpg'">
+                            <img src="images/eco/ice_burial_cover.webp" alt="Ice Burial" onerror="this.src='images/eco/ice_burial_cover.jpg'">
                             <div class="play-overlay"><div class="play-button"></div></div>
                         </div>
                         <div class="project-info">
@@ -236,12 +229,12 @@
                 <article>
                     <a href="eco-4-5tons.html" class="project">
                         <div class="project-image-wrapper video-ratio">
-                            <img src="images/eco/4_5tons_cover.webp" alt="4.5 Tons" loading="lazy" decoding="async" onerror="this.src='images/eco/4_5tons_cover.jpg'">
+                            <img src="images/eco/4_5tons_cover.webp" alt="4.5 Tons" onerror="this.src='images/eco/4_5tons_cover.jpg'">
                             <div class="play-overlay"><div class="play-button"></div></div>
                         </div>
                         <div class="project-info">
                             <h3 class="project-title">4.5 Tons</h3>
-                            <p class="project-meta">Installation / In Collaboration with Betta Liu / 2024 / Inner Mongolia</p>
+                            <p class="project-meta">Installation / 2024 / Inner Mongolia</p>
                         </div>
                     </a>
                 </article>
@@ -255,7 +248,7 @@
                     <h3 style="font-size: 11px; letter-spacing: 0.3em; text-transform: uppercase; color: #888; margin: 20px 0 20px 0; font-weight: 300;">Wood Series</h3>
                     <a href="series1.html" class="project">
                         <div class="project-image-wrapper img-ratio">
-                            <img src="images/sculpture/s1_cover.webp" alt="Triangle - Wood Series" loading="lazy" decoding="async" onerror="this.src='images/sculpture/s1_cover.jpg'">
+                            <img src="images/sculpture/s1_cover.webp" alt="Triangle" onerror="this.src='images/sculpture/s1_cover.jpg'">
                         </div>
                         <div class="project-info">
                             <h4 class="project-title">Triangle</h4>
@@ -263,10 +256,100 @@
                         </div>
                     </a>
                 </article>
-                </div>
+
+                <article style="flex: 1; min-width: 300px;">
+                    <h3 style="font-size: 11px; letter-spacing: 0.3em; text-transform: uppercase; color: #888; margin: 20px 0 20px 0; font-weight: 300;">Water Series</h3>
+                    <a href="series2.html" class="project">
+                        <div class="project-image-wrapper img-ratio">
+                            <img src="images/sculpture/s2_cover.webp" alt="Water1" onerror="this.src='images/sculpture/s2_cover.jpg'">
+                        </div>
+                        <div class="project-info">
+                            <h4 class="project-title">Water1</h4>
+                            <p class="project-meta">Transparent resin / 2023</p>
+                        </div>
+                    </a>
+                </article>
+
+                <article style="flex: 1; min-width: 300px;">
+                    <h3 style="font-size: 11px; letter-spacing: 0.3em; text-transform: uppercase; color: #888; margin: 20px 0 20px 0; font-weight: 300;">Line Series</h3>
+                    <a href="series5.html" class="project">
+                        <div class="project-image-wrapper img-ratio" style="background-color: #ffffff; display: flex; align-items: center; justify-content: center;">
+                            <img src="images/sculpture/s5_cover.webp" alt="X" onerror="this.src='images/sculpture/s5_cover.jpg'" style="object-fit: contain; transform: scale(0.8);">
+                        </div>
+                        <div class="project-info">
+                            <h4 class="project-title">X</h4>
+                            <p class="project-meta">Acrylic / 2023</p>
+                        </div>
+                    </a>
+                </article>
+
+                <article style="flex: 1; min-width: 300px;">
+                    <h3 style="font-size: 11px; letter-spacing: 0.3em; text-transform: uppercase; color: #888; margin: 20px 0 20px 0; font-weight: 300;">Formless Series</h3>
+                    <a href="series4.html" class="project">
+                        <div class="project-image-wrapper img-ratio">
+                            <img src="images/sculpture/s4_cover.webp" alt="At ease" onerror="this.src='images/sculpture/s4_cover.jpg'">
+                        </div>
+                        <div class="project-info">
+                            <h4 class="project-title">At ease</h4>
+                            <p class="project-meta">Transparent resin / 2023</p>
+                        </div>
+                    </a>
+                </article>
+
+                <article style="flex: 1; min-width: 300px;">
+                    <h3 style="font-size: 11px; letter-spacing: 0.3em; text-transform: uppercase; color: #888; margin: 20px 0 20px 0; font-weight: 300;">Gold Series</h3>
+                    <a href="series3.html" class="project">
+                        <div class="project-image-wrapper img-ratio">
+                            <img src="images/sculpture/s3_cover.webp" alt="New Eighteenth Arhat" onerror="this.src='images/sculpture/s3_cover.jpg'">
+                        </div>
+                        <div class="project-info">
+                            <h4 class="project-title">New Eighteenth Arhat</h4>
+                            <p class="project-meta">Goldenleaf resin / 2015</p>
+                        </div>
+                    </a>
+                </article>
+            </div>
         </section>
 
-        </main>
+        <section class="content-section" id="projects">
+            <h2 class="category-title">Projects</h2>
+            <div class="grid">
+                <article>
+                    <a href="project-coral.html" class="project">
+                        <div class="project-image-wrapper video-ratio">
+                            <img src="images/projects/coral_cover.webp" alt="Coral Planting" onerror="this.src='images/projects/coral_cover.jpg'">
+                            <div class="play-overlay"><div class="play-button"></div></div>
+                        </div>
+                        <div class="project-info">
+                            <h3 class="project-title">Coral Planting Project</h3>
+                            <p class="project-meta">Documentary / 2025 / Xisha Islands</p>
+                        </div>
+                    </a>
+                </article>
+            </div>
+        </section>
+
+        <section class="contact-section" id="contact">
+            <div class="contact-container">
+                <div class="contact-row">
+                    <div class="contact-item">
+                        <span class="contact-label">Email</span>
+                        <a href="mailto:jerryzhang_arts@qq.com" class="contact-value">jerryzhang_arts@qq.com</a>
+                    </div>
+                    <span class="divider">/</span>
+                    <div class="contact-item">
+                        <span class="contact-label">WeChat</span>
+                        <span class="contact-value">zjr5556699</span>
+                    </div>
+                    <span class="divider">/</span>
+                    <div class="contact-item">
+                        <span class="contact-label">Phone</span>
+                        <a href="tel:+8615117988382" class="contact-value">(+86) 151 1798 8382</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
 
     <footer>&copy; 2026 ZHANGJIARUI ARTWORKS.</footer>
 
@@ -279,16 +362,13 @@
                 nav.classList.remove("nav-scrolled");
             }
         };
-
         const navLinks = document.getElementById('navLinks');
         const menuToggle = document.getElementById('menuToggle');
-
         function toggleMenu() {
             navLinks.classList.toggle('active');
             menuToggle.classList.toggle('active-toggle');
             document.body.style.overflow = navLinks.classList.contains('active') ? 'hidden' : 'auto';
         }
-
         function closeMenu() {
             navLinks.classList.remove('active');
             menuToggle.classList.remove('active-toggle');
