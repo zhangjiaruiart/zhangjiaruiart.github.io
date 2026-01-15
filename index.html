@@ -78,13 +78,15 @@
         }
         .hero img {
             width: 100%; height: 100%; object-fit: cover;
-            filter: brightness(0.8); display: block;
+            /* 关键修改：向下裁切多10%，定位在 60% 位置 */
+            object-position: center 60%; 
+            filter: brightness(0.75); display: block;
             animation: kenBurns 20s ease-in-out infinite alternate;
         }
 
         @keyframes kenBurns {
             0% { transform: scale(1); }
-            100% { transform: scale(1.15); }
+            100% { transform: scale(1.1); }
         }
 
         .hero-overlay {
@@ -98,7 +100,7 @@
 
         .hero-title {
             color: #ffffff;
-            font-size: 18px; /* 加大两号 */
+            font-size: 18px; /* 文字加大 */
             font-weight: 300;
             letter-spacing: 0.6em;
             text-transform: uppercase;
@@ -108,14 +110,8 @@
         }
 
         @keyframes fadeInText {
-            from { opacity: 0; transform: translate(-50%, 15px); }
-            to { opacity: 0.8; transform: translate(-50%, 0); } /* 透明度设置为 80% */
-        }
-        
-        /* 针对 fadeInText 的修正，确保 transform 不冲突 */
-        @keyframes fadeInText {
             from { opacity: 0; transform: translateY(15px); }
-            to { opacity: 0.8; transform: translateY(0); }
+            to { opacity: 0.8; transform: translateY(0); } /* 透明度80% */
         }
 
         .scroll-indicator {
@@ -137,7 +133,7 @@
             60% { transform: translateY(-5px) rotate(45deg); opacity: 0.6; }
         }
 
-        /* --- 布局优化 --- */
+        /* --- 布局 --- */
         .content-section { 
             padding: 80px 5% 20px; max-width: 1260px; margin: 0 auto; 
             animation: fadeInUp 1.2s cubic-bezier(0.15, 1, 0.3, 1) both;
@@ -168,25 +164,13 @@
             display: flex; align-items: center; justify-content: center;
             background: rgba(0,0,0,0.1); transition: background 0.3s;
         }
-        .project:hover .play-overlay { background: rgba(0,0,0,0.2); }
-        .play-button {
-            width: 50px; height: 50px; border: 1px solid #fff; border-radius: 50%;
-            display: flex; align-items: center; justify-content: center; backdrop-filter: blur(5px);
-        }
-        .play-button::after {
-            content: ''; width: 0; height: 0; 
-            border-top: 8px solid transparent; border-bottom: 8px solid transparent; border-left: 12px solid #fff;
-            margin-left: 4px;
-        }
-
         .project-title { font-size: 14px; font-weight: 400; letter-spacing: 0.1em; text-transform: uppercase; margin-top: 5px; }
         .project-meta { font-size: 10px; color: #aaa; margin-top: 4px; letter-spacing: 0.05em; text-transform: uppercase; line-height: 1.4; }
 
         @media (max-width: 900px) {
-            .hero img { object-position: 70% center; }
-            .hero-title { font-size: 14px; letter-spacing: 0.4em; }
+            .hero img { object-position: center 60%; }
+            .hero-title { font-size: 12px; letter-spacing: 0.4em; }
             .menu-toggle { display: flex; }
-            .logo { font-size: 14px; letter-spacing: 0.3em; }
             .nav-links {
                 position: fixed; top: 0; right: -100%; width: 100%; height: 100vh;
                 background: #ffffff; flex-direction: column; justify-content: center;
@@ -200,8 +184,6 @@
             .content-section { padding: 40px 0 20px 0 !important; }
             .grid { display: block !important; }
             .project { width: 100% !important; margin-bottom: 40px; }
-            .category-title, .project-info { padding: 0 5%; }
-            #sculpture .content-section { padding: 40px 5% !important; }
         }
 
         @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
@@ -211,8 +193,6 @@
         .contact-row { display: flex; justify-content: center; gap: 40px; flex-wrap: wrap; }
         .contact-label { font-size: 9px; color: #bbb; text-transform: uppercase; display: block; margin-bottom: 5px; letter-spacing: 0.2em; }
         .contact-value { font-size: 13px; color: #111; text-decoration: none; padding-bottom: 2px; border-bottom: 1px solid transparent; transition: all 0.3s; }
-        .contact-value:hover { border-bottom: 1px solid #111; opacity: 0.7; }
-        .divider { color: #eee; align-self: center; font-weight: 100; }
         footer { padding: 60px 5% 40px; text-align: center; border-top: 1px solid #f9f9f9; font-size: 9px; letter-spacing: 0.4em; color: #ccc; text-transform: uppercase; }
     </style>
 </head>
@@ -313,32 +293,6 @@
                         <div class="project-info">
                             <h4 class="project-title">X</h4>
                             <p class="project-meta">Acrylic / 2023</p>
-                        </div>
-                    </a>
-                </article>
-
-                <article style="flex: 1; min-width: 300px;">
-                    <h3 style="font-size: 11px; letter-spacing: 0.3em; text-transform: uppercase; color: #888; margin: 20px 0 20px 0; font-weight: 300;">Formless Series</h3>
-                    <a href="series4.html" class="project">
-                        <div class="project-image-wrapper img-ratio">
-                            <img src="images/sculpture/s4_cover.webp" alt="At ease" onerror="this.src='images/sculpture/s4_cover.jpg'">
-                        </div>
-                        <div class="project-info">
-                            <h4 class="project-title">At ease</h4>
-                            <p class="project-meta">Transparent resin / 2023</p>
-                        </div>
-                    </a>
-                </article>
-
-                <article style="flex: 1; min-width: 300px;">
-                    <h3 style="font-size: 11px; letter-spacing: 0.3em; text-transform: uppercase; color: #888; margin: 20px 0 20px 0; font-weight: 300;">Gold Series</h3>
-                    <a href="series3.html" class="project">
-                        <div class="project-image-wrapper img-ratio">
-                            <img src="images/sculpture/s3_cover.webp" alt="New Eighteenth Arhat" onerror="this.src='images/sculpture/s3_cover.jpg'">
-                        </div>
-                        <div class="project-info">
-                            <h4 class="project-title">New Eighteenth Arhat</h4>
-                            <p class="project-meta">Goldenleaf resin / 2015</p>
                         </div>
                     </a>
                 </article>
