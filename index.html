@@ -71,21 +71,45 @@
         }
         .nav-scrolled .menu-toggle span { background-color: #111; }
 
-        /* --- 封面动态效果 --- */
+        /* --- 封面动态效果 & 悬浮文字 --- */
         .hero {
             height: 100vh; width: 100%; overflow: hidden;
             position: relative; background-color: #000;
         }
         .hero img {
             width: 100%; height: 100%; object-fit: cover;
-            filter: brightness(0.85); display: block;
-            /* 关键改动：添加缩放动画 */
+            filter: brightness(0.75); display: block;
             animation: kenBurns 20s ease-in-out infinite alternate;
         }
 
         @keyframes kenBurns {
             0% { transform: scale(1); }
-            100% { transform: scale(1.15); }
+            100% { transform: scale(1.1); }
+        }
+
+        .hero-overlay {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            width: 90%;
+            z-index: 5;
+        }
+
+        .hero-title {
+            color: #ffffff;
+            font-size: 13px;
+            font-weight: 300;
+            letter-spacing: 0.6em;
+            text-transform: uppercase;
+            margin: 0;
+            opacity: 0;
+            animation: fadeInText 3s ease-out 1.2s forwards;
+        }
+
+        @keyframes fadeInText {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .scroll-indicator {
@@ -154,6 +178,7 @@
 
         @media (max-width: 900px) {
             .hero img { object-position: 70% center; }
+            .hero-title { font-size: 10px; letter-spacing: 0.4em; }
             .menu-toggle { display: flex; }
             .logo { font-size: 14px; letter-spacing: 0.3em; }
             .nav-links {
@@ -206,6 +231,9 @@
     <main>
         <section class="hero">
             <img src="images/cover.webp" alt="Zhang Jiarui Artwork" onerror="this.src='images/Cover.JPG';">
+            <div class="hero-overlay">
+                <h1 class="hero-title">Matter dissolves, memory crystallizes</h1>
+            </div>
             <a href="#eco-art" class="scroll-indicator">
                 <div class="scroll-arrow"></div>
             </a>
