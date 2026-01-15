@@ -78,13 +78,13 @@
         }
         .hero img {
             width: 100%; height: 100%; object-fit: cover;
-            filter: brightness(0.75); display: block;
+            filter: brightness(0.8); display: block;
             animation: kenBurns 20s ease-in-out infinite alternate;
         }
 
         @keyframes kenBurns {
             0% { transform: scale(1); }
-            100% { transform: scale(1.1); }
+            100% { transform: scale(1.15); }
         }
 
         .hero-overlay {
@@ -98,7 +98,7 @@
 
         .hero-title {
             color: #ffffff;
-            font-size: 13px;
+            font-size: 18px; /* 加大两号 */
             font-weight: 300;
             letter-spacing: 0.6em;
             text-transform: uppercase;
@@ -108,8 +108,14 @@
         }
 
         @keyframes fadeInText {
+            from { opacity: 0; transform: translate(-50%, 15px); }
+            to { opacity: 0.8; transform: translate(-50%, 0); } /* 透明度设置为 80% */
+        }
+        
+        /* 针对 fadeInText 的修正，确保 transform 不冲突 */
+        @keyframes fadeInText {
             from { opacity: 0; transform: translateY(15px); }
-            to { opacity: 1; transform: translateY(0); }
+            to { opacity: 0.8; transform: translateY(0); }
         }
 
         .scroll-indicator {
@@ -178,7 +184,7 @@
 
         @media (max-width: 900px) {
             .hero img { object-position: 70% center; }
-            .hero-title { font-size: 10px; letter-spacing: 0.4em; }
+            .hero-title { font-size: 14px; letter-spacing: 0.4em; }
             .menu-toggle { display: flex; }
             .logo { font-size: 14px; letter-spacing: 0.3em; }
             .nav-links {
@@ -232,7 +238,7 @@
         <section class="hero">
             <img src="images/cover.webp" alt="Zhang Jiarui Artwork" onerror="this.src='images/Cover.JPG';">
             <div class="hero-overlay">
-                <h1 class="hero-title">Matter dissolves, memory crystallizes</h1>
+                <h1 class="hero-title">Capturing the formless within the flow</h1>
             </div>
             <a href="#eco-art" class="scroll-indicator">
                 <div class="scroll-arrow"></div>
