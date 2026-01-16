@@ -16,7 +16,7 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        /* --- 导航栏 --- */
+        /* --- Navigation --- */
         nav {
             position: fixed;
             top: 0; left: 0; width: 100%;
@@ -71,7 +71,7 @@
         }
         .nav-scrolled .menu-toggle span { background-color: #111; }
 
-        /* --- 封面 Ken Burns --- */
+        /* --- Hero Section --- */
         .hero {
             height: 100vh; width: 100%; overflow: hidden;
             position: relative; background-color: #000;
@@ -101,8 +101,6 @@
             animation: fadeInText 3s ease-out 1.2s forwards;
         }
 
-        .hero-title br { display: none; }
-
         @keyframes fadeInText {
             from { opacity: 0; transform: translateY(15px); }
             to { opacity: 0.8; transform: translateY(0); }
@@ -127,7 +125,7 @@
             60% { transform: translateY(-5px) rotate(45deg); opacity: 0.6; }
         }
 
-        /* --- 布局优化 --- */
+        /* --- Content Layout --- */
         .content-section { 
             padding: 80px 5% 20px; max-width: 1260px; margin: 0 auto; 
             animation: fadeInUp 1.2s cubic-bezier(0.15, 1, 0.3, 1) both;
@@ -142,17 +140,11 @@
         .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px 60px; margin-bottom: 30px; }
 
         .project { text-decoration: none; color: inherit; display: block; }
-        
-        /* 核心修复：确保容器有底色，图片占满容器 */
         .project-image-wrapper { 
-            overflow: hidden; 
-            margin-bottom: 20px; 
+            overflow: hidden; margin-bottom: 20px; 
             background-color: #f5f5f5; 
-            position: relative;
-            display: block; 
-            width: 100%;
+            position: relative; display: block; 
         }
-        
         .img-ratio { aspect-ratio: 4 / 5; }
         .video-ratio { aspect-ratio: 16 / 9; background-color: #000; }
 
@@ -182,12 +174,8 @@
         .project-title { font-size: 14px; font-weight: 400; letter-spacing: 0.1em; text-transform: uppercase; margin-top: 5px; }
         .project-meta { font-size: 10px; color: #aaa; margin-top: 4px; letter-spacing: 0.05em; text-transform: uppercase; line-height: 1.4; }
 
-        /* 响应式 */
         @media (max-width: 900px) {
             .hero img { object-position: 70% center; }
-            .hero-overlay { top: 45%; }
-            .hero-title { font-size: 14.4px; line-height: 2.2; letter-spacing: 0.4em; }
-            .hero-title br { display: block; }
             .menu-toggle { display: flex; }
             .logo { font-size: 14px; letter-spacing: 0.3em; }
             .nav-links {
@@ -200,11 +188,9 @@
             .active-toggle span:nth-child(1) { transform: translateY(7px) rotate(45deg); background-color: #111 !important; }
             .active-toggle span:nth-child(2) { opacity: 0; }
             .active-toggle span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); background-color: #111 !important; }
-            .content-section { padding: 40px 0 20px 0 !important; }
             .grid { display: block !important; }
             .project { width: 100% !important; margin-bottom: 40px; }
             .category-title, .project-info { padding: 0 5%; }
-            .scroll-arrow { width: 12px; height: 12px; }
         }
 
         @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
@@ -231,7 +217,7 @@
                 <a href="biography.html">BIOGRAPHY</a>
                 <a href="#contact" onclick="closeMenu()">Contact</a>
             </div>
-            <div class="menu-toggle" id="menuToggle" onclick="toggleMenu()" aria-label="Toggle menu">
+            <div class="menu-toggle" id="menuToggle" onclick="toggleMenu()">
                 <span></span><span></span><span></span>
             </div>
         </nav>
@@ -239,9 +225,9 @@
 
     <main>
         <section class="hero">
-            <img src="images/cover.webp" alt="Zhang Jiarui Artwork" onerror="this.src='images/cover.jpg';">
+            <img src="./images/cover.webp" alt="Cover" onerror="this.src='./images/Cover.JPG';">
             <div class="hero-overlay">
-                <h1 class="hero-title">Matter <br> dissolves, <br> memory <br> crystallizes</h1>
+                <h1 class="hero-title">Matter dissolves, memory crystallizes</h1>
             </div>
             <a href="#eco-art" class="scroll-indicator">
                 <div class="scroll-arrow"></div>
@@ -254,7 +240,7 @@
                 <article>
                     <a href="eco-ice-burial.html" class="project">
                         <div class="project-image-wrapper video-ratio">
-                            <img src="images/eco/ice_burial_cover.webp" alt="Ice Burial" onerror="this.src='images/eco/ice_burial_cover.jpg'">
+                            <img src="./images/Eco/ice_burial_cover.webp" alt="Ice Burial" onerror="this.src='./images/Eco/ice_burial_cover.jpg'">
                             <div class="play-overlay"><div class="play-button"></div></div>
                         </div>
                         <div class="project-info">
@@ -266,7 +252,7 @@
                 <article>
                     <a href="eco-4-5tons.html" class="project">
                         <div class="project-image-wrapper video-ratio">
-                            <img src="images/eco/4_5tons_cover.webp" alt="4.5 Tons" onerror="this.src='images/eco/4_5tons_cover.jpg'">
+                            <img src="./images/Eco/4_5tons_cover.webp" alt="4.5 Tons" onerror="this.src='./images/Eco/4_5tons_cover.jpg'">
                             <div class="play-overlay"><div class="play-button"></div></div>
                         </div>
                         <div class="project-info">
@@ -281,12 +267,11 @@
         <section class="content-section" id="sculpture">
             <h2 class="category-title">Sculpture</h2>
             <div style="display: flex; flex-wrap: wrap; gap: 40px 60px;">
-                
                 <article style="flex: 1; min-width: 300px;">
-                    <h3 style="font-size: 11px; letter-spacing: 0.3em; text-transform: uppercase; color: #888; margin: 20px 0 20px 0; font-weight: 300;">Wood Series</h3>
+                    <h3 style="font-size: 11px; letter-spacing: 0.3em; text-transform: uppercase; color: #888; margin: 20px 0;">Wood Series</h3>
                     <a href="series1.html" class="project">
                         <div class="project-image-wrapper img-ratio">
-                            <img src="images/sculpture/s1_cover.webp" alt="Triangle" onerror="this.src='images/sculpture/s1_cover.jpg'">
+                            <img src="./images/Sculpture/s1_cover.webp" alt="Triangle" onerror="this.src='./images/Sculpture/s1_cover.jpg'">
                         </div>
                         <div class="project-info">
                             <h4 class="project-title">Triangle</h4>
@@ -296,10 +281,10 @@
                 </article>
 
                 <article style="flex: 1; min-width: 300px;">
-                    <h3 style="font-size: 11px; letter-spacing: 0.3em; text-transform: uppercase; color: #888; margin: 20px 0 20px 0; font-weight: 300;">Water Series</h3>
+                    <h3 style="font-size: 11px; letter-spacing: 0.3em; text-transform: uppercase; color: #888; margin: 20px 0;">Water Series</h3>
                     <a href="series2.html" class="project">
                         <div class="project-image-wrapper img-ratio">
-                            <img src="images/sculpture/s2_cover.webp" alt="Water1" onerror="this.src='images/sculpture/s2_cover.jpg'">
+                            <img src="./images/Sculpture/s2_cover.webp" alt="Water1" onerror="this.src='./images/Sculpture/s2_cover.jpg'">
                         </div>
                         <div class="project-info">
                             <h4 class="project-title">Water1</h4>
@@ -309,40 +294,14 @@
                 </article>
 
                 <article style="flex: 1; min-width: 300px;">
-                    <h3 style="font-size: 11px; letter-spacing: 0.3em; text-transform: uppercase; color: #888; margin: 20px 0 20px 0; font-weight: 300;">Line Series</h3>
+                    <h3 style="font-size: 11px; letter-spacing: 0.3em; text-transform: uppercase; color: #888; margin: 20px 0;">Line Series</h3>
                     <a href="series5.html" class="project">
-                        <div class="project-image-wrapper img-ratio" style="background-color: #ffffff; display: flex; align-items: center; justify-content: center;">
-                            <img src="images/sculpture/s5_cover.webp" alt="X" onerror="this.src='images/sculpture/s5_cover.jpg'" style="object-fit: contain; transform: scale(0.8);">
+                        <div class="project-image-wrapper img-ratio">
+                            <img src="./images/Sculpture/s5_cover.webp" alt="X" onerror="this.src='./images/Sculpture/s5_cover.jpg'">
                         </div>
                         <div class="project-info">
                             <h4 class="project-title">X</h4>
                             <p class="project-meta">Acrylic / 2023</p>
-                        </div>
-                    </a>
-                </article>
-
-                <article style="flex: 1; min-width: 300px;">
-                    <h3 style="font-size: 11px; letter-spacing: 0.3em; text-transform: uppercase; color: #888; margin: 20px 0 20px 0; font-weight: 300;">Formless Series</h3>
-                    <a href="series4.html" class="project">
-                        <div class="project-image-wrapper img-ratio">
-                            <img src="images/sculpture/s4_cover.webp" alt="At ease" onerror="this.src='images/sculpture/s4_cover.jpg'">
-                        </div>
-                        <div class="project-info">
-                            <h4 class="project-title">At ease</h4>
-                            <p class="project-meta">Transparent resin / 2023</p>
-                        </div>
-                    </a>
-                </article>
-
-                <article style="flex: 1; min-width: 300px;">
-                    <h3 style="font-size: 11px; letter-spacing: 0.3em; text-transform: uppercase; color: #888; margin: 20px 0 20px 0; font-weight: 300;">Gold Series</h3>
-                    <a href="series3.html" class="project">
-                        <div class="project-image-wrapper img-ratio">
-                            <img src="images/sculpture/s3_cover.webp" alt="New Eighteenth Arhat" onerror="this.src='images/sculpture/s3_cover.jpg'">
-                        </div>
-                        <div class="project-info">
-                            <h4 class="project-title">New Eighteenth Arhat</h4>
-                            <p class="project-meta">Goldenleaf resin / 2015</p>
                         </div>
                     </a>
                 </article>
@@ -355,12 +314,12 @@
                 <article>
                     <a href="project-coral.html" class="project">
                         <div class="project-image-wrapper video-ratio">
-                            <img src="images/projects/coral_cover.webp" alt="Coral Planting" onerror="this.src='images/projects/coral_cover.jpg'">
+                            <img src="./images/Projects/coral_cover.webp" alt="Coral" onerror="this.src='./images/Projects/coral_cover.jpg'">
                             <div class="play-overlay"><div class="play-button"></div></div>
                         </div>
                         <div class="project-info">
-                            <h3 class="project-title">Coral Planting Project</h3>
-                            <p class="project-meta">Documentary / 2025 / Xisha Islands</p>
+                            <h3 class="project-title">Coral Planting</h3>
+                            <p class="project-meta">Documentary / 2025</p>
                         </div>
                     </a>
                 </article>
