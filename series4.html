@@ -71,9 +71,7 @@
         .side-A { flex: 1; display: flex; flex-direction: column; gap: 20px; }
         .grid-two-columns { display: grid; grid-template-columns: repeat(2, 1fr); gap: 60px 4%; margin-bottom: 60px; }
         .full-width { width: 100%; margin-bottom: 80px; }
-        .crop-wrapper { height: 75vh; }
-        .crop-wrapper img { height: 100%; object-fit: cover; object-position: center 30%; }
-
+        
         #overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(255,255,255,0.98); display: none; z-index: 2000;
@@ -153,35 +151,34 @@
             </div>
         </div>
 
-        <div class="work-item full-width">
-            <div class="work-image-wrapper">
-                <img src="images/sculpture/s4_9.webp" onerror="handleError(this, 's4_9')">
+        <div class="grid-two-columns">
+            <div class="work-item">
+                <div class="work-image-wrapper">
+                    <img src="images/sculpture/s4_9.webp" onerror="handleError(this, 's4_9')">
+                </div>
+                <div class="work-info">
+                    <div class="work-name">Present</div>
+                    <div class="work-detail">Transparent Resin / 105 x 20 x 20 cm / 2023</div>
+                </div>
             </div>
-            <div class="work-info">
-                <div class="work-name">Present</div>
-                <div class="work-detail">Transparent Resin / 105 x 20 x 20 cm / 2023</div>
-            </div>
+            <div class="work-item" style="opacity: 0; pointer-events: none;"></div> 
         </div>
     </div>
 
     <footer>&copy; 2026 ZHANGJIARUI ARTWORKS.</footer>
 
     <script>
-        // 核心纠错脚本：学习自 series1.html
         function handleError(img, name) {
             const path = 'images/sculpture/';
-            // 依次尝试：webp -> jpg -> JPG
             if (img.src.includes('.webp')) {
                 img.src = path + name + '.jpg';
             } else if (img.src.includes('.jpg')) {
                 img.src = path + name + '.JPG';
             } else {
                 img.onerror = null; 
-                console.error("Image not found: " + name);
             }
         }
 
-        // 滚动淡入
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) entry.target.classList.add('visible');
@@ -189,7 +186,6 @@
         }, { threshold: 0.1 });
         document.querySelectorAll('.work-item').forEach(item => observer.observe(item));
 
-        // 导航栏隐藏
         let lastScroll = 0;
         window.addEventListener('scroll', () => {
             const currentScroll = window.pageYOffset;
@@ -199,7 +195,6 @@
             lastScroll = currentScroll;
         });
 
-        // 全屏预览
         const overlay = document.getElementById('overlay');
         const overlayImg = overlay.querySelector('img');
         document.querySelectorAll('.work-image-wrapper img').forEach(img => {
