@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FORMLESS SERIES | ZHANG JIARUI</title>
     <style>
-        /* 全局样式 - 保持原样 */
+        /* 全局样式 - 保持 series1.html 的高水准 */
         body, html {
             margin: 0; padding: 0;
             font-family: "Optima", "Didot", "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -14,7 +14,7 @@
             scroll-behavior: smooth;
         }
 
-        /* 导航栏：复刻 series1 的高斯模糊与智能隐藏 */
+        /* 导航栏：高斯模糊 */
         nav {
             padding: 30px 5%;
             display: flex; justify-content: space-between; align-items: center;
@@ -37,7 +37,7 @@
         .series-title { font-size: 26px; font-weight: 300; letter-spacing: 0.3em; text-transform: uppercase; margin-bottom: 20px; }
         .series-description { font-size: 15px; color: #444; line-height: 2; font-weight: 300; text-align: justify; }
 
-        /* 作品项动画 */
+        /* 作品动画 */
         .work-item {
             opacity: 0; 
             transform: translateY(20px);
@@ -46,7 +46,6 @@
         }
         .work-item.visible { opacity: 1; transform: translateY(0); }
 
-        /* 图片容器 */
         .work-image-wrapper {
             width: 100%; overflow: hidden; background-color: #fcfcfc;
             cursor: zoom-in; position: relative;
@@ -54,63 +53,39 @@
         .work-image-wrapper img { 
             width: 100%; height: auto; display: block; 
             transition: transform 0.8s cubic-bezier(0.165, 0.84, 0.44, 1);
-            will-change: transform;
         }
 
-        /* 文字信息交互 */
         .work-info { 
-            padding-top: 15px; 
-            border-top: 1px solid #eee; 
-            margin-top: 10px; 
-            position: relative;
+            padding-top: 15px; border-top: 1px solid #eee; margin-top: 10px; 
+            position: relative; opacity: 0; transform: translateY(10px);
             transition: all 0.8s ease 0.3s;
-            opacity: 0; transform: translateY(10px);
         }
         .work-item.visible .work-info { opacity: 1; transform: translateY(0); }
 
-        .work-info::after {
-            content: ''; position: absolute; top: -1px; left: 50%;
-            width: 0; height: 1.5px; background-color: #111;
-            transition: all 0.6s cubic-bezier(0.19, 1, 0.22, 1);
-            transform: translateX(-50%);
-        }
-        .work-item:hover .work-info::after { width: 100%; }
+        .work-name { font-size: 13px; letter-spacing: 0.15em; text-transform: uppercase; }
+        .work-detail { font-size: 10px; color: #999; text-transform: uppercase; margin-top: 6px; }
 
-        .work-name { font-size: 13px; letter-spacing: 0.15em; text-transform: uppercase; transition: letter-spacing 0.4s ease; }
-        .work-item:hover .work-name { letter-spacing: 0.25em; }
-        .work-detail { font-size: 10px; color: #999; text-transform: uppercase; margin-top: 6px; letter-spacing: 0.05em; }
-
-        /* 全屏预览 Overlay */
-        #overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(255,255,255,0.98);
-            display: none; z-index: 2000; cursor: zoom-out;
-            justify-content: center; align-items: center;
-        }
-        #overlay img { max-width: 90%; max-height: 90%; object-fit: contain; }
-
-        /* Formless 专属布局结构 */
+        /* Formless 专属布局 */
         .layout-group-A { display: flex; gap: 40px; margin-bottom: 80px; }
-        .main-A { flex: 2; margin-bottom: 0; }
+        .main-A { flex: 2; }
         .side-A { flex: 1; display: flex; flex-direction: column; gap: 20px; }
-        .side-A .work-item { margin-bottom: 0; }
-
         .grid-two-columns { display: grid; grid-template-columns: repeat(2, 1fr); gap: 60px 4%; margin-bottom: 60px; }
-        .grid-two-columns .work-item { margin-bottom: 0; }
-
         .full-width { width: 100%; margin-bottom: 80px; }
-
-        /* 特殊高度裁剪处理 */
         .crop-wrapper { height: 75vh; }
         .crop-wrapper img { height: 100%; object-fit: cover; object-position: center 30%; }
 
-        footer { padding: 80px 0 40px; text-align: center; font-size: 9px; letter-spacing: 0.4em; color: #ccc; text-transform: uppercase; }
+        #overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(255,255,255,0.98); display: none; z-index: 2000;
+            justify-content: center; align-items: center; cursor: zoom-out;
+        }
+        #overlay img { max-width: 90%; max-height: 90%; object-fit: contain; }
+
+        footer { padding: 80px 0 40px; text-align: center; font-size: 9px; letter-spacing: 0.4em; color: #ccc; }
 
         @media (max-width: 900px) {
-            .layout-group-A { flex-direction: column; gap: 40px; }
-            .grid-two-columns { grid-template-columns: 1fr; gap: 40px; }
-            .crop-wrapper { height: 50vh; }
-            .container { padding-top: 100px; }
+            .layout-group-A { flex-direction: column; }
+            .grid-two-columns { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -121,23 +96,20 @@
         <a href="index.html#sculpture" class="back-link">← Back to Series</a>
     </nav>
 
-    <div id="overlay"><img src="" alt="Full View"></div>
+    <div id="overlay"><img src=""></div>
 
     <div class="container">
         <header class="series-intro">
             <h1 class="series-title">Formless Series</h1>
             <p class="series-description">
-                I think the most attractive line in traditional Chinese modeling language is "curve". 
-                Religious sculptures since the Northern Dynasties have been ordered by lines in their volume, 
-                including the density of the lines, the shadows of the lines, the rhythm of the lines, and the tightness of the lines. 
-                The names and stories of this type of sculpture are the starting point for my creations.
+                Exploring the fluid lines and rhythm inspired by traditional Chinese religious sculptures.
             </p>
         </header>
 
         <section class="layout-group-A">
             <div class="work-item main-A">
                 <div class="work-image-wrapper">
-                    <img src="images/sculpture/s4_1.webp" loading="lazy" onerror="handleError(this, 's4_1')">
+                    <img src="images/sculpture/s4_1.webp" onerror="handleError(this, 's4_1')">
                 </div>
                 <div class="work-info">
                     <div class="work-name">At Ease</div>
@@ -146,29 +118,23 @@
             </div>
             <div class="side-A">
                 <div class="work-item">
-                    <div class="work-image-wrapper">
-                        <img src="images/sculpture/s4_2.webp" loading="lazy" onerror="handleError(this, 's4_2')">
-                    </div>
-                    <div class="work-info"><div class="work-name">At Ease</div></div>
+                    <div class="work-image-wrapper"><img src="images/sculpture/s4_2.webp" onerror="handleError(this, 's4_2')"></div>
+                    <div class="work-info"><div class="work-name">At Ease (Detail)</div></div>
                 </div>
                 <div class="work-item">
-                    <div class="work-image-wrapper">
-                        <img src="images/sculpture/s4_3.webp" loading="lazy" onerror="handleError(this, 's4_3')">
-                    </div>
-                    <div class="work-info"><div class="work-name">At Ease</div></div>
+                    <div class="work-image-wrapper"><img src="images/sculpture/s4_3.webp" onerror="handleError(this, 's4_3')"></div>
+                    <div class="work-info"><div class="work-name">At Ease (Detail)</div></div>
                 </div>
                 <div class="work-item">
-                    <div class="work-image-wrapper">
-                        <img src="images/sculpture/s4_4.webp" loading="lazy" onerror="handleError(this, 's4_4')">
-                    </div>
-                    <div class="work-info"><div class="work-name">At Ease</div></div>
+                    <div class="work-image-wrapper"><img src="images/sculpture/s4_4.webp" onerror="handleError(this, 's4_4')"></div>
+                    <div class="work-info"><div class="work-name">At Ease (Detail)</div></div>
                 </div>
             </div>
         </section>
 
         <div class="work-item full-width">
             <div class="work-image-wrapper">
-                <img src="images/sculpture/s4_5.webp" loading="lazy" onerror="handleError(this, 's4_5')">
+                <img src="images/sculpture/s4_5.webp" onerror="handleError(this, 's4_5')">
             </div>
             <div class="work-info">
                 <div class="work-name">Nirvana</div>
@@ -178,94 +144,62 @@
 
         <div class="grid-two-columns">
             <div class="work-item">
-                <div class="work-image-wrapper">
-                    <img src="images/sculpture/s4_6.webp" loading="lazy" onerror="handleError(this, 's4_6')">
-                </div>
-                <div class="work-info"><div class="work-name">Nirvana</div></div>
+                <div class="work-image-wrapper"><img src="images/sculpture/s4_6.webp" onerror="handleError(this, 's4_6')"></div>
+                <div class="work-info"><div class="work-name">Nirvana (Side View)</div></div>
             </div>
             <div class="work-item">
-                <div class="work-image-wrapper">
-                    <img src="images/sculpture/s4_7.webp" loading="lazy" onerror="handleError(this, 's4_7')">
-                </div>
-                <div class="work-info"><div class="work-name">Nirvana</div></div>
-            </div>
-        </div>
-
-        <div class="work-item full-width">
-            <div class="work-image-wrapper crop-wrapper">
-                <img src="images/sculpture/s4_8.webp" loading="lazy" onerror="handleError(this, 's4_8')">
-            </div>
-            <div class="work-info">
-                <div class="work-name">Nirvana</div>
+                <div class="work-image-wrapper"><img src="images/sculpture/s4_7.webp" onerror="handleError(this, 's4_7')"></div>
+                <div class="work-info"><div class="work-name">Nirvana (Detail)</div></div>
             </div>
         </div>
 
         <div class="work-item full-width">
             <div class="work-image-wrapper">
-                <img src="images/sculpture/s4_9.webp" loading="lazy" onerror="handleError(this, 's4_9')">
+                <img src="images/sculpture/s4_9.webp" onerror="handleError(this, 's4_9')">
             </div>
             <div class="work-info">
                 <div class="work-name">Present</div>
                 <div class="work-detail">Transparent Resin / 105 x 20 x 20 cm / 2023</div>
             </div>
         </div>
-
     </div>
 
     <footer>&copy; 2026 ZHANGJIARUI ARTWORKS.</footer>
 
     <script>
-        // 1. 核心容错函数 - 学习自 series1.html 成功案例
+        // 核心纠错脚本：学习自 series1.html
         function handleError(img, name) {
             const path = 'images/sculpture/';
+            // 依次尝试：webp -> jpg -> JPG
             if (img.src.includes('.webp')) {
                 img.src = path + name + '.jpg';
             } else if (img.src.includes('.jpg')) {
                 img.src = path + name + '.JPG';
             } else {
-                img.onerror = null; // 停止错误循环
+                img.onerror = null; 
+                console.error("Image not found: " + name);
             }
         }
 
-        // 2. 滚动淡入观察器
+        // 滚动淡入
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                }
+                if (entry.isIntersecting) entry.target.classList.add('visible');
             });
         }, { threshold: 0.1 });
         document.querySelectorAll('.work-item').forEach(item => observer.observe(item));
 
-        // 3. 鼠标交互视差效果
-        document.querySelectorAll('.work-image-wrapper').forEach(wrapper => {
-            wrapper.addEventListener('mousemove', (e) => {
-                const img = wrapper.querySelector('img');
-                const rect = wrapper.getBoundingClientRect();
-                const x = (e.clientX - rect.left) / rect.width - 0.5;
-                const y = (e.clientY - rect.top) / rect.height - 0.5;
-                img.style.transform = `scale(1.03) translate(${x * 15}px, ${y * 15}px)`;
-            });
-            wrapper.addEventListener('mouseleave', (e) => {
-                const img = wrapper.querySelector('img');
-                img.style.transform = `scale(1) translate(0, 0)`;
-            });
-        });
-
-        // 4. 智能导航栏隐藏
+        // 导航栏隐藏
         let lastScroll = 0;
         window.addEventListener('scroll', () => {
             const currentScroll = window.pageYOffset;
             const navbar = document.getElementById('navbar');
-            if (currentScroll > lastScroll && currentScroll > 200) {
-                navbar.classList.add('hidden');
-            } else {
-                navbar.classList.remove('hidden');
-            }
+            if (currentScroll > lastScroll && currentScroll > 200) navbar.classList.add('hidden');
+            else navbar.classList.remove('hidden');
             lastScroll = currentScroll;
         });
 
-        // 5. 全屏预览大图逻辑
+        // 全屏预览
         const overlay = document.getElementById('overlay');
         const overlayImg = overlay.querySelector('img');
         document.querySelectorAll('.work-image-wrapper img').forEach(img => {
