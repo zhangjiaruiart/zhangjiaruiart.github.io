@@ -106,11 +106,12 @@
             text-transform: uppercase;
             margin: 0;
             opacity: 0;
-            line-height: 1.8;
+            line-height: 1.6;
             animation: fadeInText 3s ease-out 1.2s forwards;
         }
 
-        .hero-title br { display: none; } /* 默认PC端不换行 */
+        /* 默认 PC 端隐藏换行 */
+        .hero-title br { display: none; }
 
         @keyframes fadeInText {
             from { opacity: 0; transform: translateY(15px); }
@@ -184,14 +185,15 @@
         @media (max-width: 900px) {
             .hero img { object-position: center 60%; }
             
-            /* 悬浮文字向上移动 (35%), 字体缩小20% (18px -> 14.4px) */
-            .hero-overlay { top: 35%; width: 85%; }
+            /* 封面文字段落整体向下调整 (50%)，字体缩小20% (14.4px) */
+            .hero-overlay { top: 50%; }
             .hero-title { 
                 font-size: 14.4px; 
-                line-height: 2.8; /* 增大行高使4行间隔变远 */
+                line-height: 2.2; 
+                margin-bottom: 40px; 
                 letter-spacing: 0.4em;
             }
-            .hero-title br { display: block; } /* 手机端启用换行 */
+            .hero-title br { display: block; } /* 手机端开启四行排列 */
 
             .menu-toggle { display: flex; }
             .nav-links {
