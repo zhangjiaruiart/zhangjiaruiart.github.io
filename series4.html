@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FORMLESS SERIES | ZHANG JIARUI</title>
     <style>
-        /* 全局样式 */
+        /* 全局样式 - 保持原样 */
         body, html {
             margin: 0; padding: 0;
             font-family: "Optima", "Didot", "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -14,7 +14,7 @@
             scroll-behavior: smooth;
         }
 
-        /* 导航栏 */
+        /* 导航栏 - 学习 series1 的高斯模糊 */
         nav {
             padding: 30px 5%;
             display: flex; justify-content: space-between; align-items: center;
@@ -53,7 +53,7 @@
         }
         .work-image-wrapper img { 
             width: 100%; height: auto; display: block; 
-            transition: transform 0.15s linear;
+            transition: transform 0.8s cubic-bezier(0.165, 0.84, 0.44, 1);
             will-change: transform;
         }
 
@@ -85,13 +85,13 @@
         /* 全屏预览 */
         #overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(255,255,255,0.95);
+            background: rgba(255,255,255,0.98);
             display: none; z-index: 2000; cursor: zoom-out;
             justify-content: center; align-items: center;
         }
         #overlay img { max-width: 90%; max-height: 90%; object-fit: contain; }
 
-        /* 布局结构 */
+        /* 布局结构 - 保持您的 Formless 原始布局 */
         .layout-group-A { display: flex; gap: 40px; margin-bottom: 80px; }
         .main-A { flex: 2; margin-bottom: 0; }
         .side-A { flex: 1; display: flex; flex-direction: column; gap: 20px; }
@@ -139,7 +139,7 @@
         <section class="layout-group-A">
             <div class="work-item main-A">
                 <div class="work-image-wrapper">
-                    <img src="images/sculpture/s4_1.webp" loading="lazy" decoding="async" class="parallax-img" onerror="this.src='images/sculpture/s4_1.jpg'">
+                    <img src="images/sculpture/s4_1.webp" loading="lazy" onerror="handleError(this, 's4_1')">
                 </div>
                 <div class="work-info">
                     <div class="work-name">At Ease</div>
@@ -148,15 +148,21 @@
             </div>
             <div class="side-A">
                 <div class="work-item">
-                    <div class="work-image-wrapper"><img src="images/sculpture/s4_2.webp" loading="lazy" decoding="async" class="parallax-img" onerror="this.src='images/sculpture/s4_2.jpg'"></div>
+                    <div class="work-image-wrapper">
+                        <img src="images/sculpture/s4_2.webp" loading="lazy" onerror="handleError(this, 's4_2')">
+                    </div>
                     <div class="work-info"><div class="work-name">At Ease</div></div>
                 </div>
                 <div class="work-item">
-                    <div class="work-image-wrapper"><img src="images/sculpture/s4_3.webp" loading="lazy" decoding="async" class="parallax-img" onerror="this.src='images/sculpture/s4_3.jpg'"></div>
+                    <div class="work-image-wrapper">
+                        <img src="images/sculpture/s4_3.webp" loading="lazy" onerror="handleError(this, 's4_3')">
+                    </div>
                     <div class="work-info"><div class="work-name">At Ease</div></div>
                 </div>
                 <div class="work-item">
-                    <div class="work-image-wrapper"><img src="images/sculpture/s4_4.webp" loading="lazy" decoding="async" class="parallax-img" onerror="this.src='images/sculpture/s4_4.jpg'"></div>
+                    <div class="work-image-wrapper">
+                        <img src="images/sculpture/s4_4.webp" loading="lazy" onerror="handleError(this, 's4_4')">
+                    </div>
                     <div class="work-info"><div class="work-name">At Ease</div></div>
                 </div>
             </div>
@@ -164,7 +170,7 @@
 
         <div class="work-item full-width">
             <div class="work-image-wrapper">
-                <img src="images/sculpture/s4_5.webp" loading="lazy" decoding="async" class="parallax-img" onerror="this.src='images/sculpture/s4_5.jpg'">
+                <img src="images/sculpture/s4_5.webp" loading="lazy" onerror="handleError(this, 's4_5')">
             </div>
             <div class="work-info">
                 <div class="work-name">Nirvana</div>
@@ -174,18 +180,22 @@
 
         <div class="grid-two-columns">
             <div class="work-item">
-                <div class="work-image-wrapper"><img src="images/sculpture/s4_6.webp" loading="lazy" decoding="async" class="parallax-img" onerror="this.src='images/sculpture/s4_6.jpg'"></div>
+                <div class="work-image-wrapper">
+                    <img src="images/sculpture/s4_6.webp" loading="lazy" onerror="handleError(this, 's4_6')">
+                </div>
                 <div class="work-info"><div class="work-name">Nirvana</div></div>
             </div>
             <div class="work-item">
-                <div class="work-image-wrapper"><img src="images/sculpture/s4_7.webp" loading="lazy" decoding="async" class="parallax-img" onerror="this.src='images/sculpture/s4_7.jpg'"></div>
+                <div class="work-image-wrapper">
+                    <img src="images/sculpture/s4_7.webp" loading="lazy" onerror="handleError(this, 's4_7')">
+                </div>
                 <div class="work-info"><div class="work-name">Nirvana</div></div>
             </div>
         </div>
 
         <div class="work-item full-width">
             <div class="work-image-wrapper crop-wrapper">
-                <img src="images/sculpture/s4_8.webp" loading="lazy" decoding="async" class="parallax-img" onerror="this.src='images/sculpture/s4_8.jpg'">
+                <img src="images/sculpture/s4_8.webp" loading="lazy" onerror="handleError(this, 's4_8')">
             </div>
             <div class="work-info">
                 <div class="work-name">Nirvana</div>
@@ -194,7 +204,7 @@
 
         <div class="work-item full-width">
             <div class="work-image-wrapper">
-                <img src="images/sculpture/s4_9.webp" loading="lazy" decoding="async" class="parallax-img" onerror="this.src='images/sculpture/s4_9.jpg'">
+                <img src="images/sculpture/s4_9.webp" loading="lazy" onerror="handleError(this, 's4_9')">
             </div>
             <div class="work-info">
                 <div class="work-name">Present</div>
@@ -207,7 +217,19 @@
     <footer>&copy; 2026 ZHANGJIARUI ARTWORKS.</footer>
 
     <script>
-        // 1. 滚动淡入
+        // 1. 核心容错函数 - 学习自 series1.html
+        function handleError(img, name) {
+            const path = 'images/sculpture/';
+            if (img.src.includes('.webp')) {
+                img.src = path + name + '.jpg';
+            } else if (img.src.includes('.jpg')) {
+                img.src = path + name + '.JPG';
+            } else {
+                img.onerror = null; // 停止循环
+            }
+        }
+
+        // 2. 滚动淡入
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
@@ -217,7 +239,7 @@
         }, { threshold: 0.1 });
         document.querySelectorAll('.work-item').forEach(item => observer.observe(item));
 
-        // 2. 鼠标视察
+        // 3. 鼠标交互视差
         document.querySelectorAll('.work-image-wrapper').forEach(wrapper => {
             wrapper.addEventListener('mousemove', (e) => {
                 const img = wrapper.querySelector('img');
@@ -232,11 +254,11 @@
             });
         });
 
-        // 3. 导航隐藏
+        // 4. 智能导航隐藏
         let lastScroll = 0;
-        const navbar = document.getElementById('navbar');
         window.addEventListener('scroll', () => {
             const currentScroll = window.pageYOffset;
+            const navbar = document.getElementById('navbar');
             if (currentScroll > lastScroll && currentScroll > 200) {
                 navbar.classList.add('hidden');
             } else {
@@ -245,7 +267,7 @@
             lastScroll = currentScroll;
         });
 
-        // 4. 全屏大图
+        // 5. 全屏预览 (完全复制 series1 逻辑)
         const overlay = document.getElementById('overlay');
         const overlayImg = overlay.querySelector('img');
         document.querySelectorAll('.work-image-wrapper img').forEach(img => {
