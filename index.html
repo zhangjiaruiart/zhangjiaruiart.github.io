@@ -90,7 +90,7 @@
 
         .hero-overlay {
             position: absolute;
-            top: 45%; /* 修改这里：从50%调整为45% */
+            top: 45%; /* 仅此处由 50% 修改为 45% */
             left: 50%;
             transform: translate(-50%, -50%);
             text-align: center;
@@ -111,6 +111,7 @@
             animation: fadeInText 3s ease-out 1.2s forwards;
         }
 
+        /* 默认 PC 端隐藏换行 */
         .hero-title br { display: none; }
 
         @keyframes fadeInText {
@@ -184,6 +185,8 @@
         /* --- 手机端特殊调整 --- */
         @media (max-width: 900px) {
             .hero img { object-position: center 60%; }
+            
+            /* 封面文字段落整体向上调整 5% (50% -> 45%) */
             .hero-overlay { top: 45%; }
             .hero-title { 
                 font-size: 14.4px; 
@@ -191,7 +194,7 @@
                 margin-bottom: 40px; 
                 letter-spacing: 0.4em;
             }
-            .hero-title br { display: block; }
+            .hero-title br { display: block; } /* 手机端开启四行排列 */
 
             .menu-toggle { display: flex; }
             .nav-links {
@@ -229,7 +232,7 @@
                 <a href="biography.html">BIOGRAPHY</a>
                 <a href="#contact" onclick="closeMenu()">Contact</a>
             </div>
-            <div class="menu-toggle" id="menuToggle" onclick="toggleMenu()">
+            <div class="menu-toggle" id="menuToggle" onclick="toggleMenu()" aria-label="Toggle menu">
                 <span></span><span></span><span></span>
             </div>
         </nav>
@@ -401,10 +404,12 @@
         const menuToggle = document.getElementById('menuToggle');
         function toggleMenu() {
             navLinks.classList.toggle('active');
+            menuToggle.classList.toggle('active-toggle');
             document.body.style.overflow = navLinks.classList.contains('active') ? 'hidden' : 'auto';
         }
         function closeMenu() {
             navLinks.classList.remove('active');
+            menuToggle.classList.remove('active-toggle');
             document.body.style.overflow = 'auto';
         }
     </script>
