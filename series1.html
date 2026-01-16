@@ -14,7 +14,7 @@
             scroll-behavior: smooth;
         }
 
-        /* 导航栏：增加高斯模糊与智能隐藏 */
+        /* 导航栏 */
         nav {
             padding: 30px 5%;
             display: flex; justify-content: space-between; align-items: center;
@@ -30,14 +30,12 @@
         .back-link { font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; text-decoration: none; color: #aaa; transition: all 0.3s ease; }
         .back-link:hover { color: #111; padding-left: 10px; }
 
-        /* 内容容器 */
         .container { 
             max-width: 1400px; 
             margin: 0 auto; 
             padding: 120px 5% 100px; 
         }
 
-        /* 顶部系列介绍 */
         .series-intro {
             margin: 40px 0 100px 0;
             max-width: 800px;
@@ -51,7 +49,6 @@
             font-weight: 300; text-align: justify;
         }
 
-        /* 动态作品布局系统 */
         .works-layout {
             display: flex;
             flex-wrap: wrap;
@@ -59,7 +56,6 @@
             align-items: flex-start;
         }
 
-        /* 作品项通用动画 */
         .work-item {
             flex: 1 1 100%;
             display: flex;
@@ -75,7 +71,6 @@
 
         .work-item.slim { flex: 1 1 48%; }
 
-        /* --- 核心交互 CSS --- */
         .work-image-wrapper {
             width: 100%;
             margin-bottom: 25px;
@@ -115,10 +110,7 @@
             position: relative;
             transition: all 0.6s ease;
         }
-        .work-item:hover .work-info {
-            transform: translateY(-5px);
-        }
-
+        .work-item:hover .work-info { transform: translateY(-5px); }
         .work-info::after {
             content: ''; position: absolute; top: -1px; left: 50%;
             width: 0; height: 1.5px; background-color: #111;
@@ -156,7 +148,6 @@
         @media (max-width: 900px) {
             .work-item.slim { flex: 1 1 100%; }
             .works-layout { gap: 80px 0; }
-            .container { padding-top: 100px; }
         }
     </style>
 </head>
@@ -183,9 +174,7 @@
                     <div class="spotlight"></div>
                     <img src="images/Sculpture/s1_1.webp" 
                          alt="Line" 
-                         loading="lazy"
-                         decoding="async"
-                         onerror="this.onerror=null; this.src='images/Sculpture/s1_1.jpg';">
+                         onerror="this.onerror=function(){this.onerror=function(){this.src='images/Sculpture/s1_1.JPG'}; this.src='images/Sculpture/s1_1.jpg'}; this.src='images/Sculpture/s1_1.webp';">
                 </div>
                 <div class="work-info">
                     <div class="work-name">Line</div>
@@ -198,9 +187,7 @@
                     <div class="spotlight"></div>
                     <img src="images/Sculpture/s1_3.webp" 
                          alt="Circle" 
-                         loading="lazy"
-                         decoding="async"
-                         onerror="this.onerror=null; this.src='images/Sculpture/s1_3.jpg';">
+                         onerror="this.onerror=function(){this.onerror=function(){this.src='images/Sculpture/s1_3.JPG'}; this.src='images/Sculpture/s1_3.jpg'}; this.src='images/Sculpture/s1_3.webp';">
                 </div>
                 <div class="work-info">
                     <div class="work-name">Circle</div>
@@ -213,9 +200,7 @@
                     <div class="spotlight"></div>
                     <img src="images/Sculpture/s1_2.webp" 
                          alt="Square" 
-                         loading="lazy"
-                         decoding="async"
-                         onerror="this.onerror=null; this.src='images/Sculpture/s1_2.jpg';">
+                         onerror="this.onerror=function(){this.onerror=function(){this.src='images/Sculpture/s1_2.JPG'}; this.src='images/Sculpture/s1_2.jpg'}; this.src='images/Sculpture/s1_2.webp';">
                 </div>
                 <div class="work-info">
                     <div class="work-name">Square</div>
@@ -228,9 +213,7 @@
                     <div class="spotlight"></div>
                     <img src="images/Sculpture/s1_4.webp" 
                          alt="Line 2" 
-                         loading="lazy"
-                         decoding="async"
-                         onerror="this.onerror=null; this.src='images/Sculpture/s1_4.jpg';">
+                         onerror="this.onerror=function(){this.onerror=function(){this.src='images/Sculpture/s1_4.JPG'}; this.src='images/Sculpture/s1_4.jpg'}; this.src='images/Sculpture/s1_4.webp';">
                 </div>
                 <div class="work-info">
                     <div class="work-name">Line 2</div>
@@ -240,12 +223,10 @@
         </div>
     </div>
 
-    <footer>
-        &copy; 2026 ZHANGJIARUI ARTWORKS.
-    </footer>
+    <footer>&copy; 2026 ZHANGJIARUI ARTWORKS.</footer>
 
     <script>
-        // 1. 聚光灯探照与视差微移
+        // 聚光灯探照
         document.querySelectorAll('.work-image-wrapper').forEach(wrapper => {
             wrapper.addEventListener('mousemove', e => {
                 const rect = wrapper.getBoundingClientRect();
@@ -253,43 +234,33 @@
                 const y = e.clientY - rect.top;
                 wrapper.style.setProperty('--x', x + 'px');
                 wrapper.style.setProperty('--y', y + 'px');
-
                 const img = wrapper.querySelector('img');
                 const moveX = (x / rect.width - 0.5) * 15;
                 const moveY = (y / rect.height - 0.5) * 15;
                 img.style.transform = `scale(1.03) translate(${moveX}px, ${moveY}px)`;
             });
-
-            wrapper.addEventListener('mouseleave', (e) => {
-                const img = wrapper.querySelector('img');
-                img.style.transform = `scale(1) translate(0, 0)`;
+            wrapper.addEventListener('mouseleave', () => {
+                wrapper.querySelector('img').style.transform = `scale(1) translate(0, 0)`;
             });
         });
 
-        // 2. 滚动淡入观察器
+        // 滚动淡入
         const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                }
-            });
+            entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
         }, { threshold: 0.1 });
         document.querySelectorAll('.work-item').forEach(item => observer.observe(item));
 
-        // 3. 智能导航栏隐藏
+        // 导航栏隐藏
         let lastScroll = 0;
-        const navbar = document.getElementById('navbar');
         window.addEventListener('scroll', () => {
             const currentScroll = window.pageYOffset;
-            if (currentScroll > lastScroll && currentScroll > 200) {
-                navbar.classList.add('hidden');
-            } else {
-                navbar.classList.remove('hidden');
-            }
+            const navbar = document.getElementById('navbar');
+            if (currentScroll > lastScroll && currentScroll > 200) navbar.classList.add('hidden');
+            else navbar.classList.remove('hidden');
             lastScroll = currentScroll;
         });
 
-        // 4. 全屏预览大图
+        // 全屏预览
         const overlay = document.getElementById('overlay');
         const overlayImg = overlay.querySelector('img');
         document.querySelectorAll('.work-image-wrapper img').forEach(img => {
@@ -304,6 +275,5 @@
             document.body.style.overflow = 'auto';
         });
     </script>
-
 </body>
 </html>
