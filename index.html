@@ -90,7 +90,7 @@
 
         .hero-overlay {
             position: absolute;
-            top: 50%; left: 50%;
+            top: 45%; left: 50%; /* 已从 50% 修改为 45% */
             transform: translate(-50%, -50%);
             text-align: center;
             width: 90%;
@@ -186,7 +186,7 @@
             .hero img { object-position: center 60%; }
             
             /* 封面文字段落整体向上调整 5% (50% -> 45%) */
-            .hero-overlay { top: 45%; }
+            .hero-overlay { top: 40%; } /* 这里在手机端原有45%基础上也向上提升了5%，改为40%以保持视觉一致性 */
             .hero-title { 
                 font-size: 14.4px; 
                 line-height: 2.2; 
