@@ -3,14 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ZHANG JIARUI | ARTIST</title>
-    <meta name="description" content="Zhang Jiarui Artworks - Ecological Art, Sculpture, and Artistic Projects.">
+    <title>ZHANG JIARUI | ARTIST - Ecological Art, Sculpture, and Projects</title>
+    <meta name="description" content="Zhang Jiarui Artworks - A portfolio of Ecological Art, Sculpture, and Artistic Projects examining material, time, and systems.">
     <link rel="icon" type="image/png" href="favicon.png"> 
+    
+    <link rel="preload" as="image" href="images/cover.webp">
+
     <style>
+        :root {
+            --primary-font: "Optima", "Didot", "Helvetica Neue", Helvetica, Arial, sans-serif;
+            --main-color: #111111;
+            --transition-smooth: all 1.2s cubic-bezier(0.15, 1, 0.3, 1);
+        }
+
         body, html {
             margin: 0; padding: 0;
-            font-family: "Optima", "Didot", "Helvetica Neue", Helvetica, Arial, sans-serif;
-            background-color: #ffffff; color: #111111;
+            font-family: var(--primary-font);
+            background-color: #ffffff; color: var(--main-color);
             scroll-behavior: smooth;
             overflow-x: hidden;
             -webkit-font-smoothing: antialiased;
@@ -19,7 +28,7 @@
         /* --- 交互组件：进度条 --- */
         #scroll-progress {
             position: fixed; top: 0; left: 0; width: 0%; height: 2px;
-            background: #111; z-index: 3000; transition: width 0.1s ease-out;
+            background: var(--main-color); z-index: 3000; transition: width 0.1s ease-out;
         }
 
         /* --- 导航栏 --- */
@@ -34,7 +43,7 @@
         }
 
         .nav-scrolled {
-            background: rgba(255, 255, 255, 0.9);
+            background: rgba(255, 255, 255, 0.85);
             backdrop-filter: blur(15px);
             -webkit-backdrop-filter: blur(15px);
             padding: 15px 5%;
@@ -48,7 +57,7 @@
             position: relative; z-index: 2001;
         }
 
-        .nav-scrolled .logo { color: #111111; }
+        .nav-scrolled .logo { color: var(--main-color); }
 
         .nav-links { display: flex; align-items: center; }
         .nav-links a {
@@ -58,7 +67,7 @@
             transition: color 0.4s ease, transform 0.3s ease;
             display: inline-block;
         }
-        .nav-scrolled .nav-links a { color: #111111; }
+        .nav-scrolled .nav-links a { color: var(--main-color); }
 
         .nav-links a::after {
             content: ''; position: absolute; bottom: 0; left: 50%;
@@ -86,6 +95,7 @@
         #hero-img-wrap {
             width: 105%; height: 105%; position: absolute; top: -2.5%; left: -2.5%;
             transition: transform 0.2s ease-out;
+            will-change: transform; /* 性能优化 */
         }
         .hero img {
             width: 100%; height: 100%; object-fit: cover;
@@ -135,45 +145,36 @@
             40% { transform: translateY(-10px) rotate(45deg); opacity: 0.8; }
         }
 
-        /* --- 艺术立场区块样式 --- */
+        /* --- 艺术立场区块 --- */
         .statement-section {
-            padding: 120px 5% 40px; /* 底部间距从100px大幅缩减，提升后续内容 */
+            padding: 120px 5% 40px;
             max-width: 900px;
             margin: 0 auto;
             text-align: center;
+            scroll-margin-top: 100px;
         }
         .statement-text {
-            font-size: 20px;
-            line-height: 1.8;
-            font-weight: 300;
-            color: #222;
-            letter-spacing: 0.02em;
-            word-spacing: 0.05em;
-            font-style: italic;
-            opacity: 0;
-            transform: translateY(20px);
-            transition: all 1.2s cubic-bezier(0.15, 1, 0.3, 1);
+            font-size: 20px; line-height: 1.8; font-weight: 300;
+            color: #222; letter-spacing: 0.02em; font-style: italic;
+            opacity: 0; transform: translateY(20px);
+            transition: var(--transition-smooth);
         }
-        .statement-section.revealed .statement-text {
-            opacity: 1;
-            transform: translateY(0);
-        }
+        .revealed .statement-text { opacity: 1; transform: translateY(0); }
 
         /* --- 布局核心 --- */
         .content-section { 
-            padding: 40px 5% 20px; /* 顶部间距从80px缩减至40px，实现整体向上提 */
+            padding: 40px 5% 20px;
             max-width: 1260px; margin: 0 auto; 
             opacity: 0; transform: translateY(20px);
-            transition: all 1.2s cubic-bezier(0.15, 1, 0.3, 1);
+            transition: var(--transition-smooth);
+            scroll-margin-top: 80px; /* 优化跳转位置 */
         }
-        .content-section.revealed {
-            opacity: 1; transform: translateY(0);
-        }
+        .content-section.revealed { opacity: 1; transform: translateY(0); }
 
         .category-title { 
             font-size: 13px; letter-spacing: 0.5em; text-transform: uppercase; 
             margin-bottom: 40px; border-bottom: 1px solid #f0f0f0; 
-            padding-bottom: 15px; color: #111; 
+            padding-bottom: 15px; color: var(--main-color); 
         }
 
         /* 通用 2 列 Grid */
@@ -184,7 +185,7 @@
             margin-bottom: 60px; 
         }
 
-        /* 雕塑部分专用：修改为 3 列排版 */
+        /* 雕塑部分 3 列排版 */
         .grid-sculpture-custom {
             display: grid;
             grid-template-columns: repeat(3, 1fr); 
@@ -241,6 +242,11 @@
             transform: rotate(45deg); margin-top: 4px;
         }
 
+        /* 响应式媒体查询优化 */
+        @media (max-width: 1100px) and (min-width: 901px) {
+            .grid-sculpture-custom { grid-template-columns: repeat(2, 1fr); }
+        }
+
         @media (max-width: 900px) {
             .hero-overlay { top: 40%; }
             .hero-title { font-size: 14.4px; line-height: 2.2; letter-spacing: 0.4em; }
@@ -252,18 +258,18 @@
                 align-items: center; transition: 0.5s cubic-bezier(0.2, 1, 0.3, 1);
             }
             .nav-links.active { right: 0; }
-            .nav-links a { color: #111111 !important; margin: 20px 0; font-size: 14px; }
-            .grid, .grid-sculpture-custom { grid-template-columns: 1fr; gap: 40px; max-width: 100%; }
-            .content-section { padding: 30px 5% !important; } /* 移动端同步上提 */
+            .nav-links a { color: var(--main-color) !important; margin: 20px 0; font-size: 14px; }
+            .grid, .grid-sculpture-custom { grid-template-columns: 1fr; gap: 40px; }
+            .content-section { padding: 30px 5% !important; }
             .statement-text { font-size: 16px; }
             .statement-section { padding: 60px 8% 30px; }
         }
 
-        .contact-section { padding: 60px 5% 40px; background-color: #fff; }
+        .contact-section { padding: 60px 5% 40px; background-color: #fff; scroll-margin-top: 60px;}
         .contact-container { max-width: 1100px; margin: 0 auto; text-align: center; }
         .contact-row { display: flex; justify-content: center; gap: 40px; flex-wrap: wrap; }
         .contact-label { font-size: 9px; color: #bbb; text-transform: uppercase; display: block; margin-bottom: 5px; letter-spacing: 0.2em; }
-        .contact-value { font-size: 13px; color: #111; text-decoration: none; padding-bottom: 2px; border-bottom: 1px solid transparent; transition: all 0.3s; }
+        .contact-value { font-size: 13px; color: var(--main-color); text-decoration: none; padding-bottom: 2px; border-bottom: 1px solid transparent; transition: all 0.3s; }
         .divider { color: #eee; align-self: center; font-weight: 100; }
         footer { padding: 60px 5% 40px; text-align: center; border-top: 1px solid #f9f9f9; font-size: 9px; letter-spacing: 0.4em; color: #ccc; text-transform: uppercase; }
     </style>
@@ -274,7 +280,7 @@
 
     <header>
         <nav id="navbar">
-            <a href="index.html" class="logo">ZHANGJIARUI ARTWORKS</a>
+            <a href="#" class="logo" onclick="window.scrollTo({top: 0, behavior: 'smooth'}); return false;">ZHANGJIARUI ARTWORKS</a>
             <div class="nav-links" id="navLinks">
                 <a href="#eco-art" onclick="closeMenu()">Ecological Art</a>
                 <a href="#sculpture" onclick="closeMenu()">Sculpture</a>
@@ -291,12 +297,12 @@
     <main>
         <section class="hero" id="hero-section">
             <div id="hero-img-wrap">
-                <img src="images/cover.webp" alt="Zhang Jiarui Artwork" onerror="this.src='images/Cover.JPG';">
+                <img src="images/cover.webp" alt="Matter dissolves, memory crystallizes - Zhang Jiarui Cover Artwork" onerror="this.src='images/Cover.JPG';">
             </div>
             <div class="hero-overlay">
                 <h1 class="hero-title">Matter <br> dissolves, <br> memory <br> crystallizes</h1>
             </div>
-            <a href="#statement" class="scroll-indicator">
+            <a href="#statement" class="scroll-indicator" aria-label="Scroll down">
                 <div class="scroll-arrow"></div>
             </a>
         </section>
@@ -304,7 +310,7 @@
         <section class="statement-section" id="statement">
             <p class="statement-text">
                 Zhang Jiarui’s practice operates between sculptural reduction and site-specific ecological intervention, 
-                examing how material, time, and human action reshape fragile systems.
+                examining how material, time, and human action reshape fragile systems.
             </p>
         </section>
 
@@ -314,7 +320,7 @@
                 <article>
                     <a href="eco-ice-burial.html" class="project">
                         <div class="project-image-wrapper video-ratio">
-                            <img src="images/eco/ice_burial_cover.webp" alt="Ice Burial" onerror="this.src='images/eco/ice_burial_cover.jpg'">
+                            <img src="images/eco/ice_burial_cover.webp" loading="lazy" alt="Ice Burial Performance Art by Zhang Jiarui" onerror="this.src='images/eco/ice_burial_cover.jpg'">
                             <div class="play-overlay"><div class="play-button"></div></div>
                         </div>
                         <div class="project-info">
@@ -326,12 +332,12 @@
                 <article>
                     <a href="eco-4-5tons.html" class="project">
                         <div class="project-image-wrapper video-ratio">
-                            <img src="images/eco/4_5tons_cover.webp" alt="4.5 Tons" onerror="this.src='images/eco/4_5tons_cover.jpg'">
+                            <img src="images/eco/4_5tons_cover.webp" loading="lazy" alt="4.5 Tons Installation Art by Zhang Jiarui" onerror="this.src='images/eco/4_5tons_cover.jpg'">
                             <div class="play-overlay"><div class="play-button"></div></div>
                         </div>
                         <div class="project-info">
                             <h3 class="project-title">4.5 Tons</h3>
-                            <p class="project-meta">Installation / 2024 / Inner Mongolia /IN COLLABORATION WITH BETTA LIU</p>
+                            <p class="project-meta">Installation / 2024 / Inner Mongolia / IN COLLABORATION WITH BETTA LIU</p>
                         </div>
                     </a>
                 </article>
@@ -345,7 +351,7 @@
                     <h3 class="series-label">Wood Series</h3>
                     <a href="series1.html" class="project">
                         <div class="project-image-wrapper img-ratio">
-                            <img src="images/sculpture/s1_cover.webp" alt="Triangle" onerror="this.src='images/sculpture/s1_cover.jpg'">
+                            <img src="images/sculpture/s1_cover.webp" loading="lazy" alt="Triangle - Wood Sculpture" onerror="this.src='images/sculpture/s1_cover.jpg'">
                         </div>
                         <div class="project-info">
                             <h4 class="project-title">Triangle</h4>
@@ -358,7 +364,7 @@
                     <h3 class="series-label">Water Series</h3>
                     <a href="series2.html" class="project">
                         <div class="project-image-wrapper img-ratio">
-                            <img src="images/sculpture/s2_cover.webp" alt="Water1" onerror="this.src='images/sculpture/s2_cover.jpg'">
+                            <img src="images/sculpture/s2_cover.webp" loading="lazy" alt="Water1 - Resin Sculpture" onerror="this.src='images/sculpture/s2_cover.jpg'">
                         </div>
                         <div class="project-info">
                             <h4 class="project-title">Water1</h4>
@@ -371,7 +377,7 @@
                     <h3 class="series-label">Line Series</h3>
                     <a href="series5.html" class="project">
                         <div class="project-image-wrapper img-ratio" style="background-color: #ffffff; display: flex; align-items: center; justify-content: center;">
-                            <img src="images/sculpture/s5_cover.webp" alt="X" onerror="this.src='images/sculpture/s5_cover.jpg'" style="object-fit: contain; transform: scale(0.8);">
+                            <img src="images/sculpture/s5_cover.webp" loading="lazy" alt="X - Acrylic Sculpture" onerror="this.src='images/sculpture/s5_cover.jpg'" style="object-fit: contain; transform: scale(0.8);">
                         </div>
                         <div class="project-info">
                             <h4 class="project-title">X</h4>
@@ -384,7 +390,7 @@
                     <h3 class="series-label">Formless Series</h3>
                     <a href="series4.html" class="project">
                         <div class="project-image-wrapper img-ratio">
-                            <img src="images/sculpture/s4_cover.webp" alt="At ease" onerror="this.src='images/sculpture/s4_cover.jpg'">
+                            <img src="images/sculpture/s4_cover.webp" loading="lazy" alt="At ease - Resin Sculpture" onerror="this.src='images/sculpture/s4_cover.jpg'">
                         </div>
                         <div class="project-info">
                             <h4 class="project-title">At ease</h4>
@@ -397,7 +403,7 @@
                     <h3 class="series-label">Gold Series</h3>
                     <a href="series3.html" class="project">
                         <div class="project-image-wrapper img-ratio">
-                            <img src="images/sculpture/s3_cover.webp" alt="New Eighteenth Arhat" onerror="this.src='images/sculpture/s3_cover.jpg'">
+                            <img src="images/sculpture/s3_cover.webp" loading="lazy" alt="New Eighteenth Arhat - Goldenleaf resin" onerror="this.src='images/sculpture/s3_cover.jpg'">
                         </div>
                         <div class="project-info">
                             <h4 class="project-title">New Eighteenth Arhat</h4>
@@ -414,7 +420,7 @@
                 <article>
                     <a href="project-coral.html" class="project">
                         <div class="project-image-wrapper video-ratio">
-                            <img src="images/projects/coral_cover.webp" alt="Coral Planting" onerror="this.src='images/projects/coral_cover.jpg'">
+                            <img src="images/projects/coral_cover.webp" loading="lazy" alt="Coral Planting Project Documentary" onerror="this.src='images/projects/coral_cover.jpg'">
                             <div class="play-overlay"><div class="play-button"></div></div>
                         </div>
                         <div class="project-info">
@@ -448,17 +454,21 @@
         </section>
     </main>
 
-    <div id="back-to-top"></div>
+    <div id="back-to-top" aria-label="Back to top"></div>
 
     <footer>&copy; 2026 ZHANGJIARUI ARTWORKS.</footer>
 
     <script>
-        // 滚动进度、导航控制与入场动画
-        const revealOnScroll = function() {
-            const nav = document.getElementById('navbar');
-            const progress = document.getElementById('scroll-progress');
-            const btt = document.getElementById('back-to-top');
-            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+        /**
+         * 1. 基础滚动监听 (进度条、导航样式切换)
+         * 保持 onscroll 处理轻量级任务
+         */
+        const nav = document.getElementById('navbar');
+        const progress = document.getElementById('scroll-progress');
+        const btt = document.getElementById('back-to-top');
+
+        window.addEventListener('scroll', () => {
+            const winScroll = window.pageYOffset || document.documentElement.scrollTop;
             const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
             
             // 进度条
@@ -472,32 +482,49 @@
                 nav.classList.remove("nav-scrolled");
                 btt.classList.remove("visible");
             }
+        }, { passive: true });
 
-            // 检查区块是否进入视口进行显示
-            const sections = document.querySelectorAll('.statement-section, .content-section');
-            sections.forEach(sec => {
-                const rect = sec.getBoundingClientRect();
-                if (rect.top < window.innerHeight * 0.85) {
-                    sec.classList.add('revealed');
-                }
-            });
+        /**
+         * 2. Intersection Observer (内容入场动画)
+         * 替代在 scroll 事件中计算位置，大幅提升性能
+         */
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: "0px 0px -50px 0px"
         };
 
-        window.onscroll = revealOnScroll;
-        window.onload = revealOnScroll; 
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('revealed');
+                    revealObserver.unobserve(entry.target); // 只触发一次
+                }
+            });
+        }, observerOptions);
 
-        document.getElementById('back-to-top').onclick = () => window.scrollTo({top: 0, behavior: 'smooth'});
+        document.querySelectorAll('.statement-section, .content-section').forEach(sec => {
+            revealObserver.observe(sec);
+        });
 
-        // Hero 视差效果
+        /**
+         * 3. Hero 视差效果 (限桌面端)
+         */
         if (window.innerWidth > 900) {
             const hero = document.getElementById('hero-section');
-            const img = document.getElementById('hero-img-wrap');
+            const imgWrap = document.getElementById('hero-img-wrap');
             hero.addEventListener('mousemove', (e) => {
-                const x = (e.clientX - window.innerWidth / 2) / 40;
-                const y = (e.clientY - window.innerHeight / 2) / 40;
-                img.style.transform = `translate(${-x}px, ${-y}px)`;
+                const x = (e.clientX - window.innerWidth / 2) / 45;
+                const y = (e.clientY - window.innerHeight / 2) / 45;
+                requestAnimationFrame(() => {
+                    imgWrap.style.transform = `translate(${-x}px, ${-y}px)`;
+                });
             });
         }
+
+        /**
+         * 4. 菜单与控制
+         */
+        document.getElementById('back-to-top').onclick = () => window.scrollTo({top: 0, behavior: 'smooth'});
 
         const navLinks = document.getElementById('navLinks');
         function toggleMenu() {
