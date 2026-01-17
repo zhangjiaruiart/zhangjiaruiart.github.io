@@ -124,12 +124,19 @@
         }
 
         .hero-title {
-            color: var(--accent-color); font-size: 20px; font-weight: 300;
-            letter-spacing: 0.7em; text-transform: uppercase;
-            margin: 0; opacity: 0; line-height: 1.8;
-            animation: fadeInText 3s ease-out 0.8s forwards;
-            text-shadow: 0 5px 15px rgba(0,0,0,0.2);
-        }
+    color: var(--accent-color);
+    font-size: 20px;
+    font-weight: 300;
+    letter-spacing: 0.7em; /* 电脑端保持宽大的呼吸感 */
+    text-transform: uppercase;
+    margin: 0;
+    opacity: 0;
+    line-height: 1.5; /* 调整行高 */
+    animation: fadeInText 3s ease-out 0.8s forwards;
+    text-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    white-space: normal; /* 允许换行 */
+    word-break: keep-all; /* 确保单词不被生硬切断 */
+}
 
         @keyframes fadeInText {
             from { opacity: 0; transform: translateY(25px); }
@@ -258,17 +265,23 @@
             .grid-sculpture-custom { grid-template-columns: repeat(2, 1fr); gap: 50px 40px; }
         }
 
-        @media (max-width: 900px) {
-            nav { padding: 25px 6%; }
-            .logo { font-size: 14px; letter-spacing: 0.4em; }
-            .hero-overlay { top: 45%; }
-            .hero-title { font-size: 15px; line-height: 2.4; letter-spacing: 0.45em; }
-            .menu-toggle { display: flex; }
-            .nav-links {
-                position: fixed; top: 0; right: -100%; width: 100%; height: 100vh;
-                background: #ffffff; flex-direction: column; justify-content: center;
-                align-items: center; transition: 0.6s cubic-bezier(0.15, 1, 0.3, 1);
-            }
+       @media (max-width: 900px) {
+    /* ... 其他代码保持不变 ... */
+    
+    .hero-overlay { 
+        top: 50%; /* 手机端稍微居中一点 */
+        width: 100%; 
+    }
+
+    .hero-title { 
+        font-size: 16px; 
+        line-height: 2.8;      /* 增加行高，让四行文字错落有致 */
+        letter-spacing: 0.5em; /* 稍微缩小间距防止溢出 */
+        margin: 0 auto;
+        max-width: 120px;      /* 核心：通过极窄的宽度强制文字换行，实现每行1-2个词 */
+        display: inline-block;
+    }
+}
             .nav-links.active { right: 0; }
             .nav-links a { color: var(--main-color) !important; margin: 22px 0; font-size: 14px; letter-spacing: 0.3em; }
             .grid, .grid-sculpture-custom { grid-template-columns: 1fr; gap: 50px; }
