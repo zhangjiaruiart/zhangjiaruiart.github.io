@@ -7,7 +7,7 @@
     <meta name="description" content="Zhang Jiarui Artworks - A portfolio of Ecological Art, Sculpture, and Artistic Projects examining material, time, and systems.">
     <link rel="icon" type="image/png" href="favicon.png"> 
     
-    <link rel="preload" as="image" href="images/cover.webp">
+    <link rel="preload" as="image" href="images/cover.webp" fetchpriority="high">
 
     <style>
         :root {
@@ -95,7 +95,7 @@
         #hero-img-wrap {
             width: 105%; height: 105%; position: absolute; top: -2.5%; left: -2.5%;
             transition: transform 0.2s ease-out;
-            will-change: transform; /* 性能优化 */
+            will-change: transform;
         }
         .hero img {
             width: 100%; height: 100%; object-fit: cover;
@@ -134,7 +134,7 @@
             transform: translateX(-50%); z-index: 10;
             cursor: pointer; display: flex; flex-direction: column; align-items: center;
         }
-        .scroll-indicator .scroll-arrow {
+        .scroll-arrow {
             width: 16px; height: 16px;
             border-right: 1.5px solid #ffffff; border-bottom: 1.5px solid #ffffff;
             transform: rotate(45deg); animation: arrowBounce 2s infinite;
@@ -145,7 +145,7 @@
             40% { transform: translateY(-10px) rotate(45deg); opacity: 0.8; }
         }
 
-        /* --- 艺术立场区块 (已调整上下 5% 留白) --- */
+        /* --- 艺术立场区块 --- */
         .statement-section {
             padding: calc(120px + 5vh) 5% calc(40px + 5vh);
             max-width: 900px;
@@ -167,7 +167,7 @@
             max-width: 1260px; margin: 0 auto; 
             opacity: 0; transform: translateY(20px);
             transition: var(--transition-smooth);
-            scroll-margin-top: 80px; /* 优化跳转位置 */
+            scroll-margin-top: 80px;
         }
         .content-section.revealed { opacity: 1; transform: translateY(0); }
 
@@ -177,7 +177,6 @@
             padding-bottom: 15px; color: var(--main-color); 
         }
 
-        /* 通用 2 列 Grid */
         .grid { 
             display: grid; 
             grid-template-columns: repeat(2, 1fr); 
@@ -185,7 +184,6 @@
             margin-bottom: 60px; 
         }
 
-        /* 雕塑部分 3 列排版 */
         .grid-sculpture-custom {
             display: grid;
             grid-template-columns: repeat(3, 1fr); 
@@ -200,14 +198,22 @@
         }
 
         .project { text-decoration: none; color: inherit; display: block; }
-        .project-image-wrapper { overflow: hidden; margin-bottom: 20px; background-color: #fcfcfc; position: relative; }
+        .project-image-wrapper { 
+            overflow: hidden; margin-bottom: 20px; 
+            background-color: #fcfcfc; position: relative;
+            /* 【加速优化 2】为背景预留占位符，防止加载时页面跳动 */
+        }
         .img-ratio { aspect-ratio: 4 / 5; }
         .video-ratio { aspect-ratio: 16 / 9; background-color: #000; }
 
         .project img { 
             width: 100%; height: 100%; object-fit: cover; 
-            transition: transform 1.8s cubic-bezier(0.15, 1, 0.3, 1); 
+            transition: transform 1.8s cubic-bezier(0.15, 1, 0.3, 1);
+            /* 【加速优化 3】初始状态稍微模糊或变暗，减少加载瞬间的视觉冲击 */
+            opacity: 0; 
         }
+        .project img.loaded { opacity: 1; }
+
         .project:hover img { transform: scale(1.05); }
 
         .play-overlay {
@@ -228,7 +234,6 @@
         .project-title { font-size: 14px; font-weight: 400; letter-spacing: 0.1em; text-transform: uppercase; margin-top: 5px; }
         .project-meta { font-size: 10px; color: #aaa; margin-top: 4px; letter-spacing: 0.05em; text-transform: uppercase; line-height: 1.4; }
 
-        /* --- 返回顶部 --- */
         #back-to-top {
             position: fixed; bottom: 40px; right: 40px; width: 40px; height: 40px;
             background: #fff; border: 1px solid #eee; border-radius: 50%;
@@ -242,7 +247,6 @@
             transform: rotate(45deg); margin-top: 4px;
         }
 
-        /* 响应式媒体查询优化 */
         @media (max-width: 1100px) and (min-width: 901px) {
             .grid-sculpture-custom { grid-template-columns: repeat(2, 1fr); }
         }
@@ -297,7 +301,9 @@
     <main>
         <section class="hero" id="hero-section">
             <div id="hero-img-wrap">
-                <img src="images/cover.webp" alt="Matter dissolves, memory crystallizes - Zhang Jiarui Cover Artwork" onerror="this.src='images/Cover.JPG';">
+                <img src="images/cover.webp" alt="Zhang Jiarui Cover" 
+                     onload="this.classList.add('loaded')"
+                     onerror="this.src='images/Cover.JPG';">
             </div>
             <div class="hero-overlay">
                 <h1 class="hero-title">Matter <br> dissolves, <br> memory <br> crystallizes</h1>
@@ -320,7 +326,9 @@
                 <article>
                     <a href="eco-ice-burial.html" class="project">
                         <div class="project-image-wrapper video-ratio">
-                            <img src="images/eco/ice_burial_cover.webp" loading="lazy" alt="Ice Burial Performance Art by Zhang Jiarui" onerror="this.src='images/eco/ice_burial_cover.jpg'">
+                            <img src="images/eco/ice_burial_cover.webp" loading="lazy" decoding="async" 
+                                 onload="this.classList.add('loaded')"
+                                 onerror="this.src='images/eco/ice_burial_cover.jpg'">
                             <div class="play-overlay"><div class="play-button"></div></div>
                         </div>
                         <div class="project-info">
@@ -332,12 +340,14 @@
                 <article>
                     <a href="eco-4-5tons.html" class="project">
                         <div class="project-image-wrapper video-ratio">
-                            <img src="images/eco/4_5tons_cover.webp" loading="lazy" alt="4.5 Tons Installation Art by Zhang Jiarui" onerror="this.src='images/eco/4_5tons_cover.jpg'">
+                            <img src="images/eco/4_5tons_cover.webp" loading="lazy" decoding="async"
+                                 onload="this.classList.add('loaded')"
+                                 onerror="this.src='images/eco/4_5tons_cover.jpg'">
                             <div class="play-overlay"><div class="play-button"></div></div>
                         </div>
                         <div class="project-info">
                             <h3 class="project-title">4.5 Tons</h3>
-                            <p class="project-meta">Installation / 2024 / Inner Mongolia / IN COLLABORATION WITH BETTA LIU</p>
+                            <p class="project-meta">Installation / 2024 / Inner Mongolia</p>
                         </div>
                     </a>
                 </article>
@@ -351,7 +361,9 @@
                     <h3 class="series-label">Wood Series</h3>
                     <a href="series1.html" class="project">
                         <div class="project-image-wrapper img-ratio">
-                            <img src="images/sculpture/s1_cover.webp" loading="lazy" alt="Triangle - Wood Sculpture" onerror="this.src='images/sculpture/s1_cover.jpg'">
+                            <img src="images/sculpture/s1_cover.webp" loading="lazy" decoding="async"
+                                 onload="this.classList.add('loaded')"
+                                 onerror="this.src='images/sculpture/s1_cover.jpg'">
                         </div>
                         <div class="project-info">
                             <h4 class="project-title">Triangle</h4>
@@ -364,7 +376,9 @@
                     <h3 class="series-label">Water Series</h3>
                     <a href="series2.html" class="project">
                         <div class="project-image-wrapper img-ratio">
-                            <img src="images/sculpture/s2_cover.webp" loading="lazy" alt="Water1 - Resin Sculpture" onerror="this.src='images/sculpture/s2_cover.jpg'">
+                            <img src="images/sculpture/s2_cover.webp" loading="lazy" decoding="async"
+                                 onload="this.classList.add('loaded')"
+                                 onerror="this.src='images/sculpture/s2_cover.jpg'">
                         </div>
                         <div class="project-info">
                             <h4 class="project-title">Water1</h4>
@@ -377,7 +391,9 @@
                     <h3 class="series-label">Line Series</h3>
                     <a href="series5.html" class="project">
                         <div class="project-image-wrapper img-ratio" style="background-color: #ffffff; display: flex; align-items: center; justify-content: center;">
-                            <img src="images/sculpture/s5_cover.webp" loading="lazy" alt="X - Acrylic Sculpture" onerror="this.src='images/sculpture/s5_cover.jpg'" style="object-fit: contain; transform: scale(0.8);">
+                            <img src="images/sculpture/s5_cover.webp" loading="lazy" decoding="async"
+                                 onload="this.classList.add('loaded')"
+                                 onerror="this.src='images/sculpture/s5_cover.jpg'" style="object-fit: contain; transform: scale(0.8);">
                         </div>
                         <div class="project-info">
                             <h4 class="project-title">X</h4>
@@ -390,7 +406,9 @@
                     <h3 class="series-label">Formless Series</h3>
                     <a href="series4.html" class="project">
                         <div class="project-image-wrapper img-ratio">
-                            <img src="images/sculpture/s4_cover.webp" loading="lazy" alt="At ease - Resin Sculpture" onerror="this.src='images/sculpture/s4_cover.jpg'">
+                            <img src="images/sculpture/s4_cover.webp" loading="lazy" decoding="async"
+                                 onload="this.classList.add('loaded')"
+                                 onerror="this.src='images/sculpture/s4_cover.jpg'">
                         </div>
                         <div class="project-info">
                             <h4 class="project-title">At ease</h4>
@@ -403,7 +421,9 @@
                     <h3 class="series-label">Gold Series</h3>
                     <a href="series3.html" class="project">
                         <div class="project-image-wrapper img-ratio">
-                            <img src="images/sculpture/s3_cover.webp" loading="lazy" alt="New Eighteenth Arhat - Goldenleaf resin" onerror="this.src='images/sculpture/s3_cover.jpg'">
+                            <img src="images/sculpture/s3_cover.webp" loading="lazy" decoding="async"
+                                 onload="this.classList.add('loaded')"
+                                 onerror="this.src='images/sculpture/s3_cover.jpg'">
                         </div>
                         <div class="project-info">
                             <h4 class="project-title">New Eighteenth Arhat</h4>
@@ -420,7 +440,9 @@
                 <article>
                     <a href="project-coral.html" class="project">
                         <div class="project-image-wrapper video-ratio">
-                            <img src="images/projects/coral_cover.webp" loading="lazy" alt="Coral Planting Project Documentary" onerror="this.src='images/projects/coral_cover.jpg'">
+                            <img src="images/projects/coral_cover.webp" loading="lazy" decoding="async"
+                                 onload="this.classList.add('loaded')"
+                                 onerror="this.src='images/projects/coral_cover.jpg'">
                             <div class="play-overlay"><div class="play-button"></div></div>
                         </div>
                         <div class="project-info">
@@ -459,29 +481,32 @@
     <footer>&copy; 2026 ZHANGJIARUI ARTWORKS.</footer>
 
     <script>
+        // 核心脚本保持不变，仅优化动画触发性能
         const nav = document.getElementById('navbar');
         const progress = document.getElementById('scroll-progress');
         const btt = document.getElementById('back-to-top');
 
+        // 使用 rAF 优化滚动
+        let ticking = false;
         window.addEventListener('scroll', () => {
-            const winScroll = window.pageYOffset || document.documentElement.scrollTop;
-            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-            
-            progress.style.width = (winScroll / height) * 100 + "%";
+            if (!ticking) {
+                window.requestAnimationFrame(() => {
+                    const winScroll = window.pageYOffset || document.documentElement.scrollTop;
+                    const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+                    progress.style.width = (winScroll / height) * 100 + "%";
 
-            if (winScroll > 50) {
-                nav.classList.add("nav-scrolled");
-                btt.classList.add("visible");
-            } else {
-                nav.classList.remove("nav-scrolled");
-                btt.classList.remove("visible");
+                    if (winScroll > 50) {
+                        nav.classList.add("nav-scrolled");
+                        btt.classList.add("visible");
+                    } else {
+                        nav.classList.remove("nav-scrolled");
+                        btt.classList.remove("visible");
+                    }
+                    ticking = false;
+                });
+                ticking = true;
             }
         }, { passive: true });
-
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: "0px 0px -50px 0px"
-        };
 
         const revealObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
@@ -490,12 +515,13 @@
                     revealObserver.unobserve(entry.target);
                 }
             });
-        }, observerOptions);
+        }, { threshold: 0.1, rootMargin: "0px 0px -50px 0px" });
 
         document.querySelectorAll('.statement-section, .content-section').forEach(sec => {
             revealObserver.observe(sec);
         });
 
+        // 视差效果限桌面端
         if (window.innerWidth > 900) {
             const hero = document.getElementById('hero-section');
             const imgWrap = document.getElementById('hero-img-wrap');
