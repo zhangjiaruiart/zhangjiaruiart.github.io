@@ -137,7 +137,7 @@
 
         /* --- 艺术立场区块样式 --- */
         .statement-section {
-            padding: 120px 5% 40px; /* 减少底部填充 */
+            padding: 120px 5% 40px; /* 底部 padding 从 100px 减少到 40px */
             max-width: 900px;
             margin: 0 auto;
             text-align: center;
@@ -159,17 +159,19 @@
             transform: translateY(0);
         }
 
-        /* --- 布局核心：整体向上提 10% --- */
+        /* --- 布局核心 --- */
         .content-section { 
-            padding: 40px 5% 20px; /* 减少顶部 padding */
-            max-width: 1260px; 
-            margin: -60px auto 0; /* 使用负 margin 整体上提约 10% 视口空间 */
-            opacity: 0; 
-            transform: translateY(20px);
+            padding: 80px 5% 20px; max-width: 1260px; margin: 0 auto; 
+            opacity: 0; transform: translateY(20px);
             transition: all 1.2s cubic-bezier(0.15, 1, 0.3, 1);
-            position: relative;
-            z-index: 10;
         }
+
+        /* 核心修改：将从 eco-art 开始的内容整体向上提升 5% 的视口高度 */
+        #eco-art {
+            margin-top: -5vh; 
+            padding-top: 20px; /* 减少顶部内边距 */
+        }
+
         .content-section.revealed {
             opacity: 1; transform: translateY(0);
         }
@@ -180,6 +182,7 @@
             padding-bottom: 15px; color: #111; 
         }
 
+        /* 通用 2 列 Grid */
         .grid { 
             display: grid; 
             grid-template-columns: repeat(2, 1fr); 
@@ -187,6 +190,7 @@
             margin-bottom: 60px; 
         }
 
+        /* 雕塑部分专用：修改为 3 列排版 */
         .grid-sculpture-custom {
             display: grid;
             grid-template-columns: repeat(3, 1fr); 
@@ -256,7 +260,8 @@
             .nav-links.active { right: 0; }
             .nav-links a { color: #111111 !important; margin: 20px 0; font-size: 14px; }
             .grid, .grid-sculpture-custom { grid-template-columns: 1fr; gap: 40px; max-width: 100%; }
-            .content-section { padding: 40px 5% !important; margin-top: -20px; }
+            .content-section { padding: 40px 5% !important; }
+            #eco-art { margin-top: -2vh; } /* 移动端提升幅度略微减小 */
             .statement-text { font-size: 16px; }
             .statement-section { padding: 80px 8% 40px; }
         }
@@ -455,6 +460,7 @@
     <footer>&copy; 2026 ZHANGJIARUI ARTWORKS.</footer>
 
     <script>
+        // 滚动进度、导航控制与入场动画
         const revealOnScroll = function() {
             const nav = document.getElementById('navbar');
             const progress = document.getElementById('scroll-progress');
@@ -462,8 +468,10 @@
             const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
             const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
             
+            // 进度条
             progress.style.width = (winScroll / height) * 100 + "%";
 
+            // 导航栏与返回顶部
             if (winScroll > 50) {
                 nav.classList.add("nav-scrolled");
                 btt.classList.add("visible");
@@ -472,6 +480,7 @@
                 btt.classList.remove("visible");
             }
 
+            // 检查区块是否进入视口进行显示
             const sections = document.querySelectorAll('.statement-section, .content-section');
             sections.forEach(sec => {
                 const rect = sec.getBoundingClientRect();
@@ -482,10 +491,11 @@
         };
 
         window.onscroll = revealOnScroll;
-        window.onload = revealOnScroll;
+        window.onload = revealOnScroll; 
 
         document.getElementById('back-to-top').onclick = () => window.scrollTo({top: 0, behavior: 'smooth'});
 
+        // Hero 视差效果
         if (window.innerWidth > 900) {
             const hero = document.getElementById('hero-section');
             const img = document.getElementById('hero-img-wrap');
