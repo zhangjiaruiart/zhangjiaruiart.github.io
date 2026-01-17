@@ -147,12 +147,23 @@
             padding-bottom: 15px; color: #111; 
         }
 
-        /* 统一使用 Grid 布局，确保两列等宽 */
+        /* 通用 2 列 Grid */
         .grid { 
             display: grid; 
             grid-template-columns: repeat(2, 1fr); 
             gap: 60px 60px; 
             margin-bottom: 60px; 
+        }
+
+        /* 雕塑部分专用：缩小 25% 的 2 列布局 */
+        .grid-sculpture-custom {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 60px 60px;
+            margin-bottom: 60px;
+            max-width: 75%; /* 容器缩小到 75%，内部图片随之等比缩小 25% */
+            margin-left: auto;
+            margin-right: auto;
         }
 
         .series-label {
@@ -215,7 +226,7 @@
             }
             .nav-links.active { right: 0; }
             .nav-links a { color: #111111 !important; margin: 20px 0; font-size: 14px; }
-            .grid { grid-template-columns: 1fr; gap: 40px; }
+            .grid, .grid-sculpture-custom { grid-template-columns: 1fr; gap: 40px; max-width: 100%; }
             .content-section { padding: 40px 5% !important; }
         }
 
@@ -295,7 +306,7 @@
 
         <section class="content-section" id="sculpture">
             <h2 class="category-title">Sculpture</h2>
-            <div class="grid">
+            <div class="grid-sculpture-custom">
                 <article>
                     <h3 class="series-label">Wood Series</h3>
                     <a href="series1.html" class="project">
@@ -416,10 +427,8 @@
             const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
             const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
             
-            // 进度条
             progress.style.width = (winScroll / height) * 100 + "%";
 
-            // 导航背景与返回按钮
             if (winScroll > 50) {
                 nav.classList.add("nav-scrolled");
                 btt.classList.add("visible");
@@ -429,10 +438,8 @@
             }
         };
 
-        // 返回顶部
         document.getElementById('back-to-top').onclick = () => window.scrollTo({top: 0, behavior: 'smooth'});
 
-        // 封面视差效果 (PC端)
         if (window.innerWidth > 900) {
             const hero = document.getElementById('hero-section');
             const img = document.getElementById('hero-img-wrap');
@@ -443,9 +450,7 @@
             });
         }
 
-        // 移动端菜单
         const navLinks = document.getElementById('navLinks');
-        const menuToggle = document.getElementById('menuToggle');
         function toggleMenu() {
             navLinks.classList.toggle('active');
             document.body.style.overflow = navLinks.classList.contains('active') ? 'hidden' : 'auto';
