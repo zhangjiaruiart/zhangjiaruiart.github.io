@@ -5,98 +5,172 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FORMLESS SERIES | ZHANG JIARUI</title>
     <style>
-        :root {
-            --accent: #111;
-            --text-light: #666;
-            --bg-color: #ffffff;
-            --transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
+        /* 全局样式 */
         body, html {
             margin: 0; padding: 0;
-            font-family: "Optima", "Didot", "PingFang SC", sans-serif;
-            background-color: var(--bg-color); color: var(--accent);
+            font-family: "Optima", "Didot", "Helvetica Neue", Helvetica, Arial, sans-serif;
+            background-color: #ffffff; color: #111111;
             -webkit-font-smoothing: antialiased;
+            scroll-behavior: smooth;
         }
 
-        /* 导航栏 - 极致透明模糊 */
+        /* 导航栏 */
         nav {
-            padding: 35px 5%;
+            padding: 30px 5%;
             display: flex; justify-content: space-between; align-items: center;
             position: fixed; top: 0; left: 0; right: 0;
-            z-index: 1000; background: rgba(255, 255, 255, 0.8);
-            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(15px);
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
         }
-        .logo { font-size: 14px; letter-spacing: 0.5em; text-decoration: none; color: #111; text-transform: uppercase; }
-        .back-link { font-size: 10px; letter-spacing: 0.2em; text-decoration: none; color: #aaa; transition: 0.3s; }
-        .back-link:hover { color: #111; }
+        nav.hidden { transform: translateY(-100%); }
 
-        .container { max-width: 1500px; margin: 0 auto; padding: 200px 5% 100px; }
+        .logo { font-size: 14px; font-weight: 300; letter-spacing: 0.5em; text-decoration: none; color: #111; text-transform: uppercase; }
+        .back-link { font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; text-decoration: none; color: #aaa; transition: all 0.3s ease; }
+        .back-link:hover { color: #111; padding-left: 10px; }
+        .back-link { font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; text-decoration: none; color: #aaa; transition: all 0.4s ease; }
+        .back-link:hover { color: #111; transform: translateX(-5px); }
 
-        /* 文案部分 - 优雅对齐 */
-        .series-intro { margin-bottom: 140px; max-width: 800px; }
-        .series-title { font-size: 32px; font-weight: 300; letter-spacing: 0.4em; text-transform: uppercase; margin-bottom: 40px; }
-        .series-description { font-size: 15px; color: var(--text-light); line-height: 2.3; font-weight: 300; text-align: justify; }
+        .container { max-width: 1400px; margin: 0 auto; padding: 120px 5% 60px; }
+        .container { max-width: 1400px; margin: 0 auto; padding: 160px 5% 60px; }
 
-        /* 画廊网格 - 12列布局 */
-        .gallery-grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 60px 40px; align-items: start; }
-        
-        /* 基础作品项 */
-        .work-item { 
-            position: relative; opacity: 0; transform: translateY(50px);
-            transition: opacity 1.5s var(--transition), transform 1.5s var(--transition);
+        /* 系列介绍 */
+        .series-intro { margin: 40px 0 60px 0; max-width: 800px; }
+        .series-title { font-size: 26px; font-weight: 300; letter-spacing: 0.3em; text-transform: uppercase; margin-bottom: 20px; }
+        .series-description { font-size: 15px; color: #444; line-height: 2; font-weight: 300; text-align: justify; }
+        /* 系列介绍动画 */
+        .series-intro { 
+            margin: 0 0 80px 0; 
+            max-width: 800px;
+            animation: fadeIn 1.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .series-title { font-size: 26px; font-weight: 300; letter-spacing: 0.3em; text-transform: uppercase; margin-bottom: 25px; }
+        .series-description { font-size: 15px; color: #444; line-height: 2.1; font-weight: 300; text-align: justify; }
+
+        /* 作品项目 */
+        /* 作品项目 - 丝滑动效核心 */
+        .work-item {
+            opacity: 0; 
+            transform: translateY(20px);
+            transition: opacity 1s ease, transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+            transform: translateY(40px);
+            transition: opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1), 
+                        transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+            margin-bottom: 40px;
         }
         .work-item.visible { opacity: 1; transform: translateY(0); }
 
-        /* 网格定义 */
-        .span-12 { grid-column: span 12; }
-        .span-8 { grid-column: span 8; }
-        .span-7 { grid-column: span 7; }
-        .span-5 { grid-column: span 5; }
-        .span-4 { grid-column: span 4; }
-        .span-6 { grid-column: span 6; }
-
-        /* 偏移量增加艺术感 */
-        .offset-top { margin-top: 120px; }
-        .offset-bottom { margin-bottom: 80px; }
-
         .work-image-wrapper {
-            width: 100%; overflow: hidden; background-color: #f9f9f9;
+            width: 100%; overflow: hidden; background-color: #fcfcfc;
             cursor: zoom-in; position: relative;
         }
+        
+        /* 图片内悬停缩放 */
         .work-image-wrapper img { 
             width: 100%; height: auto; display: block; 
-            transition: transform 2s var(--transition);
+            transition: transform 0.8s cubic-bezier(0.165, 0.84, 0.44, 1);
+            transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+            will-change: transform;
         }
-        .work-item:hover .work-image-wrapper img { transform: scale(1.04); }
+        .work-item:hover .work-image-wrapper img {
+            transform: scale(1.04);
+        }
 
-        /* 作品说明标签 - 画廊风格 */
-        .work-info { padding: 30px 0; border-top: 1px solid #eee; margin-top: 15px; max-width: 300px; }
-        .work-name { font-size: 13px; letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 8px; }
-        .work-detail { font-size: 10px; color: #999; text-transform: uppercase; letter-spacing: 0.1em; }
+        .work-info { 
+            padding-top: 15px; border-top: 1px solid #eee; margin-top: 10px; 
+            padding-top: 20px; border-top: 1px solid #f0f0f0; margin-top: 15px; 
+            position: relative; opacity: 0; transform: translateY(10px);
+            transition: all 0.8s ease 0.3s;
+            transition: all 1s cubic-bezier(0.16, 1, 0.3, 1) 0.4s;
+        }
+        .work-item.visible .work-info { opacity: 1; transform: translateY(0); }
 
-        /* 全屏预览层 */
+        .work-name { font-size: 13px; letter-spacing: 0.15em; text-transform: uppercase; }
+        .work-detail { font-size: 10px; color: #999; text-transform: uppercase; margin-top: 6px; }
+        .work-name { font-size: 13px; letter-spacing: 0.15em; text-transform: uppercase; font-weight: 400; }
+        .work-detail { font-size: 10px; color: #999; text-transform: uppercase; margin-top: 8px; letter-spacing: 0.05em; }
+
+        /* --- At Ease 布局 --- */
+        .layout-group-A { display: flex; gap: 30px; margin-bottom: 80px; align-items: flex-start; }
+        /* --- 布局结构 --- */
+        .layout-group-A { display: flex; gap: 40px; margin-bottom: 100px; align-items: flex-start; }
+        .main-A { flex: 1.8; margin-bottom: 0; }
+        .side-A { flex: 1; display: flex; flex-direction: column; gap: 20px; }
+        .side-A { flex: 1; display: flex; flex-direction: column; gap: 30px; }
+        .main-A .work-image-wrapper img { width: 100%; height: auto; object-fit: contain; }
+        .side-A .work-item { margin-bottom: 0; }
+        .side-A .work-image-wrapper img { width: 100%; height: auto; object-fit: cover; }
+
+        /* --- 核心修改：s4_8 裁切样式 --- */
+        .crop-s4-8 {
+            aspect-ratio: 16 / 7; /* 通过宽高比锁定显示区域 */
+        }
+        /* --- 裁切样式 --- */
+        .crop-s4-8 { aspect-ratio: 16 / 7; }
+        .crop-s4-8 img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* 填充并裁切 */
+            object-position: center 50%; /* 保持中心，裁切掉上下 */
+            transform: scale(1.1); /* 配合微调，确保裁切比例 */
+            width: 100%; height: 100%;
+            object-fit: cover;
+            object-position: center 50%;
+        }
+
+        /* 网格布局 */
+        .grid-two-columns { display: grid; grid-template-columns: repeat(2, 1fr); gap: 40px; margin-bottom: 40px; }
+        .full-width { width: 100%; margin-bottom: 80px; }
+        /* 网格与全宽 */
+        .grid-two-columns { display: grid; grid-template-columns: repeat(2, 1fr); gap: 50px; margin-bottom: 50px; }
+        .full-width { width: 100%; margin-bottom: 100px; }
+
+        /* 大图预览 Overlay 优化 */
         #overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(255,255,255,0.98); display: none; z-index: 2000;
+            background: rgba(255,255,255,0.98); 
+            display: none; z-index: 2000;
             justify-content: center; align-items: center; cursor: zoom-out;
+            opacity: 0; transition: opacity 0.4s ease;
+        }
+        #overlay.active { opacity: 1; display: flex; }
+        #overlay img { 
+            max-width: 90%; max-height: 90%; object-fit: contain; 
+            transform: scale(0.95); transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
         }
         #overlay img { max-width: 90%; max-height: 90%; object-fit: contain; }
+        #overlay.active img { transform: scale(1); }
 
-        footer { padding: 120px 0 60px; text-align: center; font-size: 9px; letter-spacing: 0.4em; color: #ccc; }
+        footer { padding: 80px 0 40px; text-align: center; font-size: 9px; letter-spacing: 0.4em; color: #ccc; }
+        footer { padding: 100px 0 60px; text-align: center; font-size: 9px; letter-spacing: 0.4em; color: #ccc; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
 
         @media (max-width: 900px) {
-            .span-8, .span-7, .span-5, .span-4, .span-6 { grid-column: span 12; }
-            .offset-top { margin-top: 0; }
-            .gallery-grid { gap: 40px; }
+            .layout-group-A { flex-direction: column; }
+            .container { padding-top: 120px; }
+            .layout-group-A { flex-direction: column; gap: 40px; }
+            .grid-two-columns { grid-template-columns: 1fr; }
+            .side-A { gap: 40px; }
+            .crop-s4-8 { aspect-ratio: 4 / 3; } /* 移动端适当增加高度 */
+            .crop-s4-8 { aspect-ratio: 4 / 3; }
         }
     </style>
 </head>
 <body>
 
-    <nav>
+    <nav id="navbar">
         <a href="index.html" class="logo">ZHANGJIARUI ARTWORKS</a>
-        <a href="index.html#sculpture" class="back-link">← VIEW COLLECTION</a>
+        <a href="index.html#sculpture" class="back-link">← Back to Series</a>
     </nav>
 
     <div id="overlay"><img src=""></div>
@@ -105,14 +179,16 @@
         <header class="series-intro">
             <h1 class="series-title">Formless Series</h1>
             <p class="series-description">
-                I think the most attractive line in traditional Chinese modeling language is "curve". 
+                I think the most attractive line in traditional Chinese modeling language is "curve".
+Religious sculptures since the Northern Dynasties have been ordered by lines in their volume, including the density of the lines, the shadows of the lines, the rhythm of the lines, and the tightness of the lines.
+The names and stories of this type of sculpture are the starting point for my creations.
                 Religious sculptures since the Northern Dynasties have been ordered by lines in their volume, including the density of the lines, the shadows of the lines, the rhythm of the lines, and the tightness of the lines.
                 The names and stories of this type of sculpture are the starting point for my creations.
             </p>
         </header>
 
-        <main class="gallery-grid">
-            <div class="work-item span-7">
+        <section class="layout-group-A">
+            <div class="work-item main-A">
                 <div class="work-image-wrapper">
                     <img src="images/sculpture/s4_1.webp" onerror="handleError(this, 's4_1')">
                 </div>
@@ -121,85 +197,83 @@
                     <div class="work-detail">Transparent Resin / 45 x 23 x 75 cm / 2023</div>
                 </div>
             </div>
+            <div class="side-A">
+                <div class="work-item"><div class="work-image-wrapper"><img src="images/sculpture/s4_2.webp" onerror="handleError(this, 's4_2')"></div></div>
+                <div class="work-item"><div class="work-image-wrapper"><img src="images/sculpture/s4_3.webp" onerror="handleError(this, 's4_3')"></div></div>
+                <div class="work-item"><div class="work-image-wrapper"><img src="images/sculpture/s4_4.webp" onerror="handleError(this, 's4_4')"></div></div>
+            </div>
+        </section>
 
-            <div class="work-item span-5 offset-top">
-                <div class="work-image-wrapper">
-                    <img src="images/sculpture/s4_2.webp" onerror="handleError(this, 's4_2')">
-                </div>
+        <div class="work-item full-width">
+            <div class="work-image-wrapper">
+                <img src="images/sculpture/s4_5.webp" onerror="handleError(this, 's4_5')">
             </div>
+            <div class="work-info">
+                <div class="work-name">Nirvana</div>
+                <div class="work-detail">Transparent Resin / 80 x 30 x 28 cm / 2023</div>
+            </div>
+        </div>
 
-            <div class="work-item span-6">
-                <div class="work-image-wrapper">
-                    <img src="images/sculpture/s4_3.webp" onerror="handleError(this, 's4_3')">
-                </div>
+        <div class="grid-two-columns">
+            <div class="work-item">
+                <div class="work-image-wrapper"><img src="images/sculpture/s4_6.webp" onerror="handleError(this, 's4_6')"></div>
+                <div class="work-info"><div class="work-name">Nirvana</div></div>
             </div>
-            <div class="work-item span-6 offset-top">
-                <div class="work-image-wrapper">
-                    <img src="images/sculpture/s4_4.webp" onerror="handleError(this, 's4_4')">
-                </div>
+            <div class="work-item">
+                <div class="work-image-wrapper"><img src="images/sculpture/s4_7.webp" onerror="handleError(this, 's4_7')"></div>
+                <div class="work-info"><div class="work-name">Nirvana</div></div>
             </div>
+        </div>
 
-            <div class="work-item span-12">
-                <div class="work-image-wrapper">
-                    <img src="images/sculpture/s4_5.webp" onerror="handleError(this, 's4_5')">
-                </div>
+        <div class="work-item full-width">
+            <div class="work-image-wrapper crop-s4-8">
+                <img src="images/sculpture/s4_8.webp" onerror="handleError(this, 's4_8')">
             </div>
+        </div>
 
-            <div class="work-item span-4">
-                <div class="work-image-wrapper">
-                    <img src="images/sculpture/s4_6.webp" onerror="handleError(this, 's4_6')">
-                </div>
-            </div>
-            <div class="work-item span-4">
-                <div class="work-image-wrapper">
-                    <img src="images/sculpture/s4_7.webp" onerror="handleError(this, 's4_7')">
-                </div>
-            </div>
-            <div class="work-item span-4">
-                <div class="work-image-wrapper">
-                    <img src="images/sculpture/s4_8.webp" onerror="handleError(this, 's4_8')">
-                </div>
-            </div>
-
-            <div class="work-item span-12 offset-top">
+        <div class="grid-two-columns">
+            <div class="work-item">
                 <div class="work-image-wrapper">
                     <img src="images/sculpture/s4_9.webp" onerror="handleError(this, 's4_9')">
                 </div>
+                <div class="work-info">
+                    <div class="work-name">Present</div>
+                    <div class="work-detail">Transparent Resin / 105 x 20 x 20 cm / 2023</div>
+                </div>
             </div>
-        </main>
+            <div class="work-item" style="opacity: 0; pointer-events: none;"></div>
+        </div>
+
     </div>
 
     <footer>&copy; 2026 ZHANGJIARUI ARTWORKS.</footer>
 
     <script>
-        // 1. 图片加载保护
         function handleError(img, name) {
             const path = 'images/sculpture/';
-            if (img.src.includes('.webp')) {
-                img.src = path + name + '.jpg';
-            } else if (img.src.includes('.jpg')) {
-                img.src = path + name + '.JPG';
-            } else {
-                img.onerror = null;
-            }
+            if (img.src.includes('.webp')) img.src = path + name + '.jpg';
+            else if (img.src.includes('.jpg')) img.src = path + name + '.JPG';
+            else img.onerror = null;
         }
 
-        // 2. 滚动淡入动效 (Intersection Observer)
-        const observerOptions = { threshold: 0.15 };
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                }
+                if (entry.isIntersecting) entry.target.classList.add('visible');
             });
-        }, observerOptions);
+        }, { threshold: 0.1 });
+        document.querySelectorAll('.work-item').forEach(item => observer.observe(item));
 
-        document.querySelectorAll('.work-item').forEach(el => observer.observe(el));
+        let lastScroll = 0;
+        window.addEventListener('scroll', () => {
+            const currentScroll = window.pageYOffset;
+            const navbar = document.getElementById('navbar');
+            if (currentScroll > lastScroll && currentScroll > 200) navbar.classList.add('hidden');
+            else navbar.classList.remove('hidden');
+            lastScroll = currentScroll;
+        });
 
-        // 3. 画廊大图预览
         const overlay = document.getElementById('overlay');
         const overlayImg = overlay.querySelector('img');
-        
         document.querySelectorAll('.work-image-wrapper img').forEach(img => {
             img.addEventListener('click', () => {
                 overlayImg.src = img.src;
@@ -207,7 +281,6 @@
                 document.body.style.overflow = 'hidden';
             });
         });
-
         overlay.addEventListener('click', () => {
             overlay.style.display = 'none';
             document.body.style.overflow = 'auto';
@@ -215,3 +288,4 @@
     </script>
 </body>
 </html>
+                <img src="images/sculpture/s4
