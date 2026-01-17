@@ -35,20 +35,17 @@
 
         /* 系列介绍 */
         .series-intro { 
-            margin: 0 0 80px 0; 
-            max-width: 800px;
+            margin: 0 0 80px 0; max-width: 800px;
             animation: fadeIn 1.5s cubic-bezier(0.16, 1, 0.3, 1);
         }
         .series-title { font-size: 26px; font-weight: 300; letter-spacing: 0.3em; text-transform: uppercase; margin-bottom: 25px; }
         .series-description { font-size: 15px; color: #444; line-height: 2.1; font-weight: 300; text-align: justify; }
 
-        /* 作品项目 */
+        /* 作品项目动效 */
         .work-item {
-            opacity: 0; 
-            transform: translateY(40px);
-            transition: opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1), 
-                        transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
-            margin-bottom: 40px;
+            opacity: 0; transform: translateY(40px);
+            transition: opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1), transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+            margin-bottom: 50px;
         }
         .work-item.visible { opacity: 1; transform: translateY(0); }
 
@@ -56,52 +53,45 @@
             width: 100%; overflow: hidden; background-color: #fcfcfc;
             cursor: zoom-in; position: relative;
         }
-        
         .work-image-wrapper img { 
             width: 100%; height: auto; display: block; 
             transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
             will-change: transform;
         }
-        .work-item:hover .work-image-wrapper img {
-            transform: scale(1.04);
-        }
+        .work-item:hover .work-image-wrapper img { transform: scale(1.04); }
 
         .work-info { 
             padding-top: 20px; border-top: 1px solid #f0f0f0; margin-top: 15px; 
-            position: relative; opacity: 0; transform: translateY(10px);
+            opacity: 0; transform: translateY(10px);
             transition: all 1s cubic-bezier(0.16, 1, 0.3, 1) 0.4s;
         }
         .work-item.visible .work-info { opacity: 1; transform: translateY(0); }
-
-        .work-name { font-size: 13px; letter-spacing: 0.15em; text-transform: uppercase; font-weight: 400; }
-        .work-detail { font-size: 10px; color: #999; text-transform: uppercase; margin-top: 8px; letter-spacing: 0.05em; }
+        .work-name { font-size: 13px; letter-spacing: 0.15em; text-transform: uppercase; }
+        .work-detail { font-size: 10px; color: #999; text-transform: uppercase; margin-top: 8px; }
 
         /* 布局结构 */
-        .layout-group-A { display: flex; gap: 40px; margin-bottom: 100px; align-items: flex-start; }
+        .layout-group-A { display: flex; gap: 40px; margin-bottom: 50px; align-items: flex-start; }
         .main-A { flex: 1.8; margin-bottom: 0; }
         .side-A { flex: 1; display: flex; flex-direction: column; gap: 30px; }
-        .side-A .work-item { margin-bottom: 0; }
 
-        /* 覆盖层 Overlay */
+        .grid-two { display: grid; grid-template-columns: repeat(2, 1fr); gap: 40px; margin-bottom: 40px; }
+        .full-width { width: 100%; margin-bottom: 80px; }
+
+        /* 全屏预览 Overlay */
         #overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(255,255,255,0.98); 
-            display: none; z-index: 2000;
+            background: rgba(255,255,255,0.98); display: none; z-index: 2000;
             justify-content: center; align-items: center; cursor: zoom-out;
         }
-        #overlay.active { display: flex; }
         #overlay img { max-width: 90%; max-height: 90%; object-fit: contain; }
 
         footer { padding: 100px 0 60px; text-align: center; font-size: 9px; letter-spacing: 0.4em; color: #ccc; }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
         @media (max-width: 900px) {
-            .container { padding-top: 120px; }
-            .layout-group-A { flex-direction: column; gap: 40px; }
+            .layout-group-A { flex-direction: column; }
+            .grid-two { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -119,14 +109,14 @@
             <h1 class="series-title">Formless Series</h1>
             <p class="series-description">
                 I think the most attractive line in traditional Chinese modeling language is "curve". 
-                Religious sculptures since the Northern Dynasties have been ordered by lines in their volume, including the density of the lines, the shadows of the lines, the rhythm of the lines, and the tightness of the lines.
+                Religious sculptures since the Northern Dynasties have been ordered by lines in their volume...
             </p>
         </header>
 
         <section class="layout-group-A">
             <div class="work-item main-A">
                 <div class="work-image-wrapper">
-                    <img src="images/sculpture/s4_1.webp" alt="At Ease" onerror="imgRetry(this, 's4_1')">
+                    <img src="images/sculpture/s4_1.webp" onerror="handleError(this, 's4_1')">
                 </div>
                 <div class="work-info">
                     <div class="work-name">At Ease</div>
@@ -134,30 +124,31 @@
                 </div>
             </div>
             <div class="side-A">
-                <div class="work-item">
-                    <div class="work-image-wrapper">
-                        <img src="images/sculpture/s4_2.webp" alt="Detail 1" onerror="imgRetry(this, 's4_2')">
-                    </div>
-                </div>
-                <div class="work-item">
-                    <div class="work-image-wrapper">
-                        <img src="images/sculpture/s4_3.webp" alt="Detail 2" onerror="imgRetry(this, 's4_3')">
-                    </div>
-                </div>
-                <div class="work-item">
-                    <div class="work-image-wrapper">
-                        <img src="images/sculpture/s4_4.webp" alt="Detail 3" onerror="imgRetry(this, 's4_4')">
-                    </div>
-                </div>
+                <div class="work-item"><div class="work-image-wrapper"><img src="images/sculpture/s4_2.webp" onerror="handleError(this, 's4_2')"></div></div>
+                <div class="work-item"><div class="work-image-wrapper"><img src="images/sculpture/s4_3.webp" onerror="handleError(this, 's4_3')"></div></div>
+                <div class="work-item"><div class="work-image-wrapper"><img src="images/sculpture/s4_4.webp" onerror="handleError(this, 's4_4')"></div></div>
             </div>
         </section>
+
+        <div class="grid-two">
+            <div class="work-item"><div class="work-image-wrapper"><img src="images/sculpture/s4_5.webp" onerror="handleError(this, 's4_5')"></div></div>
+            <div class="work-item"><div class="work-image-wrapper"><img src="images/sculpture/s4_6.webp" onerror="handleError(this, 's4_6')"></div></div>
+            <div class="work-item"><div class="work-image-wrapper"><img src="images/sculpture/s4_7.webp" onerror="handleError(this, 's4_7')"></div></div>
+            <div class="work-item"><div class="work-image-wrapper"><img src="images/sculpture/s4_8.webp" onerror="handleError(this, 's4_8')"></div></div>
+        </div>
+
+        <div class="work-item full-width">
+            <div class="work-image-wrapper">
+                <img src="images/sculpture/s4_9.webp" onerror="handleError(this, 's4_9')">
+            </div>
+        </div>
     </div>
 
     <footer>&copy; 2026 ZHANGJIARUI ARTWORKS.</footer>
 
     <script>
-        // 1. 图片加载容错 (参考 series1)
-        function imgRetry(img, name) {
+        // 1. 容错逻辑：WebP -> JPG -> 大写 JPG
+        function handleError(img, name) {
             if (img.src.includes('.webp')) {
                 img.src = 'images/sculpture/' + name + '.jpg';
             } else if (img.src.includes('.jpg')) {
@@ -167,31 +158,26 @@
             }
         }
 
-        // 2. 滚动淡入观察者
+        // 2. 滚动显示动效
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                }
+                if (entry.isIntersecting) entry.target.classList.add('visible');
             });
         }, { threshold: 0.1 });
-
         document.querySelectorAll('.work-item').forEach(item => observer.observe(item));
 
-        // 3. 全屏预览功能
+        // 3. 全屏预览
         const overlay = document.getElementById('overlay');
         const overlayImg = overlay.querySelector('img');
-
         document.querySelectorAll('.work-image-wrapper img').forEach(img => {
             img.addEventListener('click', () => {
                 overlayImg.src = img.src;
-                overlay.classList.add('active');
+                overlay.style.display = 'flex';
                 document.body.style.overflow = 'hidden';
             });
         });
-
         overlay.addEventListener('click', () => {
-            overlay.classList.remove('active');
+            overlay.style.display = 'none';
             document.body.style.overflow = 'auto';
         });
 
