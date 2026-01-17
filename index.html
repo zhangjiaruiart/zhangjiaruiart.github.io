@@ -16,14 +16,10 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        /* --- 阅读进度条 --- */
-        #progress-container {
-            position: fixed; top: 0; left: 0; width: 100%; height: 2px;
-            z-index: 3000; background: transparent;
-        }
-        #progress-bar {
-            height: 100%; width: 0%; background: #111;
-            transition: width 0.1s ease-out;
+        /* --- 新增：阅读进度条 --- */
+        #scroll-progress {
+            position: fixed; top: 0; left: 0; width: 0%; height: 2px;
+            background: #111; z-index: 3000; transition: width 0.1s ease-out;
         }
 
         /* --- 导航栏 --- */
@@ -56,18 +52,15 @@
 
         .nav-links { display: flex; align-items: center; }
         
-        /* 磁性容器：包裹链接以扩大感应范围 */
-        .magnetic-wrap {
-            display: flex; align-items: center; justify-content: center;
-            padding: 0 10px;
-        }
+        /* 新增：磁性包装层 */
+        .mag-wrap { display: flex; align-items: center; justify-content: center; }
 
         .nav-links a {
-            margin-left: 25px; text-decoration: none; color: #ffffff;
+            margin-left: 35px; text-decoration: none; color: #ffffff;
             font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase;
             font-weight: 300; position: relative; padding-bottom: 5px;
-            transition: color 0.4s ease, transform 0.2s cubic-bezier(0.23, 1, 0.32, 1);
-            display: inline-block;
+            transition: color 0.4s ease, transform 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+            display: inline-block; /* 必须为 inline-block 才能应用 transform */
         }
         .nav-scrolled .nav-links a { color: #111111; }
 
@@ -89,20 +82,27 @@
         }
         .nav-scrolled .menu-toggle span { background-color: #111; }
 
-        /* --- 封面效果 (包含视差容器) --- */
+        /* --- 封面效果 --- */
         .hero {
             height: 100vh; width: 100%; overflow: hidden;
             position: relative; background-color: #000;
-            perspective: 1000px; /* 3D透视 */
+            perspective: 1000px; /* 为3D视差做准备 */
         }
-        .hero-bg-wrap {
-            position: absolute; top: -5%; left: -5%; width: 110%; height: 110%;
-            transition: transform 0.1s ease-out;
+        /* 视差容器包裹图片 */
+        #hero-img-wrap {
+            width: 110%; height: 110%; position: absolute; top: -5%; left: -5%;
+            transition: transform 0.2s ease-out;
         }
         .hero img {
             width: 100%; height: 100%; object-fit: cover;
             object-position: center 60%; 
             filter: brightness(0.75); display: block;
+            animation: kenBurns 20s ease-in-out infinite alternate;
+        }
+
+        @keyframes kenBurns {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.05); }
         }
 
         .hero-overlay {
@@ -112,8 +112,8 @@
             text-align: center;
             width: 90%;
             z-index: 5;
-            transition: transform 0.15s ease-out; /* 随鼠标轻微晃动 */
-            pointer-events: none;
+            transition: transform 0.2s ease-out;
+            pointer-events: none; /* 防止遮挡下方滚动按钮 */
         }
 
         .hero-title {
@@ -198,28 +198,32 @@
         .project-title { font-size: 14px; font-weight: 400; letter-spacing: 0.1em; text-transform: uppercase; margin-top: 5px; }
         .project-meta { font-size: 10px; color: #aaa; margin-top: 4px; letter-spacing: 0.05em; text-transform: uppercase; line-height: 1.4; }
 
-        /* --- 返回顶部呼吸灯按钮 --- */
-        #backToTop {
-            position: fixed; bottom: 40px; right: 40px; width: 45px; height: 45px;
+        /* --- 新增：返回顶部按钮 --- */
+        #back-to-top {
+            position: fixed; bottom: 40px; right: 40px; width: 40px; height: 40px;
             background: #fff; border: 1px solid #eee; border-radius: 50%;
             display: flex; align-items: center; justify-content: center;
             cursor: pointer; opacity: 0; visibility: hidden; z-index: 1000;
-            transition: all 0.5s cubic-bezier(0.2, 1, 0.3, 1);
-            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+            transition: all 0.4s ease; box-shadow: 0 4px 15px rgba(0,0,0,0.05);
         }
-        #backToTop.show { opacity: 1; visibility: visible; }
-        #backToTop::before {
-            content: ''; width: 8px; height: 8px;
-            border-left: 1px solid #111; border-top: 1px solid #111;
+        #back-to-top.visible { opacity: 1; visibility: visible; }
+        #back-to-top::after {
+            content: ''; width: 8px; height: 8px; border-left: 1px solid #111; border-top: 1px solid #111;
             transform: rotate(45deg); margin-top: 4px;
         }
-        #backToTop:hover { border-color: #111; transform: translateY(-5px); }
+        #back-to-top:hover { transform: translateY(-5px); border-color: #111; }
 
-        /* --- 手机端调整 --- */
+        /* --- 手机端特殊调整 --- */
         @media (max-width: 900px) {
             .hero-overlay { top: 40%; }
-            .hero-title { font-size: 14.4px; line-height: 2.2; margin-bottom: 40px; letter-spacing: 0.4em;}
+            .hero-title { 
+                font-size: 14.4px; 
+                line-height: 2.2; 
+                margin-bottom: 40px; 
+                letter-spacing: 0.4em;
+            }
             .hero-title br { display: block; }
+
             .menu-toggle { display: flex; }
             .nav-links {
                 position: fixed; top: 0; right: -100%; width: 100%; height: 100vh;
@@ -231,8 +235,8 @@
             .content-section { padding: 40px 0 20px 0 !important; }
             .grid { display: block !important; }
             .project { width: 100% !important; margin-bottom: 40px; }
-            #backToTop { bottom: 20px; right: 20px; }
-            .magnetic-wrap { display: block; width: 100%; text-align: center; }
+            #back-to-top { right: 20px; bottom: 20px; }
+            .mag-wrap { width: 100%; }
         }
 
         @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
@@ -248,17 +252,17 @@
 </head>
 <body>
 
-    <div id="progress-container"><div id="progress-bar"></div></div>
+    <div id="scroll-progress"></div>
 
     <header>
         <nav id="navbar">
             <a href="index.html" class="logo">ZHANGJIARUI ARTWORKS</a>
             <div class="nav-links" id="navLinks">
-                <div class="magnetic-wrap"><a href="#eco-art" class="mag-item" onclick="closeMenu()">Ecological Art</a></div>
-                <div class="magnetic-wrap"><a href="#sculpture" class="mag-item" onclick="closeMenu()">Sculpture</a></div>
-                <div class="magnetic-wrap"><a href="#projects" class="mag-item" onclick="closeMenu()">Projects</a></div>
-                <div class="magnetic-wrap"><a href="biography.html" class="mag-item">BIOGRAPHY</a></div>
-                <div class="magnetic-wrap"><a href="#contact" class="mag-item" onclick="closeMenu()">Contact</a></div>
+                <div class="mag-wrap"><a href="#eco-art" onclick="closeMenu()">Ecological Art</a></div>
+                <div class="mag-wrap"><a href="#sculpture" onclick="closeMenu()">Sculpture</a></div>
+                <div class="mag-wrap"><a href="#projects" onclick="closeMenu()">Projects</a></div>
+                <div class="mag-wrap"><a href="biography.html">BIOGRAPHY</a></div>
+                <div class="mag-wrap"><a href="#contact" onclick="closeMenu()">Contact</a></div>
             </div>
             <div class="menu-toggle" id="menuToggle" onclick="toggleMenu()" aria-label="Toggle menu">
                 <span></span><span></span><span></span>
@@ -266,9 +270,9 @@
         </nav>
     </header>
 
-    <main>
-        <section class="hero" id="hero-parallax">
-            <div class="hero-bg-wrap" id="hero-bg">
+    <main id="main-content">
+        <section class="hero" id="hero-section">
+            <div id="hero-img-wrap">
                 <img src="images/cover.webp" alt="Zhang Jiarui Artwork" onerror="this.src='images/Cover.JPG';">
             </div>
             <div class="hero-overlay" id="hero-text">
@@ -285,7 +289,7 @@
                 <article>
                     <a href="eco-ice-burial.html" class="project">
                         <div class="project-image-wrapper video-ratio">
-                            <img src="images/eco/ice_burial_cover.webp" alt="Ice Burial" onerror="this.src='images/eco/ice_burial_cover.jpg'">
+                            <img src="images/eco/ice_burial_cover.webp" alt="Ice Burial" onerror="this.src='images/eco/ice_bur_cover.jpg'">
                             <div class="play-overlay"><div class="play-button"></div></div>
                         </div>
                         <div class="project-info">
@@ -315,11 +319,68 @@
                 <article style="flex: 1; min-width: 300px;">
                     <h3 style="font-size: 11px; letter-spacing: 0.3em; text-transform: uppercase; color: #888; margin: 20px 0 20px 0; font-weight: 300;">Wood Series</h3>
                     <a href="series1.html" class="project">
-                        <div class="project-image-wrapper img-ratio"><img src="images/sculpture/s1_cover.webp" alt="Triangle" onerror="this.src='images/sculpture/s1_cover.jpg'"></div>
-                        <div class="project-info"><h4 class="project-title">Triangle</h4><p class="project-meta">Wood / 2024</p></div>
+                        <div class="project-image-wrapper img-ratio">
+                            <img src="images/sculpture/s1_cover.webp" alt="Triangle" onerror="this.src='images/sculpture/s1_cover.jpg'">
+                        </div>
+                        <div class="project-info">
+                            <h4 class="project-title">Triangle</h4>
+                            <p class="project-meta">Wood / 2024</p>
+                        </div>
                     </a>
                 </article>
-                </div>
+
+                <article style="flex: 1; min-width: 300px;">
+                    <h3 style="font-size: 11px; letter-spacing: 0.3em; text-transform: uppercase; color: #888; margin: 20px 0 20px 0; font-weight: 300;">Water Series</h3>
+                    <a href="series2.html" class="project">
+                        <div class="project-image-wrapper img-ratio">
+                            <img src="images/sculpture/s2_cover.webp" alt="Water1" onerror="this.src='images/sculpture/s2_cover.jpg'">
+                        </div>
+                        <div class="project-info">
+                            <h4 class="project-title">Water1</h4>
+                            <p class="project-meta">Transparent resin / 2023</p>
+                        </div>
+                    </a>
+                </article>
+
+                <article style="flex: 1; min-width: 300px;">
+                    <h3 style="font-size: 11px; letter-spacing: 0.3em; text-transform: uppercase; color: #888; margin: 20px 0 20px 0; font-weight: 300;">Line Series</h3>
+                    <a href="series5.html" class="project">
+                        <div class="project-image-wrapper img-ratio" style="background-color: #ffffff; display: flex; align-items: center; justify-content: center;">
+                            <img src="images/sculpture/s5_cover.webp" alt="X" onerror="this.src='images/sculpture/s5_cover.jpg'" style="object-fit: contain; transform: scale(0.8);">
+                        </div>
+                        <div class="project-info">
+                            <h4 class="project-title">X</h4>
+                            <p class="project-meta">Acrylic / 2023</p>
+                        </div>
+                    </a>
+                </article>
+
+                <article style="flex: 1; min-width: 300px;">
+                    <h3 style="font-size: 11px; letter-spacing: 0.3em; text-transform: uppercase; color: #888; margin: 20px 0 20px 0; font-weight: 300;">Formless Series</h3>
+                    <a href="series4.html" class="project">
+                        <div class="project-image-wrapper img-ratio">
+                            <img src="images/sculpture/s4_cover.webp" alt="At ease" onerror="this.src='images/sculpture/s4_cover.jpg'">
+                        </div>
+                        <div class="project-info">
+                            <h4 class="project-title">At ease</h4>
+                            <p class="project-meta">Transparent resin / 2023</p>
+                        </div>
+                    </a>
+                </article>
+
+                <article style="flex: 1; min-width: 300px;">
+                    <h3 style="font-size: 11px; letter-spacing: 0.3em; text-transform: uppercase; color: #888; margin: 20px 0 20px 0; font-weight: 300;">Gold Series</h3>
+                    <a href="series3.html" class="project">
+                        <div class="project-image-wrapper img-ratio">
+                            <img src="images/sculpture/s3_cover.webp" alt="New Eighteenth Arhat" onerror="this.src='images/sculpture/s3_cover.jpg'">
+                        </div>
+                        <div class="project-info">
+                            <h4 class="project-title">New Eighteenth Arhat</h4>
+                            <p class="project-meta">Goldenleaf resin / 2015</p>
+                        </div>
+                    </a>
+                </article>
+            </div>
         </section>
 
         <section class="content-section" id="projects">
@@ -362,64 +423,71 @@
         </section>
     </main>
 
-    <div id="backToTop" onclick="window.scrollTo({top:0, behavior:'smooth'})"></div>
+    <div id="back-to-top"></div>
 
     <footer>&copy; 2026 ZHANGJIARUI ARTWORKS.</footer>
 
     <script>
-        // --- 核心滚动与UI逻辑 ---
+        // --- 基础滚动逻辑 (导航背景、进度条、返回顶部按钮) ---
         window.onscroll = function() {
-            var nav = document.getElementById('navbar');
-            var backToTop = document.getElementById('backToTop');
-            var winScroll = document.body.scrollTop || document.documentElement.scrollTop;
-            var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const nav = document.getElementById('navbar');
+            const progress = document.getElementById('scroll-progress');
+            const btt = document.getElementById('back-to-top');
+            
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
             
             // 进度条
-            var scrolled = (winScroll / height) * 100;
-            document.getElementById("progress-bar").style.width = scrolled + "%";
+            progress.style.width = scrolled + "%";
 
-            // 导航背景
+            // 导航变色
             if (winScroll > 50) {
                 nav.classList.add("nav-scrolled");
-                backToTop.classList.add("show");
+                btt.classList.add("visible");
             } else {
                 nav.classList.remove("nav-scrolled");
-                backToTop.classList.remove("show");
+                btt.classList.remove("visible");
             }
         };
 
-        // --- 磁性导航 (仅限非触摸屏设备) ---
-        const isTouchDevice = 'ontouchstart' in window;
-        if (!isTouchDevice) {
-            const magItems = document.querySelectorAll('.mag-item');
-            magItems.forEach(item => {
-                item.addEventListener('mousemove', (e) => {
-                    const rect = item.getBoundingClientRect();
+        // --- 返回顶部点击事件 ---
+        document.getElementById('back-to-top').onclick = function() {
+            window.scrollTo({top: 0, behavior: 'smooth'});
+        };
+
+        // --- 磁性导航交互 (仅桌面端) ---
+        if (window.innerWidth > 900) {
+            const magLinks = document.querySelectorAll('.nav-links a');
+            magLinks.forEach(link => {
+                link.addEventListener('mousemove', (e) => {
+                    const rect = link.getBoundingClientRect();
                     const x = (e.clientX - rect.left - rect.width / 2) * 0.4;
                     const y = (e.clientY - rect.top - rect.height / 2) * 0.4;
-                    item.style.transform = `translate(${x}px, ${y}px)`;
+                    link.style.transform = `translate(${x}px, ${y}px)`;
                 });
-                item.addEventListener('mouseleave', () => {
-                    item.style.transform = `translate(0px, 0px)`;
+                link.addEventListener('mouseleave', () => {
+                    link.style.transform = `translate(0, 0)`;
                 });
             });
 
-            // --- 封面动态视差 ---
-            const hero = document.getElementById('hero-parallax');
-            const heroBg = document.getElementById('hero-bg');
+            // --- 封面动态视差 (桌面端) ---
+            const heroSection = document.getElementById('hero-section');
+            const heroImgWrap = document.getElementById('hero-img-wrap');
             const heroText = document.getElementById('hero-text');
 
-            hero.addEventListener('mousemove', (e) => {
-                const x = (window.innerWidth / 2 - e.pageX) / 50;
-                const y = (window.innerHeight / 2 - e.pageY) / 50;
+            heroSection.addEventListener('mousemove', (e) => {
+                const moveX = (e.clientX - window.innerWidth / 2) / 50;
+                const moveY = (e.clientY - window.innerHeight / 2) / 50;
                 
-                // 背景图反向轻微移动
-                heroBg.style.transform = `translate(${x * 0.5}px, ${y * 0.5}px)`;
-                // 文字3D旋转
-                heroText.style.transform = `translate(-50%, -50%) rotateY(${-x * 0.5}deg) rotateX(${y * 0.5}deg)`;
+                // 背景微动
+                heroImgWrap.style.transform = `translate(${-moveX}px, ${-moveY}px)`;
+                // 文字轻微3D偏转
+                heroText.style.transform = `translate(-50%, -50%) rotateY(${moveX * 0.5}deg) rotateX(${-moveY * 0.5}deg)`;
             });
         }
 
+        // --- 原有菜单逻辑 ---
         const navLinks = document.getElementById('navLinks');
         const menuToggle = document.getElementById('menuToggle');
         function toggleMenu() {
