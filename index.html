@@ -140,28 +140,29 @@
             40% { transform: translateY(-10px) rotate(45deg); opacity: 0.8; }
         }
 
-        /* --- 艺术立场区块样式 (已增加上下各 10% 留白) --- */
+        /* --- 艺术立场区块样式 (已调整为两行布局) --- */
         .statement-section {
-            /* padding 的上下值增加到 10vh (视口高度的10%) 以获得均匀白边 */
             padding: 10vh 5%; 
-            margin: -35px auto 0; /* 保持向上偏移的衔接感 */
-            max-width: 900px;
+            margin: -35px auto 0; 
+            max-width: 1100px; /* 增加宽度以容纳两行文字 */
             text-align: center;
             position: relative;
             z-index: 10;
             box-sizing: border-box;
         }
         .statement-text {
-            font-size: 20px;
+            font-size: 19px; /* 稍微调小字号确保折行为两行 */
             line-height: 1.8;
             font-weight: 300;
             color: #222;
-            letter-spacing: 0.02em;
-            word-spacing: 0.05em;
+            letter-spacing: 0.01em; /* 微调字间距 */
+            word-spacing: 0.02em;
             font-style: italic;
             opacity: 0;
             transform: translateY(20px);
             transition: all 1.2s cubic-bezier(0.15, 1, 0.3, 1);
+            display: inline-block;
+            max-width: 100%;
         }
         .statement-section.revealed .statement-text {
             opacity: 1;
@@ -269,7 +270,7 @@
             .nav-links a { color: #111111 !important; margin: 20px 0; font-size: 14px; }
             .grid, .grid-sculpture-custom { grid-template-columns: 1fr; gap: 40px; max-width: 100%; }
             .content-section { padding: 40px 5% !important; margin-top: 0; }
-            .statement-text { font-size: 16px; }
+            .statement-text { font-size: 16px; font-style: italic; }
             .statement-section { padding: 8vh 8%; margin-top: -20px; }
         }
 
@@ -318,8 +319,7 @@
 
         <section class="statement-section" id="statement">
             <p class="statement-text">
-                Zhang Jiarui’s practice operates between sculptural reduction and site-specific ecological intervention, 
-                examining how material, time, and human action reshape fragile systems.
+                Zhang Jiarui’s practice operates between sculptural reduction and site-specific ecological intervention, examining how material, time, and human action reshape fragile systems.
             </p>
         </section>
 
