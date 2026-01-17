@@ -78,26 +78,50 @@
         }
         .nav-scrolled .menu-toggle span { background-color: #111; }
 
-        /* --- 封面效果 --- */
-        .hero {
-            height: 100vh; width: 100%; overflow: hidden;
-            position: relative; background-color: #000;
-        }
-        #hero-img-wrap {
-            width: 105%; height: 105%; position: absolute; top: -2.5%; left: -2.5%;
-            transition: transform 0.2s ease-out;
-        }
-        .hero img {
-            width: 100%; height: 100%; object-fit: cover;
-            object-position: center 60%; 
-            filter: brightness(0.75); display: block;
-            animation: kenBurns 20s ease-in-out infinite alternate;
-        }
+       /* --- 封面效果优化 --- */
+.hero {
+    height: 100vh; 
+    width: 100%; 
+    overflow: hidden;
+    position: relative; 
+    background-color: #000; /* 背景黑色，防止裁切处留白 */
+}
 
-        @keyframes kenBurns {
-            0% { transform: scale(1); }
-            100% { transform: scale(1.08); }
-        }
+#hero-img-wrap {
+    width: 100%; /* 回复到100%，消除人为裁切 */
+    height: 100%; 
+    position: absolute; 
+    top: 0; 
+    left: 0;
+    transition: transform 0.3s ease-out;
+}
+
+.hero img {
+    width: 100%; 
+    height: 100%; 
+    /* 关键：object-fit: cover 会填满容器。
+       如果希望完全不裁切，可改为 contain，但两边会留黑。
+       使用 cover 并配合 object-position 是目前主流艺术网站的最佳实践 */
+    object-fit: cover; 
+    object-position: center center; /* 居中对齐，保证核心视觉不偏移 */
+    filter: brightness(0.8); 
+    display: block;
+    /* 稍微减弱 Ken Burns 的强度（从 1.08 降到 1.04），减少边缘裁切感 */
+    animation: kenBurns 15s ease-in-out infinite alternate;
+    will-change: transform;
+}
+
+@keyframes kenBurns {
+    0% { transform: scale(1); }
+    100% { transform: scale(1.04); }
+}
+
+/* 针对大屏幕的视差微调，保持其灵敏度但范围缩小，防止露边 */
+@media (min-width: 901px) {
+    #hero-img-wrap {
+        transform: scale(1.05); /* 给视差预留一点点缩放空间 */
+    }
+}
 
         .hero-overlay {
             position: absolute; top: 45%; left: 50%;
