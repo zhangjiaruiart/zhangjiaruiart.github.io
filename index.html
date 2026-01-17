@@ -16,11 +16,6 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        /* 修复跳转时标题被导航栏遮挡的问题 */
-        section {
-            scroll-margin-top: 80px;
-        }
-
         /* --- 交互组件：进度条 --- */
         #scroll-progress {
             position: fixed; top: 0; left: 0; width: 0%; height: 2px;
@@ -140,47 +135,10 @@
             40% { transform: translateY(-10px) rotate(45deg); opacity: 0.8; }
         }
 
-        /* --- 艺术立场区块样式 (已调整为两行布局) --- */
-        .statement-section {
-            padding: 10vh 5%; 
-            margin: -35px auto 0; 
-            max-width: 1100px; /* 增加宽度以容纳两行文字 */
-            text-align: center;
-            position: relative;
-            z-index: 10;
-            box-sizing: border-box;
-        }
-        .statement-text {
-            font-size: 19px; /* 稍微调小字号确保折行为两行 */
-            line-height: 1.8;
-            font-weight: 300;
-            color: #222;
-            letter-spacing: 0.01em; /* 微调字间距 */
-            word-spacing: 0.02em;
-            font-style: italic;
-            opacity: 0;
-            transform: translateY(20px);
-            transition: all 1.2s cubic-bezier(0.15, 1, 0.3, 1);
-            display: inline-block;
-            max-width: 100%;
-        }
-        .statement-section.revealed .statement-text {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
         /* --- 布局核心 --- */
         .content-section { 
-            padding: 40px 5% 20px; 
-            margin: -25px auto 0; 
-            max-width: 1260px; 
-            opacity: 0; transform: translateY(20px);
-            transition: all 1.2s cubic-bezier(0.15, 1, 0.3, 1);
-            position: relative;
-            z-index: 5;
-        }
-        .content-section.revealed {
-            opacity: 1; transform: translateY(0);
+            padding: 80px 5% 20px; max-width: 1260px; margin: 0 auto; 
+            animation: fadeInUp 1.2s cubic-bezier(0.15, 1, 0.3, 1) both;
         }
 
         .category-title { 
@@ -189,6 +147,7 @@
             padding-bottom: 15px; color: #111; 
         }
 
+        /* 通用 2 列 Grid */
         .grid { 
             display: grid; 
             grid-template-columns: repeat(2, 1fr); 
@@ -196,10 +155,11 @@
             margin-bottom: 60px; 
         }
 
+        /* 雕塑部分专用：修改为 3 列排版 */
         .grid-sculpture-custom {
             display: grid;
-            grid-template-columns: repeat(3, 1fr); 
-            gap: 40px 30px; 
+            grid-template-columns: repeat(3, 1fr); /* 核心修改：改为 3 列 */
+            gap: 40px 30px; /* 适当缩小间距以适应 3 列 */
             margin-bottom: 60px;
             width: 100%;
         }
@@ -210,10 +170,7 @@
         }
 
         .project { text-decoration: none; color: inherit; display: block; }
-        .project-image-wrapper { 
-            overflow: hidden; margin-bottom: 20px; background-color: #fcfcfc; position: relative; 
-            will-change: transform; 
-        }
+        .project-image-wrapper { overflow: hidden; margin-bottom: 20px; background-color: #fcfcfc; position: relative; }
         .img-ratio { aspect-ratio: 4 / 5; }
         .video-ratio { aspect-ratio: 16 / 9; background-color: #000; }
 
@@ -227,7 +184,6 @@
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             display: flex; align-items: center; justify-content: center;
             background: rgba(0,0,0,0.1); transition: background 0.3s;
-            pointer-events: none;
         }
         .play-button {
             width: 50px; height: 50px; border: 1px solid #fff; border-radius: 50%;
@@ -269,15 +225,14 @@
             .nav-links.active { right: 0; }
             .nav-links a { color: #111111 !important; margin: 20px 0; font-size: 14px; }
             .grid, .grid-sculpture-custom { grid-template-columns: 1fr; gap: 40px; max-width: 100%; }
-            .content-section { padding: 40px 5% !important; margin-top: 0; }
-            .statement-text { font-size: 16px; font-style: italic; }
-            .statement-section { padding: 8vh 8%; margin-top: -20px; }
+            .content-section { padding: 40px 5% !important; }
         }
+
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
         .contact-section { padding: 80px 5% 40px; background-color: #fff; }
         .contact-container { max-width: 1100px; margin: 0 auto; text-align: center; }
         .contact-row { display: flex; justify-content: center; gap: 40px; flex-wrap: wrap; }
-        .contact-item { display: flex; flex-direction: column; align-items: center; }
         .contact-label { font-size: 9px; color: #bbb; text-transform: uppercase; display: block; margin-bottom: 5px; letter-spacing: 0.2em; }
         .contact-value { font-size: 13px; color: #111; text-decoration: none; padding-bottom: 2px; border-bottom: 1px solid transparent; transition: all 0.3s; }
         .divider { color: #eee; align-self: center; font-weight: 100; }
@@ -290,7 +245,7 @@
 
     <header>
         <nav id="navbar">
-            <a href="#hero-section" class="logo">ZHANGJIARUI ARTWORKS</a>
+            <a href="index.html" class="logo">ZHANGJIARUI ARTWORKS</a>
             <div class="nav-links" id="navLinks">
                 <a href="#eco-art" onclick="closeMenu()">Ecological Art</a>
                 <a href="#sculpture" onclick="closeMenu()">Sculpture</a>
@@ -312,15 +267,9 @@
             <div class="hero-overlay">
                 <h1 class="hero-title">Matter <br> dissolves, <br> memory <br> crystallizes</h1>
             </div>
-            <a href="#statement" class="scroll-indicator">
+            <a href="#eco-art" class="scroll-indicator">
                 <div class="scroll-arrow"></div>
             </a>
-        </section>
-
-        <section class="statement-section" id="statement">
-            <p class="statement-text">
-                Zhang Jiarui’s practice operates between sculptural reduction and site-specific ecological intervention, examining how material, time, and human action reshape fragile systems.
-            </p>
         </section>
 
         <section class="content-section" id="eco-art">
@@ -411,16 +360,17 @@
                 <article>
                     <h3 class="series-label">Gold Series</h3>
                     <a href="series3.html" class="project">
+                        <div class="project-image-wrapper img-ratio">
+                            <img src="images/sculpture/s3_cover.webp" alt="New Eighteenth Arhat" onerror="this.src='images/sculpture/s3_cover.jpg'">
+                        </div>
                         <div class="project-info">
-                            <div class="project-image-wrapper img-ratio">
-                                <img src="images/sculpture/s3_cover.webp" alt="New Eighteenth Arhat" onerror="this.src='images/sculpture/s3_cover.jpg'">
-                            </div>
                             <h4 class="project-title">New Eighteenth Arhat</h4>
                             <p class="project-meta">Goldenleaf resin / 2015</p>
                         </div>
                     </a>
                 </article>
-            </div>
+                
+                </div>
         </section>
 
         <section class="content-section" id="projects">
@@ -468,7 +418,8 @@
     <footer>&copy; 2026 ZHANGJIARUI ARTWORKS.</footer>
 
     <script>
-        const revealOnScroll = function() {
+        // 滚动进度与导航控制
+        window.onscroll = function() {
             const nav = document.getElementById('navbar');
             const progress = document.getElementById('scroll-progress');
             const btt = document.getElementById('back-to-top');
@@ -484,18 +435,7 @@
                 nav.classList.remove("nav-scrolled");
                 btt.classList.remove("visible");
             }
-
-            const sections = document.querySelectorAll('.statement-section, .content-section');
-            sections.forEach(sec => {
-                const rect = sec.getBoundingClientRect();
-                if (rect.top < window.innerHeight * 0.85) {
-                    sec.classList.add('revealed');
-                }
-            });
         };
-
-        window.onscroll = revealOnScroll;
-        window.onload = revealOnScroll;
 
         document.getElementById('back-to-top').onclick = () => window.scrollTo({top: 0, behavior: 'smooth'});
 
