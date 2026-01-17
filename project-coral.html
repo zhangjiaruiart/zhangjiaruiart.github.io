@@ -76,6 +76,7 @@
             aspect-ratio: 1 / 1; 
             overflow: hidden;
             background-color: #f9f9f9;
+            cursor: zoom-in; /* 提示可放大 */
         }
         .image-item img {
             width: 100%; height: 100%; object-fit: cover;
@@ -84,6 +85,22 @@
         .image-item:hover img {
             transform: scale(1.08);
         }
+
+        /* --- 新增：放大查看器（Lightbox）样式 --- */
+        #lightbox {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(255, 255, 255, 0.95); /* 白色半透明背景 */
+            display: none; justify-content: center; align-items: center;
+            z-index: 2000; cursor: zoom-out;
+            opacity: 0; transition: opacity 0.4s ease;
+        }
+        #lightbox.active { display: flex; opacity: 1; }
+        #lightbox img { 
+            max-width: 90%; max-height: 80vh; 
+            box-shadow: 0 30px 60px rgba(0,0,0,0.1);
+            transform: scale(0.95); transition: transform 0.4s cubic-bezier(0.15, 1, 0.3, 1);
+        }
+        #lightbox.active img { transform: scale(1); }
 
         footer { padding: 60px 0 40px; text-align: center; font-size: 9px; letter-spacing: 0.4em; color: #ccc; text-transform: uppercase; border-top: 1px solid #f9f9f9; }
 
@@ -114,46 +131,51 @@
             <span class="meta">Documentary / 2025 / Xisha Islands</span>
 
             <div class="description">
-                <p><strong>The Coral Planting Project</strong> is an ecological restoration film created in the Xisha Islands in 2025, arising from my participation in a Chinese marine scientific expedition. Working alongside marine scientists and professional divers, I took part in the transplantation of 24,000 coral seedlings. The film focuses on the process of “reforesting” the seabed, presenting coral restoration as an ecological practice shaped by time, environmental conditions, and sustained care.</p>
-
-                <p>Unlike conventional nature documentaries, the work emphasizes the rhythmic silence of the underwater environment and the technical precision of restoration procedures. The repeated act of fixing coral fragments onto nursery structures becomes a meditative bodily practice, revealing the concept of “assisted recovery” as a gray zone between the artificial and the natural.</p>
-
-                <p>At the same time, <strong>The Coral Planting Project</strong> operates as an artistic reflection on time, fragility, and ecological coexistence. By recording the gradual growth of coral colonies, the film bridges scientific documentation and artistic perception, drawing attention to the long-term and often invisible labor beneath the ocean’s surface.</p>
+                <p><strong>The Coral Planting Project</strong> is an ecological restoration film created in the Xisha Islands in 2025...</p>
+                <p>Unlike conventional nature documentaries, the work emphasizes the rhythmic silence of the underwater environment...</p>
+                <p>At the same time, <strong>The Coral Planting Project</strong> operates as an artistic reflection on time...</p>
             </div>
         </section>
 
         <h2 class="gallery-title">Field Documentation</h2>
-        <div class="image-grid">
-            <div class="image-item">
-                <img src="images/projects/coral/1.webp" alt="Documentation 1" loading="lazy" onerror="this.src='https://via.placeholder.com/600x600?text=01'">
-            </div>
-            <div class="image-item">
-                <img src="images/projects/coral/2.webp" alt="Documentation 2" loading="lazy" onerror="this.src='https://via.placeholder.com/600x600?text=02'">
-            </div>
-            <div class="image-item">
-                <img src="images/projects/coral/3.webp" alt="Documentation 3" loading="lazy" onerror="this.src='https://via.placeholder.com/600x600?text=03'">
-            </div>
-            <div class="image-item">
-                <img src="images/projects/coral/4.webp" alt="Documentation 4" loading="lazy" onerror="this.src='https://via.placeholder.com/600x600?text=04'">
-            </div>
-            <div class="image-item">
-                <img src="images/projects/coral/5.webp" alt="Documentation 5" loading="lazy" onerror="this.src='https://via.placeholder.com/600x600?text=05'">
-            </div>
-            <div class="image-item">
-                <img src="images/projects/coral/6.webp" alt="Documentation 6" loading="lazy" onerror="this.src='https://via.placeholder.com/600x600?text=06'">
-            </div>
-            <div class="image-item">
-                <img src="images/projects/coral/7.webp" alt="Documentation 7" loading="lazy" onerror="this.src='https://via.placeholder.com/600x600?text=07'">
-            </div>
-            <div class="image-item">
-                <img src="images/projects/coral/8.webp" alt="Documentation 8" loading="lazy" onerror="this.src='https://via.placeholder.com/600x600?text=08'">
-            </div>
-            <div class="image-item">
-                <img src="images/projects/coral/9.webp" alt="Documentation 9" loading="lazy" onerror="this.src='https://via.placeholder.com/600x600?text=09'">
-            </div>
+        <div class="image-grid" id="gallery">
+            <div class="image-item"><img src="images/projects/coral/1.webp" alt="01" loading="lazy" onerror="this.src='https://via.placeholder.com/600x600?text=01'"></div>
+            <div class="image-item"><img src="images/projects/coral/2.webp" alt="02" loading="lazy" onerror="this.src='https://via.placeholder.com/600x600?text=02'"></div>
+            <div class="image-item"><img src="images/projects/coral/3.webp" alt="03" loading="lazy" onerror="this.src='https://via.placeholder.com/600x600?text=03'"></div>
+            <div class="image-item"><img src="images/projects/coral/4.webp" alt="04" loading="lazy" onerror="this.src='https://via.placeholder.com/600x600?text=04'"></div>
+            <div class="image-item"><img src="images/projects/coral/5.webp" alt="05" loading="lazy" onerror="this.src='https://via.placeholder.com/600x600?text=05'"></div>
+            <div class="image-item"><img src="images/projects/coral/6.webp" alt="06" loading="lazy" onerror="this.src='https://via.placeholder.com/600x600?text=06'"></div>
+            <div class="image-item"><img src="images/projects/coral/7.webp" alt="07" loading="lazy" onerror="this.src='https://via.placeholder.com/600x600?text=07'"></div>
+            <div class="image-item"><img src="images/projects/coral/8.webp" alt="08" loading="lazy" onerror="this.src='https://via.placeholder.com/600x600?text=08'"></div>
+            <div class="image-item"><img src="images/projects/coral/9.webp" alt="09" loading="lazy" onerror="this.src='https://via.placeholder.com/600x600?text=09'"></div>
         </div>
     </div>
 
+    <div id="lightbox">
+        <img src="" alt="Enlarged view">
+    </div>
+
     <footer>&copy; 2026 ZHANGJIARUI ARTWORKS.</footer>
+
+    <script>
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = lightbox.querySelector('img');
+        const galleryImages = document.querySelectorAll('.image-item img');
+
+        // 点击图片打开放大效果
+        galleryImages.forEach(img => {
+            img.addEventListener('click', () => {
+                lightboxImg.src = img.src;
+                lightbox.classList.add('active');
+                document.body.style.overflow = 'hidden'; // 锁定滚动
+            });
+        });
+
+        // 点击背景关闭
+        lightbox.addEventListener('click', () => {
+            lightbox.classList.remove('active');
+            document.body.style.overflow = 'auto'; // 恢复滚动
+        });
+    </script>
 </body>
 </html>
