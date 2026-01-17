@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FORMLESS SERIES | ZHANG JIARUI</title>
     <style>
-        /* 全局样式 - 保持 series1.html 的高水准 */
+        /* 全局样式 */
         body, html {
             margin: 0; padding: 0;
             font-family: "Optima", "Didot", "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -14,7 +14,7 @@
             scroll-behavior: smooth;
         }
 
-        /* 导航栏：高斯模糊 */
+        /* 导航栏 */
         nav {
             padding: 30px 5%;
             display: flex; justify-content: space-between; align-items: center;
@@ -37,7 +37,7 @@
         .series-title { font-size: 26px; font-weight: 300; letter-spacing: 0.3em; text-transform: uppercase; margin-bottom: 20px; }
         .series-description { font-size: 15px; color: #444; line-height: 2; font-weight: 300; text-align: justify; }
 
-        /* 作品动画核心 */
+        /* 作品项目 */
         .work-item {
             opacity: 0; 
             transform: translateY(20px);
@@ -65,38 +65,27 @@
         .work-name { font-size: 13px; letter-spacing: 0.15em; text-transform: uppercase; }
         .work-detail { font-size: 10px; color: #999; text-transform: uppercase; margin-top: 6px; }
 
-        /* --- 核心修改：At Ease 规整且不裁切布局 --- */
-        .layout-group-A { 
-            display: flex; 
-            gap: 30px; /* 增加间距 */
-            margin-bottom: 80px; 
-            align-items: flex-start; /* 顶部对齐 */
-        }
-        .main-A { 
-            flex: 1.8; /* 稍微缩小比例，给右侧留空间 */
-            margin-bottom: 0;
-        }
-        .side-A { 
-            flex: 1; 
-            display: flex; 
-            flex-direction: column; 
-            gap: 20px;
-        }
-        /* 大图不裁切，保持比例 */
-        .main-A .work-image-wrapper img {
-            width: 100%;
-            height: auto;
-            object-fit: contain; 
-        }
-        /* 右侧小图平分剩余空间，但保持比例或轻微裁切以对齐大图底部 */
+        /* --- At Ease 布局 --- */
+        .layout-group-A { display: flex; gap: 30px; margin-bottom: 80px; align-items: flex-start; }
+        .main-A { flex: 1.8; margin-bottom: 0; }
+        .side-A { flex: 1; display: flex; flex-direction: column; gap: 20px; }
+        .main-A .work-image-wrapper img { width: 100%; height: auto; object-fit: contain; }
         .side-A .work-item { margin-bottom: 0; }
-        .side-A .work-image-wrapper img {
+        .side-A .work-image-wrapper img { width: 100%; height: auto; object-fit: cover; }
+
+        /* --- 核心修改：s4_8 裁切样式 --- */
+        .crop-s4-8 {
+            aspect-ratio: 16 / 7; /* 通过宽高比锁定显示区域 */
+        }
+        .crop-s4-8 img {
             width: 100%;
-            height: auto;
-            object-fit: cover;
+            height: 100%;
+            object-fit: cover; /* 填充并裁切 */
+            object-position: center 50%; /* 保持中心，裁切掉上下 */
+            transform: scale(1.1); /* 配合微调，确保裁切比例 */
         }
 
-        /* 通用网格与全宽 */
+        /* 网格布局 */
         .grid-two-columns { display: grid; grid-template-columns: repeat(2, 1fr); gap: 40px; margin-bottom: 40px; }
         .full-width { width: 100%; margin-bottom: 80px; }
 
@@ -113,6 +102,7 @@
             .layout-group-A { flex-direction: column; }
             .grid-two-columns { grid-template-columns: 1fr; }
             .side-A { gap: 40px; }
+            .crop-s4-8 { aspect-ratio: 4 / 3; } /* 移动端适当增加高度 */
         }
     </style>
 </head>
@@ -163,16 +153,16 @@
         <div class="grid-two-columns">
             <div class="work-item">
                 <div class="work-image-wrapper"><img src="images/sculpture/s4_6.webp" onerror="handleError(this, 's4_6')"></div>
-                <div class="work-info"><div class="work-name">Nirvana </div></div>
+                <div class="work-info"><div class="work-name">Nirvana</div></div>
             </div>
             <div class="work-item">
                 <div class="work-image-wrapper"><img src="images/sculpture/s4_7.webp" onerror="handleError(this, 's4_7')"></div>
-                <div class="work-info"><div class="work-name">Nirvana </div></div>
+                <div class="work-info"><div class="work-name">Nirvana</div></div>
             </div>
         </div>
 
         <div class="work-item full-width">
-            <div class="work-image-wrapper">
+            <div class="work-image-wrapper crop-s4-8">
                 <img src="images/sculpture/s4_8.webp" onerror="handleError(this, 's4_8')">
             </div>
         </div>
