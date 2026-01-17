@@ -140,12 +140,14 @@
             40% { transform: translateY(-10px) rotate(45deg); opacity: 0.8; }
         }
 
-        /* --- 艺术立场区块样式 --- */
+        /* --- 艺术立场区块样式 (已调整向上移动 5%) --- */
         .statement-section {
-            padding: 96px 5% 20px; /* 底部间距从 80px 减小到 20px 以释放空间 */
+            padding: 60px 5% 20px; 
+            margin: -35px auto 0; /* 负外边距使该板块向上提拉 */
             max-width: 900px;
-            margin: 0 auto;
             text-align: center;
+            position: relative;
+            z-index: 10;
         }
         .statement-text {
             font-size: 20px;
@@ -164,15 +166,15 @@
             transform: translateY(0);
         }
 
-        /* --- 布局核心 --- */
+        /* --- 布局核心 (已保留 Eco 部分向上移动的调整) --- */
         .content-section { 
-            padding: 40px 5% 20px; /* 顶部间距从 80px 减小到 40px */
-            margin: -20px auto 0;  /* 向上移动约 5% 的视觉距离 */
+            padding: 40px 5% 20px; 
+            margin: -25px auto 0; /* 保持内容区紧凑衔接 */
             max-width: 1260px; 
             opacity: 0; transform: translateY(20px);
             transition: all 1.2s cubic-bezier(0.15, 1, 0.3, 1);
             position: relative;
-            z-index: 10;
+            z-index: 5;
         }
         .content-section.revealed {
             opacity: 1; transform: translateY(0);
@@ -266,7 +268,7 @@
             .grid, .grid-sculpture-custom { grid-template-columns: 1fr; gap: 40px; max-width: 100%; }
             .content-section { padding: 40px 5% !important; margin-top: 0; }
             .statement-text { font-size: 16px; }
-            .statement-section { padding: 72px 8% 40px; }
+            .statement-section { padding: 60px 8% 30px; margin-top: -20px; }
         }
 
         .contact-section { padding: 80px 5% 40px; background-color: #fff; }
