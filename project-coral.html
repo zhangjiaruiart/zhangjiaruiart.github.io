@@ -14,7 +14,7 @@
             scroll-behavior: smooth;
         }
 
-        /* 导航栏 */
+        /* 导航栏：增加高斯模糊与一致性 */
         nav { 
             padding: 30px 5%; 
             display: flex; justify-content: space-between; align-items: center; 
@@ -30,6 +30,7 @@
         .back { font-size: 10px; letter-spacing: 0.2em; text-decoration: none; color: #aaa; text-transform: uppercase; transition: color 0.3s; }
         .back:hover { color: #111; }
 
+        /* 容器调整 */
         .container { max-width: 1100px; margin: 120px auto 80px; padding: 0 5%; }
 
         /* 视频容器 */
@@ -40,17 +41,26 @@
         }
         .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
 
-        /* 项目信息 */
+        /* 项目信息区域 */
         .project-info { max-width: 850px; text-align: left; margin-bottom: 80px; }
-        .title { font-size: 24px; font-weight: 300; letter-spacing: 0.3em; text-transform: uppercase; margin-bottom: 15px; }
-        .meta { font-size: 11px; color: #999; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 40px; display: block; }
+        .title { 
+            font-size: 24px; font-weight: 300; letter-spacing: 0.3em; 
+            text-transform: uppercase; margin-bottom: 15px; 
+        }
+        .meta { 
+            font-size: 11px; color: #999; text-transform: uppercase; 
+            letter-spacing: 0.1em; margin-bottom: 40px; display: block;
+        }
 
-        /* 内容排版 */
-        .description { font-size: 14px; color: #444; line-height: 2.2; font-weight: 300; text-align: justify; }
+        /* 文字内容排版 */
+        .description { 
+            font-size: 14px; color: #444; line-height: 2.2; 
+            font-weight: 300; text-align: justify;
+        }
         .description p { margin-bottom: 2.5em; }
         .description strong { color: #111; font-weight: 400; }
 
-        /* 3x3 图片网格 */
+        /* --- 新增：图片网格系统（3x3 布局） --- */
         .gallery-title {
             font-size: 11px; letter-spacing: 0.3em; text-transform: uppercase;
             color: #ccc; margin-bottom: 30px; border-bottom: 1px solid #f2f2f2;
@@ -58,44 +68,33 @@
         }
         .image-grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 25px;
+            grid-template-columns: repeat(3, 1fr); /* 修改为每行三张 */
+            gap: 25px; /* 适当增加间距 */
             margin-bottom: 100px;
         }
         .image-item {
-            aspect-ratio: 1 / 1;
+            aspect-ratio: 1 / 1; 
             overflow: hidden;
             background-color: #f9f9f9;
-            cursor: zoom-in; /* 提示可放大 */
         }
         .image-item img {
             width: 100%; height: 100%; object-fit: cover;
             transition: transform 1.2s cubic-bezier(0.15, 1, 0.3, 1);
         }
-        .image-item:hover img { transform: scale(1.08); }
-
-        /* --- 点击放大 Lightbox 样式 --- */
-        #lightbox {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(255, 255, 255, 0.98); /* 极简白背景 */
-            display: none; justify-content: center; align-items: center;
-            z-index: 2000; cursor: zoom-out;
-            opacity: 0; transition: opacity 0.4s ease;
+        .image-item:hover img {
+            transform: scale(1.08);
         }
-        #lightbox.active { display: flex; opacity: 1; }
-        #lightbox img { 
-            max-width: 90%; max-height: 85vh; 
-            box-shadow: 0 20px 50px rgba(0,0,0,0.1);
-            transform: scale(0.9); transition: transform 0.4s cubic-bezier(0.15, 1, 0.3, 1);
-        }
-        #lightbox.active img { transform: scale(1); }
 
         footer { padding: 60px 0 40px; text-align: center; font-size: 9px; letter-spacing: 0.4em; color: #ccc; text-transform: uppercase; border-top: 1px solid #f9f9f9; }
 
-        @media (max-width: 900px) { .image-grid { grid-template-columns: repeat(2, 1fr); } }
-        @media (max-width: 600px) {
+        /* 移动端适配 */
+        @media (max-width: 1024px) {
+            .image-grid { grid-template-columns: repeat(2, 1fr); } /* 平板：2列布局 */
+        }
+        @media (max-width: 768px) {
             .container { margin-top: 100px; }
-            .image-grid { grid-template-columns: 1fr; gap: 15px; }
+            .title { font-size: 20px; }
+            .image-grid { grid-template-columns: 1fr; gap: 15px; } /* 手机：1列布局 */
         }
     </style>
 </head>
@@ -113,51 +112,48 @@
         <section class="project-info">
             <h1 class="title">Coral Planting Project</h1>
             <span class="meta">Documentary / 2025 / Xisha Islands</span>
+
             <div class="description">
-                <p><strong>The Coral Planting Project</strong> is an ecological restoration film created in the Xisha Islands in 2025...</p>
-                <p>Unlike conventional nature documentaries, the work emphasizes the rhythmic silence of the underwater environment...</p>
+                <p><strong>The Coral Planting Project</strong> is an ecological restoration film created in the Xisha Islands in 2025, arising from my participation in a Chinese marine scientific expedition. Working alongside marine scientists and professional divers, I took part in the transplantation of 24,000 coral seedlings. The film focuses on the process of “reforesting” the seabed, presenting coral restoration as an ecological practice shaped by time, environmental conditions, and sustained care.</p>
+
+                <p>Unlike conventional nature documentaries, the work emphasizes the rhythmic silence of the underwater environment and the technical precision of restoration procedures. The repeated act of fixing coral fragments onto nursery structures becomes a meditative bodily practice, revealing the concept of “assisted recovery” as a gray zone between the artificial and the natural.</p>
+
+                <p>At the same time, <strong>The Coral Planting Project</strong> operates as an artistic reflection on time, fragility, and ecological coexistence. By recording the gradual growth of coral colonies, the film bridges scientific documentation and artistic perception, drawing attention to the long-term and often invisible labor beneath the ocean’s surface.</p>
             </div>
         </section>
 
         <h2 class="gallery-title">Field Documentation</h2>
-        <div class="image-grid" id="gallery">
-            <div class="image-item"><img src="images/projects/coral1.jpg" alt="Doc 1" onerror="this.src='https://via.placeholder.com/600?text=Coral+1'"></div>
-            <div class="image-item"><img src="images/projects/coral2.jpg" alt="Doc 2" onerror="this.src='https://via.placeholder.com/600?text=Coral+2'"></div>
-            <div class="image-item"><img src="images/projects/coral3.jpg" alt="Doc 3" onerror="this.src='https://via.placeholder.com/600?text=Coral+3'"></div>
-            <div class="image-item"><img src="images/projects/coral4.jpg" alt="Doc 4" onerror="this.src='https://via.placeholder.com/600?text=Coral+4'"></div>
-            <div class="image-item"><img src="images/projects/coral5.jpg" alt="Doc 5" onerror="this.src='https://via.placeholder.com/600?text=Coral+5'"></div>
-            <div class="image-item"><img src="images/projects/coral6.jpg" alt="Doc 6" onerror="this.src='https://via.placeholder.com/600?text=Coral+6'"></div>
-            <div class="image-item"><img src="images/projects/coral7.jpg" alt="Doc 7" onerror="this.src='https://via.placeholder.com/600?text=Coral+7'"></div>
-            <div class="image-item"><img src="images/projects/coral8.jpg" alt="Doc 8" onerror="this.src='https://via.placeholder.com/600?text=Coral+8'"></div>
-            <div class="image-item"><img src="images/projects/coral9.jpg" alt="Doc 9" onerror="this.src='https://via.placeholder.com/600?text=Coral+9'"></div>
+        <div class="image-grid">
+            <div class="image-item">
+                <img src="images/projects/coral/1.jpg" alt="Documentation 1" loading="lazy" onerror="this.src='https://via.placeholder.com/600x600?text=01'">
+            </div>
+            <div class="image-item">
+                <img src="images/projects/coral/2.jpg" alt="Documentation 2" loading="lazy" onerror="this.src='https://via.placeholder.com/600x600?text=02'">
+            </div>
+            <div class="image-item">
+                <img src="images/projects/coral/3.jpg" alt="Documentation 3" loading="lazy" onerror="this.src='https://via.placeholder.com/600x600?text=03'">
+            </div>
+            <div class="image-item">
+                <img src="images/projects/coral/4.jpg" alt="Documentation 4" loading="lazy" onerror="this.src='https://via.placeholder.com/600x600?text=04'">
+            </div>
+            <div class="image-item">
+                <img src="images/projects/coral/5.jpg" alt="Documentation 5" loading="lazy" onerror="this.src='https://via.placeholder.com/600x600?text=05'">
+            </div>
+            <div class="image-item">
+                <img src="images/projects/coral/6.jpg" alt="Documentation 6" loading="lazy" onerror="this.src='https://via.placeholder.com/600x600?text=06'">
+            </div>
+            <div class="image-item">
+                <img src="images/projects/coral/7.jpg" alt="Documentation 7" loading="lazy" onerror="this.src='https://via.placeholder.com/600x600?text=07'">
+            </div>
+            <div class="image-item">
+                <img src="images/projects/coral/8.jpg" alt="Documentation 8" loading="lazy" onerror="this.src='https://via.placeholder.com/600x600?text=08'">
+            </div>
+            <div class="image-item">
+                <img src="images/projects/coral/9.jpg" alt="Documentation 9" loading="lazy" onerror="this.src='https://via.placeholder.com/600x600?text=09'">
+            </div>
         </div>
     </div>
 
-    <div id="lightbox">
-        <img src="" alt="Zoomed Image">
-    </div>
-
     <footer>&copy; 2026 ZHANGJIARUI ARTWORKS.</footer>
-
-    <script>
-        const lightbox = document.getElementById('lightbox');
-        const lightboxImg = lightbox.querySelector('img');
-        const galleryItems = document.querySelectorAll('.image-item img');
-
-        // 点击打开
-        galleryItems.forEach(img => {
-            img.parentElement.addEventListener('click', () => {
-                lightboxImg.src = img.src;
-                lightbox.classList.add('active');
-                document.body.style.overflow = 'hidden'; // 禁止背景滚动
-            });
-        });
-
-        // 点击关闭
-        lightbox.addEventListener('click', () => {
-            lightbox.classList.remove('active');
-            document.body.style.overflow = 'auto'; // 恢复滚动
-        });
-    </script>
 </body>
 </html>
