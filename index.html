@@ -140,14 +140,16 @@
             40% { transform: translateY(-10px) rotate(45deg); opacity: 0.8; }
         }
 
-        /* --- 艺术立场区块样式 (已调整向上移动 5%) --- */
+        /* --- 艺术立场区块样式 (已增加上下各 10% 留白) --- */
         .statement-section {
-            padding: 60px 5% 20px; 
-            margin: -35px auto 0; /* 负外边距使该板块向上提拉 */
+            /* padding 的上下值增加到 10vh (视口高度的10%) 以获得均匀白边 */
+            padding: 10vh 5%; 
+            margin: -35px auto 0; /* 保持向上偏移的衔接感 */
             max-width: 900px;
             text-align: center;
             position: relative;
             z-index: 10;
+            box-sizing: border-box;
         }
         .statement-text {
             font-size: 20px;
@@ -166,10 +168,10 @@
             transform: translateY(0);
         }
 
-        /* --- 布局核心 (已保留 Eco 部分向上移动的调整) --- */
+        /* --- 布局核心 --- */
         .content-section { 
             padding: 40px 5% 20px; 
-            margin: -25px auto 0; /* 保持内容区紧凑衔接 */
+            margin: -25px auto 0; 
             max-width: 1260px; 
             opacity: 0; transform: translateY(20px);
             transition: all 1.2s cubic-bezier(0.15, 1, 0.3, 1);
@@ -268,7 +270,7 @@
             .grid, .grid-sculpture-custom { grid-template-columns: 1fr; gap: 40px; max-width: 100%; }
             .content-section { padding: 40px 5% !important; margin-top: 0; }
             .statement-text { font-size: 16px; }
-            .statement-section { padding: 60px 8% 30px; margin-top: -20px; }
+            .statement-section { padding: 8vh 8%; margin-top: -20px; }
         }
 
         .contact-section { padding: 80px 5% 40px; background-color: #fff; }
@@ -409,10 +411,10 @@
                 <article>
                     <h3 class="series-label">Gold Series</h3>
                     <a href="series3.html" class="project">
-                        <div class="project-image-wrapper img-ratio">
-                            <img src="images/sculpture/s3_cover.webp" alt="New Eighteenth Arhat" onerror="this.src='images/sculpture/s3_cover.jpg'">
-                        </div>
                         <div class="project-info">
+                            <div class="project-image-wrapper img-ratio">
+                                <img src="images/sculpture/s3_cover.webp" alt="New Eighteenth Arhat" onerror="this.src='images/sculpture/s3_cover.jpg'">
+                            </div>
                             <h4 class="project-title">New Eighteenth Arhat</h4>
                             <p class="project-meta">Goldenleaf resin / 2015</p>
                         </div>
