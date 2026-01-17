@@ -135,10 +135,38 @@
             40% { transform: translateY(-10px) rotate(45deg); opacity: 0.8; }
         }
 
+        /* --- 艺术立场区块样式 --- */
+        .statement-section {
+            padding: 120px 5% 100px;
+            max-width: 900px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        .statement-text {
+            font-size: 20px;
+            line-height: 1.8;
+            font-weight: 300;
+            color: #222;
+            letter-spacing: 0.02em;
+            word-spacing: 0.05em;
+            font-style: italic;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 1.2s cubic-bezier(0.15, 1, 0.3, 1);
+        }
+        .statement-section.revealed .statement-text {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
         /* --- 布局核心 --- */
         .content-section { 
             padding: 80px 5% 20px; max-width: 1260px; margin: 0 auto; 
-            animation: fadeInUp 1.2s cubic-bezier(0.15, 1, 0.3, 1) both;
+            opacity: 0; transform: translateY(20px);
+            transition: all 1.2s cubic-bezier(0.15, 1, 0.3, 1);
+        }
+        .content-section.revealed {
+            opacity: 1; transform: translateY(0);
         }
 
         .category-title { 
@@ -158,8 +186,8 @@
         /* 雕塑部分专用：修改为 3 列排版 */
         .grid-sculpture-custom {
             display: grid;
-            grid-template-columns: repeat(3, 1fr); /* 核心修改：改为 3 列 */
-            gap: 40px 30px; /* 适当缩小间距以适应 3 列 */
+            grid-template-columns: repeat(3, 1fr); 
+            gap: 40px 30px; 
             margin-bottom: 60px;
             width: 100%;
         }
@@ -226,9 +254,9 @@
             .nav-links a { color: #111111 !important; margin: 20px 0; font-size: 14px; }
             .grid, .grid-sculpture-custom { grid-template-columns: 1fr; gap: 40px; max-width: 100%; }
             .content-section { padding: 40px 5% !important; }
+            .statement-text { font-size: 16px; }
+            .statement-section { padding: 80px 8% 60px; }
         }
-
-        @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
         .contact-section { padding: 80px 5% 40px; background-color: #fff; }
         .contact-container { max-width: 1100px; margin: 0 auto; text-align: center; }
@@ -267,9 +295,16 @@
             <div class="hero-overlay">
                 <h1 class="hero-title">Matter <br> dissolves, <br> memory <br> crystallizes</h1>
             </div>
-            <a href="#eco-art" class="scroll-indicator">
+            <a href="#statement" class="scroll-indicator">
                 <div class="scroll-arrow"></div>
             </a>
+        </section>
+
+        <section class="statement-section" id="statement">
+            <p class="statement-text">
+                Zhang Jiarui’s practice operates between sculptural reduction and site-specific ecological intervention, 
+                examining how material, time, and human action reshape fragile systems.
+            </p>
         </section>
 
         <section class="content-section" id="eco-art">
@@ -369,8 +404,7 @@
                         </div>
                     </a>
                 </article>
-                
-                </div>
+            </div>
         </section>
 
         <section class="content-section" id="projects">
@@ -418,16 +452,18 @@
     <footer>&copy; 2026 ZHANGJIARUI ARTWORKS.</footer>
 
     <script>
-        // 滚动进度与导航控制
-        window.onscroll = function() {
+        // 滚动进度、导航控制与入场动画
+        const revealOnScroll = function() {
             const nav = document.getElementById('navbar');
             const progress = document.getElementById('scroll-progress');
             const btt = document.getElementById('back-to-top');
             const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
             const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
             
+            // 进度条
             progress.style.width = (winScroll / height) * 100 + "%";
 
+            // 导航栏与返回顶部
             if (winScroll > 50) {
                 nav.classList.add("nav-scrolled");
                 btt.classList.add("visible");
@@ -435,10 +471,23 @@
                 nav.classList.remove("nav-scrolled");
                 btt.classList.remove("visible");
             }
+
+            // 检查区块是否进入视口进行显示
+            const sections = document.querySelectorAll('.statement-section, .content-section');
+            sections.forEach(sec => {
+                const rect = sec.getBoundingClientRect();
+                if (rect.top < window.innerHeight * 0.85) {
+                    sec.classList.add('revealed');
+                }
+            });
         };
+
+        window.onscroll = revealOnScroll;
+        window.onload = revealOnScroll; // 页面加载时也检查一次
 
         document.getElementById('back-to-top').onclick = () => window.scrollTo({top: 0, behavior: 'smooth'});
 
+        // Hero 视差效果
         if (window.innerWidth > 900) {
             const hero = document.getElementById('hero-section');
             const img = document.getElementById('hero-img-wrap');
