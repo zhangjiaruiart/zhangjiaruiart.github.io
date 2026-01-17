@@ -16,12 +16,6 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        /* --- 新增：阅读进度条 --- */
-        #scroll-progress {
-            position: fixed; top: 0; left: 0; width: 0%; height: 2px;
-            background: #111; z-index: 3000; transition: width 0.1s ease-out;
-        }
-
         /* --- 导航栏 --- */
         nav {
             position: fixed;
@@ -51,16 +45,11 @@
         .nav-scrolled .logo { color: #111111; }
 
         .nav-links { display: flex; align-items: center; }
-        
-        /* 新增：磁性包装层 */
-        .mag-wrap { display: flex; align-items: center; justify-content: center; }
-
         .nav-links a {
             margin-left: 35px; text-decoration: none; color: #ffffff;
             font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase;
             font-weight: 300; position: relative; padding-bottom: 5px;
-            transition: color 0.4s ease, transform 0.3s cubic-bezier(0.23, 1, 0.32, 1);
-            display: inline-block; /* 必须为 inline-block 才能应用 transform */
+            transition: color 0.4s ease;
         }
         .nav-scrolled .nav-links a { color: #111111; }
 
@@ -86,12 +75,6 @@
         .hero {
             height: 100vh; width: 100%; overflow: hidden;
             position: relative; background-color: #000;
-            perspective: 1000px; /* 为3D视差做准备 */
-        }
-        /* 视差容器包裹图片 */
-        #hero-img-wrap {
-            width: 110%; height: 110%; position: absolute; top: -5%; left: -5%;
-            transition: transform 0.2s ease-out;
         }
         .hero img {
             width: 100%; height: 100%; object-fit: cover;
@@ -102,18 +85,18 @@
 
         @keyframes kenBurns {
             0% { transform: scale(1); }
-            100% { transform: scale(1.05); }
+            100% { transform: scale(1.1); }
         }
 
         .hero-overlay {
             position: absolute;
-            top: 45%; left: 50%;
+            top: 50%; left: 50%;
+            top: 45%; left: 50%; /* 已从 50% 修改为 45% */
             transform: translate(-50%, -50%);
             text-align: center;
             width: 90%;
             z-index: 5;
-            transition: transform 0.2s ease-out;
-            pointer-events: none; /* 防止遮挡下方滚动按钮 */
+            transition: all 0.5s ease;
         }
 
         .hero-title {
@@ -128,6 +111,7 @@
             animation: fadeInText 3s ease-out 1.2s forwards;
         }
 
+        /* 默认 PC 端隐藏换行 */
         .hero-title br { display: none; }
 
         @keyframes fadeInText {
@@ -198,31 +182,20 @@
         .project-title { font-size: 14px; font-weight: 400; letter-spacing: 0.1em; text-transform: uppercase; margin-top: 5px; }
         .project-meta { font-size: 10px; color: #aaa; margin-top: 4px; letter-spacing: 0.05em; text-transform: uppercase; line-height: 1.4; }
 
-        /* --- 新增：返回顶部按钮 --- */
-        #back-to-top {
-            position: fixed; bottom: 40px; right: 40px; width: 40px; height: 40px;
-            background: #fff; border: 1px solid #eee; border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            cursor: pointer; opacity: 0; visibility: hidden; z-index: 1000;
-            transition: all 0.4s ease; box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-        }
-        #back-to-top.visible { opacity: 1; visibility: visible; }
-        #back-to-top::after {
-            content: ''; width: 8px; height: 8px; border-left: 1px solid #111; border-top: 1px solid #111;
-            transform: rotate(45deg); margin-top: 4px;
-        }
-        #back-to-top:hover { transform: translateY(-5px); border-color: #111; }
-
         /* --- 手机端特殊调整 --- */
         @media (max-width: 900px) {
-            .hero-overlay { top: 40%; }
+            .hero img { object-position: center 60%; }
+
+            /* 封面文字段落整体向上调整 5% (50% -> 45%) */
+            .hero-overlay { top: 45%; }
+            .hero-overlay { top: 40%; } /* 这里在手机端原有45%基础上也向上提升了5%，改为40%以保持视觉一致性 */
             .hero-title { 
                 font-size: 14.4px; 
                 line-height: 2.2; 
                 margin-bottom: 40px; 
                 letter-spacing: 0.4em;
             }
-            .hero-title br { display: block; }
+            .hero-title br { display: block; } /* 手机端开启四行排列 */
 
             .menu-toggle { display: flex; }
             .nav-links {
@@ -231,12 +204,10 @@
                 align-items: center; transition: 0.5s cubic-bezier(0.2, 1, 0.3, 1);
             }
             .nav-links.active { right: 0; }
-            .nav-links a { color: #111111 !important; margin: 20px 0; font-size: 14px; transform: none !important; }
+            .nav-links a { color: #111111 !important; margin: 20px 0; font-size: 14px; }
             .content-section { padding: 40px 0 20px 0 !important; }
             .grid { display: block !important; }
             .project { width: 100% !important; margin-bottom: 40px; }
-            #back-to-top { right: 20px; bottom: 20px; }
-            .mag-wrap { width: 100%; }
         }
 
         @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
@@ -252,17 +223,15 @@
 </head>
 <body>
 
-    <div id="scroll-progress"></div>
-
     <header>
         <nav id="navbar">
             <a href="index.html" class="logo">ZHANGJIARUI ARTWORKS</a>
             <div class="nav-links" id="navLinks">
-                <div class="mag-wrap"><a href="#eco-art" onclick="closeMenu()">Ecological Art</a></div>
-                <div class="mag-wrap"><a href="#sculpture" onclick="closeMenu()">Sculpture</a></div>
-                <div class="mag-wrap"><a href="#projects" onclick="closeMenu()">Projects</a></div>
-                <div class="mag-wrap"><a href="biography.html">BIOGRAPHY</a></div>
-                <div class="mag-wrap"><a href="#contact" onclick="closeMenu()">Contact</a></div>
+                <a href="#eco-art" onclick="closeMenu()">Ecological Art</a>
+                <a href="#sculpture" onclick="closeMenu()">Sculpture</a>
+                <a href="#projects" onclick="closeMenu()">Projects</a>
+                <a href="biography.html">BIOGRAPHY</a>
+                <a href="#contact" onclick="closeMenu()">Contact</a>
             </div>
             <div class="menu-toggle" id="menuToggle" onclick="toggleMenu()" aria-label="Toggle menu">
                 <span></span><span></span><span></span>
@@ -270,12 +239,10 @@
         </nav>
     </header>
 
-    <main id="main-content">
-        <section class="hero" id="hero-section">
-            <div id="hero-img-wrap">
-                <img src="images/cover.webp" alt="Zhang Jiarui Artwork" onerror="this.src='images/Cover.JPG';">
-            </div>
-            <div class="hero-overlay" id="hero-text">
+    <main>
+        <section class="hero">
+            <img src="images/cover.webp" alt="Zhang Jiarui Artwork" onerror="this.src='images/Cover.JPG';">
+            <div class="hero-overlay">
                 <h1 class="hero-title">Matter <br> dissolves, <br> memory <br> crystallizes</h1>
             </div>
             <a href="#eco-art" class="scroll-indicator">
@@ -289,7 +256,7 @@
                 <article>
                     <a href="eco-ice-burial.html" class="project">
                         <div class="project-image-wrapper video-ratio">
-                            <img src="images/eco/ice_burial_cover.webp" alt="Ice Burial" onerror="this.src='images/eco/ice_bur_cover.jpg'">
+                            <img src="images/eco/ice_burial_cover.webp" alt="Ice Burial" onerror="this.src='images/eco/ice_burial_cover.jpg'">
                             <div class="play-overlay"><div class="play-button"></div></div>
                         </div>
                         <div class="project-info">
@@ -423,71 +390,17 @@
         </section>
     </main>
 
-    <div id="back-to-top"></div>
-
     <footer>&copy; 2026 ZHANGJIARUI ARTWORKS.</footer>
 
     <script>
-        // --- 基础滚动逻辑 (导航背景、进度条、返回顶部按钮) ---
         window.onscroll = function() {
-            const nav = document.getElementById('navbar');
-            const progress = document.getElementById('scroll-progress');
-            const btt = document.getElementById('back-to-top');
-            
-            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
-            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-            const scrolled = (winScroll / height) * 100;
-            
-            // 进度条
-            progress.style.width = scrolled + "%";
-
-            // 导航变色
-            if (winScroll > 50) {
+            var nav = document.getElementById('navbar');
+            if (window.pageYOffset > 50) {
                 nav.classList.add("nav-scrolled");
-                btt.classList.add("visible");
             } else {
                 nav.classList.remove("nav-scrolled");
-                btt.classList.remove("visible");
             }
         };
-
-        // --- 返回顶部点击事件 ---
-        document.getElementById('back-to-top').onclick = function() {
-            window.scrollTo({top: 0, behavior: 'smooth'});
-        };
-
-        // --- 磁性导航交互 (仅桌面端) ---
-        if (window.innerWidth > 900) {
-            const magLinks = document.querySelectorAll('.nav-links a');
-            magLinks.forEach(link => {
-                link.addEventListener('mousemove', (e) => {
-                    const rect = link.getBoundingClientRect();
-                    const x = (e.clientX - rect.left - rect.width / 2) * 0.4;
-                    const y = (e.clientY - rect.top - rect.height / 2) * 0.4;
-                    link.style.transform = `translate(${x}px, ${y}px)`;
-                });
-                link.addEventListener('mouseleave', () => {
-                    link.style.transform = `translate(0, 0)`;
-                });
-            });
-
-            // --- 封面动态视差 (桌面端) ---
-            const heroSection = document.getElementById('hero-section');
-            const heroImgWrap = document.getElementById('hero-img-wrap');
-            const heroText = document.getElementById('hero-text');
-
-            heroSection.addEventListener('mousemove', (e) => {
-                const moveX = (e.clientX - window.innerWidth / 2) / 50;
-                const moveY = (e.clientY - window.innerHeight / 2) / 50;
-                
-                // 背景微动
-                heroImgWrap.style.transform = `translate(${-moveX}px, ${-moveY}px)`;
-                // 文字轻微3D偏转
-                heroText.style.transform = `translate(-50%, -50%) rotateY(${moveX * 0.5}deg) rotateX(${-moveY * 0.5}deg)`;
-            });
-        }
-
-        // --- 原有菜单逻辑 ---
         const navLinks = document.getElementById('navLinks');
         const menuToggle = document.getElementById('menuToggle');
         function toggleMenu() {
