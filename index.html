@@ -142,7 +142,7 @@
 
         /* --- 艺术立场区块样式 --- */
         .statement-section {
-            padding: 96px 5% 40px; /* 减少底部 padding 从 80px 到 40px */
+            padding: 96px 5% 20px; /* 底部间距从 80px 减小到 20px 以释放空间 */
             max-width: 900px;
             margin: 0 auto;
             text-align: center;
@@ -166,12 +166,13 @@
 
         /* --- 布局核心 --- */
         .content-section { 
-            padding: 40px 5% 20px; /* 减少顶部 padding 从 80px 到 40px */
-            margin: -40px auto 0; /* 使用负 Margin 向上移动内容区 */
-            max-width: 1260px;
-            position: relative; /* 确保 z-index 正常 */
+            padding: 40px 5% 20px; /* 顶部间距从 80px 减小到 40px */
+            margin: -20px auto 0;  /* 向上移动约 5% 的视觉距离 */
+            max-width: 1260px; 
             opacity: 0; transform: translateY(20px);
             transition: all 1.2s cubic-bezier(0.15, 1, 0.3, 1);
+            position: relative;
+            z-index: 10;
         }
         .content-section.revealed {
             opacity: 1; transform: translateY(0);
@@ -206,7 +207,7 @@
         .project { text-decoration: none; color: inherit; display: block; }
         .project-image-wrapper { 
             overflow: hidden; margin-bottom: 20px; background-color: #fcfcfc; position: relative; 
-            will-change: transform;
+            will-change: transform; 
         }
         .img-ratio { aspect-ratio: 4 / 5; }
         .video-ratio { aspect-ratio: 16 / 9; background-color: #000; }
@@ -263,9 +264,9 @@
             .nav-links.active { right: 0; }
             .nav-links a { color: #111111 !important; margin: 20px 0; font-size: 14px; }
             .grid, .grid-sculpture-custom { grid-template-columns: 1fr; gap: 40px; max-width: 100%; }
-            .content-section { padding: 20px 5% !important; margin-top: 0; } /* 移动端重置负边距 */
+            .content-section { padding: 40px 5% !important; margin-top: 0; }
             .statement-text { font-size: 16px; }
-            .statement-section { padding: 72px 8% 30px; }
+            .statement-section { padding: 72px 8% 40px; }
         }
 
         .contact-section { padding: 80px 5% 40px; background-color: #fff; }
