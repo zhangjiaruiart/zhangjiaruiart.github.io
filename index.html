@@ -31,7 +31,7 @@
             background: var(--main-color); z-index: 3000; transition: width 0.1s ease-out;
         }
 
-        /* --- 导航栏（优化项 1：智能显隐） --- */
+        /* --- 导航栏 --- */
         nav {
             position: fixed;
             top: 0; left: 0; width: 100%;
@@ -87,7 +87,7 @@
         }
         .nav-scrolled .menu-toggle span { background-color: #111; }
 
-        /* --- 封面效果（优化项 4：首屏高级进场） --- */
+        /* --- 封面效果 --- */
         .hero {
             height: 100vh; width: 100%; overflow: hidden;
             position: relative; background-color: #000;
@@ -120,13 +120,11 @@
             color: #ffffff; font-size: 18px; font-weight: 300;
             letter-spacing: 0.6em; text-transform: uppercase;
             margin: 0; line-height: 1.6;
-            /* 初始状态：模糊且下移 */
             opacity: 0;
             filter: blur(10px);
             transform: translateY(30px);
             transition: opacity 2s ease, filter 2s ease, transform 1.5s cubic-bezier(0.16, 1, 0.3, 1);
         }
-        /* 进场类 */
         .page-loaded .hero-title {
             opacity: 0.8;
             filter: blur(0);
@@ -167,7 +165,7 @@
         }
         .revealed .statement-text { opacity: 1; transform: translateY(0); }
 
-        /* --- 布局核心（优化项 2：骨架屏流光占位） --- */
+        /* --- 布局核心 --- */
         .content-section { 
             padding: 40px 5% 20px;
             max-width: 1260px; margin: 0 auto; 
@@ -175,103 +173,7 @@
             transition: var(--transition-smooth);
             scroll-margin-top: 80px;
         }
-        /* --- 联络区块优化 --- */
-.contact-section { 
-    padding: 100px 5%; 
-    background-color: #fff; 
-    scroll-margin-top: 60px;
-}
-
-.contact-container { 
-    max-width: 800px; 
-    margin: 0 auto; 
-}
-
-.contact-row { 
-    display: flex; 
-    justify-content: center; 
-    align-items: center;
-    gap: 60px; /* 增大间距 */
-}
-
-.contact-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-}
-
-.contact-label { 
-    font-size: 9px; 
-    color: #bbb; 
-    text-transform: uppercase; 
-    margin-bottom: 12px; 
-    letter-spacing: 0.3em; 
-}
-
-.contact-value { 
-    font-size: 14px; 
-    color: var(--main-color); 
-    text-decoration: none; 
-    font-weight: 300;
-    letter-spacing: 0.05em;
-    transition: opacity 0.3s;
-    position: relative;
-}
-
-/* 装饰性短线 */
-.contact-value::after {
-    content: '';
-    position: absolute;
-    bottom: -8px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 0;
-    height: 1px;
-    background: #111;
-    transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.contact-value:hover::after {
-    width: 100%;
-}
-
-.divider { color: #eee; font-weight: 100; font-size: 20px; }
-
-/* --- 手机端适配 (关键优化) --- */
-@media (max-width: 900px) {
-    .contact-section {
-        padding: 80px 10%;
-    }
-    
-    .contact-row { 
-        flex-direction: column; /* 垂直排列 */
-        gap: 45px; /* 每一项之间的距离 */
-    }
-
-    .divider { 
-        display: none; /* 手机端隐藏斜杠分界线 */
-    }
-
-    .contact-item {
-        width: 100%;
-    }
-
-    .contact-label {
-        margin-bottom: 8px;
-    }
-
-    .contact-value {
-        font-size: 16px; /* 增大字号方便点击 */
-        padding: 10px 0; /* 增加点击热区 */
-    }
-    
-    /* 手机端常显短线，增加设计感 */
-    .contact-value::after {
-        width: 15px;
-        opacity: 0.3;
-    }
-}
+        .content-section.revealed { opacity: 1; transform: translateY(0); }
 
         .category-title { 
             font-size: 13px; letter-spacing: 0.5em; text-transform: uppercase; 
@@ -369,10 +271,55 @@
             transform: rotate(45deg); margin-top: 4px;
         }
 
-        @media (max-width: 1100px) and (min-width: 901px) {
-            .grid-sculpture-custom { grid-template-columns: repeat(2, 1fr); }
+        /* --- Contact Section 优化排版 --- */
+        .contact-section { 
+            padding: 100px 5%; 
+            background-color: #fff; 
+            scroll-margin-top: 60px;
+        }
+        .contact-container { max-width: 1000px; margin: 0 auto; text-align: center; }
+        .contact-row { 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            gap: 50px; 
+            flex-wrap: nowrap; 
+        }
+        .contact-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .contact-label { 
+            font-size: 9px; 
+            color: #bbb; 
+            text-transform: uppercase; 
+            margin-bottom: 10px; 
+            letter-spacing: 0.25em; 
+        }
+        .contact-value { 
+            font-size: 13px; 
+            color: var(--main-color); 
+            text-decoration: none; 
+            font-weight: 300;
+            padding-bottom: 4px; 
+            border-bottom: 1px solid transparent; 
+            transition: all 0.4s; 
+            cursor: pointer;
+            position: relative;
+        }
+        .contact-value:hover { border-bottom-color: #eee; }
+        .divider { color: #eee; align-self: center; font-weight: 100; font-size: 18px; }
+
+        /* 复制提示框样式 */
+        #copy-toast {
+            position: fixed; bottom: 50px; left: 50%; transform: translateX(-50%);
+            background: rgba(17,17,17,0.8); color: #fff; padding: 10px 20px;
+            font-size: 10px; letter-spacing: 0.2em; border-radius: 2px;
+            opacity: 0; visibility: hidden; transition: all 0.4s; z-index: 9999;
         }
 
+        /* --- 响应式适配 --- */
         @media (max-width: 900px) {
             .hero-overlay { top: 40%; }
             .hero-title { font-size: 14.4px; line-height: 2.2; letter-spacing: 0.4em; }
@@ -389,20 +336,21 @@
             .content-section { padding: 30px 5% !important; }
             .statement-text { font-size: 16px; }
             .statement-section { padding: 60px 8% 30px; }
+
+            /* 手机端 Contact 竖向高级排版 */
+            .contact-section { padding: 80px 10%; }
+            .contact-row { flex-direction: column; gap: 45px; }
+            .divider { display: none; }
+            .contact-value { font-size: 15px; padding: 8px 0; }
         }
 
-        .contact-section { padding: 60px 5% 40px; background-color: #fff; scroll-margin-top: 60px;}
-        .contact-container { max-width: 1100px; margin: 0 auto; text-align: center; }
-        .contact-row { display: flex; justify-content: center; gap: 40px; flex-wrap: wrap; }
-        .contact-label { font-size: 9px; color: #bbb; text-transform: uppercase; display: block; margin-bottom: 5px; letter-spacing: 0.2em; }
-        .contact-value { font-size: 13px; color: var(--main-color); text-decoration: none; padding-bottom: 2px; border-bottom: 1px solid transparent; transition: all 0.3s; }
-        .divider { color: #eee; align-self: center; font-weight: 100; }
         footer { padding: 60px 5% 40px; text-align: center; border-top: 1px solid #f9f9f9; font-size: 9px; letter-spacing: 0.4em; color: #ccc; text-transform: uppercase; }
     </style>
 </head>
 <body>
 
     <div id="scroll-progress"></div>
+    <div id="copy-toast">ID COPIED</div>
 
     <header>
         <nav id="navbar">
@@ -572,30 +520,26 @@
             </div>
         </section>
 
-       <section class="contact-section" id="contact">
-    <div class="contact-container">
-        <div class="contact-row">
-            <div class="contact-item">
-                <span class="contact-label">Email</span>
-                <a href="mailto:jerryzhang_arts@qq.com" class="contact-value">jerryzhang_arts@qq.com</a>
+        <section class="contact-section" id="contact">
+            <div class="contact-container">
+                <div class="contact-row">
+                    <div class="contact-item">
+                        <span class="contact-label">Email</span>
+                        <a href="mailto:jerryzhang_arts@qq.com" class="contact-value">jerryzhang_arts@qq.com</a>
+                    </div>
+                    <span class="divider">/</span>
+                    <div class="contact-item">
+                        <span class="contact-label">WeChat</span>
+                        <span class="contact-value" onclick="copyWeChat('zjr5556699')">zjr5556699</span>
+                    </div>
+                    <span class="divider">/</span>
+                    <div class="contact-item">
+                        <span class="contact-label">Phone</span>
+                        <a href="tel:+8615117988382" class="contact-value">+86 151 1798 8382</a>
+                    </div>
+                </div>
             </div>
-            
-            <span class="divider">/</span>
-            
-            <div class="contact-item">
-                <span class="contact-label">WeChat</span>
-                <span class="contact-value">zjr5556699</span>
-            </div>
-            
-            <span class="divider">/</span>
-            
-            <div class="contact-item">
-                <span class="contact-label">Phone</span>
-                <a href="tel:+8615117988382" class="contact-value">+86 151 1798 8382</a>
-            </div>
-        </div>
-    </div>
-</section>
+        </section>
     </main>
 
     <div id="back-to-top" aria-label="Back to top"></div>
@@ -608,18 +552,18 @@
         const btt = document.getElementById('back-to-top');
         const navLinks = document.getElementById('navLinks');
 
-        // 图片加载处理（对应优化项 2）
+        // 图片加载处理
         function handleImageLoad(img) {
             img.classList.add('loaded');
             img.parentElement.classList.add('finished-loading');
         }
 
-        // 页面进场处理（对应优化项 4）
+        // 页面进场
         window.addEventListener('load', () => {
             document.body.classList.add('page-loaded');
         });
 
-        // 核心滚动逻辑（优化项 1：智能显隐 + 性能优化）
+        // 核心滚动逻辑
         let ticking = false;
         let lastScrollY = window.scrollY;
 
@@ -628,11 +572,8 @@
                 window.requestAnimationFrame(() => {
                     const currentScrollY = window.pageYOffset || document.documentElement.scrollTop;
                     const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-                    
-                    // 进度条
                     progress.style.width = (currentScrollY / height) * 100 + "%";
 
-                    // 智能导航显隐
                     if (currentScrollY > lastScrollY && currentScrollY > 200) {
                         nav.style.transform = "translateY(-100%)";
                     } else {
@@ -645,7 +586,6 @@
                             btt.classList.remove("visible");
                         }
                     }
-
                     lastScrollY = currentScrollY;
                     ticking = false;
                 });
@@ -653,7 +593,7 @@
             }
         }, { passive: true });
 
-        // 元素淡入观察器
+        // 淡入观察器
         const revealObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
@@ -661,13 +601,11 @@
                     revealObserver.unobserve(entry.target);
                 }
             });
-        }, { threshold: 0.1, rootMargin: "0px 0px -50px 0px" });
+        }, { threshold: 0.1 });
 
-        document.querySelectorAll('.statement-section, .content-section').forEach(sec => {
-            revealObserver.observe(sec);
-        });
+        document.querySelectorAll('.statement-section, .content-section').forEach(sec => revealObserver.observe(sec));
 
-        // 视差效果（仅限桌面）
+        // 视差
         if (window.innerWidth > 900) {
             const hero = document.getElementById('hero-section');
             const imgWrap = document.getElementById('hero-img-wrap');
@@ -683,7 +621,7 @@
         // 返回顶部
         btt.onclick = () => window.scrollTo({top: 0, behavior: 'smooth'});
 
-        // 移动端菜单
+        // 菜单控制
         function toggleMenu() {
             navLinks.classList.toggle('active');
             document.body.style.overflow = navLinks.classList.contains('active') ? 'hidden' : 'auto';
@@ -694,6 +632,18 @@
         }
         document.getElementById('menuToggle').onclick = toggleMenu;
 
+        // 微信复制功能
+        function copyWeChat(id) {
+            navigator.clipboard.writeText(id).then(() => {
+                const toast = document.getElementById('copy-toast');
+                toast.style.opacity = '1';
+                toast.style.visibility = 'visible';
+                setTimeout(() => {
+                    toast.style.opacity = '0';
+                    toast.style.visibility = 'hidden';
+                }, 2000);
+            });
+        }
     </script>
 </body>
 </html>
