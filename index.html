@@ -86,6 +86,16 @@
             transition: all 0.3s ease;
         }
         .nav-scrolled .menu-toggle span { background-color: #111; }
+        /* 新增：菜单展开时的图标变化 */
+        .menu-toggle.active span:nth-child(1) {
+            transform: rotate(45deg) translate(6px, 6px);
+        }
+        .menu-toggle.active span:nth-child(2) {
+            opacity: 0;
+        }
+        .menu-toggle.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(6px, -6px);
+        }
 
         /* --- 封面效果 --- */
         .hero {
@@ -210,8 +220,7 @@
         /* 骨架屏动画 */
         .project-image-wrapper::before {
             content: "";
-            position: absolute;
-            top: 0; left: -150%;
+            position: absolute; top: 0; left: -150%;
             width: 100%; height: 100%;
             background: linear-gradient(90deg, transparent, rgba(255,255,255,0.6), transparent);
             animation: skeleton-loading 1.5s infinite;
@@ -362,7 +371,7 @@
                 <a href="biography.html">BIOGRAPHY</a>
                 <a href="#contact" onclick="closeMenu()">Contact</a>
             </div>
-            <div class="menu-toggle" id="menuToggle" onclick="toggleMenu()">
+            <div class="menu-toggle" id="menuToggle">
                 <span></span><span></span><span></span>
             </div>
         </nav>
@@ -373,7 +382,7 @@
             <div id="hero-img-wrap">
                 <img src="images/cover.webp" alt="Zhang Jiarui Cover" 
                      onload="handleImageLoad(this)"
-                     onerror="this.src='images/Cover.JPG';">
+                     onerror="handleImageError(this, 'images/Cover.JPG');">
             </div>
             <div class="hero-overlay">
                 <h1 class="hero-title">Matter <br> dissolves, <br> memory <br> crystallizes</h1>
@@ -398,7 +407,7 @@
                         <div class="project-image-wrapper video-ratio">
                             <img src="images/eco/ice_burial_cover.webp" loading="lazy" decoding="async" 
                                  onload="handleImageLoad(this)"
-                                 onerror="this.src='images/eco/ice_burial_cover.jpg'">
+                                 onerror="handleImageError(this, 'images/eco/ice_burial_cover.jpg')">
                             <div class="play-overlay"><div class="play-button"></div></div>
                         </div>
                         <div class="project-info">
@@ -412,7 +421,7 @@
                         <div class="project-image-wrapper video-ratio">
                             <img src="images/eco/4_5tons_cover.webp" loading="lazy" decoding="async"
                                  onload="handleImageLoad(this)"
-                                 onerror="this.src='images/eco/4_5tons_cover.jpg'">
+                                 onerror="handleImageError(this, 'images/eco/4_5tons_cover.jpg')">
                             <div class="play-overlay"><div class="play-button"></div></div>
                         </div>
                         <div class="project-info">
@@ -433,7 +442,7 @@
                         <div class="project-image-wrapper img-ratio">
                             <img src="images/sculpture/s1_cover.webp" loading="lazy" decoding="async"
                                  onload="handleImageLoad(this)"
-                                 onerror="this.src='images/sculpture/s1_cover.jpg'">
+                                 onerror="handleImageError(this, 'images/sculpture/s1_cover.jpg')">
                         </div>
                         <div class="project-info">
                             <h4 class="project-title">Triangle</h4>
@@ -447,7 +456,7 @@
                         <div class="project-image-wrapper img-ratio">
                             <img src="images/sculpture/s2_cover.webp" loading="lazy" decoding="async"
                                  onload="handleImageLoad(this)"
-                                 onerror="this.src='images/sculpture/s2_cover.jpg'">
+                                 onerror="handleImageError(this, 'images/sculpture/s2_cover.jpg')">
                         </div>
                         <div class="project-info">
                             <h4 class="project-title">Water1</h4>
@@ -461,7 +470,7 @@
                         <div class="project-image-wrapper img-ratio" style="background-color: #ffffff; display: flex; align-items: center; justify-content: center;">
                             <img src="images/sculpture/s5_cover.webp" loading="lazy" decoding="async"
                                  onload="handleImageLoad(this)"
-                                 onerror="this.src='images/sculpture/s5_cover.jpg'" style="object-fit: contain; transform: scale(0.8);">
+                                 onerror="handleImageError(this, 'images/sculpture/s5_cover.jpg')" style="object-fit: contain; transform: scale(0.8);">
                         </div>
                         <div class="project-info">
                             <h4 class="project-title">X</h4>
@@ -475,7 +484,7 @@
                         <div class="project-image-wrapper img-ratio">
                             <img src="images/sculpture/s4_cover.webp" loading="lazy" decoding="async"
                                  onload="handleImageLoad(this)"
-                                 onerror="this.src='images/sculpture/s4_cover.jpg'">
+                                 onerror="handleImageError(this, 'images/sculpture/s4_cover.jpg')">
                         </div>
                         <div class="project-info">
                             <h4 class="project-title">At ease</h4>
@@ -489,7 +498,7 @@
                         <div class="project-image-wrapper img-ratio">
                             <img src="images/sculpture/s3_cover.webp" loading="lazy" decoding="async"
                                  onload="handleImageLoad(this)"
-                                 onerror="this.src='images/sculpture/s3_cover.jpg'">
+                                 onerror="handleImageError(this, 'images/sculpture/s3_cover.jpg')">
                         </div>
                         <div class="project-info">
                             <h4 class="project-title">New Eighteenth Arhat</h4>
@@ -508,7 +517,7 @@
                         <div class="project-image-wrapper video-ratio">
                             <img src="images/projects/coral_cover.webp" loading="lazy" decoding="async"
                                  onload="handleImageLoad(this)"
-                                 onerror="this.src='images/projects/coral_cover.jpg'">
+                                 onerror="handleImageError(this, 'images/projects/coral_cover.jpg')">
                             <div class="play-overlay"><div class="play-button"></div></div>
                         </div>
                         <div class="project-info">
@@ -551,11 +560,21 @@
         const progress = document.getElementById('scroll-progress');
         const btt = document.getElementById('back-to-top');
         const navLinks = document.getElementById('navLinks');
+        const menuToggle = document.getElementById('menuToggle');
 
         // 图片加载处理
         function handleImageLoad(img) {
             img.classList.add('loaded');
             img.parentElement.classList.add('finished-loading');
+        }
+
+        // 图片加载失败处理（增强版）
+        function handleImageError(img, fallbackSrc) {
+            img.src = fallbackSrc;
+            // 防止无限循环
+            img.onerror = null;
+            // 标记加载完成，停止骨架屏
+            handleImageLoad(img);
         }
 
         // 页面进场
@@ -605,13 +624,15 @@
 
         document.querySelectorAll('.statement-section, .content-section').forEach(sec => revealObserver.observe(sec));
 
-        // 视差
+        // 视差（优化版：限制偏移范围）
         if (window.innerWidth > 900) {
             const hero = document.getElementById('hero-section');
             const imgWrap = document.getElementById('hero-img-wrap');
             hero.addEventListener('mousemove', (e) => {
-                const x = (e.clientX - window.innerWidth / 2) / 50;
-                const y = (e.clientY - window.innerHeight / 2) / 50;
+                // 限制偏移范围在±20px内
+                const maxOffset = 20;
+                const x = Math.max(-maxOffset, Math.min(maxOffset, (e.clientX - window.innerWidth / 2) / 50));
+                const y = Math.max(-maxOffset, Math.min(maxOffset, (e.clientY - window.innerHeight / 2) / 50));
                 requestAnimationFrame(() => {
                     imgWrap.style.transform = `translate(${-x}px, ${-y}px)`;
                 });
@@ -621,28 +642,64 @@
         // 返回顶部
         btt.onclick = () => window.scrollTo({top: 0, behavior: 'smooth'});
 
-        // 菜单控制
+        // 菜单控制（优化版：添加图标状态切换）
         function toggleMenu() {
             navLinks.classList.toggle('active');
+            menuToggle.classList.toggle('active');
             document.body.style.overflow = navLinks.classList.contains('active') ? 'hidden' : 'auto';
         }
         function closeMenu() {
             navLinks.classList.remove('active');
+            menuToggle.classList.remove('active');
             document.body.style.overflow = 'auto';
         }
-        document.getElementById('menuToggle').onclick = toggleMenu;
+        menuToggle.onclick = toggleMenu;
 
-        // 微信复制功能
+        // 微信复制功能（增强兼容性）
         function copyWeChat(id) {
-            navigator.clipboard.writeText(id).then(() => {
-                const toast = document.getElementById('copy-toast');
-                toast.style.opacity = '1';
-                toast.style.visibility = 'visible';
-                setTimeout(() => {
-                    toast.style.opacity = '0';
-                    toast.style.visibility = 'hidden';
-                }, 2000);
-            });
+            // 优先使用剪贴板API
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(id).then(() => {
+                    showCopyToast();
+                }).catch(err => {
+                    console.error('剪贴板复制失败:', err);
+                    fallbackCopyTextToClipboard(id);
+                });
+            } else {
+                // 降级方案
+                fallbackCopyTextToClipboard(id);
+            }
+        }
+
+        // 复制降级方案
+        function fallbackCopyTextToClipboard(text) {
+            const textArea = document.createElement("textarea");
+            textArea.value = text;
+            textArea.style.position = "fixed";
+            textArea.style.left = "-999999px";
+            textArea.style.top = "-999999px";
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+            try {
+                document.execCommand('copy');
+                showCopyToast();
+            } catch (err) {
+                console.error('降级复制失败:', err);
+                alert('复制失败，请手动复制：' + text);
+            }
+            document.body.removeChild(textArea);
+        }
+
+        // 显示复制提示
+        function showCopyToast() {
+            const toast = document.getElementById('copy-toast');
+            toast.style.opacity = '1';
+            toast.style.visibility = 'visible';
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.visibility = 'hidden';
+            }, 2000);
         }
     </script>
 </body>
