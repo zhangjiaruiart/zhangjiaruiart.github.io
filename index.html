@@ -14,6 +14,8 @@
             --primary-font: "Optima", "Didot", "Helvetica Neue", Helvetica, Arial, sans-serif;
             --main-color: #111111;
             --transition-smooth: all 1.2s cubic-bezier(0.15, 1, 0.3, 1);
+            --accent-color: #666;
+            --overlay-bg: rgba(0,0,0,0.85);
         }
 
         body, html {
@@ -25,11 +27,38 @@
             -webkit-font-smoothing: antialiased;
         }
 
+        /* --- 新增：加载状态提示 --- */
+        #loading-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: #fff; z-index: 9999; display: flex;
+            align-items: center; justify-content: center;
+            transition: opacity 0.8s ease, visibility 0.8s ease;
+        }
+        .loading-spinner {
+            width: 30px; height: 30px; border: 1px solid #eee;
+            border-top: 1px solid var(--main-color); border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .loading-hidden {
+            opacity: 0; visibility: hidden; pointer-events: none;
+        }
+
         /* --- 交互组件：进度条 --- */
         #scroll-progress {
             position: fixed; top: 0; left: 0; width: 0%; height: 2px;
             background: var(--main-color); z-index: 3000; transition: width 0.1s ease-out;
         }
+        /* 新增：进度百分比显示 */
+        #progress-percent {
+            position: fixed; top: 8px; right: 20px; font-size: 9px;
+            letter-spacing: 0.2em; color: var(--main-color); z-index: 3000;
+            opacity: 0; transition: opacity 0.3s ease;
+        }
+        .progress-visible { opacity: 1 !important; }
 
         /* --- 导航栏 --- */
         nav {
@@ -76,6 +105,9 @@
             transform: translateX(-50%);
         }
         .nav-links a:hover::after { width: 100%; }
+        /* 新增：当前锚点高亮 */
+        .nav-links a.active-link { color: var(--accent-color) !important; }
+        .nav-links a.active-link::after { width: 100%; }
 
         .menu-toggle {
             display: none; flex-direction: column; gap: 6px;
@@ -86,7 +118,7 @@
             transition: all 0.3s ease;
         }
         .nav-scrolled .menu-toggle span { background-color: #111; }
-        /* 新增：菜单展开时的图标变化 */
+        /* 菜单展开时的图标变化 */
         .menu-toggle.active span:nth-child(1) {
             transform: rotate(45deg) translate(6px, 6px);
         }
@@ -211,7 +243,7 @@
             color: #888; margin-bottom: 20px; font-weight: 300;
         }
 
-        .project { text-decoration: none; color: inherit; display: block; }
+        .project { text-decoration: none; color: inherit; display: block; position: relative; }
         .project-image-wrapper { 
             overflow: hidden; margin-bottom: 20px; 
             background-color: #f7f7f7; position: relative;
@@ -257,15 +289,55 @@
         .play-button {
             width: 50px; height: 50px; border: 1px solid #fff; border-radius: 50%;
             display: flex; align-items: center; justify-content: center; backdrop-filter: blur(5px);
+            transition: transform 0.3s ease;
         }
         .play-button::after {
             content: ''; width: 0; height: 0; 
             border-top: 8px solid transparent; border-bottom: 8px solid transparent; border-left: 12px solid #fff;
             margin-left: 4px;
         }
+        .play-overlay:hover .play-button { transform: scale(1.1); }
+
+        /* 新增：作品悬停信息层 */
+        .project-hover-info {
+            position: absolute; bottom: 0; left: 0; width: 100%;
+            padding: 20px; box-sizing: border-box;
+            background: linear-gradient(transparent, rgba(0,0,0,0.6));
+            color: #fff; opacity: 0; transform: translateY(10px);
+            transition: opacity 0.4s ease, transform 0.4s ease;
+            z-index: 3;
+        }
+        .project:hover .project-hover-info {
+            opacity: 1; transform: translateY(0);
+        }
+        .hover-title { font-size: 14px; letter-spacing: 0.1em; margin: 0 0 5px; }
+        .hover-desc { font-size: 10px; opacity: 0.8; margin: 0; }
 
         .project-title { font-size: 14px; font-weight: 400; letter-spacing: 0.1em; text-transform: uppercase; margin-top: 5px; }
         .project-meta { font-size: 10px; color: #aaa; margin-top: 4px; letter-spacing: 0.05em; text-transform: uppercase; line-height: 1.4; }
+
+        /* --- 新增：图片放大查看器 --- */
+        #image-viewer {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--overlay-bg); z-index: 9998; display: none;
+            align-items: center; justify-content: center;
+            padding: 20px; box-sizing: border-box;
+        }
+        .viewer-active { display: flex !important; }
+        #viewer-img {
+            max-width: 90%; max-height: 90%; object-fit: contain;
+            transition: transform 0.3s ease;
+        }
+        #viewer-close {
+            position: absolute; top: 30px; right: 30px;
+            width: 30px; height: 30px; cursor: pointer;
+        }
+        #viewer-close::before, #viewer-close::after {
+            content: ''; position: absolute; top: 50%; left: 0;
+            width: 100%; height: 1px; background: #fff;
+        }
+        #viewer-close::before { transform: rotate(45deg); }
+        #viewer-close::after { transform: rotate(-45deg); }
 
         #back-to-top {
             position: fixed; bottom: 40px; right: 40px; width: 40px; height: 40px;
@@ -279,6 +351,7 @@
             content: ''; width: 8px; height: 8px; border-left: 1px solid #111; border-top: 1px solid #111;
             transform: rotate(45deg); margin-top: 4px;
         }
+        #back-to-top:hover { transform: translateY(-3px); box-shadow: 0 6px 20px rgba(0,0,0,0.1); }
 
         /* --- Contact Section 优化排版 --- */
         .contact-section { 
@@ -317,7 +390,7 @@
             cursor: pointer;
             position: relative;
         }
-        .contact-value:hover { border-bottom-color: #eee; }
+        .contact-value:hover { border-bottom-color: #eee; transform: translateY(-2px); }
         .divider { color: #eee; align-self: center; font-weight: 100; font-size: 18px; }
 
         /* 复制提示框样式 */
@@ -351,15 +424,31 @@
             .contact-row { flex-direction: column; gap: 45px; }
             .divider { display: none; }
             .contact-value { font-size: 15px; padding: 8px 0; }
+
+            /* 移动端隐藏部分交互 */
+            .project-hover-info { display: none; }
+            #progress-percent { display: none; }
         }
 
         footer { padding: 60px 5% 40px; text-align: center; border-top: 1px solid #f9f9f9; font-size: 9px; letter-spacing: 0.4em; color: #ccc; text-transform: uppercase; }
     </style>
 </head>
 <body>
+    <!-- 新增：加载状态层 -->
+    <div id="loading-overlay">
+        <div class="loading-spinner"></div>
+    </div>
 
     <div id="scroll-progress"></div>
+    <!-- 新增：进度百分比 -->
+    <div id="progress-percent">0%</div>
     <div id="copy-toast">ID COPIED</div>
+
+    <!-- 新增：图片查看器 -->
+    <div id="image-viewer">
+        <img id="viewer-img" src="" alt="作品大图">
+        <div id="viewer-close" onclick="closeViewer()"></div>
+    </div>
 
     <header>
         <nav id="navbar">
@@ -403,12 +492,17 @@
             <h2 class="category-title">Ecological Art</h2>
             <div class="grid">
                 <article>
-                    <a href="eco-ice-burial.html" class="project">
+                    <a href="eco-ice-burial.html" class="project" onclick="openViewer('images/eco/ice_burial_cover.webp'); return false;">
                         <div class="project-image-wrapper video-ratio">
                             <img src="images/eco/ice_burial_cover.webp" loading="lazy" decoding="async" 
                                  onload="handleImageLoad(this)"
                                  onerror="handleImageError(this, 'images/eco/ice_burial_cover.jpg')">
                             <div class="play-overlay"><div class="play-button"></div></div>
+                        </div>
+                        <!-- 新增：悬停信息 -->
+                        <div class="project-hover-info">
+                            <h3 class="hover-title">Ice Burial</h3>
+                            <p class="hover-desc">Performance art about environmental protection and memory</p>
                         </div>
                         <div class="project-info">
                             <h3 class="project-title">Ice Burial</h3>
@@ -417,12 +511,16 @@
                     </a>
                 </article>
                 <article>
-                    <a href="eco-4-5tons.html" class="project">
+                    <a href="eco-4-5tons.html" class="project" onclick="openViewer('images/eco/4_5tons_cover.webp'); return false;">
                         <div class="project-image-wrapper video-ratio">
                             <img src="images/eco/4_5tons_cover.webp" loading="lazy" decoding="async"
                                  onload="handleImageLoad(this)"
                                  onerror="handleImageError(this, 'images/eco/4_5tons_cover.jpg')">
                             <div class="play-overlay"><div class="play-button"></div></div>
+                        </div>
+                        <div class="project-hover-info">
+                            <h3 class="hover-title">4.5 Tons</h3>
+                            <p class="hover-desc">Installation exploring the weight of human behavior</p>
                         </div>
                         <div class="project-info">
                             <h3 class="project-title">4.5 Tons</h3>
@@ -438,11 +536,15 @@
             <div class="grid-sculpture-custom">
                 <article>
                     <h3 class="series-label">Wood Series</h3>
-                    <a href="series1.html" class="project">
+                    <a href="series1.html" class="project" onclick="openViewer('images/sculpture/s1_cover.webp'); return false;">
                         <div class="project-image-wrapper img-ratio">
                             <img src="images/sculpture/s1_cover.webp" loading="lazy" decoding="async"
                                  onload="handleImageLoad(this)"
                                  onerror="handleImageError(this, 'images/sculpture/s1_cover.jpg')">
+                        </div>
+                        <div class="project-hover-info">
+                            <h3 class="hover-title">Triangle</h3>
+                            <p class="hover-desc">Wood sculpture exploring geometric balance</p>
                         </div>
                         <div class="project-info">
                             <h4 class="project-title">Triangle</h4>
@@ -452,11 +554,15 @@
                 </article>
                 <article>
                     <h3 class="series-label">Water Series</h3>
-                    <a href="series2.html" class="project">
+                    <a href="series2.html" class="project" onclick="openViewer('images/sculpture/s2_cover.webp'); return false;">
                         <div class="project-image-wrapper img-ratio">
                             <img src="images/sculpture/s2_cover.webp" loading="lazy" decoding="async"
                                  onload="handleImageLoad(this)"
                                  onerror="handleImageError(this, 'images/sculpture/s2_cover.jpg')">
+                        </div>
+                        <div class="project-hover-info">
+                            <h3 class="hover-title">Water1</h3>
+                            <p class="hover-desc">Transparent resin capturing the form of water</p>
                         </div>
                         <div class="project-info">
                             <h4 class="project-title">Water1</h4>
@@ -466,11 +572,15 @@
                 </article>
                 <article>
                     <h3 class="series-label">Line Series</h3>
-                    <a href="series5.html" class="project">
+                    <a href="series5.html" class="project" onclick="openViewer('images/sculpture/s5_cover.webp'); return false;">
                         <div class="project-image-wrapper img-ratio" style="background-color: #ffffff; display: flex; align-items: center; justify-content: center;">
                             <img src="images/sculpture/s5_cover.webp" loading="lazy" decoding="async"
                                  onload="handleImageLoad(this)"
                                  onerror="handleImageError(this, 'images/sculpture/s5_cover.jpg')" style="object-fit: contain; transform: scale(0.8);">
+                        </div>
+                        <div class="project-hover-info">
+                            <h3 class="hover-title">X</h3>
+                            <p class="hover-desc">Acrylic sculpture exploring intersecting lines</p>
                         </div>
                         <div class="project-info">
                             <h4 class="project-title">X</h4>
@@ -480,11 +590,15 @@
                 </article>
                 <article>
                     <h3 class="series-label">Formless Series</h3>
-                    <a href="series4.html" class="project">
+                    <a href="series4.html" class="project" onclick="openViewer('images/sculpture/s4_cover.webp'); return false;">
                         <div class="project-image-wrapper img-ratio">
                             <img src="images/sculpture/s4_cover.webp" loading="lazy" decoding="async"
                                  onload="handleImageLoad(this)"
                                  onerror="handleImageError(this, 'images/sculpture/s4_cover.jpg')">
+                        </div>
+                        <div class="project-hover-info">
+                            <h3 class="hover-title">At ease</h3>
+                            <p class="hover-desc">Resin sculpture expressing inner peace</p>
                         </div>
                         <div class="project-info">
                             <h4 class="project-title">At ease</h4>
@@ -494,11 +608,15 @@
                 </article>
                 <article>
                     <h3 class="series-label">Gold Series</h3>
-                    <a href="series3.html" class="project">
+                    <a href="series3.html" class="project" onclick="openViewer('images/sculpture/s3_cover.webp'); return false;">
                         <div class="project-image-wrapper img-ratio">
                             <img src="images/sculpture/s3_cover.webp" loading="lazy" decoding="async"
                                  onload="handleImageLoad(this)"
                                  onerror="handleImageError(this, 'images/sculpture/s3_cover.jpg')">
+                        </div>
+                        <div class="project-hover-info">
+                            <h3 class="hover-title">New Eighteenth Arhat</h3>
+                            <p class="hover-desc">Goldenleaf resin reinterpreting traditional figures</p>
                         </div>
                         <div class="project-info">
                             <h4 class="project-title">New Eighteenth Arhat</h4>
@@ -513,12 +631,16 @@
             <h2 class="category-title">Projects</h2>
             <div class="grid">
                 <article>
-                    <a href="project-coral.html" class="project">
+                    <a href="project-coral.html" class="project" onclick="openViewer('images/projects/coral_cover.webp'); return false;">
                         <div class="project-image-wrapper video-ratio">
                             <img src="images/projects/coral_cover.webp" loading="lazy" decoding="async"
                                  onload="handleImageLoad(this)"
                                  onerror="handleImageError(this, 'images/projects/coral_cover.jpg')">
                             <div class="play-overlay"><div class="play-button"></div></div>
+                        </div>
+                        <div class="project-hover-info">
+                            <h3 class="hover-title">Coral Planting Project</h3>
+                            <p class="hover-desc">Documentary about marine ecological restoration</p>
                         </div>
                         <div class="project-info">
                             <h3 class="project-title">Coral Planting Project</h3>
@@ -558,9 +680,13 @@
     <script>
         const nav = document.getElementById('navbar');
         const progress = document.getElementById('scroll-progress');
+        const progressPercent = document.getElementById('progress-percent');
         const btt = document.getElementById('back-to-top');
         const navLinks = document.getElementById('navLinks');
         const menuToggle = document.getElementById('menuToggle');
+        const loadingOverlay = document.getElementById('loading-overlay');
+        const imageViewer = document.getElementById('image-viewer');
+        const viewerImg = document.getElementById('viewer-img');
 
         // 图片加载处理
         function handleImageLoad(img) {
@@ -568,31 +694,45 @@
             img.parentElement.classList.add('finished-loading');
         }
 
-        // 图片加载失败处理（增强版）
+        // 图片加载失败处理
         function handleImageError(img, fallbackSrc) {
             img.src = fallbackSrc;
-            // 防止无限循环
             img.onerror = null;
-            // 标记加载完成，停止骨架屏
             handleImageLoad(img);
         }
 
-        // 页面进场
+        // 页面加载完成
         window.addEventListener('load', () => {
             document.body.classList.add('page-loaded');
+            setTimeout(() => {
+                loadingOverlay.classList.add('loading-hidden');
+            }, 500);
         });
 
         // 核心滚动逻辑
         let ticking = false;
         let lastScrollY = window.scrollY;
+        // 锚点元素列表
+        const anchorSections = ['eco-art', 'sculpture', 'projects', 'contact'];
+        const anchorElements = anchorSections.map(id => document.getElementById(id));
 
         window.addEventListener('scroll', () => {
             if (!ticking) {
                 window.requestAnimationFrame(() => {
                     const currentScrollY = window.pageYOffset || document.documentElement.scrollTop;
                     const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-                    progress.style.width = (currentScrollY / height) * 100 + "%";
+                    const scrollPercent = Math.round((currentScrollY / height) * 100);
+                    
+                    // 更新进度条和百分比
+                    progress.style.width = scrollPercent + "%";
+                    progressPercent.textContent = scrollPercent + "%";
+                    if (currentScrollY > 100) {
+                        progressPercent.classList.add('progress-visible');
+                    } else {
+                        progressPercent.classList.remove('progress-visible');
+                    }
 
+                    // 导航栏显示/隐藏
                     if (currentScrollY > lastScrollY && currentScrollY > 200) {
                         nav.style.transform = "translateY(-100%)";
                     } else {
@@ -605,12 +745,37 @@
                             btt.classList.remove("visible");
                         }
                     }
+
+                    // 锚点高亮
+                    updateActiveAnchor(currentScrollY);
+
                     lastScrollY = currentScrollY;
                     ticking = false;
                 });
                 ticking = true;
             }
         }, { passive: true });
+
+        // 新增：更新当前锚点高亮
+        function updateActiveAnchor(scrollPos) {
+            let currentAnchor = '';
+            anchorElements.forEach(section => {
+                const sectionTop = section.offsetTop - 100;
+                const sectionBottom = sectionTop + section.offsetHeight;
+                if (scrollPos >= sectionTop && scrollPos < sectionBottom) {
+                    currentAnchor = section.id;
+                }
+            });
+
+            // 更新导航链接高亮
+            document.querySelectorAll('.nav-links a').forEach(link => {
+                link.classList.remove('active-link');
+                const href = link.getAttribute('href').replace('#', '');
+                if (href === currentAnchor) {
+                    link.classList.add('active-link');
+                }
+            });
+        }
 
         // 淡入观察器
         const revealObserver = new IntersectionObserver((entries) => {
@@ -624,12 +789,11 @@
 
         document.querySelectorAll('.statement-section, .content-section').forEach(sec => revealObserver.observe(sec));
 
-        // 视差（优化版：限制偏移范围）
+        // 视差效果
         if (window.innerWidth > 900) {
             const hero = document.getElementById('hero-section');
             const imgWrap = document.getElementById('hero-img-wrap');
             hero.addEventListener('mousemove', (e) => {
-                // 限制偏移范围在±20px内
                 const maxOffset = 20;
                 const x = Math.max(-maxOffset, Math.min(maxOffset, (e.clientX - window.innerWidth / 2) / 50));
                 const y = Math.max(-maxOffset, Math.min(maxOffset, (e.clientY - window.innerHeight / 2) / 50));
@@ -642,7 +806,7 @@
         // 返回顶部
         btt.onclick = () => window.scrollTo({top: 0, behavior: 'smooth'});
 
-        // 菜单控制（优化版：添加图标状态切换）
+        // 菜单控制
         function toggleMenu() {
             navLinks.classList.toggle('active');
             menuToggle.classList.toggle('active');
@@ -655,9 +819,8 @@
         }
         menuToggle.onclick = toggleMenu;
 
-        // 微信复制功能（增强兼容性）
+        // 微信复制功能
         function copyWeChat(id) {
-            // 优先使用剪贴板API
             if (navigator.clipboard && window.isSecureContext) {
                 navigator.clipboard.writeText(id).then(() => {
                     showCopyToast();
@@ -666,12 +829,10 @@
                     fallbackCopyTextToClipboard(id);
                 });
             } else {
-                // 降级方案
                 fallbackCopyTextToClipboard(id);
             }
         }
 
-        // 复制降级方案
         function fallbackCopyTextToClipboard(text) {
             const textArea = document.createElement("textarea");
             textArea.value = text;
@@ -691,7 +852,6 @@
             document.body.removeChild(textArea);
         }
 
-        // 显示复制提示
         function showCopyToast() {
             const toast = document.getElementById('copy-toast');
             toast.style.opacity = '1';
@@ -701,6 +861,32 @@
                 toast.style.visibility = 'hidden';
             }, 2000);
         }
+
+        // 新增：图片查看器功能
+        function openViewer(imgSrc) {
+            viewerImg.src = imgSrc;
+            imageViewer.classList.add('viewer-active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeViewer() {
+            imageViewer.classList.remove('viewer-active');
+            document.body.style.overflow = 'auto';
+        }
+
+        // 点击查看器背景关闭
+        imageViewer.addEventListener('click', (e) => {
+            if (e.target === imageViewer) {
+                closeViewer();
+            }
+        });
+
+        // ESC键关闭查看器
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && imageViewer.classList.contains('viewer-active')) {
+                closeViewer();
+            }
+        });
     </script>
 </body>
 </html>
