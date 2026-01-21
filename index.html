@@ -165,19 +165,24 @@
 
         /* --- 艺术立场区块 --- */
         .statement-section {
-            padding: calc(120px + 5vh) 5% calc(40px + 5vh);
-            max-width: 900px;
-            margin: 0 auto;
-            text-align: center;
-            scroll-margin-top: 100px;
-        }
-        .statement-text {
-            font-size: 20px; line-height: 1.8; font-weight: 300;
-            color: #222; letter-spacing: 0.02em; font-style: italic;
-            opacity: 0; transform: translateY(20px);
-            transition: var(--transition-smooth);
-        }
-        .revealed .statement-text { opacity: 1; transform: translateY(0); }
+    perspective: 1000px;
+}
+
+.statement-text {
+    font-size: 20px; line-height: 1.8; font-weight: 300;
+    color: #222; font-style: italic;
+    letter-spacing: 0.5em; /* 初始溶解态 */
+    filter: blur(15px);    /* 初始溶解态 */
+    opacity: 0;
+    transition: all 2.5s cubic-bezier(0.15, 1, 0.3, 1);
+}
+
+/* 当触发 revealed 类时的状态 */
+.revealed .statement-text {
+    opacity: 1;
+    filter: blur(0);
+    letter-spacing: 0.02em; /* 结晶成清晰的形态 */
+}
 
         /* --- 布局核心 --- */
         .content-section { 
