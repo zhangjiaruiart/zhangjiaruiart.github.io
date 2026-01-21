@@ -31,7 +31,7 @@
             background: var(--main-color); z-index: 3000; transition: width 0.1s ease-out;
         }
 
-        /* --- 导航栏 --- */
+        /* --- 导航栏（优化项 1：智能显隐） --- */
         nav {
             position: fixed;
             top: 0; left: 0; width: 100%;
@@ -39,7 +39,7 @@
             padding: 30px 5%; 
             box-sizing: border-box;
             z-index: 2000;
-            transition: all 0.5s cubic-bezier(0.2, 1, 0.3, 1);
+            transition: all 0.6s cubic-bezier(0.2, 1, 0.3, 1);
         }
 
         .nav-scrolled {
@@ -87,7 +87,7 @@
         }
         .nav-scrolled .menu-toggle span { background-color: #111; }
 
-        /* --- 封面效果 --- */
+        /* --- 封面效果（优化项 4：首屏高级进场） --- */
         .hero {
             height: 100vh; width: 100%; overflow: hidden;
             position: relative; background-color: #000;
@@ -119,15 +119,21 @@
         .hero-title {
             color: #ffffff; font-size: 18px; font-weight: 300;
             letter-spacing: 0.6em; text-transform: uppercase;
-            margin: 0; opacity: 0; line-height: 1.6;
-            animation: fadeInText 3s ease-out 1.2s forwards;
+            margin: 0; line-height: 1.6;
+            /* 初始状态：模糊且下移 */
+            opacity: 0;
+            filter: blur(10px);
+            transform: translateY(30px);
+            transition: opacity 2s ease, filter 2s ease, transform 1.5s cubic-bezier(0.16, 1, 0.3, 1);
         }
-        .hero-title br { display: none; }
+        /* 进场类 */
+        .page-loaded .hero-title {
+            opacity: 0.8;
+            filter: blur(0);
+            transform: translateY(0);
+        }
 
-        @keyframes fadeInText {
-            from { opacity: 0; transform: translateY(15px); }
-            to { opacity: 0.8; transform: translateY(0); }
-        }
+        .hero-title br { display: none; }
 
         .scroll-indicator {
             position: absolute; bottom: 35px; left: 50%;
@@ -161,7 +167,7 @@
         }
         .revealed .statement-text { opacity: 1; transform: translateY(0); }
 
-        /* --- 布局核心 --- */
+        /* --- 布局核心（优化项 2：骨架屏流光占位） --- */
         .content-section { 
             padding: 40px 5% 20px;
             max-width: 1260px; margin: 0 auto; 
@@ -200,16 +206,33 @@
         .project { text-decoration: none; color: inherit; display: block; }
         .project-image-wrapper { 
             overflow: hidden; margin-bottom: 20px; 
-            background-color: #fcfcfc; position: relative;
-            /* 【加速优化 2】为背景预留占位符，防止加载时页面跳动 */
+            background-color: #f7f7f7; position: relative;
         }
+
+        /* 骨架屏动画 */
+        .project-image-wrapper::before {
+            content: "";
+            position: absolute;
+            top: 0; left: -150%;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.6), transparent);
+            animation: skeleton-loading 1.5s infinite;
+            z-index: 1;
+        }
+        .project-image-wrapper.finished-loading::before { display: none; }
+
+        @keyframes skeleton-loading {
+            0% { left: -150%; }
+            50% { left: 100%; }
+            100% { left: 100%; }
+        }
+
         .img-ratio { aspect-ratio: 4 / 5; }
         .video-ratio { aspect-ratio: 16 / 9; background-color: #000; }
 
         .project img { 
             width: 100%; height: 100%; object-fit: cover; 
-            transition: transform 1.8s cubic-bezier(0.15, 1, 0.3, 1);
-            /* 【加速优化 3】初始状态稍微模糊或变暗，减少加载瞬间的视觉冲击 */
+            transition: transform 1.8s cubic-bezier(0.15, 1, 0.3, 1), opacity 1s ease;
             opacity: 0; 
         }
         .project img.loaded { opacity: 1; }
@@ -220,7 +243,10 @@
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             display: flex; align-items: center; justify-content: center;
             background: rgba(0,0,0,0.1); transition: background 0.3s;
+            z-index: 2; opacity: 0;
         }
+        .project img.loaded + .play-overlay { opacity: 1; }
+
         .play-button {
             width: 50px; height: 50px; border: 1px solid #fff; border-radius: 50%;
             display: flex; align-items: center; justify-content: center; backdrop-filter: blur(5px);
@@ -302,7 +328,7 @@
         <section class="hero" id="hero-section">
             <div id="hero-img-wrap">
                 <img src="images/cover.webp" alt="Zhang Jiarui Cover" 
-                     onload="this.classList.add('loaded')"
+                     onload="handleImageLoad(this)"
                      onerror="this.src='images/Cover.JPG';">
             </div>
             <div class="hero-overlay">
@@ -316,7 +342,7 @@
         <section class="statement-section" id="statement">
             <p class="statement-text">
                 Zhang Jiarui’s practice operates between sculptural reduction and site-specific ecological intervention, 
-                examining how material, time, and human action reshape fragile systems.
+                examing how material, time, and human action reshape fragile systems.
             </p>
         </section>
 
@@ -327,7 +353,7 @@
                     <a href="eco-ice-burial.html" class="project">
                         <div class="project-image-wrapper video-ratio">
                             <img src="images/eco/ice_burial_cover.webp" loading="lazy" decoding="async" 
-                                 onload="this.classList.add('loaded')"
+                                 onload="handleImageLoad(this)"
                                  onerror="this.src='images/eco/ice_burial_cover.jpg'">
                             <div class="play-overlay"><div class="play-button"></div></div>
                         </div>
@@ -341,7 +367,7 @@
                     <a href="eco-4-5tons.html" class="project">
                         <div class="project-image-wrapper video-ratio">
                             <img src="images/eco/4_5tons_cover.webp" loading="lazy" decoding="async"
-                                 onload="this.classList.add('loaded')"
+                                 onload="handleImageLoad(this)"
                                  onerror="this.src='images/eco/4_5tons_cover.jpg'">
                             <div class="play-overlay"><div class="play-button"></div></div>
                         </div>
@@ -362,7 +388,7 @@
                     <a href="series1.html" class="project">
                         <div class="project-image-wrapper img-ratio">
                             <img src="images/sculpture/s1_cover.webp" loading="lazy" decoding="async"
-                                 onload="this.classList.add('loaded')"
+                                 onload="handleImageLoad(this)"
                                  onerror="this.src='images/sculpture/s1_cover.jpg'">
                         </div>
                         <div class="project-info">
@@ -371,13 +397,12 @@
                         </div>
                     </a>
                 </article>
-
                 <article>
                     <h3 class="series-label">Water Series</h3>
                     <a href="series2.html" class="project">
                         <div class="project-image-wrapper img-ratio">
                             <img src="images/sculpture/s2_cover.webp" loading="lazy" decoding="async"
-                                 onload="this.classList.add('loaded')"
+                                 onload="handleImageLoad(this)"
                                  onerror="this.src='images/sculpture/s2_cover.jpg'">
                         </div>
                         <div class="project-info">
@@ -386,13 +411,12 @@
                         </div>
                     </a>
                 </article>
-
                 <article>
                     <h3 class="series-label">Line Series</h3>
                     <a href="series5.html" class="project">
                         <div class="project-image-wrapper img-ratio" style="background-color: #ffffff; display: flex; align-items: center; justify-content: center;">
                             <img src="images/sculpture/s5_cover.webp" loading="lazy" decoding="async"
-                                 onload="this.classList.add('loaded')"
+                                 onload="handleImageLoad(this)"
                                  onerror="this.src='images/sculpture/s5_cover.jpg'" style="object-fit: contain; transform: scale(0.8);">
                         </div>
                         <div class="project-info">
@@ -401,13 +425,12 @@
                         </div>
                     </a>
                 </article>
-
                 <article>
                     <h3 class="series-label">Formless Series</h3>
                     <a href="series4.html" class="project">
                         <div class="project-image-wrapper img-ratio">
                             <img src="images/sculpture/s4_cover.webp" loading="lazy" decoding="async"
-                                 onload="this.classList.add('loaded')"
+                                 onload="handleImageLoad(this)"
                                  onerror="this.src='images/sculpture/s4_cover.jpg'">
                         </div>
                         <div class="project-info">
@@ -416,13 +439,12 @@
                         </div>
                     </a>
                 </article>
-
                 <article>
                     <h3 class="series-label">Gold Series</h3>
                     <a href="series3.html" class="project">
                         <div class="project-image-wrapper img-ratio">
                             <img src="images/sculpture/s3_cover.webp" loading="lazy" decoding="async"
-                                 onload="this.classList.add('loaded')"
+                                 onload="handleImageLoad(this)"
                                  onerror="this.src='images/sculpture/s3_cover.jpg'">
                         </div>
                         <div class="project-info">
@@ -441,7 +463,7 @@
                     <a href="project-coral.html" class="project">
                         <div class="project-image-wrapper video-ratio">
                             <img src="images/projects/coral_cover.webp" loading="lazy" decoding="async"
-                                 onload="this.classList.add('loaded')"
+                                 onload="handleImageLoad(this)"
                                  onerror="this.src='images/projects/coral_cover.jpg'">
                             <div class="play-overlay"><div class="play-button"></div></div>
                         </div>
@@ -481,33 +503,57 @@
     <footer>&copy; 2026 ZHANGJIARUI ARTWORKS.</footer>
 
     <script>
-        // 核心脚本保持不变，仅优化动画触发性能
         const nav = document.getElementById('navbar');
         const progress = document.getElementById('scroll-progress');
         const btt = document.getElementById('back-to-top');
+        const navLinks = document.getElementById('navLinks');
 
-        // 使用 rAF 优化滚动
+        // 图片加载处理（对应优化项 2）
+        function handleImageLoad(img) {
+            img.classList.add('loaded');
+            img.parentElement.classList.add('finished-loading');
+        }
+
+        // 页面进场处理（对应优化项 4）
+        window.addEventListener('load', () => {
+            document.body.classList.add('page-loaded');
+        });
+
+        // 核心滚动逻辑（优化项 1：智能显隐 + 性能优化）
         let ticking = false;
+        let lastScrollY = window.scrollY;
+
         window.addEventListener('scroll', () => {
             if (!ticking) {
                 window.requestAnimationFrame(() => {
-                    const winScroll = window.pageYOffset || document.documentElement.scrollTop;
+                    const currentScrollY = window.pageYOffset || document.documentElement.scrollTop;
                     const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-                    progress.style.width = (winScroll / height) * 100 + "%";
+                    
+                    // 进度条
+                    progress.style.width = (currentScrollY / height) * 100 + "%";
 
-                    if (winScroll > 50) {
-                        nav.classList.add("nav-scrolled");
-                        btt.classList.add("visible");
+                    // 智能导航显隐
+                    if (currentScrollY > lastScrollY && currentScrollY > 200) {
+                        nav.style.transform = "translateY(-100%)";
                     } else {
-                        nav.classList.remove("nav-scrolled");
-                        btt.classList.remove("visible");
+                        nav.style.transform = "translateY(0)";
+                        if (currentScrollY > 50) {
+                            nav.classList.add("nav-scrolled");
+                            btt.classList.add("visible");
+                        } else {
+                            nav.classList.remove("nav-scrolled");
+                            btt.classList.remove("visible");
+                        }
                     }
+
+                    lastScrollY = currentScrollY;
                     ticking = false;
                 });
                 ticking = true;
             }
         }, { passive: true });
 
+        // 元素淡入观察器
         const revealObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
@@ -521,22 +567,23 @@
             revealObserver.observe(sec);
         });
 
-        // 视差效果限桌面端
+        // 视差效果（仅限桌面）
         if (window.innerWidth > 900) {
             const hero = document.getElementById('hero-section');
             const imgWrap = document.getElementById('hero-img-wrap');
             hero.addEventListener('mousemove', (e) => {
-                const x = (e.clientX - window.innerWidth / 2) / 45;
-                const y = (e.clientY - window.innerHeight / 2) / 45;
+                const x = (e.clientX - window.innerWidth / 2) / 50;
+                const y = (e.clientY - window.innerHeight / 2) / 50;
                 requestAnimationFrame(() => {
                     imgWrap.style.transform = `translate(${-x}px, ${-y}px)`;
                 });
             });
         }
 
-        document.getElementById('back-to-top').onclick = () => window.scrollTo({top: 0, behavior: 'smooth'});
+        // 返回顶部
+        btt.onclick = () => window.scrollTo({top: 0, behavior: 'smooth'});
 
-        const navLinks = document.getElementById('navLinks');
+        // 移动端菜单
         function toggleMenu() {
             navLinks.classList.toggle('active');
             document.body.style.overflow = navLinks.classList.contains('active') ? 'hidden' : 'auto';
@@ -545,6 +592,8 @@
             navLinks.classList.remove('active');
             document.body.style.overflow = 'auto';
         }
+        document.getElementById('menuToggle').onclick = toggleMenu;
+
     </script>
 </body>
 </html>
