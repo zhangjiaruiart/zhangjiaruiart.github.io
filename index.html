@@ -175,7 +175,103 @@
             transition: var(--transition-smooth);
             scroll-margin-top: 80px;
         }
-        .content-section.revealed { opacity: 1; transform: translateY(0); }
+        /* --- 联络区块优化 --- */
+.contact-section { 
+    padding: 100px 5%; 
+    background-color: #fff; 
+    scroll-margin-top: 60px;
+}
+
+.contact-container { 
+    max-width: 800px; 
+    margin: 0 auto; 
+}
+
+.contact-row { 
+    display: flex; 
+    justify-content: center; 
+    align-items: center;
+    gap: 60px; /* 增大间距 */
+}
+
+.contact-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.contact-label { 
+    font-size: 9px; 
+    color: #bbb; 
+    text-transform: uppercase; 
+    margin-bottom: 12px; 
+    letter-spacing: 0.3em; 
+}
+
+.contact-value { 
+    font-size: 14px; 
+    color: var(--main-color); 
+    text-decoration: none; 
+    font-weight: 300;
+    letter-spacing: 0.05em;
+    transition: opacity 0.3s;
+    position: relative;
+}
+
+/* 装饰性短线 */
+.contact-value::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 1px;
+    background: #111;
+    transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.contact-value:hover::after {
+    width: 100%;
+}
+
+.divider { color: #eee; font-weight: 100; font-size: 20px; }
+
+/* --- 手机端适配 (关键优化) --- */
+@media (max-width: 900px) {
+    .contact-section {
+        padding: 80px 10%;
+    }
+    
+    .contact-row { 
+        flex-direction: column; /* 垂直排列 */
+        gap: 45px; /* 每一项之间的距离 */
+    }
+
+    .divider { 
+        display: none; /* 手机端隐藏斜杠分界线 */
+    }
+
+    .contact-item {
+        width: 100%;
+    }
+
+    .contact-label {
+        margin-bottom: 8px;
+    }
+
+    .contact-value {
+        font-size: 16px; /* 增大字号方便点击 */
+        padding: 10px 0; /* 增加点击热区 */
+    }
+    
+    /* 手机端常显短线，增加设计感 */
+    .contact-value::after {
+        width: 15px;
+        opacity: 0.3;
+    }
+}
 
         .category-title { 
             font-size: 13px; letter-spacing: 0.5em; text-transform: uppercase; 
@@ -476,26 +572,30 @@
             </div>
         </section>
 
-        <section class="contact-section" id="contact">
-            <div class="contact-container">
-                <div class="contact-row">
-                    <div class="contact-item">
-                        <span class="contact-label">Email</span>
-                        <a href="mailto:jerryzhang_arts@qq.com" class="contact-value">jerryzhang_arts@qq.com</a>
-                    </div>
-                    <span class="divider">/</span>
-                    <div class="contact-item">
-                        <span class="contact-label">WeChat</span>
-                        <span class="contact-value">zjr5556699</span>
-                    </div>
-                    <span class="divider">/</span>
-                    <div class="contact-item">
-                        <span class="contact-label">Phone</span>
-                        <a href="tel:+8615117988382" class="contact-value">(+86) 151 1798 8382</a>
-                    </div>
-                </div>
+       <section class="contact-section" id="contact">
+    <div class="contact-container">
+        <div class="contact-row">
+            <div class="contact-item">
+                <span class="contact-label">Email</span>
+                <a href="mailto:jerryzhang_arts@qq.com" class="contact-value">jerryzhang_arts@qq.com</a>
             </div>
-        </section>
+            
+            <span class="divider">/</span>
+            
+            <div class="contact-item">
+                <span class="contact-label">WeChat</span>
+                <span class="contact-value">zjr5556699</span>
+            </div>
+            
+            <span class="divider">/</span>
+            
+            <div class="contact-item">
+                <span class="contact-label">Phone</span>
+                <a href="tel:+8615117988382" class="contact-value">+86 151 1798 8382</a>
+            </div>
+        </div>
+    </div>
+</section>
     </main>
 
     <div id="back-to-top" aria-label="Back to top"></div>
