@@ -6,9 +6,7 @@
     <title>ZHANG JIARUI | ARTIST - Ecological Art, Sculpture, and Projects</title>
     <meta name="description" content="Zhang Jiarui Artworks - A portfolio of Ecological Art, Sculpture, and Artistic Projects examining material, time, and systems.">
     <link rel="icon" href="images/favicon.svg" type="image/svg+xml">
-
     <link rel="icon" href="images/favicon.png" type="image/png" sizes="32x32">
-
     <link rel="apple-touch-icon" href="images/favicon.png">
     
     <link rel="preload" as="image" href="images/cover.webp" fetchpriority="high">
@@ -29,13 +27,93 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        /* --- 交互组件：进度条 --- */
+        /* --- 新增：Splash Page 样式 --- */
+        #splash-screen {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100vh;
+            z-index: 9999;
+            background: #fdfdfd;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            transition: all 1.8s cubic-bezier(0.8, 0, 0.2, 1);
+        }
+
+        #splash-video {
+            position: absolute;
+            top: 50%; left: 50%;
+            min-width: 100%; min-height: 100%;
+            transform: translate(-50%, -50%);
+            object-fit: cover;
+            filter: brightness(0.95) contrast(1.05);
+        }
+
+        .video-overlay {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(255, 255, 255, 0.05);
+            z-index: 1;
+        }
+
+        .splash-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+        }
+
+        .splash-logo {
+            font-size: 140px;
+            font-weight: 100;
+            color: #111;
+            letter-spacing: 0.1em;
+            margin-bottom: 5px;
+            animation: crystalIn 3s ease-out;
+        }
+
+        .splash-subtitle {
+            font-size: 11px;
+            letter-spacing: 0.8em;
+            color: #444;
+            text-transform: uppercase;
+            margin-bottom: 60px;
+        }
+
+        .enter-btn {
+            background: rgba(0, 0, 0, 0.85);
+            border: none;
+            color: #fff;
+            padding: 15px 50px;
+            letter-spacing: 0.4em;
+            font-size: 10px;
+            cursor: pointer;
+            transition: all 0.4s ease;
+        }
+
+        .enter-btn:hover {
+            background: #000;
+            transform: translateY(-2px);
+        }
+
+        .splash-hidden {
+            opacity: 0;
+            transform: scale(1.05);
+            pointer-events: none;
+        }
+
+        @keyframes crystalIn {
+            0% { opacity: 0; filter: blur(20px); transform: scale(0.9); }
+            100% { opacity: 1; filter: blur(0); transform: scale(1); }
+        }
+
+        /* --- 原有组件优化 --- */
         #scroll-progress {
             position: fixed; top: 0; left: 0; width: 0%; height: 2px;
             background: var(--main-color); z-index: 3000; transition: width 0.1s ease-out;
         }
 
-        /* --- 导航栏 --- */
         nav {
             position: fixed;
             top: 0; left: 0; width: 100%;
@@ -44,7 +122,10 @@
             box-sizing: border-box;
             z-index: 2000;
             transition: all 0.6s cubic-bezier(0.2, 1, 0.3, 1);
+            opacity: 0; /* 初始隐藏，进入主页后显示 */
         }
+
+        .page-active nav { opacity: 1; }
 
         .nav-scrolled {
             background: rgba(255, 255, 255, 0.85);
@@ -90,16 +171,10 @@
             transition: all 0.3s ease;
         }
         .nav-scrolled .menu-toggle span { background-color: #111; }
-        /* 新增：菜单展开时的图标变化 */
-        .menu-toggle.active span:nth-child(1) {
-            transform: rotate(45deg) translate(6px, 6px);
-        }
-        .menu-toggle.active span:nth-child(2) {
-            opacity: 0;
-        }
-        .menu-toggle.active span:nth-child(3) {
-            transform: rotate(-45deg) translate(6px, -6px);
-        }
+        
+        .menu-toggle.active span:nth-child(1) { transform: rotate(45deg) translate(6px, 6px); }
+        .menu-toggle.active span:nth-child(2) { opacity: 0; }
+        .menu-toggle.active span:nth-child(3) { transform: rotate(-45deg) translate(6px, -6px); }
 
         /* --- 封面效果 --- */
         .hero {
@@ -163,21 +238,37 @@
             40% { transform: translateY(-10px) rotate(45deg); opacity: 0.8; }
         }
 
-        /* --- 艺术立场区块 --- */
+        /* --- 方案四：系统重组 Statement 核心样式 --- */
         .statement-section {
             padding: calc(120px + 5vh) 5% calc(40px + 5vh);
             max-width: 900px;
             margin: 0 auto;
             text-align: center;
             scroll-margin-top: 100px;
+            perspective: 1000px;
         }
-        .statement-text {
+        
+        /* 单词单元基础样式 */
+        .word-unit {
+            display: inline-block;
+            opacity: 0;
+            filter: blur(8px);
+            transform: translateY(30px) rotateX(30deg); 
+            transition: 
+                opacity 1.5s cubic-bezier(0.16, 1, 0.3, 1),
+                filter 1.2s ease,
+                transform 1.8s cubic-bezier(0.16, 1, 0.3, 1);
+            white-space: pre; 
             font-size: 20px; line-height: 1.8; font-weight: 300;
             color: #222; letter-spacing: 0.02em; font-style: italic;
-            opacity: 0; transform: translateY(20px);
-            transition: var(--transition-smooth);
         }
-        .revealed .statement-text { opacity: 1; transform: translateY(0); }
+
+        /* 触发后的状态 */
+        .revealed .word-unit {
+            opacity: 1;
+            filter: blur(0);
+            transform: translateY(0) rotateX(0);
+        }
 
         /* --- 布局核心 --- */
         .content-section { 
@@ -284,7 +375,7 @@
             transform: rotate(45deg); margin-top: 4px;
         }
 
-        /* --- Contact Section 优化排版 --- */
+        /* --- Contact Section --- */
         .contact-section { 
             padding: 100px 5%; 
             background-color: #fff; 
@@ -324,7 +415,6 @@
         .contact-value:hover { border-bottom-color: #eee; }
         .divider { color: #eee; align-self: center; font-weight: 100; font-size: 18px; }
 
-        /* 复制提示框样式 */
         #copy-toast {
             position: fixed; bottom: 50px; left: 50%; transform: translateX(-50%);
             background: rgba(17,17,17,0.8); color: #fff; padding: 10px 20px;
@@ -347,20 +437,31 @@
             .nav-links a { color: var(--main-color) !important; margin: 20px 0; font-size: 14px; }
             .grid, .grid-sculpture-custom { grid-template-columns: 1fr; gap: 40px; }
             .content-section { padding: 30px 5% !important; }
-            .statement-text { font-size: 16px; }
             .statement-section { padding: 60px 8% 30px; }
-
-            /* 手机端 Contact 竖向高级排版 */
+            .word-unit { font-size: 16px; }
             .contact-section { padding: 80px 10%; }
             .contact-row { flex-direction: column; gap: 45px; }
             .divider { display: none; }
             .contact-value { font-size: 15px; padding: 8px 0; }
+            .splash-logo { font-size: 100px; }
         }
 
         footer { padding: 60px 5% 40px; text-align: center; border-top: 1px solid #f9f9f9; font-size: 9px; letter-spacing: 0.4em; color: #ccc; text-transform: uppercase; }
     </style>
 </head>
 <body>
+
+    <div id="splash-screen">
+        <video autoplay muted loop playsinline id="splash-video">
+            <source src="images/hero-bg.mp4" type="video/mp4">
+        </video>
+        <div class="video-overlay"></div>
+        <div class="splash-content">
+            <div class="splash-logo">J</div>
+            <p class="splash-subtitle">ZHANG JIARUI</p>
+            <button class="enter-btn" onclick="enterSite()">ENTER EXHIBITION</button>
+        </div>
+    </div>
 
     <div id="scroll-progress"></div>
     <div id="copy-toast">ID COPIED</div>
@@ -397,9 +498,8 @@
         </section>
 
         <section class="statement-section" id="statement">
-            <p class="statement-text">
-                Zhang Jiarui’s practice operates between sculptural reduction and site-specific ecological intervention, 
-                examing how material, time, and human action reshape fragile systems.
+            <p class="statement-text" id="statement-text">
+                Zhang Jiarui’s practice operates between sculptural reduction and site-specific ecological intervention, examing how material, time, and human action reshape fragile systems.
             </p>
         </section>
 
@@ -566,25 +666,54 @@
         const navLinks = document.getElementById('navLinks');
         const menuToggle = document.getElementById('menuToggle');
 
+        // 新增：进入网站函数
+        function enterSite() {
+            const splash = document.getElementById('splash-screen');
+            splash.classList.add('splash-hidden');
+            
+            // 允许主页滚动
+            document.body.style.overflow = 'auto';
+            document.body.classList.add('page-active');
+            
+            // 触发主页封面标题动画
+            setTimeout(() => {
+                document.body.classList.add('page-loaded');
+            }, 500);
+
+            // 1.8秒后完全移除Splash，节省资源
+            setTimeout(() => {
+                splash.style.display = 'none';
+            }, 1800);
+        }
+
+        // 新增：Statement 单词拆分逻辑
+        function prepareStatementText() {
+            const textEl = document.getElementById('statement-text');
+            if (!textEl) return;
+            const textContent = textEl.innerText.trim();
+            textEl.innerHTML = '';
+            const words = textContent.split(' ');
+            words.forEach((word, index) => {
+                const span = document.createElement('span');
+                span.classList.add('word-unit');
+                span.textContent = word + (index === words.length - 1 ? '' : ' ');
+                // 设置递增的延迟，每词间隔50ms
+                span.style.transitionDelay = `${index * 50}ms`; 
+                textEl.appendChild(span);
+            });
+        }
+
         // 图片加载处理
         function handleImageLoad(img) {
             img.classList.add('loaded');
             img.parentElement.classList.add('finished-loading');
         }
 
-        // 图片加载失败处理（增强版）
         function handleImageError(img, fallbackSrc) {
             img.src = fallbackSrc;
-            // 防止无限循环
             img.onerror = null;
-            // 标记加载完成，停止骨架屏
             handleImageLoad(img);
         }
-
-        // 页面进场
-        window.addEventListener('load', () => {
-            document.body.classList.add('page-loaded');
-        });
 
         // 核心滚动逻辑
         let ticking = false;
@@ -616,7 +745,7 @@
             }
         }, { passive: true });
 
-        // 淡入观察器
+        // 淡入观察器（包括 Statement 单词重组和区块淡入）
         const revealObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
@@ -626,14 +755,22 @@
             });
         }, { threshold: 0.1 });
 
-        document.querySelectorAll('.statement-section, .content-section').forEach(sec => revealObserver.observe(sec));
+        // 初始化
+        document.addEventListener('DOMContentLoaded', () => {
+            window.scrollTo(0, 0);
+            document.body.style.overflow = 'hidden'; // 初始禁止滚动
+            
+            prepareStatementText(); // 拆分 Statement 单词
 
-        // 视差（优化版：限制偏移范围）
+            // 绑定观察对象
+            document.querySelectorAll('.statement-section, .content-section').forEach(sec => revealObserver.observe(sec));
+        });
+
+        // 视差（优化版）
         if (window.innerWidth > 900) {
             const hero = document.getElementById('hero-section');
             const imgWrap = document.getElementById('hero-img-wrap');
             hero.addEventListener('mousemove', (e) => {
-                // 限制偏移范围在±20px内
                 const maxOffset = 20;
                 const x = Math.max(-maxOffset, Math.min(maxOffset, (e.clientX - window.innerWidth / 2) / 50));
                 const y = Math.max(-maxOffset, Math.min(maxOffset, (e.clientY - window.innerHeight / 2) / 50));
@@ -646,7 +783,7 @@
         // 返回顶部
         btt.onclick = () => window.scrollTo({top: 0, behavior: 'smooth'});
 
-        // 菜单控制（优化版：添加图标状态切换）
+        // 菜单控制
         function toggleMenu() {
             navLinks.classList.toggle('active');
             menuToggle.classList.toggle('active');
@@ -659,29 +796,24 @@
         }
         menuToggle.onclick = toggleMenu;
 
-        // 微信复制功能（增强兼容性）
+        // 微信复制功能
         function copyWeChat(id) {
-            // 优先使用剪贴板API
             if (navigator.clipboard && window.isSecureContext) {
                 navigator.clipboard.writeText(id).then(() => {
                     showCopyToast();
                 }).catch(err => {
-                    console.error('剪贴板复制失败:', err);
                     fallbackCopyTextToClipboard(id);
                 });
             } else {
-                // 降级方案
                 fallbackCopyTextToClipboard(id);
             }
         }
 
-        // 复制降级方案
         function fallbackCopyTextToClipboard(text) {
             const textArea = document.createElement("textarea");
             textArea.value = text;
             textArea.style.position = "fixed";
             textArea.style.left = "-999999px";
-            textArea.style.top = "-999999px";
             document.body.appendChild(textArea);
             textArea.focus();
             textArea.select();
@@ -689,13 +821,11 @@
                 document.execCommand('copy');
                 showCopyToast();
             } catch (err) {
-                console.error('降级复制失败:', err);
                 alert('复制失败，请手动复制：' + text);
             }
             document.body.removeChild(textArea);
         }
 
-        // 显示复制提示
         function showCopyToast() {
             const toast = document.getElementById('copy-toast');
             toast.style.opacity = '1';
