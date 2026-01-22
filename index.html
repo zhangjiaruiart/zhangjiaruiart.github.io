@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>ZHANG JIARUI | ARTIST - Ecological Art, Sculpture, and Projects</title>
     <meta name="description" content="Zhang Jiarui Artworks - A portfolio of Ecological Art, Sculpture, and Artistic Projects examining material, time, and systems.">
     <link rel="icon" href="images/favicon.svg" type="image/svg+xml">
@@ -26,12 +26,12 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        /* --- Splash Page (欢迎页) 优化样式 --- */
+        /* --- Splash Page (欢迎页) 深度优化 --- */
         #splash-page {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            z-index: 5000;
-            background-color: #000;
+            z-index: 99999; /* 最高层级，防止闪烁 */
+            background-color: #000; /* 黑色背景，防止视频加载前透出主页 */
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -47,9 +47,16 @@
             width: auto; height: auto;
             transform: translate(-50%, -50%);
             object-fit: cover;
-            filter: brightness(0.7); /* 稍微调亮一点，保留细节 */
+            filter: brightness(0.7);
             z-index: -1;
+            background: #000; /* 视频未加载时的底色 */
         }
+
+        /* 隐藏所有浏览器默认的视频控件和播放按钮 */
+        video::-webkit-media-controls { display: none !important; }
+        video::-webkit-media-controls-enclosure { display: none !important; }
+        video::-webkit-media-controls-play-button { display: none !important; }
+        video::-webkit-media-controls-start-playback-button { display: none !important; }
 
         .splash-content {
             text-align: center;
@@ -58,50 +65,57 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+            width: 100%;
         }
 
         .splash-title {
-            /* 优化：使用 clamp 确保手机端文字不换行且大小合适 */
-            font-size: clamp(24px, 10vw, 80px); 
+            /* 手机端字体适配 */
+            font-size: clamp(32px, 12vw, 80px);
             font-weight: 300;
-            letter-spacing: 0.2em; /* 手机端稍微收紧间距 */
+            letter-spacing: 0.2em;
             text-transform: uppercase;
             margin-bottom: 60px;
             opacity: 0;
             transform: translateY(20px);
-            /* 加快动画速度 */
-            animation: fadeInUp 1.2s forwards 0.2s; 
+            /* 快速显示：延迟极短，动画时间缩短 */
+            animation: fadeInUp 0.8s forwards 0.2s;
+            white-space: nowrap;
         }
 
-        /* 向右箭头按钮 */
+        /* 纯 CSS 向右箭头按钮 */
         .enter-arrow-btn {
             background: none;
             border: none;
             cursor: pointer;
-            padding: 20px;
+            padding: 30px; /* 增大点击区域 */
             opacity: 0;
-            /* 延迟显示，等待视频播放或标题出现后 */
-            animation: fadeIn 1s forwards 2s; 
+            /* 视频加载间隙后显示 */
+            animation: fadeIn 1s forwards 1.2s; 
             transition: transform 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .enter-arrow-btn:hover {
             transform: translateX(10px);
         }
 
+        /* 箭头的绘制 */
         .arrow-icon {
-            display: block;
-            width: 40px;
+            position: relative;
+            width: 50px;
             height: 2px;
             background-color: #fff;
-            position: relative;
         }
 
         .arrow-icon::after {
             content: '';
             position: absolute;
-            right: 0; top: -5px;
-            width: 10px; height: 10px;
+            right: 0;
+            top: -5px;
+            width: 10px;
+            height: 10px;
             border-top: 2px solid #fff;
             border-right: 2px solid #fff;
             transform: rotate(45deg);
@@ -121,7 +135,7 @@
         
         body.no-scroll { overflow: hidden; }
 
-        /* --- 原有样式保持不变 --- */
+        /* --- 原有布局样式保持不变 --- */
         
         #scroll-progress {
             position: fixed; top: 0; left: 0; width: 0%; height: 2px;
@@ -353,9 +367,6 @@
         }
 
         @media (max-width: 900px) {
-            /* 手机端字体适配，防止溢出 */
-            .splash-title { letter-spacing: 0.2em; white-space: nowrap; } 
-            
             .hero-overlay { top: 40%; }
             .hero-title { font-size: 14.4px; line-height: 2.2; letter-spacing: 0.4em; }
             .hero-title br { display: block; }
@@ -381,7 +392,7 @@
     </style>
 </head>
 <body class="no-scroll"> <div id="splash-page">
-        <video id="splash-video" autoplay loop muted playsinline poster="images/cover.webp">
+        <video id="splash-video" autoplay loop muted playsinline webkit-playsinline x5-video-player-type="h5" poster="images/cover.webp">
             <source src="images/hero-bg.mp4" type="video/mp4">
         </video>
         <div class="splash-content">
@@ -605,8 +616,20 @@
         document.addEventListener('DOMContentLoaded', () => {
             const video = document.getElementById('splash-video');
             if (video) {
-                // 尝试播放，捕获并忽略错误（部分浏览器需要用户交互）
-                video.play().catch(e => console.log('Autoplay prevented, waiting for interaction'));
+                // 1. 尝试直接播放
+                video.play().catch(e => console.log('Autoplay prevented initially'));
+                
+                // 2. 针对微信/移动端，触摸即播放
+                document.addEventListener('touchstart', function() {
+                    video.play();
+                }, { once: true });
+                
+                // 3. 针对微信JSBridge
+                if (window.WeixinJSBridge) {
+                    WeixinJSBridge.invoke('getNetworkType', {}, function (e) {
+                        video.play();
+                    }, false);
+                }
             }
         });
 
