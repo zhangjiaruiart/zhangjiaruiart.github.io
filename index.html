@@ -17,6 +17,103 @@
             --transition-smooth: all 1.2s cubic-bezier(0.15, 1, 0.3, 1);
         }
 
+        /* --- 新增：Splash Page 样式 --- */
+        #splash-page {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 5000; /* 确保在最顶层 */
+            background-color: #000;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: transform 1s cubic-bezier(0.85, 0, 0.15, 1), opacity 1s ease;
+            overflow: hidden;
+        }
+
+        #splash-video {
+            position: absolute;
+            top: 50%; left: 50%;
+            min-width: 100%; min-height: 100%;
+            width: auto; height: auto;
+            transform: translate(-50%, -50%);
+            object-fit: cover;
+            filter: brightness(0.6);
+            z-index: -1;
+        }
+
+        .splash-content {
+            text-align: center;
+            color: #ffffff;
+            z-index: 1;
+        }
+
+        .splash-title {
+            font-size: clamp(40px, 8vw, 80px);
+            font-weight: 300;
+            letter-spacing: 0.5em;
+            text-transform: uppercase;
+            margin-bottom: 40px;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInBlur 2s forwards 0.5s;
+        }
+
+        .enter-btn {
+            background: none;
+            border: 1px solid rgba(255,255,255,0.4);
+            color: #fff;
+            padding: 15px 40px;
+            font-size: 12px;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin: 0 auto;
+            opacity: 0;
+            animation: fadeInBlur 1.5s forwards 1.2s;
+        }
+
+        .enter-btn:hover {
+            background: #fff;
+            color: #000;
+            border-color: #fff;
+        }
+
+        .enter-btn .arrow {
+            width: 20px;
+            height: 1px;
+            background: currentColor;
+            position: relative;
+        }
+
+        .enter-btn .arrow::after {
+            content: '';
+            position: absolute;
+            right: 0; top: -3px;
+            width: 6px; height: 6px;
+            border-right: 1px solid currentColor;
+            border-top: 1px solid currentColor;
+            transform: rotate(45deg);
+        }
+
+        @keyframes fadeInBlur {
+            to { opacity: 1; transform: translateY(0); filter: blur(0); }
+        }
+
+        /* 欢迎页隐藏后的状态 */
+        body.splash-hidden #splash-page {
+            transform: translateY(-100%);
+            pointer-events: none;
+        }
+        
+        /* 初始锁定滚动 */
+        body.no-scroll { overflow: hidden; }
+
+        /* --- 原有样式保持不变 --- */
         body, html {
             margin: 0; padding: 0;
             font-family: var(--primary-font);
@@ -26,46 +123,6 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        /* --- Splash Page (欢迎页) --- */
-        #splash-page {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
-            background: #000; color: #fff; z-index: 5000;
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            transition: opacity 1s ease, visibility 1s;
-        }
-        .splash-title {
-            font-size: 8vw; font-weight: 300; letter-spacing: 0.3em;
-            margin: 0; text-transform: uppercase; opacity: 0;
-            transform: translateY(20px);
-            animation: splashFadeIn 1.5s forwards 0.5s;
-        }
-        .enter-btn {
-            margin-top: 40px; cursor: pointer; background: none; border: none;
-            color: #fff; font-size: 40px; opacity: 0;
-            animation: splashFadeIn 1.5s forwards 1.2s;
-            transition: transform 0.3s ease;
-        }
-        .enter-btn:hover { transform: translateX(10px); }
-        @keyframes splashFadeIn {
-            to { opacity: 1; transform: translateY(0); }
-        }
-        body.entered #splash-page { opacity: 0; visibility: hidden; pointer-events: none; }
-
-        /* --- 首页大写悬浮文字 --- */
-        .hero-floating-name {
-            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            width: 100%; text-align: center; z-index: 6; pointer-events: none;
-        }
-        .hero-name-big {
-            font-size: 10vw; color: rgba(255,255,255,0.9); font-weight: 300;
-            letter-spacing: 0.4em; text-transform: uppercase; margin: 0;
-            line-height: 1; white-space: nowrap;
-            opacity: 0; filter: blur(15px);
-            transition: all 2.5s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        .page-loaded .hero-name-big { opacity: 0.85; filter: blur(0); }
-
-        /* --- 原有样式 --- */
         #scroll-progress {
             position: fixed; top: 0; left: 0; width: 0%; height: 2px;
             background: var(--main-color); z-index: 3000; transition: width 0.1s ease-out;
@@ -141,7 +198,7 @@
         .hero img {
             width: 100%; height: 100%; object-fit: cover;
             object-position: center 60%; 
-            filter: brightness(0.6); display: block;
+            filter: brightness(0.75); display: block;
             animation: kenBurns 20s ease-in-out infinite alternate;
         }
 
@@ -151,24 +208,23 @@
         }
 
         .hero-overlay {
-            position: absolute; bottom: 15%; left: 50%;
-            transform: translateX(-50%);
+            position: absolute; top: 45%; left: 50%;
+            transform: translate(-50%, -50%);
             text-align: center; width: 90%; z-index: 5;
             pointer-events: none;
         }
 
         .hero-title {
-            color: #ffffff; font-size: 14px; font-weight: 300;
+            color: #ffffff; font-size: 18px; font-weight: 300;
             letter-spacing: 0.6em; text-transform: uppercase;
             margin: 0; line-height: 1.6;
             opacity: 0;
+            filter: blur(10px);
             transform: translateY(30px);
-            transition: opacity 2s ease, transform 1.5s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: opacity 2s ease, filter 2s ease, transform 1.5s cubic-bezier(0.16, 1, 0.3, 1);
         }
-        .page-loaded .hero-title {
-            opacity: 0.8;
-            transform: translateY(0);
-        }
+        .page-loaded .hero-title { opacity: 0.8; filter: blur(0); transform: translateY(0); }
+        .hero-title br { display: none; }
 
         .scroll-indicator {
             position: absolute; bottom: 35px; left: 50%;
@@ -188,9 +244,7 @@
 
         .statement-section {
             padding: calc(120px + 5vh) 5% calc(40px + 5vh);
-            max-width: 900px;
-            margin: 0 auto;
-            text-align: center;
+            max-width: 900px; margin: 0 auto; text-align: center;
             scroll-margin-top: 100px;
         }
         .statement-text {
@@ -216,39 +270,18 @@
             padding-bottom: 15px; color: var(--main-color); 
         }
 
-        .grid { 
-            display: grid; 
-            grid-template-columns: repeat(2, 1fr); 
-            gap: 60px 60px; 
-            margin-bottom: 60px; 
-        }
+        .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 60px 60px; margin-bottom: 60px; }
+        .grid-sculpture-custom { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px 30px; margin-bottom: 60px; width: 100%; }
 
-        .grid-sculpture-custom {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr); 
-            gap: 40px 30px; 
-            margin-bottom: 60px;
-            width: 100%;
-        }
-
-        .series-label {
-            font-size: 11px; letter-spacing: 0.3em; text-transform: uppercase; 
-            color: #888; margin-bottom: 20px; font-weight: 300;
-        }
-
+        .series-label { font-size: 11px; letter-spacing: 0.3em; text-transform: uppercase; color: #888; margin-bottom: 20px; font-weight: 300; }
         .project { text-decoration: none; color: inherit; display: block; }
-        .project-image-wrapper { 
-            overflow: hidden; margin-bottom: 20px; 
-            background-color: #f7f7f7; position: relative;
-        }
+        .project-image-wrapper { overflow: hidden; margin-bottom: 20px; background-color: #f7f7f7; position: relative; }
 
         .project-image-wrapper::before {
-            content: "";
-            position: absolute; top: 0; left: -150%;
+            content: ""; position: absolute; top: 0; left: -150%;
             width: 100%; height: 100%;
             background: linear-gradient(90deg, transparent, rgba(255,255,255,0.6), transparent);
-            animation: skeleton-loading 1.5s infinite;
-            z-index: 1;
+            animation: skeleton-loading 1.5s infinite; z-index: 1;
         }
         .project-image-wrapper.finished-loading::before { display: none; }
 
@@ -267,7 +300,6 @@
             opacity: 0; 
         }
         .project img.loaded { opacity: 1; }
-
         .project:hover img { transform: scale(1.05); }
 
         .play-overlay {
@@ -304,42 +336,12 @@
             transform: rotate(45deg); margin-top: 4px;
         }
 
-        .contact-section { 
-            padding: 100px 5%; 
-            background-color: #fff; 
-            scroll-margin-top: 60px;
-        }
+        .contact-section { padding: 100px 5%; background-color: #fff; scroll-margin-top: 60px; }
         .contact-container { max-width: 1000px; margin: 0 auto; text-align: center; }
-        .contact-row { 
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
-            gap: 50px; 
-            flex-wrap: nowrap; 
-        }
-        .contact-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        .contact-label { 
-            font-size: 9px; 
-            color: #bbb; 
-            text-transform: uppercase; 
-            margin-bottom: 10px; 
-            letter-spacing: 0.25em; 
-        }
-        .contact-value { 
-            font-size: 13px; 
-            color: var(--main-color); 
-            text-decoration: none; 
-            font-weight: 300;
-            padding-bottom: 4px; 
-            border-bottom: 1px solid transparent; 
-            transition: all 0.4s; 
-            cursor: pointer;
-            position: relative;
-        }
+        .contact-row { display: flex; justify-content: center; align-items: center; gap: 50px; flex-wrap: nowrap; }
+        .contact-item { display: flex; flex-direction: column; align-items: center; }
+        .contact-label { font-size: 9px; color: #bbb; text-transform: uppercase; margin-bottom: 10px; letter-spacing: 0.25em; }
+        .contact-value { font-size: 13px; color: var(--main-color); text-decoration: none; font-weight: 300; padding-bottom: 4px; border-bottom: 1px solid transparent; transition: all 0.4s; cursor: pointer; position: relative; }
         .contact-value:hover { border-bottom-color: #eee; }
         .divider { color: #eee; align-self: center; font-weight: 100; font-size: 18px; }
 
@@ -350,13 +352,10 @@
             opacity: 0; visibility: hidden; transition: all 0.4s; z-index: 9999;
         }
 
-        /* --- 响应式适配 --- */
         @media (max-width: 900px) {
-            .splash-title { font-size: 10vw; letter-spacing: 0.1em; }
-            .hero-name-big { font-size: 12vw; letter-spacing: 0.2em; white-space: normal; line-height: 1.2; width: 80%; }
-            .hero-overlay { bottom: 18%; }
-            .hero-title { font-size: 11px; line-height: 2; letter-spacing: 0.3em; }
-            
+            .hero-overlay { top: 40%; }
+            .hero-title { font-size: 14.4px; line-height: 2.2; letter-spacing: 0.4em; }
+            .hero-title br { display: block; }
             .menu-toggle { display: flex; }
             .nav-links {
                 position: fixed; top: 0; right: -100%; width: 100%; height: 100vh;
@@ -369,7 +368,6 @@
             .content-section { padding: 30px 5% !important; }
             .statement-text { font-size: 16px; }
             .statement-section { padding: 60px 8% 30px; }
-
             .contact-section { padding: 80px 10%; }
             .contact-row { flex-direction: column; gap: 45px; }
             .divider { display: none; }
@@ -379,15 +377,16 @@
         footer { padding: 60px 5% 40px; text-align: center; border-top: 1px solid #f9f9f9; font-size: 9px; letter-spacing: 0.4em; color: #ccc; text-transform: uppercase; }
     </style>
 </head>
-<body>
-
-    <div id="splash-page">
-        <h1 class="splash-title">ZHANG JIARUI</h1>
-        <button class="enter-btn" onclick="enterSite()" aria-label="Enter Site">
-            <svg width="60" height="20" viewBox="0 0 60 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M0 10H58M58 10L50 2M58 10L50 18" stroke="white" stroke-width="1.5"/>
-            </svg>
-        </button>
+<body class="no-scroll"> <div id="splash-page">
+        <video id="splash-video" autoplay loop muted playsinline>
+            <source src="images/hero-bg.mp4" type="video/mp4">
+        </video>
+        <div class="splash-content">
+            <h1 class="splash-title">ZHANGJIARUI</h1>
+            <button class="enter-btn" onclick="hideSplash()">
+                Enter Portfolio <div class="arrow"></div>
+            </button>
+        </div>
     </div>
 
     <div id="scroll-progress"></div>
@@ -416,13 +415,8 @@
                      onload="handleImageLoad(this)"
                      onerror="handleImageError(this, 'images/Cover.JPG');">
             </div>
-
-            <div class="hero-floating-name">
-                <h2 class="hero-name-big">ZHANG JIARUI</h2>
-            </div>
-
             <div class="hero-overlay">
-                <h1 class="hero-title">Matter dissolves, memory crystallizes</h1>
+                <h1 class="hero-title">Matter <br> dissolves, <br> memory <br> crystallizes</h1>
             </div>
             <a href="#statement" class="scroll-indicator" aria-label="Scroll down">
                 <div class="scroll-arrow"></div>
@@ -432,7 +426,7 @@
         <section class="statement-section" id="statement">
             <p class="statement-text">
                 Zhang Jiarui’s practice operates between sculptural reduction and site-specific ecological intervention, 
-                examining how material, time, and human action reshape fragile systems.
+                examing how material, time, and human action reshape fragile systems.
             </p>
         </section>
 
@@ -593,21 +587,22 @@
     <footer>&copy; 2026 ZHANGJIARUI ARTWORKS.</footer>
 
     <script>
+        // --- 新增：Splash Page 控制逻辑 ---
+        function hideSplash() {
+            document.body.classList.add('splash-hidden');
+            document.body.classList.remove('no-scroll');
+            // 延迟移除 DOM 以优化性能
+            setTimeout(() => {
+                const splash = document.getElementById('splash-page');
+                if(splash) splash.style.display = 'none';
+            }, 1000);
+        }
+
         const nav = document.getElementById('navbar');
         const progress = document.getElementById('scroll-progress');
         const btt = document.getElementById('back-to-top');
         const navLinks = document.getElementById('navLinks');
         const menuToggle = document.getElementById('menuToggle');
-
-        // Splash Page Logic
-        function enterSite() {
-            document.body.classList.add('entered');
-            document.body.classList.add('page-loaded');
-            document.body.style.overflow = 'auto';
-        }
-
-        // 默认锁定滚动直到进入
-        document.body.style.overflow = 'hidden';
 
         function handleImageLoad(img) {
             img.classList.add('loaded');
@@ -619,6 +614,10 @@
             img.onerror = null;
             handleImageLoad(img);
         }
+
+        window.addEventListener('load', () => {
+            document.body.classList.add('page-loaded');
+        });
 
         let ticking = false;
         let lastScrollY = window.scrollY;
