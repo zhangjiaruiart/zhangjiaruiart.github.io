@@ -21,17 +21,17 @@
             margin: 0; padding: 0;
             font-family: var(--primary-font);
             background-color: #ffffff; color: var(--main-color);
-            scroll-behavior: smooth;
+            scroll-behavior: smooth; /* 平滑滚动 */
             overflow-x: hidden;
             -webkit-font-smoothing: antialiased;
         }
 
-        /* --- Splash Page (欢迎页) 深度优化 --- */
+        /* --- Splash Page (欢迎页) 终极优化 --- */
         #splash-page {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            z-index: 99999; /* 最高层级，防止闪烁 */
-            background-color: #000; /* 黑色背景，防止视频加载前透出主页 */
+            z-index: 99999; 
+            background-color: #000; 
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -49,14 +49,12 @@
             object-fit: cover;
             filter: brightness(0.7);
             z-index: -1;
-            background: #000; /* 视频未加载时的底色 */
+            background: #000;
         }
 
-        /* 隐藏所有浏览器默认的视频控件和播放按钮 */
+        /* 强制隐藏所有移动端视频控件 */
         video::-webkit-media-controls { display: none !important; }
         video::-webkit-media-controls-enclosure { display: none !important; }
-        video::-webkit-media-controls-play-button { display: none !important; }
-        video::-webkit-media-controls-start-playback-button { display: none !important; }
 
         .splash-content {
             text-align: center;
@@ -65,21 +63,23 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            width: 100%;
+            width: 90%; /* 限制宽度防止溢出 */
+            max-width: 800px;
         }
 
         .splash-title {
-            /* 手机端字体适配 */
-            font-size: clamp(32px, 12vw, 80px);
+            /* 智能字体大小：手机端最小24px，最大80px，随视口变化 */
+            font-size: clamp(24px, 8vw, 80px);
             font-weight: 300;
-            letter-spacing: 0.2em;
+            letter-spacing: 0.2em; /* 稍微减小间距以适应手机 */
             text-transform: uppercase;
-            margin-bottom: 60px;
+            margin-bottom: 40px;
             opacity: 0;
             transform: translateY(20px);
-            /* 快速显示：延迟极短，动画时间缩短 */
             animation: fadeInUp 0.8s forwards 0.2s;
-            white-space: nowrap;
+            white-space: nowrap; /* 默认不换行 */
+            width: 100%;
+            text-align: center;
         }
 
         /* 纯 CSS 向右箭头按钮 */
@@ -87,21 +87,20 @@
             background: none;
             border: none;
             cursor: pointer;
-            padding: 30px; /* 增大点击区域 */
+            padding: 30px; 
             opacity: 0;
-            /* 视频加载间隙后显示 */
             animation: fadeIn 1s forwards 1.2s; 
             transition: transform 0.3s ease;
             display: flex;
             align-items: center;
             justify-content: center;
+            -webkit-tap-highlight-color: transparent; /* 移除点击高亮 */
         }
 
         .enter-arrow-btn:hover {
             transform: translateX(10px);
         }
 
-        /* 箭头的绘制 */
         .arrow-icon {
             position: relative;
             width: 50px;
@@ -112,10 +111,8 @@
         .arrow-icon::after {
             content: '';
             position: absolute;
-            right: 0;
-            top: -5px;
-            width: 10px;
-            height: 10px;
+            right: 0; top: -5px;
+            width: 10px; height: 10px;
             border-top: 2px solid #fff;
             border-right: 2px solid #fff;
             transform: rotate(45deg);
@@ -135,7 +132,23 @@
         
         body.no-scroll { overflow: hidden; }
 
-        /* --- 原有布局样式保持不变 --- */
+        /* --- 手机端特定调整 --- */
+        @media (max-width: 600px) {
+            .splash-title {
+                letter-spacing: 0.15em; /* 手机端进一步收紧间距 */
+                font-size: 32px; /* 强制手机端字体大小 */
+                white-space: normal; /* 允许极小屏幕换行 */
+                line-height: 1.4;
+            }
+            .enter-arrow-btn {
+                padding: 40px; /* 增大手机点击区域 */
+            }
+            .arrow-icon {
+                width: 40px; /* 手机端箭头稍短 */
+            }
+        }
+
+        /* --- 原有布局保持不变 --- */
         
         #scroll-progress {
             position: fixed; top: 0; left: 0; width: 0%; height: 2px;
@@ -392,7 +405,7 @@
     </style>
 </head>
 <body class="no-scroll"> <div id="splash-page">
-        <video id="splash-video" autoplay loop muted playsinline webkit-playsinline x5-video-player-type="h5" poster="images/cover.webp">
+        <video id="splash-video" autoplay loop muted playsinline webkit-playsinline x5-playsinline x5-video-player-type="h5" poster="images/cover.webp">
             <source src="images/hero-bg.mp4" type="video/mp4">
         </video>
         <div class="splash-content">
@@ -605,6 +618,10 @@
         function hideSplash() {
             document.body.classList.add('splash-hidden');
             document.body.classList.remove('no-scroll');
+            
+            // 关键：强制滚动到页面顶部，解决跳转到Eco Art的问题
+            window.scrollTo(0, 0);
+
             // 延迟移除 DOM 以优化性能
             setTimeout(() => {
                 const splash = document.getElementById('splash-page');
