@@ -613,53 +613,48 @@
 
     <footer>&copy; 2026 ZHANGJIARUI ARTWORKS.</footer>
 
-    /**
-         * 功能修改：检查本会话中是否已看过欢迎页
-         * 解决“返回上一页回到splash”的问题
-         */
-        document.addEventListener('DOMContentLoaded', () => {
-            // 如果 sessionStorage 中已经存在 'hasVisited'，说明是返回操作，直接跳过 Splash
-            if (sessionStorage.getItem('hasVisited')) {
-                const splash = document.getElementById('splash-page');
-                if (splash) {
-                    splash.style.display = 'none'; // 直接不显示
-                }
-                document.body.classList.remove('no-scroll');
-                document.body.classList.add('splash-hidden');
-            }
-        });
-
+    <script>
+        // --- Splash Page 控制逻辑 ---
         function hideSplash() {
-            // 用户点击进入按钮时，记录“已访问”状态
-            sessionStorage.setItem('hasVisited', 'true');
-            
             document.body.classList.add('splash-hidden');
             document.body.classList.remove('no-scroll');
+            
+            // 关键：强制滚动到页面顶部，解决跳转到Eco Art的问题
             window.scrollTo(0, 0);
+
+            // 延迟移除 DOM 以优化性能
             setTimeout(() => {
                 const splash = document.getElementById('splash-page');
                 if(splash) splash.style.display = 'none';
             }, 1000);
         }
 
-        /* --- 以下为原有逻辑，保持不变 --- */
+        // --- 手机端视频强制播放修复 ---
+        document.addEventListener('DOMContentLoaded', () => {
+            const video = document.getElementById('splash-video');
+            if (video) {
+                // 1. 尝试直接播放
+                video.play().catch(e => console.log('Autoplay prevented initially'));
+                
+                // 2. 针对微信/移动端，触摸即播放
+                document.addEventListener('touchstart', function() {
+                    video.play();
+                }, { once: true });
+                
+                // 3. 针对微信JSBridge
+                if (window.WeixinJSBridge) {
+                    WeixinJSBridge.invoke('getNetworkType', {}, function (e) {
+                        video.play();
+                    }, false);
+                }
+            }
+        });
+
         const nav = document.getElementById('navbar');
         const progress = document.getElementById('scroll-progress');
         const btt = document.getElementById('back-to-top');
         const navLinks = document.getElementById('navLinks');
         const menuToggle = document.getElementById('menuToggle');
-
-        window.addEventListener('scroll', () => {
-            const currentScrollY = window.pageYOffset;
-            progress.style.width = (currentScrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100 + "%";
-            if (currentScrollY > 50) {
-                nav.classList.add("nav-scrolled");
-                btt.classList.add("visible");
-            } else {
-                nav.classList.remove("nav-scrolled");
-                btt.classList.remove("visible");
-            }
-        });
 
         function handleImageLoad(img) {
             img.classList.add('loaded');
@@ -671,6 +666,65 @@
             img.onerror = null;
             handleImageLoad(img);
         }
+
+        window.addEventListener('load', () => {
+            document.body.classList.add('page-loaded');
+        });
+
+        let ticking = false;
+        let lastScrollY = window.scrollY;
+
+        window.addEventListener('scroll', () => {
+            if (!ticking) {
+                window.requestAnimationFrame(() => {
+                    const currentScrollY = window.pageYOffset || document.documentElement.scrollTop;
+                    const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+                    progress.style.width = (currentScrollY / height) * 100 + "%";
+
+                    if (currentScrollY > lastScrollY && currentScrollY > 200) {
+                        nav.style.transform = "translateY(-100%)";
+                    } else {
+                        nav.style.transform = "translateY(0)";
+                        if (currentScrollY > 50) {
+                            nav.classList.add("nav-scrolled");
+                            btt.classList.add("visible");
+                        } else {
+                            nav.classList.remove("nav-scrolled");
+                            btt.classList.remove("visible");
+                        }
+                    }
+                    lastScrollY = currentScrollY;
+                    ticking = false;
+                });
+                ticking = true;
+            }
+        }, { passive: true });
+
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('revealed');
+                    revealObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.statement-section, .content-section').forEach(sec => revealObserver.observe(sec));
+
+        if (window.innerWidth > 900) {
+            const hero = document.getElementById('hero-section');
+            const imgWrap = document.getElementById('hero-img-wrap');
+            hero.addEventListener('mousemove', (e) => {
+                const maxOffset = 20;
+                const x = Math.max(-maxOffset, Math.min(maxOffset, (e.clientX - window.innerWidth / 2) / 50));
+                const y = Math.max(-maxOffset, Math.min(maxOffset, (e.clientY - window.innerHeight / 2) / 50));
+                requestAnimationFrame(() => {
+                    imgWrap.style.transform = `translate(${-x}px, ${-y}px)`;
+                });
+            });
+        }
+
+        btt.onclick = () => window.scrollTo({top: 0, behavior: 'smooth'});
 
         function toggleMenu() {
             navLinks.classList.toggle('active');
@@ -686,28 +740,43 @@
 
         function copyWeChat(id) {
             if (navigator.clipboard && window.isSecureContext) {
-                navigator.clipboard.writeText(id).then(() => showCopyToast()).catch(() => fallbackCopy(id));
-            } else { fallbackCopy(id); }
+                navigator.clipboard.writeText(id).then(() => {
+                    showCopyToast();
+                }).catch(err => {
+                    fallbackCopyTextToClipboard(id);
+                });
+            } else {
+                fallbackCopyTextToClipboard(id);
+            }
         }
-        function fallbackCopy(text) {
-            const el = document.createElement('textarea'); el.value = text;
-            document.body.appendChild(el); el.select();
-            document.execCommand('copy'); document.body.removeChild(el);
-            showCopyToast();
+
+        function fallbackCopyTextToClipboard(text) {
+            const textArea = document.createElement("textarea");
+            textArea.value = text;
+            textArea.style.position = "fixed";
+            textArea.style.left = "-999999px";
+            textArea.style.top = "-999999px";
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+            try {
+                document.execCommand('copy');
+                showCopyToast();
+            } catch (err) {
+                alert('复制失败，请手动复制：' + text);
+            }
+            document.body.removeChild(textArea);
         }
+
         function showCopyToast() {
             const toast = document.getElementById('copy-toast');
-            toast.style.opacity = '1'; toast.style.visibility = 'visible';
-            setTimeout(() => { toast.style.opacity = '0'; toast.style.visibility = 'hidden'; }, 2000);
+            toast.style.opacity = '1';
+            toast.style.visibility = 'visible';
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.visibility = 'hidden';
+            }, 2000);
         }
-
-        btt.onclick = () => window.scrollTo({top: 0, behavior: 'smooth'});
-        window.onload = () => document.body.classList.add('page-loaded');
-
-        const revealObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('revealed'); });
-        }, { threshold: 0.1 });
-        document.querySelectorAll('.statement-section, .content-section').forEach(sec => revealObserver.observe(sec));
     </script>
 </body>
 </html>  
