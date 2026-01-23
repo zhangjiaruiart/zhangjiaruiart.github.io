@@ -8,8 +8,9 @@
     <link rel="icon" href="images/favicon.svg" type="image/svg+xml">
     <link rel="icon" href="images/favicon.png" type="image/png" sizes="32x32">
     <link rel="apple-touch-icon" href="images/favicon.png">
-    <!-- 优先预加载视频首帧图，确保和视频无缝衔接 -->
+    <!-- 1. 双重预加载：强制最高优先级加载首帧图 -->
     <link rel="preload" as="image" href="images/hero-bg-firstframe.webp" fetchpriority="high">
+    <link rel="preconnect" href="" crossorigin> <!-- 预连接当前域名 -->
 
     <style>
         :root {
@@ -22,24 +23,27 @@
             margin: 0; padding: 0;
             font-family: var(--primary-font);
             background-color: #ffffff; color: var(--main-color);
-            scroll-behavior: smooth; /* 平滑滚动 */
+            scroll-behavior: smooth;
             overflow-x: hidden;
             -webkit-font-smoothing: antialiased;
         }
 
-        /* --- Splash Page (欢迎页) 终极优化 - 唯一无重复定义 --- */
+        /* --- Splash Page 终极修复：彻底杜绝黑屏 --- */
         #splash-page {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
             z-index: 99999; 
-            /* 核心兜底：使用视频首帧图，和视频无缝衔接 */
-            background: #000 url('images/hero-bg-firstframe.webp') center/cover no-repeat;
+            /* 2. 强制首帧图作为背景，优先级最高，永不黑屏 */
+            background: #000 url('images/hero-bg-firstframe.webp') center/cover no-repeat !important;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             transition: transform 1s cubic-bezier(0.85, 0, 0.15, 1), opacity 1s ease;
             overflow: hidden;
+            /* 强制背景图立即渲染 */
+            background-attachment: fixed;
+            will-change: background;
         }
 
         #splash-video {
@@ -51,19 +55,18 @@
             object-fit: cover;
             filter: brightness(0.7);
             z-index: -1;
-            /* 强制视频默认显示，无透明/黑屏 */
-            opacity: 1 !important;
+            /* 3. 视频默认隐藏，加载完成后再显示，避免黑屏阶段 */
+            opacity: 0 !important;
             display: block !important;
             preload: auto;
             object-position: center;
-            /* 新增：视频淡入动画，和首帧图无缝过渡 */
-            animation: videoFadeIn 0.5s ease forwards;
+            /* 视频淡入动画，和首帧图无缝衔接 */
+            transition: opacity 0.8s ease-out !important;
         }
 
-        /* 视频淡入动画，消除切换生硬感 */
-        @keyframes videoFadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+        /* 视频加载完成后显示的类 */
+        #splash-video.loaded {
+            opacity: 1 !important;
         }
 
         /* 强制隐藏所有视频控件 */
@@ -79,26 +82,24 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            width: 90%; /* 限制宽度防止溢出 */
+            width: 90%;
             max-width: 800px;
         }
 
         .splash-title {
-            /* 智能字体大小：手机端最小24px，最大80px，随视口变化 */
             font-size: clamp(20px, 8vw, 70px);
             font-weight: 300;
-            letter-spacing: 0.2em; /* 稍微减小间距以适应手机 */
+            letter-spacing: 0.2em;
             text-transform: uppercase;
             margin-bottom: 40px;
             opacity: 0;
             transform: translateY(20px);
             animation: fadeInUp 0.8s forwards 0.2s;
-            white-space: nowrap; /* 默认不换行 */
+            white-space: nowrap;
             width: 100%;
             text-align: center;
         }
 
-        /* 纯 CSS 向右箭头按钮 */
         .enter-arrow-btn {
             background: none;
             border: none;
@@ -110,7 +111,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            -webkit-tap-highlight-color: transparent; /* 移除点击高亮 */
+            -webkit-tap-highlight-color: transparent;
         }
 
         .enter-arrow-btn:hover {
@@ -151,20 +152,20 @@
         /* --- 手机端特定调整 --- */
         @media (max-width: 600px) {
             .splash-title {
-                letter-spacing: 0.15em; /* 手机端进一步收紧间距 */
-                font-size: 32px; /* 强制手机端字体大小 */
-                white-space: normal; /* 允许极小屏幕换行 */
+                letter-spacing: 0.15em;
+                font-size: 32px;
+                white-space: normal;
                 line-height: 1.4;
             }
             .enter-arrow-btn {
-                padding: 40px; /* 增大手机点击区域 */
+                padding: 40px;
             }
             .arrow-icon {
-                width: 40px; /* 手机端箭头稍短 */
+                width: 40px;
             }
         }
 
-        /* --- 原有布局保持不变 --- */
+        /* --- 原有布局完全保留 --- */
         #scroll-progress {
             position: fixed; top: 0; left: 0; width: 0%; height: 2px;
             background: var(--main-color); z-index: 3000; transition: width 0.1s ease-out;
@@ -630,35 +631,46 @@
     <footer>&copy; 2026 ZHANGJIARUI ARTWORKS.</footer>
 
     <script>
-        // --- Splash Page 核心控制逻辑 ---
+        // --- 核心修复：确保首帧图优先显示，视频加载完成后再显示 ---
         document.addEventListener('DOMContentLoaded', () => {
             const video = document.getElementById('splash-video');
             const splashPage = document.getElementById('splash-page');
             
-            // 1. 检查会话状态，避免返回时重复显示欢迎页
+            // 1. 会话状态检查
             if (sessionStorage.getItem('hasVisited')) {
                 hideSplash();
                 return;
             }
 
-            // 2. 视频加载和播放优化（确保首帧优先显示）
+            // 2. 强制预加载首帧图，确保页面加载瞬间显示
+            const firstFrameImg = new Image();
+            firstFrameImg.src = 'images/hero-bg-firstframe.webp';
+            firstFrameImg.fetchpriority = 'high';
+            // 首帧图加载完成后，强制刷新背景（防止缓存/渲染问题）
+            firstFrameImg.onload = () => {
+                splashPage.style.backgroundImage = 'url("images/hero-bg-firstframe.webp")';
+            };
+
+            // 3. 视频加载逻辑：加载完成后再显示，避免黑屏
             if (video) {
-                // 强制视频最高优先级加载
                 video.preload = 'auto';
                 video.load();
-                
-                // 视频加载出首帧后立即播放，和首帧图无缝衔接
-                video.addEventListener('loadedmetadata', () => {
+
+                // 视频完全加载并可播放后，再显示视频
+                video.addEventListener('canplaythrough', () => {
+                    video.classList.add('loaded'); // 添加类显示视频
                     video.play().catch(() => {
-                        // 自动播放失败时，至少保证视频首帧显示（无黑屏）
-                        video.style.display = 'block';
+                        // 自动播放失败也确保视频首帧显示
+                        video.classList.add('loaded');
                     });
                 });
 
-                // 兼容移动端/微信播放
+                // 兼容移动端/微信播放触发
                 const playVideo = () => {
+                    if (!video.classList.contains('loaded')) {
+                        video.classList.add('loaded');
+                    }
                     video.play();
-                    video.style.opacity = '1';
                 };
                 document.addEventListener('touchstart', playVideo, { once: true });
                 if (window.WeixinJSBridge) {
