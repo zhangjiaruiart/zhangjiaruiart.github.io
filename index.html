@@ -680,6 +680,25 @@
         const enterArrow = document.getElementById('enterArrow');
         const body = document.body;
         
+        // 新增：检测URL锚点，有锚点则跳过splash页面
+        function checkSkipSplash() {
+            // 如果URL包含锚点（如#sculpture），直接跳过splash
+            if (window.location.hash) {
+                splashPage.style.display = 'none';
+                body.classList.remove('splash-active');
+                document.body.classList.add('page-loaded');
+                // 定位到锚点位置（平滑滚动）
+                const target = document.querySelector(window.location.hash);
+                if (target) {
+                    setTimeout(() => {
+                        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }, 100);
+                }
+                return true;
+            }
+            return false;
+        }
+
         // 强制视频播放，避免自动播放限制导致黑屏
         function forceVideoPlay() {
             splashVideo.play().then(() => {
@@ -694,22 +713,27 @@
 
         // 视频加载完成后处理
         splashVideo.addEventListener('loadedmetadata', () => {
-            forceVideoPlay();
-            // 视频快结束时显示箭头（最后2秒）
-            splashVideo.addEventListener('timeupdate', () => {
-                const duration = splashVideo.duration;
-                const currentTime = splashVideo.currentTime;
-                // 视频播放到最后2秒 或 循环播放时显示箭头
-                if (duration - currentTime < 2 || currentTime > 2) {
-                    enterArrow.classList.add('visible');
-                }
-            });
+            // 如果不需要跳过splash，才执行视频播放逻辑
+            if (!checkSkipSplash()) {
+                forceVideoPlay();
+                // 视频快结束时显示箭头（最后2秒）
+                splashVideo.addEventListener('timeupdate', () => {
+                    const duration = splashVideo.duration;
+                    const currentTime = splashVideo.currentTime;
+                    // 视频播放到最后2秒 或 循环播放时显示箭头
+                    if (duration - currentTime < 2 || currentTime > 2) {
+                        enterArrow.classList.add('visible');
+                    }
+                });
+            }
         });
 
-        // 页面加载时预加载视频
+        // 页面加载时先检测是否需要跳过splash
         window.addEventListener('DOMContentLoaded', () => {
-            splashVideo.load();
-            forceVideoPlay();
+            if (!checkSkipSplash()) {
+                splashVideo.load();
+                forceVideoPlay();
+            }
         });
 
         // 进入主页面
