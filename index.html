@@ -8,6 +8,8 @@
     <link rel="icon" href="images/favicon.svg" type="image/svg+xml">
     <link rel="icon" href="images/favicon.png" type="image/png" sizes="32x32">
     <link rel="apple-touch-icon" href="images/favicon.png">
+    <!-- 预加载封面图（关键：优先加载占位图，避免黑屏） -->
+    <link rel="preload" as="image" href="images/splash-cover.webp" fetchpriority="high">
     <link rel="preload" as="video" href="images/hero-bg.mp4" fetchpriority="high">
     <link rel="preconnect" href="" crossorigin>
 
@@ -19,7 +21,9 @@
             --transition-smooth: all 1.2s cubic-bezier(0.15, 1, 0.3, 1);
             --white-alpha-70: rgba(255, 255, 255, 0.7);
             --white-alpha-80: rgba(255, 255, 255, 0.8);
+            --white-alpha-90: rgba(255, 255, 255, 0.9);
             --black-alpha-80: rgba(17, 17, 17, 0.8);
+            --splash-bg-gradient: linear-gradient(180deg, #0a0a0a 0%, #000000 100%);
         }
 
         /* 重置样式 - 精简统一 */
@@ -40,19 +44,23 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        /* 欢迎页核心样式 - 关键修改：默认隐藏，仅首次访问显示 */
+        /* 欢迎页核心样式 - 关键修改：解决黑屏问题 */
         #splash-page {
             position: fixed;
             inset: 0;
             z-index: 99999;
-            background: #000 !important;
+            /* 关键1：渐变背景替代纯黑，避免生硬黑屏 */
+            background: var(--splash-bg-gradient) !important;
             display: none; /* 默认隐藏，避免闪现 */
             flex-direction: column;
             justify-content: center;
             align-items: center;
             transition: transform 0.5s cubic-bezier(0.85, 0, 0.15, 1), opacity 0.5s ease;
             overflow: hidden;
-            background-image: none !important;
+            /* 关键2：添加轻微的加载动画背景，提升视觉体验 */
+            background-image: 
+                radial-gradient(circle at center, rgba(255,255,255,0.03) 0%, transparent 70%),
+                var(--splash-bg-gradient) !important;
         }
 
         /* 仅首次访问时显示欢迎页 */
@@ -68,12 +76,38 @@
             object-fit: cover;
             filter: brightness(0.7);
             z-index: 0;
-            opacity: 1 !important;
+            opacity: 0; /* 初始透明，加载完成后渐显 */
             display: block !important;
             preload: auto !important;
             object-position: center center;
             -webkit-backface-visibility: hidden;
             backface-visibility: hidden;
+            /* 关键3：视频渐显动画，避免突然出现 */
+            transition: opacity 1s ease-in-out 0.3s;
+        }
+
+        /* 视频加载完成后显示 */
+        #splash-video.loaded {
+            opacity: 1 !important;
+        }
+
+        /* 视频封面占位图样式（关键：替代黑屏） */
+        .splash-poster {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: brightness(0.7);
+            z-index: -1;
+            opacity: 1;
+            transition: opacity 1s ease-in-out;
+        }
+
+        /* 视频加载完成后隐藏封面 */
+        #splash-video.loaded + .splash-poster {
+            opacity: 0;
+            pointer-events: none;
         }
 
         /* 隐藏视频控件 - 精简选择器 */
@@ -116,6 +150,33 @@
             text-align: center !important;
             color: var(--white-alpha-90) !important;
             z-index: 1;
+        }
+
+        /* 加载指示器（可选：给用户视觉反馈） */
+        .splash-loader {
+            position: absolute;
+            top: 70%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 30px;
+            height: 30px;
+            border: 2px solid rgba(255,255,255,0.2);
+            border-radius: 50%;
+            border-top-color: rgba(255,255,255,0.7);
+            animation: spin 1s linear infinite;
+            z-index: 1;
+            opacity: 0;
+            /* 仅视频加载中显示 */
+            display: none;
+        }
+
+        body.first-visit #splash-page:not(.video-loaded) .splash-loader {
+            opacity: 1;
+            display: block;
+        }
+
+        @keyframes spin {
+            to { transform: translate(-50%, -50%) rotate(360deg); }
         }
 
         /* 箭头按钮 - 精简重复属性 */
@@ -760,6 +821,12 @@
                 display: block !important;
                 visibility: visible !important;
             }
+
+            /* 移动端加载指示器适配 */
+            .splash-loader {
+                width: 20px;
+                height: 20px;
+            }
         }
 
         @media (max-width: 600px) {
@@ -806,9 +873,16 @@
 </head>
 <body class="no-scroll"> 
     <div id="splash-page">
+        <!-- 关键修改1：添加视频封面占位图（替代黑屏） -->
         <video id="splash-video" autoplay loop muted playsinline webkit-playsinline x5-playsinline x5-video-player-type="h5" x5-video-orientation="portrait" preload="auto">
             <source src="images/hero-bg.mp4" type="video/mp4">
         </video>
+        <!-- 封面图：视频加载前显示，建议使用视频第一帧截图 -->
+        <img src="images/splash-cover.webp" alt="Zhang Jiarui" class="splash-poster" 
+             onerror="this.src='images/cover.webp'">
+        <!-- 关键修改2：添加加载指示器（可选，提升用户体验） -->
+        <div class="splash-loader"></div>
+        
         <div class="splash-content">
             <h1 class="splash-title">ZHANG JIA RUI</h1>
             <button class="enter-arrow-btn" onclick="hideSplash()" aria-label="Enter Portfolio">
@@ -1037,12 +1111,28 @@
                     video.preload = 'auto';
                     video.load();
                     
+                    // 关键修改3：监听视频加载状态，添加loaded类
+                    video.addEventListener('loadeddata', () => {
+                        video.classList.add('loaded');
+                        splashPage.classList.add('video-loaded');
+                    });
+                    
+                    // 视频加载失败的降级处理（关键：避免一直黑屏）
+                    video.addEventListener('error', () => {
+                        video.classList.add('loaded');
+                        splashPage.classList.add('video-loaded');
+                        console.log('视频加载失败，使用封面图替代');
+                    });
+                    
                     // 强制播放函数
                     const forcePlay = () => {
                         video.play().then(() => {
                             console.log('视频强制播放成功');
                         }).catch(err => {
                             console.log('自动播放失败，交互触发播放');
+                            // 即使播放失败，也显示封面图，隐藏加载指示器
+                            video.classList.add('loaded');
+                            splashPage.classList.add('video-loaded');
                             document.addEventListener('click', () => video.play(), { once: true });
                             document.addEventListener('touchstart', () => video.play(), { once: true });
                         });
