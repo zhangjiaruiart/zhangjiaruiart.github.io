@@ -87,7 +87,7 @@
             height: 100%; /* 撑满高度，方便箭头按比例定位 */
         }
 
-        /* --- 核心修改1：ZHANG JIA RUI标题向上移动10% + 逐渐显示动画 | 不加粗，保留空格 | 所有设备统一 --- */
+        /* --- 核心修改1：ZHANG JIA RUI 标题【电脑/手机端统一居中】+ 向上移动10% + 逐渐显示动画 | 不加粗，保留空格 --- */
         .splash-title {
             font-size: clamp(20px, 8vw, 70px);
             font-weight: 300; /* 保持不加粗，还原初始样式 */
@@ -99,7 +99,11 @@
             animation: fadeInUpSmooth 1.2s ease-in-out forwards 0.2s; /* 放缓动画，实现柔和逐渐显示 */
             white-space: nowrap;
             width: 100%;
-            text-align: center; /* 强制文字水平居中，所有设备生效 */
+            text-align: center !important; /* 强制文字水平居中，所有设备生效（优先级拉满） */
+            margin-left: auto !important; /* 辅助居中，消除潜在边距影响 */
+            margin-right: auto !important; /* 辅助居中，消除潜在边距影响 */
+            left: 0 !important; /* 消除潜在定位偏移 */
+            right: 0 !important; /* 消除潜在定位偏移 */
             color: rgba(255, 255, 255, 0.8) !important; /* 最终透明度80% */
             position: relative;
             z-index: 1; /* 确保标题在视频上层，不被遮挡 */
@@ -154,6 +158,7 @@
             100% {
                 opacity: 0.8; /* 最终透明度80% */
                 transform: translateY(-10%); /* 最终状态：不透明+向上10%（完成偏移） */
+                text-align: center !important; /* 动画结束后仍保持居中 */
             }
         }
 
@@ -168,7 +173,7 @@
         
         body.no-scroll { overflow: hidden; }
 
-        /* --- 核心修改3：手机端特定调整 | 箭头下移70% | 修复作品图片不显示（核心修复） | 字幕强制居中 | 保留所有原有样式 --- */
+        /* --- 核心修改3：手机端特定调整 | 箭头下移70% | 修复作品图片不显示 | 【移除图片灰色边框】 | 字幕强制居中 | 保留所有原有样式 --- */
         @media (max-width: 600px) {
             .splash-title {
                 letter-spacing: 0.15em;
@@ -217,7 +222,7 @@
                 transform: none !important;
                 display: block !important; /* 强制视频显示，压制任何图片占位 */
             }
-            /* --- 核心修复：手机端作品图片不显示 - 彻底移除所有隐藏作品图片的样式，强制作品图片显示 --- */
+            /* --- 核心修复1：手机端作品图片不显示 - 彻底移除所有隐藏作品图片的样式，强制作品图片显示 --- */
             .project-image-wrapper::before {
                 display: block !important; /* 保留骨架屏动画 */
                 visibility: visible !important;
@@ -230,17 +235,22 @@
                 width: 100% !important;
                 height: 100% !important;
                 object-fit: cover !important;
+                border: none !important; /* 核心：移除图片灰色边框 */
+                outline: none !important; /* 核心：移除图片灰色轮廓 */
             }
-            /* 移动端项目图片容器直接适配，确保图片正常加载渲染 */
+            /* --- 核心修复2：移除手机端图片容器的灰色背景（灰色边框/底色根源） --- */
             .project-image-wrapper {
-                background-color: #f7f7f7 !important;
+                background-color: transparent !important; /* 关键修改：移除灰色背景，替代原有#f7f7f7 */
                 background-image: none !important; /* 杜绝背景图片残留 */
                 display: block !important;
                 visibility: visible !important;
+                border: none !important; /* 额外保障：无容器边框 */
+                outline: none !important; /* 额外保障：无容器轮廓 */
             }
             .project-image-wrapper .img-ratio {
                 aspect-ratio: 3 / 4;
                 display: block !important;
+                border: none !important; /* 额外保障：无比例容器边框 */
             }
             /* --- 恢复hero区域样式，确保cover图片正常显示 --- */
             .hero, #hero-section {
@@ -253,20 +263,25 @@
                 width: 100% !important;
                 height: 100% !important;
                 object-fit: cover !important;
+                border: none !important; /* 核心：移除封面图片灰色边框 */
+                outline: none !important; /* 核心：移除封面图片灰色轮廓 */
             }
             #hero-img-wrap {
                 display: block !important; /* 强制恢复图片容器显示 */
                 visibility: visible !important;
                 opacity: 1 !important;
+                border: none !important; /* 额外保障：无封面容器边框 */
             }
             /* --- 额外保障：手机端作品链接和容器无隐藏，确保图片可见 --- */
             .project {
                 display: block !important;
                 visibility: visible !important;
+                border: none !important; /* 额外保障：无项目容器边框 */
             }
             article {
                 display: block !important;
                 visibility: visible !important;
+                border: none !important; /* 额外保障：无文章容器边框 */
             }
         }
 
@@ -348,6 +363,8 @@
             object-position: center 60%; 
             filter: brightness(0.75); display: block;
             animation: kenBurns 20s ease-in-out infinite alternate;
+            border: none !important; /* 全局保障：移除封面图片边框 */
+            outline: none !important; /* 全局保障：移除封面图片轮廓 */
         }
 
         @keyframes kenBurns {
@@ -428,8 +445,8 @@
         .grid-sculpture-custom { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px 30px; margin-bottom: 60px; width: 100%; }
 
         .series-label { font-size: 11px; letter-spacing: 0.3em; text-transform: uppercase; color: #888; margin-bottom: 20px; font-weight: 300; }
-        .project { text-decoration: none; color: inherit; display: block; }
-        .project-image-wrapper { overflow: hidden; margin-bottom: 20px; background-color: #f7f7f7; position: relative; }
+        .project { text-decoration: none; color: inherit; display: block; border: none !important; } /* 全局保障：无项目边框 */
+        .project-image-wrapper { overflow: hidden; margin-bottom: 20px; position: relative; border: none !important; } /* 全局修改：移除默认灰色背景#f7f7f7，消除灰色边框根源 */
 
         .project-image-wrapper::before {
             content: ""; position: absolute; top: 0; left: -150%;
@@ -445,13 +462,15 @@
             100% { left: 100%; }
         }
 
-        .img-ratio { aspect-ratio: 4 / 5; }
-        .video-ratio { aspect-ratio: 16 / 9; background-color: #000; }
+        .img-ratio { aspect-ratio: 4 / 5; border: none !important; }
+        .video-ratio { aspect-ratio: 16 / 9; background-color: #000; border: none !important; }
 
         .project img { 
             width: 100%; height: 100%; object-fit: cover; 
             transition: transform 1.8s cubic-bezier(0.15, 1, 0.3, 1), opacity 1s ease;
             opacity: 0; 
+            border: none !important; /* 全局核心：移除所有作品图片灰色边框 */
+            outline: none !important; /* 全局核心：移除所有作品图片灰色轮廓 */
         }
         .project img.loaded { opacity: 1 !important; } /* 强化：loaded后强制显示图片 */
         .project:hover img { transform: scale(1.05); }
@@ -461,6 +480,7 @@
             display: flex; align-items: center; justify-content: center;
             background: rgba(0,0,0,0.1); transition: background 0.3s;
             z-index: 2; opacity: 0;
+            border: none !important; /* 额外保障：无播放遮罩边框 */
         }
         .project img.loaded + .play-overlay { opacity: 1; }
 
@@ -537,15 +557,21 @@
             /* 原有错误代码已删除，不再隐藏cover图片 */
             .hero img {
                 animation: kenBurnsMobile 20s ease-in-out infinite alternate; /* 启用移动端专属动画 */
+                border: none !important; /* 移动端额外保障：移除封面图片边框 */
+                outline: none !important; /* 移动端额外保障：移除封面图片轮廓 */
             }
-            /* --- 额外保障：移动端（900px以下）作品图片强制显示 --- */
+            /* --- 额外保障：移动端（900px以下）作品图片强制显示 + 无灰色边框 --- */
             .project img {
                 display: block !important;
                 visibility: visible !important;
+                border: none !important;
+                outline: none !important;
             }
             .project-image-wrapper {
                 display: block !important;
                 visibility: visible !important;
+                background-color: transparent !important; /* 移动端额外保障：无灰色背景 */
+                border: none !important;
             }
         }
 
@@ -680,7 +706,7 @@
                         <div class="project-image-wrapper img-ratio" style="background-color: #ffffff; display: flex; align-items: center; justify-content: center;">
                             <img src="images/sculpture/s5_cover.webp" loading="lazy" decoding="async"
                                  onload="handleImageLoad(this)"
-                                 onerror="handleImageError(this, 'images/sculpture/s5_cover.jpg')" style="object-fit: contain; transform: scale(0.8);">
+                                 onerror="handleImageError(this, 'images/sculpture/s5_cover.jpg')" style="object-fit: contain; transform: scale(0.8); border: none !important;">
                         </div>
                         <div class="project-info">
                             <h4 class="project-title">X</h4>
@@ -833,10 +859,12 @@
         function handleImageLoad(img) {
             img.classList.add('loaded');
             img.parentElement.classList.add('finished-loading');
-            // 额外保障：手机端图片loaded后强制设置可见性
+            // 额外保障：手机端图片loaded后强制设置可见性 + 无边框
             if (window.innerWidth <= 900) {
                 img.style.opacity = '1';
                 img.style.display = 'block';
+                img.style.border = 'none';
+                img.style.outline = 'none';
             }
         }
 
@@ -848,12 +876,14 @@
 
         window.addEventListener('load', () => {
             document.body.classList.add('page-loaded');
-            // 页面加载完成后，强制检查所有作品图片，确保手机端显示
+            // 页面加载完成后，强制检查所有作品图片，确保手机端显示 + 无边框
             if (window.innerWidth <= 900) {
                 document.querySelectorAll('.project img').forEach(img => {
                     if (!img.classList.contains('loaded')) {
                         img.style.display = 'block';
                         img.style.visibility = 'visible';
+                        img.style.border = 'none';
+                        img.style.outline = 'none';
                     }
                 });
             }
