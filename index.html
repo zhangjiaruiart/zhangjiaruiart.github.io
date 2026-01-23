@@ -10,6 +10,10 @@
     <link rel="apple-touch-icon" href="images/favicon.png">
     <link rel="preload" as="video" href="images/hero-bg.mp4" fetchpriority="high">
     <link rel="preconnect" href="" crossorigin>
+    
+    <!-- ✅ 优化：预加载封面图，优先加载关键资源 -->
+    <link rel="preload" as="image" href="images/splash-poster.jpg" fetchpriority="high">
+    <link rel="preload" as="image" href="images/splash-poster-mobile.jpg" media="(max-width: 600px)">
 
     <style>
         /* 基础变量与全局样式 - 统一管理可复用值 */
@@ -20,6 +24,7 @@
             --white-alpha-70: rgba(255, 255, 255, 0.7);
             --white-alpha-80: rgba(255, 255, 255, 0.8);
             --black-alpha-80: rgba(17, 17, 17, 0.8);
+            --white-alpha-90: rgba(255, 255, 255, 0.9); /* 补充缺失变量 */
         }
 
         /* 重置样式 - 精简统一 */
@@ -40,7 +45,7 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        /* 欢迎页核心样式 - 关键修改：默认隐藏，仅首次访问显示 */
+        /* 欢迎页核心样式 - 关键修改：添加封面过渡+背景图兜底 */
         #splash-page {
             position: fixed;
             inset: 0;
@@ -52,7 +57,10 @@
             align-items: center;
             transition: transform 0.5s cubic-bezier(0.85, 0, 0.15, 1), opacity 0.5s ease;
             overflow: hidden;
-            background-image: none !important;
+            /* ✅ 优化：添加封面图作为背景，双重兜底避免黑屏 */
+            background-image: url('images/splash-poster.jpg') !important;
+            background-size: cover !important;
+            background-position: center center !important;
         }
 
         /* 仅首次访问时显示欢迎页 */
@@ -68,12 +76,19 @@
             object-fit: cover;
             filter: brightness(0.7);
             z-index: 0;
-            opacity: 1 !important;
+            /* ✅ 优化：初始透明，视频加载后淡入 */
+            opacity: 0 !important;
             display: block !important;
             preload: auto !important;
             object-position: center center;
             -webkit-backface-visibility: hidden;
             backface-visibility: hidden;
+            transition: opacity 0.8s ease-out; /* 视频淡入过渡 */
+        }
+
+        /* ✅ 优化：视频可播放后显示 */
+        #splash-video.playing {
+            opacity: 1 !important;
         }
 
         /* 隐藏视频控件 - 精简选择器 */
@@ -787,6 +802,11 @@
                 transform: none !important;
             }
             
+            /* ✅ 优化：移动端适配封面图 */
+            #splash-page {
+                background-image: url('images/splash-poster-mobile.jpg') !important;
+            }
+            
             .img-ratio {
                 aspect-ratio: 3 / 4;
             }
@@ -806,8 +826,12 @@
 </head>
 <body class="no-scroll"> 
     <div id="splash-page">
-        <video id="splash-video" autoplay loop muted playsinline webkit-playsinline x5-playsinline x5-video-player-type="h5" x5-video-orientation="portrait" preload="auto">
+        <!-- ✅ 优化：添加poster封面+webm备用源 -->
+        <video id="splash-video" autoplay loop muted playsinline webkit-playsinline x5-playsinline 
+               x5-video-player-type="h5" x5-video-orientation="portrait" 
+               preload="auto" poster="images/splash-poster.jpg">
             <source src="images/hero-bg.mp4" type="video/mp4">
+            <source src="images/hero-bg.webm" type="video/webm">
         </video>
         <div class="splash-content">
             <h1 class="splash-title">ZHANG JIA RUI</h1>
@@ -1024,8 +1048,28 @@
         const navLinks = document.getElementById('navLinks');
         const menuToggle = document.getElementById('menuToggle');
         
+        // ✅ 优化：预加载封面图片，确保封面比视频先加载
+        function preloadPoster() {
+            const posterSrc = video.poster;
+            if (posterSrc) {
+                const img = new Image();
+                img.src = posterSrc;
+                img.onload = () => {
+                    console.log('封面图预加载完成');
+                };
+                // 移动端封面预加载
+                if (window.innerWidth <= 600) {
+                    const mobileImg = new Image();
+                    mobileImg.src = 'images/splash-poster-mobile.jpg';
+                }
+            }
+        }
+        
         // 核心初始化函数（整合所有需要执行的逻辑）
         function initPage() {
+            // ✅ 优化：优先预加载封面
+            preloadPoster();
+
             // 1. 判断是否首次访问，控制欢迎页显示
             const isFirstVisit = !sessionStorage.getItem('hasVisited');
             if (isFirstVisit) {
@@ -1033,25 +1077,38 @@
                 document.body.classList.add('first-visit');
                 // 视频播放处理
                 if (video) {
-                    video.removeAttribute('poster');
                     video.preload = 'auto';
                     video.load();
                     
+                    // ✅ 优化：监听视频可播放事件，加载完成后淡入
+                    video.addEventListener('canplaythrough', () => {
+                        video.classList.add('playing');
+                        forcePlay(); // 视频可播放后再尝试播放
+                    }, { once: true });
+
+                    // ✅ 优化：超时兜底，避免长时间黑屏
+                    setTimeout(() => {
+                        if (!video.classList.contains('playing')) {
+                            video.classList.add('playing'); // 强制显示封面/视频
+                        }
+                    }, 1500);
+
                     // 强制播放函数
                     const forcePlay = () => {
                         video.play().then(() => {
                             console.log('视频强制播放成功');
                         }).catch(err => {
                             console.log('自动播放失败，交互触发播放');
-                            document.addEventListener('click', () => video.play(), { once: true });
-                            document.addEventListener('touchstart', () => video.play(), { once: true });
+                            document.addEventListener('click', () => {
+                                video.play();
+                                video.classList.add('playing');
+                            }, { once: true });
+                            document.addEventListener('touchstart', () => {
+                                video.play();
+                                video.classList.add('playing');
+                            }, { once: true });
                         });
                     };
-
-                    forcePlay();
-                    video.addEventListener('loadedmetadata', forcePlay);
-                    video.addEventListener('progress', forcePlay);
-                    video.addEventListener('loadeddata', forcePlay);
                 }
             } else {
                 // 非首次访问：直接隐藏欢迎页，无过渡动画
