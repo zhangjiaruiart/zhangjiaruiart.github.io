@@ -87,7 +87,7 @@
             height: 100%; /* 撑满高度，方便箭头按比例定位 */
         }
 
-        /* --- 核心修改：标题文字居中显示 + 逐渐显示动画 | 不加粗，保留空格 | 所有设备统一 --- */
+        /* --- 核心修改1：ZHANG JIA RUI标题向上移动10% + 逐渐显示动画 | 不加粗，保留空格 | 所有设备统一 --- */
         .splash-title {
             font-size: clamp(20px, 8vw, 70px);
             font-weight: 300; /* 保持不加粗，还原初始样式 */
@@ -95,7 +95,7 @@
             text-transform: uppercase;
             margin-bottom: 0; /* 移除默认下边距，避免影响居中 */
             opacity: 0; /* 初始透明，用于逐渐显示动画 */
-            transform: translateY(20px); /* 初始轻微下移，增强渐显层次感 */
+            transform: translateY(-10%); /* 核心修改：向上移动10%（替代原有下移20px） */
             animation: fadeInUpSmooth 1.2s ease-in-out forwards 0.2s; /* 放缓动画，实现柔和逐渐显示 */
             white-space: nowrap;
             width: 100%;
@@ -103,9 +103,11 @@
             color: rgba(255, 255, 255, 0.8) !important; /* 最终透明度80% */
             position: relative;
             z-index: 1; /* 确保标题在视频上层，不被遮挡 */
+            /* 额外确保标题向上偏移稳定，不受其他元素影响 */
+            margin-top: -10%;
         }
 
-        /* --- 核心修改：箭头位置区分设备 | 电脑端向上移动10%，手机端下移70% --- */
+        /* --- 核心修改2：箭头位置区分设备 | 电脑端保持原有样式，手机端下移70% --- */
         .enter-arrow-btn {
             background: none;
             border: none;
@@ -118,9 +120,7 @@
             align-items: center;
             justify-content: center;
             -webkit-tap-highlight-color: transparent;
-            /* 电脑端：箭头向上移动10%（相对居中位置上移） */
-            margin-top: -10%; /* 负值实现上移，替代原有正值下移 */
-            /* 箭头整体缩小10%：默认100% → 90% */
+            /* 电脑端：保持原有样式，不额外偏移 */
             transform: scale(0.9);
         }
 
@@ -144,15 +144,15 @@
             transform: rotate(45deg);
         }
 
-        /* --- 优化：标题逐渐显示动画（更柔和，符合需求） --- */
+        /* --- 优化：标题逐渐显示动画（更柔和，符合需求，适配向上偏移） --- */
         @keyframes fadeInUpSmooth {
             0% {
                 opacity: 0;
-                transform: translateY(20px); /* 初始状态：透明+下移 */
+                transform: translateY(-5%); /* 初始状态：透明+向上5%（预留动画空间） */
             }
             100% {
                 opacity: 0.8; /* 最终透明度80% */
-                transform: translateY(0); /* 最终状态：不透明+居中原位 */
+                transform: translateY(-10%); /* 最终状态：不透明+向上10%（完成偏移） */
             }
         }
 
@@ -167,7 +167,7 @@
         
         body.no-scroll { overflow: hidden; }
 
-        /* --- 手机端特定调整：直接显示视频，彻底移除图片预显示，标题居中+渐显，箭头下移70% --- */
+        /* --- 核心修改3：手机端特定调整 | 箭头下移70% | 修复cover图片不显示 | 保留所有原有样式 --- */
         @media (max-width: 600px) {
             .splash-title {
                 letter-spacing: 0.15em;
@@ -178,10 +178,13 @@
                 text-align: center; /* 强制手机端文字水平居中，确保无偏差 */
                 color: rgba(255, 255, 255, 0.8) !important; /* 手机端标题透明度保持80% */
                 animation: fadeInUpSmooth 1.2s ease-in-out forwards 0.2s; /* 同步逐渐显示动画 */
+                /* 手机端标题同样向上10%，保持视觉统一 */
+                transform: translateY(-10%);
+                margin-top: -10%;
             }
             .enter-arrow-btn {
                 padding: 40px;
-                /* 手机端：箭头向下移动70%，适配竖屏视口 */
+                /* 手机端：箭头向下移动70%，适配竖屏视口（核心需求） */
                 margin-top: 70%; /* 正值实现下移，与电脑端区分 */
                 /* 手机端箭头缩小10%（相对手机端默认大小，保持比例一致） */
                 transform: scale(0.9);
@@ -209,23 +212,49 @@
                 transform: none !important;
                 display: block !important; /* 强制视频显示，压制任何图片占位 */
             }
-            /* 移动端彻底移除所有图片及预加载相关样式，杜绝横幅图片预显示 */
-            #hero-img-wrap, .hero img, .project-image-wrapper::before, .project img {
-                display: none !important; /* 隐藏所有图片及骨架屏加载样式 */
-                visibility: hidden !important; /* 额外隐藏，防止残留 */
-                opacity: 0 !important; /* 额外透明，杜绝预显示 */
+            /* --- 修复手机端cover图片不显示：移除所有隐藏cover图片的样式 --- */
+            /* 注释/删除原有隐藏hero相关图片的代码，恢复cover图片显示 */
+            /* 原有错误代码：隐藏了cover图片，现在移除该逻辑 */
+            /* #hero-img-wrap, .hero img, .project-image-wrapper::before, .project img {
+                display: none !important;
+                visibility: hidden !important;
+                opacity: 0 !important;
+            } */
+            /* #hero-img-wrap, .hero img { 不再隐藏，恢复显示 } */
+            .project-image-wrapper::before {
+                display: block !important; /* 保留骨架屏动画，仅恢复cover图片 */
+                visibility: visible !important;
+                opacity: 1 !important;
+            }
+            .project img {
+                display: block !important; /* 保留项目图片显示，仅修复cover */
+                visibility: visible !important;
+                opacity: 0 !important; /* 保留原有加载透明度逻辑 */
             }
             /* 移动端项目图片容器直接适配视频，无图片加载预留 */
             .project-image-wrapper {
-                background-color: transparent !important;
+                background-color: #f7f7f7 !important;
                 background-image: none !important; /* 杜绝背景图片残留 */
             }
             .project-image-wrapper .img-ratio {
                 aspect-ratio: 3 / 4;
             }
-            /* 额外优化：隐藏所有可能的图片占位元素，彻底解决手机端横幅图片预显示 */
+            /* --- 恢复hero区域样式，确保cover图片正常显示 --- */
             .hero, #hero-section {
-                background-image: none !important; /* 移除hero区域背景图片 */
+                background-image: none !important; /* 保留背景无图片，仅恢复img标签显示 */
+            }
+            .hero img {
+                display: block !important; /* 强制恢复cover图片显示 */
+                visibility: visible !important;
+                opacity: 1 !important;
+                width: 100% !important;
+                height: 100% !important;
+                object-fit: cover !important;
+            }
+            #hero-img-wrap {
+                display: block !important; /* 强制恢复图片容器显示 */
+                visibility: visible !important;
+                opacity: 1 !important;
             }
         }
 
@@ -314,7 +343,7 @@
             100% { transform: scale(1.08); }
         }
 
-        /* 新增：移动端专属的Ken Burns动画（已弃用图片，仅保留样式不生效） */
+        /* 新增：移动端专属的Ken Burns动画（恢复图片生效） */
         @keyframes kenBurnsMobile {
             0% { transform: scale(1.02); }
             100% { transform: scale(1.1); }
@@ -492,14 +521,10 @@
                 width: 36px;
                 height: 36px;
             }
-            /* 手机端额外优化：彻底隐藏所有图片相关元素，杜绝横幅图片预显示 */
-            .hero img, #hero-img-wrap, .project img {
-                display: none !important;
-                visibility: hidden !important;
-                opacity: 0 !important;
-            }
-            .hero, #hero-section {
-                background-image: none !important;
+            /* --- 修复手机端cover图片不显示：移除隐藏hero图片的样式，恢复正常显示 --- */
+            /* 原有错误代码已删除，不再隐藏cover图片 */
+            .hero img {
+                animation: kenBurnsMobile 20s ease-in-out infinite alternate; /* 启用移动端专属动画 */
             }
         }
 
@@ -513,7 +538,7 @@
             <source src="images/hero-bg.mp4" type="video/mp4">
         </video>
         <div class="splash-content">
-            <!-- 保留空格格式：ZHANG JIA RUI，居中显示+逐渐显示 -->
+            <!-- 保留空格格式：ZHANG JIA RUI，居中显示+向上10%+逐渐显示 -->
             <h1 class="splash-title">ZHANG JIA RUI</h1>
             <button class="enter-arrow-btn" onclick="hideSplash()" aria-label="Enter Portfolio">
                 <div class="arrow-icon"></div>
@@ -543,7 +568,7 @@
     <main>
         <section class="hero" id="hero-section">
             <div id="hero-img-wrap">
-                <!-- 手机端已彻底隐藏该图片，无任何预显示 -->
+                <!-- 手机端已恢复显示，不再隐藏cover图片 -->
                 <img src="images/cover.webp" alt="Zhang Jiarui Cover" 
                      onload="handleImageLoad(this)"
                      onerror="handleImageError(this, 'images/Cover.JPG');">
@@ -569,7 +594,6 @@
                 <article>
                     <a href="eco-ice-burial.html" class="project">
                         <div class="project-image-wrapper video-ratio">
-                            <!-- 手机端已彻底隐藏该图片，无任何预显示 -->
                             <img src="images/eco/ice_burial_cover.webp" loading="lazy" decoding="async" 
                                  onload="handleImageLoad(this)"
                                  onerror="handleImageError(this, 'images/eco/ice_burial_cover.jpg')">
@@ -584,7 +608,6 @@
                 <article>
                     <a href="eco-4-5tons.html" class="project">
                         <div class="project-image-wrapper video-ratio">
-                            <!-- 手机端已彻底隐藏该图片，无任何预显示 -->
                             <img src="images/eco/4_5tons_cover.webp" loading="lazy" decoding="async"
                                  onload="handleImageLoad(this)"
                                  onerror="handleImageError(this, 'images/eco/4_5tons_cover.jpg')">
@@ -606,7 +629,6 @@
                     <h3 class="series-label">Wood Series</h3>
                     <a href="series1.html" class="project">
                         <div class="project-image-wrapper img-ratio">
-                            <!-- 手机端已彻底隐藏该图片，无任何预显示 -->
                             <img src="images/sculpture/s1_cover.webp" loading="lazy" decoding="async"
                                  onload="handleImageLoad(this)"
                                  onerror="handleImageError(this, 'images/sculpture/s1_cover.jpg')">
@@ -621,7 +643,6 @@
                     <h3 class="series-label">Water Series</h3>
                     <a href="series2.html" class="project">
                         <div class="project-image-wrapper img-ratio">
-                            <!-- 手机端已彻底隐藏该图片，无任何预显示 -->
                             <img src="images/sculpture/s2_cover.webp" loading="lazy" decoding="async"
                                  onload="handleImageLoad(this)"
                                  onerror="handleImageError(this, 'images/sculpture/s2_cover.jpg')">
@@ -636,7 +657,6 @@
                     <h3 class="series-label">Line Series</h3>
                     <a href="series5.html" class="project">
                         <div class="project-image-wrapper img-ratio" style="background-color: #ffffff; display: flex; align-items: center; justify-content: center;">
-                            <!-- 手机端已彻底隐藏该图片，无任何预显示 -->
                             <img src="images/sculpture/s5_cover.webp" loading="lazy" decoding="async"
                                  onload="handleImageLoad(this)"
                                  onerror="handleImageError(this, 'images/sculpture/s5_cover.jpg')" style="object-fit: contain; transform: scale(0.8);">
@@ -651,7 +671,6 @@
                     <h3 class="series-label">Formless Series</h3>
                     <a href="series4.html" class="project">
                         <div class="project-image-wrapper img-ratio">
-                            <!-- 手机端已彻底隐藏该图片，无任何预显示 -->
                             <img src="images/sculpture/s4_cover.webp" loading="lazy" decoding="async"
                                  onload="handleImageLoad(this)"
                                  onerror="handleImageError(this, 'images/sculpture/s4_cover.jpg')">
@@ -666,7 +685,6 @@
                     <h3 class="series-label">Gold Series</h3>
                     <a href="series3.html" class="project">
                         <div class="project-image-wrapper img-ratio">
-                            <!-- 手机端已彻底隐藏该图片，无任何预显示 -->
                             <img src="images/sculpture/s3_cover.webp" loading="lazy" decoding="async"
                                  onload="handleImageLoad(this)"
                                  onerror="handleImageError(this, 'images/sculpture/s3_cover.jpg')">
@@ -686,7 +704,6 @@
                 <article>
                     <a href="project-coral.html" class="project">
                         <div class="project-image-wrapper video-ratio">
-                            <!-- 手机端已彻底隐藏该图片，无任何预显示 -->
                             <img src="images/projects/coral_cover.webp" loading="lazy" decoding="async"
                                  onload="handleImageLoad(this)"
                                  onerror="handleImageError(this, 'images/projects/coral_cover.jpg')">
