@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>ZHANG JIARUI | ARTIST - Ecological Art, Sculpture, and Projects</title>
-    <meta name="description" content="Zhang Jiarui Artworks - A portfolio of Ecological Art, Sculpture, and Artistic Projects examining material, time, and systems.">
+    <meta name="description" content="Zhang Jiarui Artworks - A portfolio of Ecological Art, Sculpture, and Projects examining material, time, and systems.">
     <link rel="icon" href="images/favicon.svg" type="image/svg+xml">
     <link rel="icon" href="images/favicon.png" type="image/png" sizes="32x32">
     <link rel="apple-touch-icon" href="images/favicon.png">
@@ -87,10 +87,10 @@
             height: 100%; /* 撑满高度，方便箭头按比例下移 */
         }
 
-        /* --- 核心修改：标题文字透明度80%，隐隐约约浮现 --- */
+        /* --- 核心修改：标题文字透明度80%，隐隐约约浮现 | 恢复不加粗，保留空格 --- */
         .splash-title {
             font-size: clamp(20px, 8vw, 70px);
-            font-weight: bold; /* 新增：实现文字加粗 */
+            font-weight: 300; /* 恢复不加粗，还原初始样式 */
             letter-spacing: 0.2em;
             text-transform: uppercase;
             margin-bottom: 0; /* 移除默认下边距，改为通过布局控制箭头位置 */
@@ -104,7 +104,7 @@
             color: rgba(255, 255, 255, 0.8) !important;
         }
 
-        /* --- 核心修改：箭头向下移动10%、透明度70%、缩小10% --- */
+        /* --- 核心修改：箭头向下移动70%、透明度70%、缩小10% --- */
         .enter-arrow-btn {
             background: none;
             border: none;
@@ -117,8 +117,8 @@
             align-items: center;
             justify-content: center;
             -webkit-tap-highlight-color: transparent;
-            /* 箭头向下移动10%：基于splash-content高度，通过margin-top实现比例下移 */
-            margin-top: 10%;
+            /* 箭头向下移动70%：基于splash-content高度，通过margin-top实现比例下移 */
+            margin-top: 70%; /* 从10%改为70%，满足需求 */
             /* 箭头整体缩小10%：默认100% → 90% */
             transform: scale(0.9);
         }
@@ -157,20 +157,20 @@
         
         body.no-scroll { overflow: hidden; }
 
-        /* --- 手机端特定调整：彻底消除横屏，视频独占视口，箭头/标题同步适配 --- */
+        /* --- 手机端特定调整：直接显示视频，移除所有图片相关逻辑，无图片加载预留 --- */
         @media (max-width: 600px) {
             .splash-title {
                 letter-spacing: 0.15em;
                 font-size: 32px;
-                font-weight: bold; /* 手机端同步加粗，保持视觉一致 */
+                font-weight: 300; /* 手机端同步不加粗，保持视觉一致 */
                 white-space: normal;
                 line-height: 1.4;
                 color: rgba(255, 255, 255, 0.8) !important; /* 手机端标题透明度保持80% */
             }
             .enter-arrow-btn {
                 padding: 40px;
-                /* 手机端箭头向下移动10%，适配竖屏视口 */
-                margin-top: 10%;
+                /* 手机端箭头向下移动70%，适配竖屏视口 */
+                margin-top: 70%; /* 从10%改为70%，与桌面端保持一致 */
                 /* 手机端箭头缩小10%（相对手机端默认大小，保持比例一致） */
                 transform: scale(0.9);
             }
@@ -183,33 +183,29 @@
                 border-top: 2px solid rgba(255, 255, 255, 0.7) !important; /* 手机端箭头三角透明度70% */
                 border-right: 2px solid rgba(255, 255, 255, 0.7) !important;
             }
-            /* 移动端视频完全独占视口，无任何留白、无任何图片元素 */
+            /* 移动端视频完全独占视口，无任何留白、无图片相关逻辑 */
             #splash-video {
                 width: 100vw !important;
                 height: 100vh !important;
                 object-fit: cover !important;
                 object-position: center center !important;
-                /* 禁用任何可能导致视频变形或横屏的属性 */
+                /* 禁用任何可能导致视频变形或横屏的属性，移除所有图片相关配置 */
                 min-width: unset !important;
                 min-height: unset !important;
                 max-width: unset !important;
                 max-height: unset !important;
                 transform: none !important;
             }
-            /* 移动端英雄区图片优化，适配竖屏（保留原有逻辑，仅优化无残留） */
-            #hero-img-wrap {
-                width: 100% !important;
-                height: 100% !important;
-                top: 0 !important;
-                left: 0 !important;
+            /* 移动端移除所有图片加载相关样式，不再预留图片占位 */
+            #hero-img-wrap, .hero img, .project-image-wrapper::before {
+                display: none !important; /* 隐藏所有图片及骨架屏加载样式 */
             }
-            .hero img {
-                object-position: center center !important;
-                animation: kenBurnsMobile 20s ease-in-out infinite alternate;
+            /* 移动端项目图片容器直接适配视频，无图片加载预留 */
+            .project-image-wrapper {
+                background-color: transparent !important;
             }
-            /* 移动端项目图片优化，避免变形 */
             .project img {
-                object-position: center center !important;
+                display: none !important;
             }
             .project-image-wrapper .img-ratio {
                 aspect-ratio: 3 / 4;
@@ -301,7 +297,7 @@
             100% { transform: scale(1.08); }
         }
 
-        /* 新增：移动端专属的Ken Burns动画，更柔和，适配竖屏 */
+        /* 新增：移动端专属的Ken Burns动画（已弃用图片，仅保留样式不生效） */
         @keyframes kenBurnsMobile {
             0% { transform: scale(1.02); }
             100% { transform: scale(1.1); }
@@ -479,6 +475,10 @@
                 width: 36px;
                 height: 36px;
             }
+            /* 手机端额外优化：隐藏所有图片相关元素，确保视频独占 */
+            .hero img, #hero-img-wrap, .project img {
+                display: none !important;
+            }
         }
 
         footer { padding: 60px 5% 40px; text-align: center; border-top: 1px solid #f9f9f9; font-size: 9px; letter-spacing: 0.4em; color: #ccc; text-transform: uppercase; }
@@ -486,12 +486,12 @@
 </head>
 <body class="no-scroll"> 
     <div id="splash-page">
-        <!-- 视频标签强化：独占splash区域，无任何图片元素，强制直接播放 -->
+        <!-- 视频标签强化：独占splash区域，无任何图片元素，手机端直接显示 -->
         <video id="splash-video" autoplay loop muted playsinline webkit-playsinline x5-playsinline x5-video-player-type="h5" x5-video-orientation="portrait" preload="auto">
             <source src="images/hero-bg.mp4" type="video/mp4">
         </video>
         <div class="splash-content">
-            <!-- 核心修改：文字改为 ZHANG JIA RUI（带空格、大写） -->
+            <!-- 保留空格格式：ZHANG JIA RUI，不加粗 -->
             <h1 class="splash-title">ZHANG JIA RUI</h1>
             <button class="enter-arrow-btn" onclick="hideSplash()" aria-label="Enter Portfolio">
                 <div class="arrow-icon"></div>
@@ -521,6 +521,7 @@
     <main>
         <section class="hero" id="hero-section">
             <div id="hero-img-wrap">
+                <!-- 手机端已隐藏该图片，无加载预留 -->
                 <img src="images/cover.webp" alt="Zhang Jiarui Cover" 
                      onload="handleImageLoad(this)"
                      onerror="handleImageError(this, 'images/Cover.JPG');">
@@ -546,6 +547,7 @@
                 <article>
                     <a href="eco-ice-burial.html" class="project">
                         <div class="project-image-wrapper video-ratio">
+                            <!-- 手机端已隐藏该图片，无加载预留 -->
                             <img src="images/eco/ice_burial_cover.webp" loading="lazy" decoding="async" 
                                  onload="handleImageLoad(this)"
                                  onerror="handleImageError(this, 'images/eco/ice_burial_cover.jpg')">
@@ -560,6 +562,7 @@
                 <article>
                     <a href="eco-4-5tons.html" class="project">
                         <div class="project-image-wrapper video-ratio">
+                            <!-- 手机端已隐藏该图片，无加载预留 -->
                             <img src="images/eco/4_5tons_cover.webp" loading="lazy" decoding="async"
                                  onload="handleImageLoad(this)"
                                  onerror="handleImageError(this, 'images/eco/4_5tons_cover.jpg')">
@@ -581,6 +584,7 @@
                     <h3 class="series-label">Wood Series</h3>
                     <a href="series1.html" class="project">
                         <div class="project-image-wrapper img-ratio">
+                            <!-- 手机端已隐藏该图片，无加载预留 -->
                             <img src="images/sculpture/s1_cover.webp" loading="lazy" decoding="async"
                                  onload="handleImageLoad(this)"
                                  onerror="handleImageError(this, 'images/sculpture/s1_cover.jpg')">
@@ -595,6 +599,7 @@
                     <h3 class="series-label">Water Series</h3>
                     <a href="series2.html" class="project">
                         <div class="project-image-wrapper img-ratio">
+                            <!-- 手机端已隐藏该图片，无加载预留 -->
                             <img src="images/sculpture/s2_cover.webp" loading="lazy" decoding="async"
                                  onload="handleImageLoad(this)"
                                  onerror="handleImageError(this, 'images/sculpture/s2_cover.jpg')">
@@ -609,6 +614,7 @@
                     <h3 class="series-label">Line Series</h3>
                     <a href="series5.html" class="project">
                         <div class="project-image-wrapper img-ratio" style="background-color: #ffffff; display: flex; align-items: center; justify-content: center;">
+                            <!-- 手机端已隐藏该图片，无加载预留 -->
                             <img src="images/sculpture/s5_cover.webp" loading="lazy" decoding="async"
                                  onload="handleImageLoad(this)"
                                  onerror="handleImageError(this, 'images/sculpture/s5_cover.jpg')" style="object-fit: contain; transform: scale(0.8);">
@@ -623,6 +629,7 @@
                     <h3 class="series-label">Formless Series</h3>
                     <a href="series4.html" class="project">
                         <div class="project-image-wrapper img-ratio">
+                            <!-- 手机端已隐藏该图片，无加载预留 -->
                             <img src="images/sculpture/s4_cover.webp" loading="lazy" decoding="async"
                                  onload="handleImageLoad(this)"
                                  onerror="handleImageError(this, 'images/sculpture/s4_cover.jpg')">
@@ -637,6 +644,7 @@
                     <h3 class="series-label">Gold Series</h3>
                     <a href="series3.html" class="project">
                         <div class="project-image-wrapper img-ratio">
+                            <!-- 手机端已隐藏该图片，无加载预留 -->
                             <img src="images/sculpture/s3_cover.webp" loading="lazy" decoding="async"
                                  onload="handleImageLoad(this)"
                                  onerror="handleImageError(this, 'images/sculpture/s3_cover.jpg')">
@@ -656,6 +664,7 @@
                 <article>
                     <a href="project-coral.html" class="project">
                         <div class="project-image-wrapper video-ratio">
+                            <!-- 手机端已隐藏该图片，无加载预留 -->
                             <img src="images/projects/coral_cover.webp" loading="lazy" decoding="async"
                                  onload="handleImageLoad(this)"
                                  onerror="handleImageError(this, 'images/projects/coral_cover.jpg')">
@@ -697,7 +706,7 @@
     <footer>&copy; 2026 ZHANGJIARUI ARTWORKS.</footer>
 
     <script>
-        // --- 核心修改：强制视频立即加载播放，无任何图片占位，直接显示视频 ---
+        // --- 核心修改：强制视频立即加载播放，无任何图片占位，手机端直接显示 ---
         document.addEventListener('DOMContentLoaded', () => {
             const video = document.getElementById('splash-video');
             const splashPage = document.getElementById('splash-page');
@@ -708,7 +717,7 @@
                 return;
             }
 
-            // 2. 强制视频独占渲染，无任何图片兜底，立即播放
+            // 2. 强制视频独占渲染，无任何图片兜底，立即播放（手机端无图片加载逻辑）
             if (video) {
                 // 移除所有可能的图片相关属性，强制视频优先
                 video.removeAttribute('poster'); // 关键：移除视频封面图（避免横屏图片）
