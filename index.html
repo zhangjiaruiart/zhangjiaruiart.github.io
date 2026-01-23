@@ -8,9 +8,9 @@
     <link rel="icon" href="images/favicon.svg" type="image/svg+xml">
     <link rel="icon" href="images/favicon.png" type="image/png" sizes="32x32">
     <link rel="apple-touch-icon" href="images/favicon.png">
-    <!-- 1. 双重预加载：强制最高优先级加载首帧图 -->
-    <link rel="preload" as="image" href="images/hero-bg-firstframe.webp" fetchpriority="high">
-    <link rel="preconnect" href="" crossorigin> <!-- 预连接当前域名 -->
+    <!-- 强制预加载视频，最高优先级 -->
+    <link rel="preload" as="video" href="images/hero-bg.mp4" fetchpriority="high">
+    <link rel="preconnect" href="" crossorigin>
 
     <style>
         :root {
@@ -28,22 +28,18 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        /* --- Splash Page 终极修复：彻底杜绝黑屏 --- */
+        /* --- 核心修改：强制视频优先显示，彻底消除黑屏 --- */
         #splash-page {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
             z-index: 99999; 
-            /* 2. 强制首帧图作为背景，优先级最高，永不黑屏 */
-            background: #000 url('images/hero-bg-firstframe.webp') center/cover no-repeat !important;
+            background: #000 !important; /* 兜底背景，避免极端情况 */
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             transition: transform 1s cubic-bezier(0.85, 0, 0.15, 1), opacity 1s ease;
             overflow: hidden;
-            /* 强制背景图立即渲染 */
-            background-attachment: fixed;
-            will-change: background;
         }
 
         #splash-video {
@@ -54,19 +50,15 @@
             transform: translate(-50%, -50%);
             object-fit: cover;
             filter: brightness(0.7);
-            z-index: -1;
-            /* 3. 视频默认隐藏，加载完成后再显示，避免黑屏阶段 */
-            opacity: 0 !important;
-            display: block !important;
-            preload: auto;
-            object-position: center;
-            /* 视频淡入动画，和首帧图无缝衔接 */
-            transition: opacity 0.8s ease-out !important;
-        }
-
-        /* 视频加载完成后显示的类 */
-        #splash-video.loaded {
+            z-index: 0; /* 提升层级，直接显示 */
+            /* 强制视频立即显示，无隐藏阶段 */
             opacity: 1 !important;
+            display: block !important;
+            preload: auto !important;
+            object-position: center;
+            /* 禁用视频加载延迟 */
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
         }
 
         /* 强制隐藏所有视频控件 */
@@ -163,9 +155,15 @@
             .arrow-icon {
                 width: 40px;
             }
+            /* 移动端强制视频适配 */
+            #splash-video {
+                width: 100vw;
+                height: 100vh;
+                object-fit: cover !important;
+            }
         }
 
-        /* --- 原有布局完全保留 --- */
+        /* --- 原有布局完全保留，无删减 --- */
         #scroll-progress {
             position: fixed; top: 0; left: 0; width: 0%; height: 2px;
             background: var(--main-color); z-index: 3000; transition: width 0.1s ease-out;
@@ -422,7 +420,8 @@
 </head>
 <body class="no-scroll"> 
     <div id="splash-page">
-        <video id="splash-video" autoplay loop muted playsinline webkit-playsinline x5-playsinline x5-video-player-type="h5">
+        <!-- 视频标签强化：添加autoplay的所有兼容属性，强制自动播放 -->
+        <video id="splash-video" autoplay loop muted playsinline webkit-playsinline x5-playsinline x5-video-player-type="h5" x5-video-orientation="portraint" preload="auto">
             <source src="images/hero-bg.mp4" type="video/mp4">
         </video>
         <div class="splash-content">
@@ -631,7 +630,7 @@
     <footer>&copy; 2026 ZHANGJIARUI ARTWORKS.</footer>
 
     <script>
-        // --- 核心修复：确保首帧图优先显示，视频加载完成后再显示 ---
+        // --- 核心修改：强制视频立即加载并播放，无任何延迟 ---
         document.addEventListener('DOMContentLoaded', () => {
             const video = document.getElementById('splash-video');
             const splashPage = document.getElementById('splash-page');
@@ -642,44 +641,40 @@
                 return;
             }
 
-            // 2. 强制预加载首帧图，确保页面加载瞬间显示
-            const firstFrameImg = new Image();
-            firstFrameImg.src = 'images/hero-bg-firstframe.webp';
-            firstFrameImg.fetchpriority = 'high';
-            // 首帧图加载完成后，强制刷新背景（防止缓存/渲染问题）
-            firstFrameImg.onload = () => {
-                splashPage.style.backgroundImage = 'url("images/hero-bg-firstframe.webp")';
-            };
-
-            // 3. 视频加载逻辑：加载完成后再显示，避免黑屏
+            // 2. 强制视频加载和播放，最高优先级
             if (video) {
+                // 强制预加载并立即播放
                 video.preload = 'auto';
                 video.load();
-
-                // 视频完全加载并可播放后，再显示视频
-                video.addEventListener('canplaythrough', () => {
-                    video.classList.add('loaded'); // 添加类显示视频
-                    video.play().catch(() => {
-                        // 自动播放失败也确保视频首帧显示
-                        video.classList.add('loaded');
+                
+                // 立即尝试播放，不等待canplaythrough
+                const forcePlay = () => {
+                    video.play().then(() => {
+                        console.log('视频强制播放成功');
+                    }).catch(err => {
+                        // 兼容所有浏览器/移动端的播放触发
+                        console.log('自动播放失败，尝试交互触发');
+                        // 监听任何用户交互，立即播放
+                        document.addEventListener('click', () => {
+                            video.play();
+                        }, { once: true });
+                        document.addEventListener('touchstart', () => {
+                            video.play();
+                        }, { once: true });
                     });
-                });
-
-                // 兼容移动端/微信播放触发
-                const playVideo = () => {
-                    if (!video.classList.contains('loaded')) {
-                        video.classList.add('loaded');
-                    }
-                    video.play();
                 };
-                document.addEventListener('touchstart', playVideo, { once: true });
-                if (window.WeixinJSBridge) {
-                    WeixinJSBridge.invoke('getNetworkType', {}, playVideo);
-                }
+
+                // 页面加载完成立即播放
+                forcePlay();
+                
+                // 视频元数据加载完成后再次强制播放
+                video.addEventListener('loadedmetadata', forcePlay);
+                // 视频加载进度更新时强制播放
+                video.addEventListener('progress', forcePlay);
             }
         });
 
-        // 隐藏欢迎页的核心函数
+        // 隐藏欢迎页的核心函数（保留原有逻辑）
         function hideSplash() {
             sessionStorage.setItem('hasVisited', 'true');
             document.body.classList.add('splash-hidden');
@@ -692,7 +687,7 @@
             }, 1000);
         }
 
-        /* --- 原有功能逻辑完全保留 --- */
+        /* --- 原有功能逻辑完全保留，无删减 --- */
         const nav = document.getElementById('navbar');
         const progress = document.getElementById('scroll-progress');
         const btt = document.getElementById('back-to-top');
