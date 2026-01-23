@@ -8,8 +8,8 @@
     <link rel="icon" href="images/favicon.svg" type="image/svg+xml">
     <link rel="icon" href="images/favicon.png" type="image/png" sizes="32x32">
     <link rel="apple-touch-icon" href="images/favicon.png">
-    <!-- 优先预加载兜底图，确保页面加载瞬间显示 -->
-    <link rel="preload" as="image" href="images/cover.webp" fetchpriority="high">
+    <!-- 优先预加载视频首帧图，确保和视频无缝衔接 -->
+    <link rel="preload" as="image" href="images/hero-bg-firstframe.webp" fetchpriority="high">
 
     <style>
         :root {
@@ -32,8 +32,8 @@
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
             z-index: 99999; 
-            /* 核心兜底：优先显示封面图，视频加载后覆盖 */
-            background: #000 url('images/cover.webp') center/cover no-repeat;
+            /* 核心兜底：使用视频首帧图，和视频无缝衔接 */
+            background: #000 url('images/hero-bg-firstframe.webp') center/cover no-repeat;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -56,6 +56,14 @@
             display: block !important;
             preload: auto;
             object-position: center;
+            /* 新增：视频淡入动画，和首帧图无缝过渡 */
+            animation: videoFadeIn 0.5s ease forwards;
+        }
+
+        /* 视频淡入动画，消除切换生硬感 */
+        @keyframes videoFadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
 
         /* 强制隐藏所有视频控件 */
@@ -639,7 +647,7 @@
                 video.preload = 'auto';
                 video.load();
                 
-                // 视频加载出首帧后立即播放，覆盖兜底图
+                // 视频加载出首帧后立即播放，和首帧图无缝衔接
                 video.addEventListener('loadedmetadata', () => {
                     video.play().catch(() => {
                         // 自动播放失败时，至少保证视频首帧显示（无黑屏）
