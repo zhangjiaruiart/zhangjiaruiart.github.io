@@ -79,49 +79,57 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+            justify-content: center; /* 保持整体居中，为箭头下移预留空间 */
             width: 90%;
             max-width: 800px;
             /* 确保内容不遮挡视频核心区域，且无图片相关样式 */
             background: transparent !important;
+            height: 100%; /* 撑满高度，方便箭头按比例下移 */
         }
 
+        /* --- 核心修改：标题文字透明度80%，隐隐约约浮现 --- */
         .splash-title {
             font-size: clamp(20px, 8vw, 70px);
             font-weight: 300;
             letter-spacing: 0.2em;
             text-transform: uppercase;
-            margin-bottom: 40px;
-            opacity: 0;
+            margin-bottom: 0; /* 移除默认下边距，改为通过布局控制箭头位置 */
+            opacity: 0; /* 初始动画透明度，最终变为80% */
             transform: translateY(20px);
             animation: fadeInUp 0.8s forwards 0.2s;
             white-space: nowrap;
             width: 100%;
             text-align: center;
+            /* 标题最终透明度80% */
+            color: rgba(255, 255, 255, 0.8) !important;
         }
 
+        /* --- 核心修改：箭头向下移动10%、透明度70%、缩小10% --- */
         .enter-arrow-btn {
             background: none;
             border: none;
             cursor: pointer;
             padding: 25px; 
-            opacity: 0;
+            opacity: 0; /* 初始动画透明度，最终变为70% */
             animation: fadeIn 1s forwards 1.2s; 
             transition: transform 0.3s ease;
             display: flex;
             align-items: center;
             justify-content: center;
             -webkit-tap-highlight-color: transparent;
+            /* 箭头向下移动10%：基于splash-content高度，通过margin-top实现比例下移 */
+            margin-top: 10%;
+            /* 箭头整体缩小10%：默认100% → 90% */
+            transform: scale(0.9);
         }
 
-        .enter-arrow-btn:hover {
-            transform: translateX(10px);
-        }
-
+        /* --- 核心修改：箭头线条透明度70% --- */
         .arrow-icon {
             position: relative;
             width: 50px;
             height: 2px;
-            background-color: #fff;
+            /* 箭头底色透明度70% */
+            background-color: rgba(255, 255, 255, 0.7) !important;
         }
 
         .arrow-icon::after {
@@ -129,16 +137,17 @@
             position: absolute;
             right: 0; top: -5px;
             width: 10px; height: 10px;
-            border-top: 2px solid #fff;
-            border-right: 2px solid #fff;
+            /* 箭头三角透明度70% */
+            border-top: 2px solid rgba(255, 255, 255, 0.7) !important;
+            border-right: 2px solid rgba(255, 255, 255, 0.7) !important;
             transform: rotate(45deg);
         }
 
         @keyframes fadeInUp {
-            to { opacity: 1; transform: translateY(0); }
+            to { opacity: 0.8; transform: translateY(0); } /* 最终透明度80%，对应标题需求 */
         }
         @keyframes fadeIn {
-            to { opacity: 1; }
+            to { opacity: 0.7; transform: scale(0.9); } /* 最终透明度70%，保持缩小10% */
         }
 
         body.splash-hidden #splash-page {
@@ -148,19 +157,30 @@
         
         body.no-scroll { overflow: hidden; }
 
-        /* --- 手机端特定调整：彻底消除横屏，视频独占视口，无任何图片残留 --- */
+        /* --- 手机端特定调整：彻底消除横屏，视频独占视口，箭头/标题同步适配 --- */
         @media (max-width: 600px) {
             .splash-title {
                 letter-spacing: 0.15em;
                 font-size: 32px;
                 white-space: normal;
                 line-height: 1.4;
+                color: rgba(255, 255, 255, 0.8) !important; /* 手机端标题透明度保持80% */
             }
             .enter-arrow-btn {
                 padding: 40px;
+                /* 手机端箭头向下移动10%，适配竖屏视口 */
+                margin-top: 10%;
+                /* 手机端箭头缩小10%（相对手机端默认大小，保持比例一致） */
+                transform: scale(0.9);
             }
             .arrow-icon {
-                width: 40px;
+                width: 40px; /* 手机端默认箭头宽度，缩小10%后实际视觉更协调 */
+                background-color: rgba(255, 255, 255, 0.7) !important; /* 手机端箭头透明度70% */
+            }
+            .arrow-icon::after {
+                width: 10px; height: 10px;
+                border-top: 2px solid rgba(255, 255, 255, 0.7) !important; /* 手机端箭头三角透明度70% */
+                border-right: 2px solid rgba(255, 255, 255, 0.7) !important;
             }
             /* 移动端视频完全独占视口，无任何留白、无任何图片元素 */
             #splash-video {
