@@ -72,19 +72,23 @@
             display: none !important; 
         }
 
-        .splash-content {
+               .splash-content {
             text-align: center;
             color: #ffffff;
             z-index: 1;
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center; /* 保持整体居中，为标题和箭头布局兜底 */
+            /* 1. 移除原有 justify-content: center; 改为下面的组合，避免箭头挤压标题 */
+            justify-content: flex-start;
+            gap: 60vh; /* 用固定间距分隔标题和箭头，既保证标题居中，又不影响箭头位置 */
             width: 90%;
             max-width: 800px;
-            /* 确保内容不遮挡视频核心区域，且无图片相关样式 */
             background: transparent !important;
-            height: 100%; /* 撑满高度，方便箭头按比例定位 */
+            height: 100%;
+            /* 2. 新增：确保容器自身充满视口，为标题居中提供基础 */
+            margin: 0 auto;
+            padding: 0;
         }
 
         /* --- 核心修改1：ZHANG JIA RUI 标题【电脑/手机端统一居中】+ 向上移动10% + 逐渐显示动画 | 不加粗，保留空格 --- */
@@ -100,15 +104,12 @@
             white-space: nowrap;
             width: 100%;
             text-align: center !important; /* 强制文字水平居中，所有设备生效（优先级拉满） */
-            margin-left: auto !important; /* 辅助居中，消除潜在边距影响 */
-            margin-right: auto !important; /* 辅助居中，消除潜在边距影响 */
-            left: 0 !important; /* 消除潜在定位偏移 */
-            right: 0 !important; /* 消除潜在定位偏移 */
-            color: rgba(255, 255, 255, 0.8) !important; /* 最终透明度80% */
+            /* 3. 移除干扰居中的冗余属性：margin-left/right auto、left/right 0、margin-top: -10% */
             position: relative;
             z-index: 1; /* 确保标题在视频上层，不被遮挡 */
-            /* 额外确保标题向上偏移稳定，不受其他元素影响 */
-            margin-top: -10%;
+            /* 4. 新增：手动重置margin，确保无额外偏移 */
+            margin: 0 auto;
+            padding: 0;
         }
 
         /* --- 核心修改2：箭头位置区分设备 | 电脑端向下位移70%（核心需求变更），手机端下移70% --- */
