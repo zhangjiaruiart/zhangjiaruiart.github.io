@@ -72,47 +72,44 @@
             display: none !important; 
         }
 
-               .splash-content {
+        .splash-content {
             text-align: center;
             color: #ffffff;
             z-index: 1;
             display: flex;
             flex-direction: column;
             align-items: center;
-            /* 1. 移除原有 justify-content: center; 改为下面的组合，避免箭头挤压标题 */
-            justify-content: flex-start;
-            gap: 60vh; /* 用固定间距分隔标题和箭头，既保证标题居中，又不影响箭头位置 */
+            justify-content: center; /* 保持整体居中，为标题和箭头布局兜底 */
             width: 90%;
             max-width: 800px;
+            /* 确保内容不遮挡视频核心区域，且无图片相关样式 */
             background: transparent !important;
-            height: 100%;
-            /* 2. 新增：确保容器自身充满视口，为标题居中提供基础 */
-            margin: 0 auto;
-            padding: 0;
+            height: 100%; /* 撑满高度，方便箭头按比例定位 */
+            position: relative; /* 作为子元素绝对定位的参考 */
         }
 
-        /* --- 核心修改1：ZHANG JIA RUI 标题【电脑/手机端统一居中】+ 向上移动10% + 逐渐显示动画 | 不加粗，保留空格 --- */
+        /* --- 核心修改1：ZHANG JIA RUI 标题【电脑/手机端统一居中+向上10%】+ 逐渐显示动画 | 不加粗，保留空格 --- */
         .splash-title {
             font-size: clamp(20px, 8vw, 70px);
             font-weight: 300; /* 保持不加粗，还原初始样式 */
             letter-spacing: 0.2em;
             text-transform: uppercase;
-            margin-bottom: 0; /* 移除默认下边距，避免影响居中 */
+            margin: 0; /* 清空所有默认边距，避免干扰居中计算 */
             opacity: 0; /* 初始透明，用于逐渐显示动画 */
-            transform: translateY(-10%); /* 核心修改：向上移动10%（替代原有下移20px） */
+            /* 核心布局：先绝对居中，再向上偏移10% */
+            position: absolute;
+            top: 50%; /* 垂直居中基准线 */
+            left: 50%; /* 水平居中基准线 */
+            transform: translate(-50%, -60%); /* -50%水平居中，-60%=50%(居中)-10%(向上偏移) */
             animation: fadeInUpSmooth 1.2s ease-in-out forwards 0.2s; /* 放缓动画，实现柔和逐渐显示 */
             white-space: nowrap;
             width: 100%;
             text-align: center !important; /* 强制文字水平居中，所有设备生效（优先级拉满） */
-            /* 3. 移除干扰居中的冗余属性：margin-left/right auto、left/right 0、margin-top: -10% */
-            position: relative;
+            color: rgba(255, 255, 255, 0.8) !important; /* 最终透明度80% */
             z-index: 1; /* 确保标题在视频上层，不被遮挡 */
-            /* 4. 新增：手动重置margin，确保无额外偏移 */
-            margin: 0 auto;
-            padding: 0;
         }
 
-        /* --- 核心修改2：箭头位置区分设备 | 电脑端向下位移70%（核心需求变更），手机端下移70% --- */
+        /* --- 核心修改2：箭头位置区分设备 | 适配标题新布局，保持协调 --- */
         .enter-arrow-btn {
             background: none;
             border: none;
@@ -125,9 +122,12 @@
             align-items: center;
             justify-content: center;
             -webkit-tap-highlight-color: transparent;
-            /* 电脑端：核心修改 - 向下位移70%（替代原有无偏移） */
-            margin-top: 70%; /* 正值实现下移70%，满足电脑端需求 */
-            transform: scale(0.9);
+            /* 箭头位置：基于页面垂直70%位置，水平居中 */
+            position: absolute;
+            top: 70%;
+            left: 50%;
+            transform: translate(-50%, 0) scale(0.9); /* 水平居中，缩小10% */
+            margin: 0; /* 清空默认边距 */
         }
 
         /* --- 核心修改：箭头线条透明度70% --- */
@@ -150,21 +150,21 @@
             transform: rotate(45deg);
         }
 
-        /* --- 优化：标题逐渐显示动画（更柔和，符合需求，适配向上偏移） --- */
+        /* --- 优化：标题逐渐显示动画（适配居中+向上10%布局） --- */
         @keyframes fadeInUpSmooth {
             0% {
                 opacity: 0;
-                transform: translateY(-5%); /* 初始状态：透明+向上5%（预留动画空间） */
+                transform: translate(-50%, -55%); /* 初始：居中基准线上移5% */
             }
             100% {
                 opacity: 0.8; /* 最终透明度80% */
-                transform: translateY(-10%); /* 最终状态：不透明+向上10%（完成偏移） */
+                transform: translate(-50%, -60%); /* 最终：居中基准线上移10% */
                 text-align: center !important; /* 动画结束后仍保持居中 */
             }
         }
 
         @keyframes fadeIn {
-            to { opacity: 0.7; transform: scale(0.9); } /* 最终透明度70%，保持缩小10% */
+            to { opacity: 0.7; transform: translate(-50%, 0) scale(0.9); } /* 适配箭头新定位 */
         }
 
         body.splash-hidden #splash-page {
@@ -174,7 +174,7 @@
         
         body.no-scroll { overflow: hidden; }
 
-        /* --- 核心修改3：手机端特定调整 | 箭头下移70% | 修复作品图片不显示 | 【移除图片灰色边框】 | 字幕强制居中 | 保留所有原有样式 --- */
+        /* --- 核心修改3：手机端特定调整 | 箭头适配标题布局 | 修复作品图片不显示 | 【移除图片灰色边框】 | 字幕强制居中 | 保留所有原有样式 --- */
         @media (max-width: 600px) {
             .splash-title {
                 letter-spacing: 0.15em;
@@ -182,23 +182,24 @@
                 font-weight: 300; /* 手机端同步不加粗，保持视觉一致 */
                 white-space: normal;
                 line-height: 1.4;
-                /* 手机端：强制字幕居中 - 多重保障，确保无偏差 */
+                /* 手机端：强制居中+向上10% - 多重保障 */
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -60%);
+                margin: 0 !important; /* 清空边距 */
                 text-align: center !important;
-                margin-left: auto !important;
-                margin-right: auto !important;
-                position: relative !important;
-                left: 0 !important;
-                transform: translateX(0%) translateY(-10%) !important; /* 仅保留上下偏移，消除左右偏移 */
                 color: rgba(255, 255, 255, 0.8) !important; /* 手机端标题透明度保持80% */
                 animation: fadeInUpSmooth 1.2s ease-in-out forwards 0.2s; /* 同步逐渐显示动画 */
-                margin-top: -10%;
             }
             .enter-arrow-btn {
                 padding: 40px;
-                /* 手机端：箭头向下移动70%，适配竖屏视口（核心需求） */
-                margin-top: 70%; /* 正值实现下移，与电脑端保持一致偏移比例 */
-                /* 手机端箭头缩小10%（相对手机端默认大小，保持比例一致） */
-                transform: scale(0.9);
+                /* 手机端：箭头适配标题布局，垂直70%位置+水平居中 */
+                position: absolute;
+                top: 70%;
+                left: 50%;
+                transform: translate(-50%, 0) scale(0.9);
+                margin: 0; /* 清空边距 */
             }
             .arrow-icon {
                 width: 40px; /* 手机端默认箭头宽度，缩小10%后实际视觉更协调 */
@@ -586,7 +587,7 @@
             <source src="images/hero-bg.mp4" type="video/mp4">
         </video>
         <div class="splash-content">
-            <!-- 保留空格格式：ZHANG JIA RUI，居中显示+向上10%+逐渐显示 -->
+            <!-- 保留空格格式：ZHANG JIA RUI，居中显示+向上10% -->
             <h1 class="splash-title">ZHANG JIA RUI</h1>
             <button class="enter-arrow-btn" onclick="hideSplash()" aria-label="Enter Portfolio">
                 <div class="arrow-icon"></div>
