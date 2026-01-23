@@ -4,136 +4,233 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>ZHANG JIARUI | ARTIST - Ecological Art, Sculpture, and Projects</title>
-    <meta name="description" content="Zhang Jiarui Artworks - A portfolio of Ecological Art, Sculpture, and Artistic Projects examining material, time, and systems.">
+    <meta name="description" content="Zhang Jiarui Artworks - A portfolio of Ecological Art, Sculpture, and Projects examining material, time, and systems.">
     <link rel="icon" href="images/favicon.svg" type="image/svg+xml">
     <link rel="icon" href="images/favicon.png" type="image/png" sizes="32x32">
     <link rel="apple-touch-icon" href="images/favicon.png">
-    <!-- 预加载视频，避免黑屏 -->
     <link rel="preload" as="video" href="images/hero-bg.mp4" fetchpriority="high">
-    <link rel="preload" as="image" href="images/cover.webp" fetchpriority="high">
+    <link rel="preconnect" href="" crossorigin>
 
     <style>
+        /* 基础变量与全局样式 - 统一管理可复用值 */
         :root {
             --primary-font: "Optima", "Didot", "Helvetica Neue", Helvetica, Arial, sans-serif;
             --main-color: #111111;
             --transition-smooth: all 1.2s cubic-bezier(0.15, 1, 0.3, 1);
-            --text-opacity: 0.9; /* 90%透明度 */
+            --white-alpha-70: rgba(255, 255, 255, 0.7);
+            --white-alpha-80: rgba(255, 255, 255, 0.8);
+            --black-alpha-80: rgba(17, 17, 17, 0.8);
+        }
+
+        /* 重置样式 - 精简统一 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            border: none;
+            outline: none;
         }
 
         body, html {
-            margin: 0; padding: 0;
             font-family: var(--primary-font);
-            background-color: #ffffff; color: var(--main-color);
+            background-color: #ffffff;
+            color: var(--main-color);
             scroll-behavior: smooth;
             overflow-x: hidden;
             -webkit-font-smoothing: antialiased;
         }
 
-        /* ========== Splash 页面核心样式 ========== */
+        /* 欢迎页核心样式 - 关键修改：默认隐藏，仅首次访问显示 */
         #splash-page {
             position: fixed;
-            top: 0; left: 0; width: 100%; height: 100vh;
+            inset: 0;
             z-index: 99999;
-            background: #000; /* 视频加载前的背景，避免黑屏 */
-            display: flex;
+            background: #000 !important;
+            display: none; /* 默认隐藏，避免闪现 */
             flex-direction: column;
             justify-content: center;
             align-items: center;
+            transition: transform 0.5s cubic-bezier(0.85, 0, 0.15, 1), opacity 0.5s ease;
             overflow: hidden;
+            background-image: none !important;
+        }
+
+        /* 仅首次访问时显示欢迎页 */
+        body.first-visit #splash-page {
+            display: flex;
         }
 
         #splash-video {
             position: absolute;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
+            inset: 0;
+            width: 100%;
+            height: 100%;
             object-fit: cover;
-            object-position: center;
-            filter: brightness(0.7); /* 视频亮度优化 */
+            filter: brightness(0.7);
             z-index: 0;
-            opacity: 1;
-            /* 强制视频显示，避免黑屏 */
+            opacity: 1 !important;
             display: block !important;
             preload: auto !important;
+            object-position: center center;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
         }
 
-        /* 隐藏视频控件 */
+        /* 隐藏视频控件 - 精简选择器 */
         video::-webkit-media-controls,
         video::-moz-media-controls,
-        video::-ms-media-controls {
-            display: none !important;
+        video::-ms-media-controls { 
+            display: none !important; 
         }
 
         .splash-content {
-            position: relative;
+            text-align: center;
+            color: #ffffff;
             z-index: 1;
-            width: 100%;
-            height: 100%;
             display: flex;
             flex-direction: column;
-            justify-content: center;
             align-items: center;
+            justify-content: center;
+            width: 90%;
+            max-width: 800px;
+            background: transparent !important;
+            height: 100%;
+            position: relative;
         }
 
+        /* 标题样式 - 精简重复属性 */
         .splash-title {
-            font-size: clamp(24px, 8vw, 72px);
+            font-size: clamp(20px, 8vw, 70px);
             font-weight: 300;
-            letter-spacing: 0.2em; /* 字间距 */
+            letter-spacing: 0.2em;
             text-transform: uppercase;
-            color: rgba(255, 255, 255, var(--text-opacity)); /* 90%透明度 */
             margin: 0;
-            text-align: center;
-            /* 确保文字间距均匀 */
-            word-spacing: 0.2em;
-            white-space: nowrap;
-        }
-
-        /* 箭头样式 - 距离底部2.5cm */
-        .enter-arrow {
+            opacity: 0;
             position: absolute;
-            bottom: 2.5cm; /* 精准距离底部2.5cm */
+            top: 50%;
             left: 50%;
-            transform: translateX(-50%);
-            width: 60px;
-            height: 3px;
-            background-color: rgba(255, 255, 255, var(--text-opacity));
-            cursor: pointer;
-            opacity: 0; /* 默认隐藏，视频快结束时显示 */
-            transition: opacity 0.8s ease, transform 0.3s ease;
-            z-index: 2;
+            transform: translate(-50%, -60%);
+            animation: fadeInUpSmooth 1.2s ease-in-out forwards 0.2s;
+            white-space: nowrap;
+            width: 100%;
+            text-align: center !important;
+            color: var(--white-alpha-80) !important;
+            z-index: 1;
         }
 
-        .enter-arrow::after {
+        /* 箭头按钮 - 精简重复属性 */
+        .enter-arrow-btn {
+            background: none;
+            cursor: pointer;
+            padding: 25px;
+            opacity: 0;
+            animation: fadeIn 1s forwards 1.2s;
+            transition: transform 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            -webkit-tap-highlight-color: transparent;
+            position: absolute;
+            top: 85%; /* 修改：从70%改为85%，向下移动50%距离 */
+            left: 50%;
+            transform: translate(-50%, 0) scale(0.9);
+            margin: 0;
+        }
+
+        .arrow-icon {
+            position: relative;
+            width: 50px;
+            height: 2px;
+            background-color: var(--white-alpha-70) !important;
+        }
+
+        .arrow-icon::after {
             content: '';
             position: absolute;
             right: 0;
             top: -5px;
-            width: 12px;
-            height: 12px;
-            border-top: 2px solid rgba(255, 255, 255, var(--text-opacity));
-            border-right: 2px solid rgba(255, 255, 255, var(--text-opacity));
+            width: 10px;
+            height: 10px;
+            border-top: 2px solid var(--white-alpha-70) !important;
+            border-right: 2px solid var(--white-alpha-70) !important;
             transform: rotate(45deg);
         }
 
-        .enter-arrow.visible {
-            opacity: var(--text-opacity);
+        /* 动画统一管理 - 精简重复定义 */
+        @keyframes fadeInUpSmooth {
+            0% {
+                opacity: 0;
+                transform: translate(-50%, -55%);
+            }
+            100% {
+                opacity: 0.8;
+                transform: translate(-50%, -60%);
+                text-align: center !important;
+            }
         }
 
-        .enter-arrow:hover {
-            transform: translateX(-50%) scale(1.1);
+        @keyframes fadeIn {
+            to { 
+                opacity: 0.7; 
+                transform: translate(-50%, 0) scale(0.9); 
+            }
         }
 
-        /* ========== 原有样式 ========== */
+        @keyframes kenBurns {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.08); }
+        }
+
+        @keyframes kenBurnsMobile {
+            0% { transform: scale(1.02); }
+            100% { transform: scale(1.1); }
+        }
+
+        @keyframes arrowBounce {
+            0%, 20%, 50%, 80%, 100% { 
+                transform: translateY(0) rotate(45deg); 
+                opacity: 0.3; 
+            }
+            40% { 
+                transform: translateY(-10px) rotate(45deg); 
+                opacity: 0.8; 
+            }
+        }
+
+        @keyframes skeleton-loading {
+            0% { left: -150%; }
+            50% { left: 100%; }
+            100% { left: 100%; }
+        }
+
+        /* 通用状态类 - 精简重复定义 */
+        body.splash-hidden #splash-page {
+            transform: translateY(-100%);
+            pointer-events: none;
+            opacity: 0; /* 新增：直接透明，避免过渡闪烁 */
+        }
+        
+        body.no-scroll { overflow: hidden; }
+
+        /* 导航栏样式 - 精简冗余属性 */
         #scroll-progress {
-            position: fixed; top: 0; left: 0; width: 0%; height: 2px;
-            background: var(--main-color); z-index: 3000; transition: width 0.1s ease-out;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 0%;
+            height: 2px;
+            background: var(--main-color);
+            z-index: 3000;
+            transition: width 0.1s ease-out;
         }
 
         nav {
             position: fixed;
-            top: 0; left: 0; width: 100%;
-            display: flex; justify-content: space-between; align-items: center;
-            padding: 30px 5%; 
-            box-sizing: border-box;
+            inset: 0 0 auto 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 30px 5%;
             z-index: 2000;
             transition: all 0.6s cubic-bezier(0.2, 1, 0.3, 1);
         }
@@ -147,89 +244,129 @@
         }
 
         .logo {
-            font-size: 18px; font-weight: 300; letter-spacing: 0.5em;
-            text-decoration: none; color: #ffffff; text-transform: uppercase;
+            font-size: 18px;
+            font-weight: 300;
+            letter-spacing: 0.5em;
+            text-decoration: none;
+            color: #ffffff;
+            text-transform: uppercase;
             transition: color 0.4s ease;
-            position: relative; z-index: 2001;
+            position: relative;
+            z-index: 2001;
         }
 
         .nav-scrolled .logo { color: var(--main-color); }
 
-        .nav-links { display: flex; align-items: center; }
+        .nav-links {
+            display: flex;
+            align-items: center;
+        }
+
         .nav-links a {
-            margin-left: 35px; text-decoration: none; color: #ffffff;
-            font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase;
-            font-weight: 300; position: relative; padding-bottom: 5px;
+            margin-left: 35px;
+            text-decoration: none;
+            color: #ffffff;
+            font-size: 10px;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            font-weight: 300;
+            position: relative;
+            padding-bottom: 5px;
             transition: color 0.4s ease, transform 0.3s ease;
             display: inline-block;
         }
+
         .nav-scrolled .nav-links a { color: var(--main-color); }
 
         .nav-links a::after {
-            content: ''; position: absolute; bottom: 0; left: 50%;
-            width: 0; height: 1px; background: currentColor;
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 1px;
+            background: currentColor;
             transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
             transform: translateX(-50%);
         }
+
         .nav-links a:hover::after { width: 100%; }
 
         .menu-toggle {
-            display: none; flex-direction: column; gap: 6px;
-            cursor: pointer; z-index: 2001;
-        }
-        .menu-toggle span {
-            width: 25px; height: 1px; background-color: #ffffff;
-            transition: all 0.3s ease;
-        }
-        .nav-scrolled .menu-toggle span { background-color: #111; }
-        
-        .menu-toggle.active span:nth-child(1) {
-            transform: rotate(45deg) translate(6px, 6px);
-        }
-        .menu-toggle.active span:nth-child(2) {
-            opacity: 0;
-        }
-        .menu-toggle.active span:nth-child(3) {
-            transform: rotate(-45deg) translate(6px, -6px);
+            display: none;
+            flex-direction: column;
+            gap: 6px;
+            cursor: pointer;
+            z-index: 2001;
         }
 
-        .hero {
-            height: 100vh; width: 100%; overflow: hidden;
-            position: relative; background-color: #000;
+        .menu-toggle span {
+            width: 25px;
+            height: 1px;
+            background-color: #ffffff;
+            transition: all 0.3s ease;
         }
+
+        .nav-scrolled .menu-toggle span { background-color: #111; }
+
+        .menu-toggle.active span:nth-child(1) { transform: rotate(45deg) translate(6px, 6px); }
+        .menu-toggle.active span:nth-child(2) { opacity: 0; }
+        .menu-toggle.active span:nth-child(3) { transform: rotate(-45deg) translate(6px, -6px); }
+
+        /* 英雄区样式 - 精简冗余属性 */
+        .hero {
+            height: 100vh;
+            width: 100%;
+            overflow: hidden;
+            position: relative;
+            background-color: #000;
+        }
+
         #hero-img-wrap {
-            width: 105%; height: 105%; position: absolute; top: -2.5%; left: -2.5%;
+            width: 105%;
+            height: 105%;
+            position: absolute;
+            top: -2.5%;
+            left: -2.5%;
             transition: transform 0.2s ease-out;
             will-change: transform;
         }
+
         .hero img {
-            width: 100%; height: 100%; object-fit: cover;
-            object-position: center 60%; 
-            filter: brightness(0.75); display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center 60%;
+            filter: brightness(0.75);
+            display: block;
             animation: kenBurns 20s ease-in-out infinite alternate;
         }
 
-        @keyframes kenBurns {
-            0% { transform: scale(1); }
-            100% { transform: scale(1.08); }
-        }
-
         .hero-overlay {
-            position: absolute; top: 45%; left: 50%;
+            position: absolute;
+            top: 45%;
+            left: 50%;
             transform: translate(-50%, -50%);
-            text-align: center; width: 90%; z-index: 5;
+            text-align: center;
+            width: 90%;
+            z-index: 5;
             pointer-events: none;
         }
 
         .hero-title {
-            color: #ffffff; font-size: 18px; font-weight: 300;
-            letter-spacing: 0.6em; text-transform: uppercase;
-            margin: 0; line-height: 1.6;
+            color: #ffffff;
+            font-size: 18px;
+            font-weight: 300;
+            letter-spacing: 0.6em;
+            text-transform: uppercase;
+            margin: 0;
+            line-height: 1.6;
             opacity: 0;
             filter: blur(10px);
             transform: translateY(30px);
             transition: opacity 2s ease, filter 2s ease, transform 1.5s cubic-bezier(0.16, 1, 0.3, 1);
         }
+
         .page-loaded .hero-title {
             opacity: 0.8;
             filter: blur(0);
@@ -239,21 +376,27 @@
         .hero-title br { display: none; }
 
         .scroll-indicator {
-            position: absolute; bottom: 35px; left: 50%;
-            transform: translateX(-50%); z-index: 10;
-            cursor: pointer; display: flex; flex-direction: column; align-items: center;
+            position: absolute;
+            bottom: 35px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
+
         .scroll-arrow {
-            width: 16px; height: 16px;
-            border-right: 1.5px solid #ffffff; border-bottom: 1.5px solid #ffffff;
-            transform: rotate(45deg); animation: arrowBounce 2s infinite;
+            width: 16px;
+            height: 16px;
+            border-right: 1.5px solid #ffffff;
+            border-bottom: 1.5px solid #ffffff;
+            transform: rotate(45deg);
+            animation: arrowBounce 2s infinite;
         }
 
-        @keyframes arrowBounce {
-            0%, 20%, 50%, 80%, 100% { transform: translateY(0) rotate(45deg); opacity: 0.3; }
-            40% { transform: translateY(-10px) rotate(45deg); opacity: 0.8; }
-        }
-
+        /* 内容区域通用样式 - 精简重复定义 */
         .statement-section {
             padding: calc(120px + 5vh) 5% calc(40px + 5vh);
             max-width: 900px;
@@ -261,518 +404,754 @@
             text-align: center;
             scroll-margin-top: 100px;
         }
+
         .statement-text {
-            font-size: 20px; line-height: 1.8; font-weight: 300;
-            color: #222; letter-spacing: 0.02em; font-style: italic;
-            opacity: 0; transform: translateY(20px);
+            font-size: 20px;
+            line-height: 1.8;
+            font-weight: 300;
+            color: #222;
+            letter-spacing: 0.02em;
+            font-style: italic;
+            opacity: 0;
+            transform: translateY(20px);
             transition: var(--transition-smooth);
         }
-        .revealed .statement-text { opacity: 1; transform: translateY(0); }
 
-        .content-section { 
+        .content-section {
             padding: 40px 5% 20px;
-            max-width: 1260px; margin: 0 auto; 
-            opacity: 0; transform: translateY(20px);
+            max-width: 1260px;
+            margin: 0 auto;
+            opacity: 0;
+            transform: translateY(20px);
             transition: var(--transition-smooth);
             scroll-margin-top: 80px;
         }
-        .content-section.revealed { opacity: 1; transform: translateY(0); }
 
-        .category-title { 
-            font-size: 13px; letter-spacing: 0.5em; text-transform: uppercase; 
-            margin-bottom: 40px; border-bottom: 1px solid #f0f0f0; 
-            padding-bottom: 15px; color: var(--main-color); 
+        .revealed .statement-text,
+        .content-section.revealed {
+            opacity: 1;
+            transform: translateY(0);
         }
 
-        .grid { 
-            display: grid; 
-            grid-template-columns: repeat(2, 1fr); 
-            gap: 60px 60px; 
-            margin-bottom: 60px; 
+        .category-title {
+            font-size: 13px;
+            letter-spacing: 0.5em;
+            text-transform: uppercase;
+            margin-bottom: 40px;
+            border-bottom: 1px solid #f0f0f0;
+            padding-bottom: 15px;
+            color: var(--main-color);
+        }
+
+        /* 网格布局 - 精简重复定义 */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 60px;
+            margin-bottom: 60px;
         }
 
         .grid-sculpture-custom {
             display: grid;
-            grid-template-columns: repeat(3, 1fr); 
-            gap: 40px 30px; 
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px 30px;
             margin-bottom: 60px;
             width: 100%;
         }
 
         .series-label {
-            font-size: 11px; letter-spacing: 0.3em; text-transform: uppercase; 
-            color: #888; margin-bottom: 20px; font-weight: 300;
+            font-size: 11px;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            color: #888;
+            margin-bottom: 20px;
+            font-weight: 300;
         }
 
-        .project { text-decoration: none; color: inherit; display: block; }
-        .project-image-wrapper { 
-            overflow: hidden; margin-bottom: 20px; 
-            background-color: #f7f7f7; position: relative;
+        .project {
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+
+        .project-image-wrapper {
+            overflow: hidden;
+            margin-bottom: 20px;
+            position: relative;
+            background-color: transparent !important;
         }
 
         .project-image-wrapper::before {
             content: "";
-            position: absolute; top: 0; left: -150%;
-            width: 100%; height: 100%;
+            position: absolute;
+            top: 0;
+            left: -150%;
+            width: 100%;
+            height: 100%;
             background: linear-gradient(90deg, transparent, rgba(255,255,255,0.6), transparent);
             animation: skeleton-loading 1.5s infinite;
             z-index: 1;
         }
-        .project-image-wrapper.finished-loading::before { display: none; }
 
-        @keyframes skeleton-loading {
-            0% { left: -150%; }
-            50% { left: 100%; }
-            100% { left: 100%; }
+        .project-image-wrapper.finished-loading::before {
+            display: none;
         }
 
-        .img-ratio { aspect-ratio: 4 / 5; }
-        .video-ratio { aspect-ratio: 16 / 9; background-color: #000; }
+        .img-ratio {
+            aspect-ratio: 4 / 5;
+            display: block;
+        }
 
-        .project img { 
-            width: 100%; height: 100%; object-fit: cover; 
+        .video-ratio {
+            aspect-ratio: 16 / 9;
+            background-color: #000;
+        }
+
+        .project img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
             transition: transform 1.8s cubic-bezier(0.15, 1, 0.3, 1), opacity 1s ease;
-            opacity: 0; 
+            opacity: 0;
         }
-        .project img.loaded { opacity: 1; }
 
-        .project:hover img { transform: scale(1.05); }
+        .project img.loaded {
+            opacity: 1 !important;
+        }
+
+        .project:hover img {
+            transform: scale(1.05);
+        }
 
         .play-overlay {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            display: flex; align-items: center; justify-content: center;
-            background: rgba(0,0,0,0.1); transition: background 0.3s;
-            z-index: 2; opacity: 0;
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0,0,0,0.1);
+            transition: background 0.3s;
+            z-index: 2;
+            opacity: 0;
         }
-        .project img.loaded + .play-overlay { opacity: 1; }
+
+        .project img.loaded + .play-overlay {
+            opacity: 1;
+        }
 
         .play-button {
-            width: 50px; height: 50px; border: 1px solid #fff; border-radius: 50%;
-            display: flex; align-items: center; justify-content: center; backdrop-filter: blur(5px);
+            width: 50px;
+            height: 50px;
+            border: 1px solid #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(5px);
         }
+
         .play-button::after {
-            content: ''; width: 0; height: 0; 
-            border-top: 8px solid transparent; border-bottom: 8px solid transparent; border-left: 12px solid #fff;
+            content: '';
+            width: 0;
+            height: 0;
+            border-top: 8px solid transparent;
+            border-bottom: 8px solid transparent;
+            border-left: 12px solid #fff;
             margin-left: 4px;
         }
 
-        .project-title { font-size: 14px; font-weight: 400; letter-spacing: 0.1em; text-transform: uppercase; margin-top: 5px; }
-        .project-meta { font-size: 10px; color: #aaa; margin-top: 4px; letter-spacing: 0.05em; text-transform: uppercase; line-height: 1.4; }
+        .project-title {
+            font-size: 14px;
+            font-weight: 400;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            margin-top: 5px;
+        }
 
+        .project-meta {
+            font-size: 10px;
+            color: #aaa;
+            margin-top: 4px;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            line-height: 1.4;
+        }
+
+        /* 回到顶部按钮 - 精简冗余属性 */
         #back-to-top {
-            position: fixed; bottom: 40px; right: 40px; width: 40px; height: 40px;
-            background: #fff; border: 1px solid #eee; border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            cursor: pointer; opacity: 0; visibility: hidden; z-index: 1000;
-            transition: all 0.4s ease; box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-        }
-        #back-to-top.visible { opacity: 1; visibility: visible; }
-        #back-to-top::after {
-            content: ''; width: 8px; height: 8px; border-left: 1px solid #111; border-top: 1px solid #111;
-            transform: rotate(45deg); margin-top: 4px;
+            position: fixed;
+            bottom: 40px;
+            right: 40px;
+            width: 40px;
+            height: 40px;
+            background: #fff;
+            border: 1px solid #eee;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            z-index: 1000;
+            transition: all 0.4s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
         }
 
-        .contact-section { 
-            padding: 100px 5%; 
-            background-color: #fff; 
+        #back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        #back-to-top::after {
+            content: '';
+            width: 8px;
+            height: 8px;
+            border-left: 1px solid #111;
+            border-top: 1px solid #111;
+            transform: rotate(45deg);
+            margin-top: 4px;
+        }
+
+        /* 联系区域 - 精简冗余属性 */
+        .contact-section {
+            padding: 100px 5%;
+            background-color: #fff;
             scroll-margin-top: 60px;
         }
-        .contact-container { max-width: 1000px; margin: 0 auto; text-align: center; }
-        .contact-row { 
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
-            gap: 50px; 
-            flex-wrap: nowrap; 
+
+        .contact-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            text-align: center;
         }
+
+        .contact-row {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 50px;
+            flex-wrap: nowrap;
+        }
+
         .contact-item {
             display: flex;
             flex-direction: column;
             align-items: center;
         }
-        .contact-label { 
-            font-size: 9px; 
-            color: #bbb; 
-            text-transform: uppercase; 
-            margin-bottom: 10px; 
-            letter-spacing: 0.25em; 
+
+        .contact-label {
+            font-size: 9px;
+            color: #bbb;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            letter-spacing: 0.25em;
         }
-        .contact-value { 
-            font-size: 13px; 
-            color: var(--main-color); 
-            text-decoration: none; 
+
+        .contact-value {
+            font-size: 13px;
+            color: var(--main-color);
+            text-decoration: none;
             font-weight: 300;
-            padding-bottom: 4px; 
-            border-bottom: 1px solid transparent; 
-            transition: all 0.4s; 
+            padding-bottom: 4px;
+            border-bottom: 1px solid transparent;
+            transition: all 0.4s;
             cursor: pointer;
             position: relative;
         }
-        .contact-value:hover { border-bottom-color: #eee; }
-        .divider { color: #eee; align-self: center; font-weight: 100; font-size: 18px; }
 
-        #copy-toast {
-            position: fixed; bottom: 50px; left: 50%; transform: translateX(-50%);
-            background: rgba(17,17,17,0.8); color: #fff; padding: 10px 20px;
-            font-size: 10px; letter-spacing: 0.2em; border-radius: 2px;
-            opacity: 0; visibility: hidden; transition: all 0.4s; z-index: 9999;
+        .contact-value:hover {
+            border-bottom-color: #eee;
         }
 
-        /* 响应式适配 */
+        .divider {
+            color: #eee;
+            align-self: center;
+            font-weight: 100;
+            font-size: 18px;
+        }
+
+        #copy-toast {
+            position: fixed;
+            bottom: 50px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--black-alpha-80);
+            color: #fff;
+            padding: 10px 20px;
+            font-size: 10px;
+            letter-spacing: 0.2em;
+            border-radius: 2px;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.4s;
+            z-index: 9999;
+        }
+
+        /* 响应式样式 - 合并重复逻辑，精简冗余 */
         @media (max-width: 900px) {
-            /* 移动端splash标题适配 */
-            .splash-title {
-                font-size: clamp(20px, 7vw, 48px);
-                white-space: normal;
-                line-height: 1.5;
+            .hero-overlay { top: 40%; }
+            .hero-title {
+                font-size: 14.4px;
+                line-height: 2.2;
+                letter-spacing: 0.4em;
+            }
+            .hero-title br { display: block; }
+            
+            .menu-toggle { display: flex; }
+            
+            .nav-links {
+                position: fixed;
+                inset: 0 0 0 auto;
+                width: 100%;
+                height: 100vh;
+                background: #ffffff;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                transition: 0.5s cubic-bezier(0.2, 1, 0.3, 1);
+                transform: translateX(100%);
             }
             
-            .hero-overlay { top: 40%; }
-            .hero-title { font-size: 14.4px; line-height: 2.2; letter-spacing: 0.4em; }
-            .hero-title br { display: block; }
-            .menu-toggle { display: flex; }
-            .nav-links {
-                position: fixed; top: 0; right: -100%; width: 100%; height: 100vh;
-                background: #ffffff; flex-direction: column; justify-content: center;
-                align-items: center; transition: 0.5s cubic-bezier(0.2, 1, 0.3, 1);
+            .nav-links.active {
+                transform: translateX(0);
             }
-            .nav-links.active { right: 0; }
-            .nav-links a { color: var(--main-color) !important; margin: 20px 0; font-size: 14px; }
-            .grid, .grid-sculpture-custom { grid-template-columns: 1fr; gap: 40px; }
+            
+            .nav-links a {
+                color: var(--main-color) !important;
+                margin: 20px 0;
+                font-size: 14px;
+            }
+            
+            .grid, .grid-sculpture-custom {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+            
             .content-section { padding: 30px 5% !important; }
             .statement-text { font-size: 16px; }
             .statement-section { padding: 60px 8% 30px; }
-
+            
             .contact-section { padding: 80px 10%; }
-            .contact-row { flex-direction: column; gap: 45px; }
+            .contact-row {
+                flex-direction: column;
+                gap: 45px;
+            }
             .divider { display: none; }
-            .contact-value { font-size: 15px; padding: 8px 0; }
+            .contact-value {
+                font-size: 15px;
+                padding: 8px 0;
+            }
+            
+            #back-to-top {
+                bottom: 30px;
+                right: 20px;
+                width: 36px;
+                height: 36px;
+            }
+            
+            .hero img {
+                animation: kenBurnsMobile 20s ease-in-out infinite alternate;
+            }
+            
+            /* 移动端图片强制显示 */
+            .project img,
+            .project-image-wrapper {
+                display: block !important;
+                visibility: visible !important;
+            }
         }
 
-        footer { padding: 60px 5% 40px; text-align: center; border-top: 1px solid #f9f9f9; font-size: 9px; letter-spacing: 0.4em; color: #ccc; text-transform: uppercase; }
-        
-        /* 隐藏主内容，splash结束后显示 */
-        body.splash-active #main-content {
-            display: none;
+        @media (max-width: 600px) {
+            .splash-title {
+                letter-spacing: 0.15em;
+                font-size: 32px;
+                white-space: normal;
+                line-height: 1.4;
+            }
+            
+            .enter-arrow-btn {
+                padding: 40px;
+                top: 85%; /* 移动端同步修改箭头位置 */
+            }
+            
+            .arrow-icon {
+                width: 40px;
+            }
+            
+            #splash-video {
+                width: 100vw !important;
+                height: 100vh !important;
+                object-fit: cover !important;
+                object-position: center center !important;
+                transform: none !important;
+            }
+            
+            .img-ratio {
+                aspect-ratio: 3 / 4;
+            }
         }
-        
-        #main-content {
-            transition: opacity 0.8s ease;
+
+        /* 页脚样式 */
+        footer {
+            padding: 60px 5% 40px;
+            text-align: center;
+            border-top: 1px solid #f9f9f9;
+            font-size: 9px;
+            letter-spacing: 0.4em;
+            color: #ccc;
+            text-transform: uppercase;
         }
     </style>
 </head>
-<body class="splash-active">
-    <!-- Splash 页面 -->
+<body class="no-scroll"> 
     <div id="splash-page">
-        <video id="splash-video" autoplay muted playsinline webkit-playsinline preload="auto" loop>
+        <video id="splash-video" autoplay loop muted playsinline webkit-playsinline x5-playsinline x5-video-player-type="h5" x5-video-orientation="portrait" preload="auto">
             <source src="images/hero-bg.mp4" type="video/mp4">
         </video>
         <div class="splash-content">
             <h1 class="splash-title">ZHANG JIA RUI</h1>
-            <div class="enter-arrow" id="enterArrow" onclick="enterMainPage()"></div>
+            <button class="enter-arrow-btn" onclick="hideSplash()" aria-label="Enter Portfolio">
+                <div class="arrow-icon"></div>
+            </button>
         </div>
     </div>
 
-    <!-- 主内容区域 -->
-    <div id="main-content">
-        <div id="scroll-progress"></div>
-        <div id="copy-toast">ID COPIED</div>
+    <div id="scroll-progress"></div>
+    <div id="copy-toast">ID COPIED</div>
 
-        <header>
-            <nav id="navbar">
-                <a href="#" class="logo" onclick="window.scrollTo({top: 0, behavior: 'smooth'}); return false;">ZHANGJIARUI ARTWORKS</a>
-                <div class="nav-links" id="navLinks">
-                    <a href="#eco-art" onclick="closeMenu()">Ecological Art</a>
-                    <a href="#sculpture" onclick="closeMenu()">Sculpture</a>
-                    <a href="#projects" onclick="closeMenu()">Projects</a>
-                    <a href="biography.html">BIOGRAPHY</a>
-                    <a href="#contact" onclick="closeMenu()">Contact</a>
-                </div>
-                <div class="menu-toggle" id="menuToggle">
-                    <span></span><span></span><span></span>
-                </div>
-            </nav>
-        </header>
+    <header>
+        <nav id="navbar">
+            <a href="#" class="logo" onclick="window.scrollTo({top: 0, behavior: 'smooth'}); return false;">ZHANGJIARUI ARTWORKS</a>
+            <div class="nav-links" id="navLinks">
+                <a href="#eco-art" onclick="closeMenu()">Ecological Art</a>
+                <a href="#sculpture" onclick="closeMenu()">Sculpture</a>
+                <a href="#projects" onclick="closeMenu()">Projects</a>
+                <a href="biography.html">BIOGRAPHY</a>
+                <a href="#contact" onclick="closeMenu()">Contact</a>
+            </div>
+            <div class="menu-toggle" id="menuToggle">
+                <span></span><span></span><span></span>
+            </div>
+        </nav>
+    </header>
 
-        <main>
-            <section class="hero" id="hero-section">
-                <div id="hero-img-wrap">
-                    <img src="images/cover.webp" alt="Zhang Jiarui Cover" 
-                        onload="handleImageLoad(this)"
-                        onerror="handleImageError(this, 'images/Cover.JPG');">
-                </div>
-                <div class="hero-overlay">
-                    <h1 class="hero-title">Matter <br> dissolves, <br> memory <br> crystallizes</h1>
-                </div>
-                <a href="#statement" class="scroll-indicator" aria-label="Scroll down">
-                    <div class="scroll-arrow"></div>
-                </a>
-            </section>
+    <main>
+        <section class="hero" id="hero-section">
+            <div id="hero-img-wrap">
+                <img src="images/cover.webp" alt="Zhang Jiarui Cover" 
+                     onload="handleImageLoad(this)"
+                     onerror="handleImageError(this, 'images/Cover.JPG');">
+            </div>
+            <div class="hero-overlay">
+                <h1 class="hero-title">Matter <br> dissolves, <br> memory <br> crystallizes</h1>
+            </div>
+            <a href="#statement" class="scroll-indicator" aria-label="Scroll down">
+                <div class="scroll-arrow"></div>
+            </a>
+        </section>
 
-            <section class="statement-section" id="statement">
-                <p class="statement-text">
-                    Zhang Jiarui’s practice operates between sculptural reduction and site-specific ecological intervention, 
-                    examing how material, time, and human action reshape fragile systems.
-                </p>
-            </section>
+        <section class="statement-section" id="statement">
+            <p class="statement-text">
+                Zhang Jiarui’s practice operates between sculptural reduction and site-specific ecological intervention, 
+                examing how material, time, and human action reshape fragile systems.
+            </p>
+        </section>
 
-            <section class="content-section" id="eco-art">
-                <h2 class="category-title">Ecological Art</h2>
-                <div class="grid">
-                    <article>
-                        <a href="eco-ice-burial.html" class="project">
-                            <div class="project-image-wrapper video-ratio">
-                                <img src="images/eco/ice_burial_cover.webp" loading="lazy" decoding="async" 
-                                    onload="handleImageLoad(this)"
-                                    onerror="handleImageError(this, 'images/eco/ice_burial_cover.jpg')">
-                                <div class="play-overlay"><div class="play-button"></div></div>
-                            </div>
-                            <div class="project-info">
-                                <h3 class="project-title">Ice Burial</h3>
-                                <p class="project-meta">Performance art / 2025 / China Southsea</p>
-                            </div>
-                        </a>
-                    </article>
-                    <article>
-                        <a href="eco-4-5tons.html" class="project">
-                            <div class="project-image-wrapper video-ratio">
-                                <img src="images/eco/4_5tons_cover.webp" loading="lazy" decoding="async"
-                                    onload="handleImageLoad(this)"
-                                    onerror="handleImageError(this, 'images/eco/4_5tons_cover.jpg')">
-                                <div class="play-overlay"><div class="play-button"></div></div>
-                            </div>
-                            <div class="project-info">
-                                <h3 class="project-title">4.5 Tons</h3>
-                                <p class="project-meta">Installation / 2024 / IN COLLABORATION WITH BETTA LIU / Inner Mongolia</p>
-                            </div>
-                        </a>
-                    </article>
-                </div>
-            </section>
-
-            <section class="content-section" id="sculpture">
-                <h2 class="category-title">Sculpture</h2>
-                <div class="grid-sculpture-custom">
-                    <article>
-                        <h3 class="series-label">Wood Series</h3>
-                        <a href="series1.html" class="project">
-                            <div class="project-image-wrapper img-ratio">
-                                <img src="images/sculpture/s1_cover.webp" loading="lazy" decoding="async"
-                                    onload="handleImageLoad(this)"
-                                    onerror="handleImageError(this, 'images/sculpture/s1_cover.jpg')">
-                            </div>
-                            <div class="project-info">
-                                <h4 class="project-title">Triangle</h4>
-                                <p class="project-meta">Wood / 2024</p>
-                            </div>
-                        </a>
-                    </article>
-                    <article>
-                        <h3 class="series-label">Water Series</h3>
-                        <a href="series2.html" class="project">
-                            <div class="project-image-wrapper img-ratio">
-                                <img src="images/sculpture/s2_cover.webp" loading="lazy" decoding="async"
-                                    onload="handleImageLoad(this)"
-                                    onerror="handleImageError(this, 'images/sculpture/s2_cover.jpg')">
-                            </div>
-                            <div class="project-info">
-                                <h4 class="project-title">Water1</h4>
-                                <p class="project-meta">Transparent resin / 2023</p>
-                            </div>
-                        </a>
-                    </article>
-                    <article>
-                        <h3 class="series-label">Line Series</h3>
-                        <a href="series5.html" class="project">
-                            <div class="project-image-wrapper img-ratio" style="background-color: #ffffff; display: flex; align-items: center; justify-content: center;">
-                                <img src="images/sculpture/s5_cover.webp" loading="lazy" decoding="async"
-                                    onload="handleImageLoad(this)"
-                                    onerror="handleImageError(this, 'images/sculpture/s5_cover.jpg')" style="object-fit: contain; transform: scale(0.8);">
-                            </div>
-                            <div class="project-info">
-                                <h4 class="project-title">X</h4>
-                                <p class="project-meta">Acrylic / 2023</p>
-                            </div>
-                        </a>
-                    </article>
-                    <article>
-                        <h3 class="series-label">Formless Series</h3>
-                        <a href="series4.html" class="project">
-                            <div class="project-image-wrapper img-ratio">
-                                <img src="images/sculpture/s4_cover.webp" loading="lazy" decoding="async"
-                                    onload="handleImageLoad(this)"
-                                    onerror="handleImageError(this, 'images/sculpture/s4_cover.jpg')">
-                            </div>
-                            <div class="project-info">
-                                <h4 class="project-title">At ease</h4>
-                                <p class="project-meta">Transparent resin / 2023</p>
-                            </div>
-                        </a>
-                    </article>
-                    <article>
-                        <h3 class="series-label">Gold Series</h3>
-                        <a href="series3.html" class="project">
-                            <div class="project-image-wrapper img-ratio">
-                                <img src="images/sculpture/s3_cover.webp" loading="lazy" decoding="async"
-                                    onload="handleImageLoad(this)"
-                                    onerror="handleImageError(this, 'images/sculpture/s3_cover.jpg')">
-                            </div>
-                            <div class="project-info">
-                                <h4 class="project-title">New Eighteenth Arhat</h4>
-                                <p class="project-meta">Goldenleaf resin / 2015</p>
-                            </div>
-                        </a>
-                    </article>
-                </div>
-            </section>
-
-            <section class="content-section" id="projects">
-                <h2 class="category-title">Projects</h2>
-                <div class="grid">
-                    <article>
-                        <a href="project-coral.html" class="project">
-                            <div class="project-image-wrapper video-ratio">
-                                <img src="images/projects/coral_cover.webp" loading="lazy" decoding="async"
-                                    onload="handleImageLoad(this)"
-                                    onerror="handleImageError(this, 'images/projects/coral_cover.jpg')">
-                                <div class="play-overlay"><div class="play-button"></div></div>
-                            </div>
-                            <div class="project-info">
-                                <h3 class="project-title">Coral Planting Project</h3>
-                                <p class="project-meta">Documentary / 2025 / China Southsea</p>
-                            </div>
-                        </a>
-                    </article>
-                </div>
-            </section>
-
-            <section class="contact-section" id="contact">
-                <div class="contact-container">
-                    <div class="contact-row">
-                        <div class="contact-item">
-                            <span class="contact-label">Email</span>
-                            <a href="mailto:jerryzhang_arts@qq.com" class="contact-value">jerryzhang_arts@qq.com</a>
+        <section class="content-section" id="eco-art">
+            <h2 class="category-title">Ecological Art</h2>
+            <div class="grid">
+                <article>
+                    <a href="eco-ice-burial.html" class="project">
+                        <div class="project-image-wrapper video-ratio">
+                            <img src="images/eco/ice_burial_cover.webp" loading="lazy" decoding="async" 
+                                 onload="handleImageLoad(this)"
+                                 onerror="handleImageError(this, 'images/eco/ice_burial_cover.jpg')">
+                            <div class="play-overlay"><div class="play-button"></div></div>
                         </div>
-                        <span class="divider">/</span>
-                        <div class="contact-item">
-                            <span class="contact-label">WeChat</span>
-                            <span class="contact-value" onclick="copyWeChat('zjr5556699')">zjr5556699</span>
+                        <div class="project-info">
+                            <h3 class="project-title">Ice Burial</h3>
+                            <p class="project-meta">Performance art / 2025 / China Southsea</p>
                         </div>
-                        <span class="divider">/</span>
-                        <div class="contact-item">
-                            <span class="contact-label">Phone</span>
-                            <a href="tel:+8615117988382" class="contact-value">+86 151 1798 8382</a>
+                    </a>
+                </article>
+                <article>
+                    <a href="eco-4-5tons.html" class="project">
+                        <div class="project-image-wrapper video-ratio">
+                            <img src="images/eco/4_5tons_cover.webp" loading="lazy" decoding="async"
+                                 onload="handleImageLoad(this)"
+                                 onerror="handleImageError(this, 'images/eco/4_5tons_cover.jpg')">
+                            <div class="play-overlay"><div class="play-button"></div></div>
                         </div>
+                        <div class="project-info">
+                            <h3 class="project-title">4.5 Tons</h3>
+                            <p class="project-meta">Installation / 2024 / IN COLLABORATION WITH BETTA LIU / Inner Mongolia</p>
+                        </div>
+                    </a>
+                </article>
+            </div>
+        </section>
+
+        <section class="content-section" id="sculpture">
+            <h2 class="category-title">Sculpture</h2>
+            <div class="grid-sculpture-custom">
+                <article>
+                    <h3 class="series-label">Wood Series</h3>
+                    <a href="series1.html" class="project">
+                        <div class="project-image-wrapper img-ratio">
+                            <img src="images/sculpture/s1_cover.webp" loading="lazy" decoding="async"
+                                 onload="handleImageLoad(this)"
+                                 onerror="handleImageError(this, 'images/sculpture/s1_cover.jpg')">
+                        </div>
+                        <div class="project-info">
+                            <h4 class="project-title">Triangle</h4>
+                            <p class="project-meta">Wood / 2024</p>
+                        </div>
+                    </a>
+                </article>
+                <article>
+                    <h3 class="series-label">Water Series</h3>
+                    <a href="series2.html" class="project">
+                        <div class="project-image-wrapper img-ratio">
+                            <img src="images/sculpture/s2_cover.webp" loading="lazy" decoding="async"
+                                 onload="handleImageLoad(this)"
+                                 onerror="handleImageError(this, 'images/sculpture/s2_cover.jpg')">
+                        </div>
+                        <div class="project-info">
+                            <h4 class="project-title">Water1</h4>
+                            <p class="project-meta">Transparent resin / 2023</p>
+                        </div>
+                    </a>
+                </article>
+                <article>
+                    <h3 class="series-label">Line Series</h3>
+                    <a href="series5.html" class="project">
+                        <div class="project-image-wrapper img-ratio" style="background-color: #ffffff; display: flex; align-items: center; justify-content: center;">
+                            <img src="images/sculpture/s5_cover.webp" loading="lazy" decoding="async"
+                                 onload="handleImageLoad(this)"
+                                 onerror="handleImageError(this, 'images/sculpture/s5_cover.jpg')" style="object-fit: contain; transform: scale(0.8);">
+                        </div>
+                        <div class="project-info">
+                            <h4 class="project-title">X</h4>
+                            <p class="project-meta">Acrylic / 2023</p>
+                        </div>
+                    </a>
+                </article>
+                <article>
+                    <h3 class="series-label">Formless Series</h3>
+                    <a href="series4.html" class="project">
+                        <div class="project-image-wrapper img-ratio">
+                            <img src="images/sculpture/s4_cover.webp" loading="lazy" decoding="async"
+                                 onload="handleImageLoad(this)"
+                                 onerror="handleImageError(this, 'images/sculpture/s4_cover.jpg')">
+                        </div>
+                        <div class="project-info">
+                            <h4 class="project-title">At ease</h4>
+                            <p class="project-meta">Transparent resin / 2023</p>
+                        </div>
+                    </a>
+                </article>
+                <article>
+                    <h3 class="series-label">Gold Series</h3>
+                    <a href="series3.html" class="project">
+                        <div class="project-image-wrapper img-ratio">
+                            <img src="images/sculpture/s3_cover.webp" loading="lazy" decoding="async"
+                                 onload="handleImageLoad(this)"
+                                 onerror="handleImageError(this, 'images/sculpture/s3_cover.jpg')">
+                        </div>
+                        <div class="project-info">
+                            <h4 class="project-title">New Eighteenth Arhat</h4>
+                            <p class="project-meta">Goldenleaf resin / 2015</p>
+                        </div>
+                    </a>
+                </article>
+            </div>
+        </section>
+
+        <section class="content-section" id="projects">
+            <h2 class="category-title">Projects</h2>
+            <div class="grid">
+                <article>
+                    <a href="project-coral.html" class="project">
+                        <div class="project-image-wrapper video-ratio">
+                            <img src="images/projects/coral_cover.webp" loading="lazy" decoding="async"
+                                 onload="handleImageLoad(this)"
+                                 onerror="handleImageError(this, 'images/projects/coral_cover.jpg')">
+                            <div class="play-overlay"><div class="play-button"></div></div>
+                        </div>
+                        <div class="project-info">
+                            <h3 class="project-title">Coral Planting Project</h3>
+                            <p class="project-meta">Documentary / 2025 / China Southsea</p>
+                        </div>
+                    </a>
+                </article>
+            </div>
+        </section>
+
+        <section class="contact-section" id="contact">
+            <div class="contact-container">
+                <div class="contact-row">
+                    <div class="contact-item">
+                        <span class="contact-label">Email</span>
+                        <a href="mailto:jerryzhang_arts@qq.com" class="contact-value">jerryzhang_arts@qq.com</a>
+                    </div>
+                    <span class="divider">/</span>
+                    <div class="contact-item">
+                        <span class="contact-label">WeChat</span>
+                        <span class="contact-value" onclick="copyWeChat('zjr5556699')">zjr5556699</span>
+                    </div>
+                    <span class="divider">/</span>
+                    <div class="contact-item">
+                        <span class="contact-label">Phone</span>
+                        <a href="tel:+8615117988382" class="contact-value">+86 151 1798 8382</a>
                     </div>
                 </div>
-            </section>
-        </main>
+            </div>
+        </section>
+    </main>
 
-        <div id="back-to-top" aria-label="Back to top"></div>
+    <div id="back-to-top" aria-label="Back to top"></div>
 
-        <footer>&copy; 2026 ZHANGJIARUI ARTWORKS.</footer>
-    </div>
+    <footer>&copy; 2026 ZHANGJIARUI ARTWORKS.</footer>
 
     <script>
-        // ========== Splash 页面核心逻辑 ==========
+        // 全局变量统一声明
+        const video = document.getElementById('splash-video');
         const splashPage = document.getElementById('splash-page');
-        const splashVideo = document.getElementById('splash-video');
-        const enterArrow = document.getElementById('enterArrow');
-        const body = document.body;
-        
-        // 新增：检测URL锚点，有锚点则跳过splash页面
-        function checkSkipSplash() {
-            // 如果URL包含锚点（如#sculpture），直接跳过splash
-            if (window.location.hash) {
-                splashPage.style.display = 'none';
-                body.classList.remove('splash-active');
-                document.body.classList.add('page-loaded');
-                // 定位到锚点位置（平滑滚动）
-                const target = document.querySelector(window.location.hash);
-                if (target) {
-                    setTimeout(() => {
-                        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                    }, 100);
-                }
-                return true;
-            }
-            return false;
-        }
-
-        // 强制视频播放，避免自动播放限制导致黑屏
-        function forceVideoPlay() {
-            splashVideo.play().then(() => {
-                console.log('视频播放成功');
-            }).catch(err => {
-                console.log('自动播放受限，等待用户交互');
-                // 监听第一次点击/触摸事件触发播放
-                document.addEventListener('click', () => splashVideo.play(), { once: true });
-                document.addEventListener('touchstart', () => splashVideo.play(), { once: true });
-            });
-        }
-
-        // 视频加载完成后处理
-        splashVideo.addEventListener('loadedmetadata', () => {
-            // 如果不需要跳过splash，才执行视频播放逻辑
-            if (!checkSkipSplash()) {
-                forceVideoPlay();
-                // 视频快结束时显示箭头（最后2秒）
-                splashVideo.addEventListener('timeupdate', () => {
-                    const duration = splashVideo.duration;
-                    const currentTime = splashVideo.currentTime;
-                    // 视频播放到最后2秒 或 循环播放时显示箭头
-                    if (duration - currentTime < 2 || currentTime > 2) {
-                        enterArrow.classList.add('visible');
-                    }
-                });
-            }
-        });
-
-        // 页面加载时先检测是否需要跳过splash
-        window.addEventListener('DOMContentLoaded', () => {
-            if (!checkSkipSplash()) {
-                splashVideo.load();
-                forceVideoPlay();
-            }
-        });
-
-        // 进入主页面
-        function enterMainPage() {
-            splashPage.style.opacity = 0;
-            splashPage.style.transition = 'opacity 0.8s ease-out';
-            
-            setTimeout(() => {
-                splashPage.style.display = 'none';
-                body.classList.remove('splash-active');
-                // 触发主页面加载动画
-                document.body.classList.add('page-loaded');
-            }, 800);
-        }
-
-        // ========== 原有逻辑 ==========
         const nav = document.getElementById('navbar');
         const progress = document.getElementById('scroll-progress');
         const btt = document.getElementById('back-to-top');
         const navLinks = document.getElementById('navLinks');
         const menuToggle = document.getElementById('menuToggle');
+        
+        // 核心初始化函数（整合所有需要执行的逻辑）
+        function initPage() {
+            // 1. 判断是否首次访问，控制欢迎页显示
+            const isFirstVisit = !sessionStorage.getItem('hasVisited');
+            if (isFirstVisit) {
+                // 首次访问才显示欢迎页
+                document.body.classList.add('first-visit');
+                // 视频播放处理
+                if (video) {
+                    video.removeAttribute('poster');
+                    video.preload = 'auto';
+                    video.load();
+                    
+                    // 强制播放函数
+                    const forcePlay = () => {
+                        video.play().then(() => {
+                            console.log('视频强制播放成功');
+                        }).catch(err => {
+                            console.log('自动播放失败，交互触发播放');
+                            document.addEventListener('click', () => video.play(), { once: true });
+                            document.addEventListener('touchstart', () => video.play(), { once: true });
+                        });
+                    };
 
+                    forcePlay();
+                    video.addEventListener('loadedmetadata', forcePlay);
+                    video.addEventListener('progress', forcePlay);
+                    video.addEventListener('loadeddata', forcePlay);
+                }
+            } else {
+                // 非首次访问：直接隐藏欢迎页，无过渡动画
+                document.body.classList.add('splash-hidden');
+                document.body.classList.remove('first-visit');
+                splashPage.style.display = 'none'; // 彻底隐藏，避免闪现
+            }
+
+            // 2. 重置图片状态（关键：解决后退缓存导致的图片隐藏）
+            document.querySelectorAll('.project img, #hero-img-wrap img').forEach(img => {
+                // 如果图片已加载但没有loaded类，强制添加
+                if (img.complete && !img.classList.contains('loaded')) {
+                    handleImageLoad(img);
+                }
+                // 移动端强制显示
+                if (window.innerWidth <= 900) {
+                    img.style.opacity = '1';
+                }
+            });
+
+            // 3. 重新初始化交集观察器
+            initRevealObserver();
+
+            // 4. 初始化导航栏和滚动状态
+            const currentScrollY = window.pageYOffset || document.documentElement.scrollTop;
+            if (currentScrollY > 50) {
+                nav.classList.add("nav-scrolled");
+                btt.classList.add("visible");
+            } else {
+                nav.classList.remove("nav-scrolled");
+                btt.classList.remove("visible");
+            }
+
+            // 5. 标记页面已加载
+            document.body.classList.add('page-loaded');
+            // 6. 移除无滚动限制（非首次访问时）
+            if (!isFirstVisit) {
+                document.body.classList.remove('no-scroll');
+            }
+        }
+
+        // 页面初始化（首次加载）
+        document.addEventListener('DOMContentLoaded', initPage);
+        
+        // 监听pageshow事件（兼容后退缓存）
+        window.addEventListener('pageshow', (e) => {
+            // 如果是从缓存中加载页面，重新初始化
+            if (e.persisted) {
+                initPage();
+            }
+        });
+
+        // 隐藏欢迎页（点击按钮时）
+        function hideSplash() {
+            sessionStorage.setItem('hasVisited', 'true');
+            document.body.classList.add('splash-hidden');
+            document.body.classList.remove('no-scroll');
+            document.body.classList.remove('first-visit');
+            window.scrollTo(0, 0);
+            
+            // 立即隐藏，无延迟，避免闪现
+            setTimeout(() => {
+                splashPage.style.display = 'none';
+            }, 100); // 缩短延迟时间
+        }
+
+        // 图片加载处理
         function handleImageLoad(img) {
             img.classList.add('loaded');
             img.parentElement.classList.add('finished-loading');
+            
+            // 移动端图片额外保障
+            if (window.innerWidth <= 900) {
+                img.style.opacity = '1';
+            }
         }
 
+        // 图片加载失败处理
         function handleImageError(img, fallbackSrc) {
             img.src = fallbackSrc;
             img.onerror = null;
             handleImageLoad(img);
         }
 
+        // 页面加载完成处理
         window.addEventListener('load', () => {
-            if (!body.classList.contains('splash-active')) {
-                document.body.classList.add('page-loaded');
+            document.body.classList.add('page-loaded');
+            
+            // 移动端图片强制显示
+            if (window.innerWidth <= 900) {
+                document.querySelectorAll('.project img').forEach(img => {
+                    if (!img.classList.contains('loaded')) {
+                        img.style.display = 'block';
+                        img.style.visibility = 'visible';
+                    }
+                });
             }
         });
 
+        // 滚动事件处理（性能优化：requestAnimationFrame + 节流）
         let ticking = false;
         let lastScrollY = window.scrollY;
 
@@ -781,8 +1160,11 @@
                 window.requestAnimationFrame(() => {
                     const currentScrollY = window.pageYOffset || document.documentElement.scrollTop;
                     const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+                    
+                    // 滚动进度条
                     progress.style.width = (currentScrollY / height) * 100 + "%";
 
+                    // 导航栏显示/隐藏
                     if (currentScrollY > lastScrollY && currentScrollY > 200) {
                         nav.style.transform = "translateY(-100%)";
                     } else {
@@ -795,6 +1177,7 @@
                             btt.classList.remove("visible");
                         }
                     }
+                    
                     lastScrollY = currentScrollY;
                     ticking = false;
                 });
@@ -802,80 +1185,93 @@
             }
         }, { passive: true });
 
-        const revealObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('revealed');
-                    revealObserver.unobserve(entry.target);
-                }
+        // 元素渐显观察器
+        function initRevealObserver() {
+            const revealObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('revealed');
+                        // 不要unobserve，确保后退时能重新触发
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            document.querySelectorAll('.statement-section, .content-section').forEach(sec => {
+                revealObserver.observe(sec);
             });
-        }, { threshold: 0.1 });
+        }
 
-        document.querySelectorAll('.statement-section, .content-section').forEach(sec => revealObserver.observe(sec));
-
+        // 桌面端鼠标跟随效果
         if (window.innerWidth > 900) {
             const hero = document.getElementById('hero-section');
             const imgWrap = document.getElementById('hero-img-wrap');
+            
             hero.addEventListener('mousemove', (e) => {
                 const maxOffset = 20;
                 const x = Math.max(-maxOffset, Math.min(maxOffset, (e.clientX - window.innerWidth / 2) / 50));
                 const y = Math.max(-maxOffset, Math.min(maxOffset, (e.clientY - window.innerHeight / 2) / 50));
+                
                 requestAnimationFrame(() => {
                     imgWrap.style.transform = `translate(${-x}px, ${-y}px)`;
                 });
             });
         }
 
+        // 回到顶部
         btt.onclick = () => window.scrollTo({top: 0, behavior: 'smooth'});
 
+        // 菜单切换
         function toggleMenu() {
             navLinks.classList.toggle('active');
             menuToggle.classList.toggle('active');
             document.body.style.overflow = navLinks.classList.contains('active') ? 'hidden' : 'auto';
         }
+
         function closeMenu() {
             navLinks.classList.remove('active');
             menuToggle.classList.remove('active');
             document.body.style.overflow = 'auto';
         }
+
         menuToggle.onclick = toggleMenu;
 
+        // 复制微信
         function copyWeChat(id) {
             if (navigator.clipboard && window.isSecureContext) {
-                navigator.clipboard.writeText(id).then(() => {
-                    showCopyToast();
-                }).catch(err => {
-                    console.error('剪贴板复制失败:', err);
-                    fallbackCopyTextToClipboard(id);
-                });
+                navigator.clipboard.writeText(id).then(showCopyToast).catch(() => fallbackCopyTextToClipboard(id));
             } else {
                 fallbackCopyTextToClipboard(id);
             }
         }
 
+        // 复制备用方案
         function fallbackCopyTextToClipboard(text) {
             const textArea = document.createElement("textarea");
             textArea.value = text;
             textArea.style.position = "fixed";
             textArea.style.left = "-999999px";
             textArea.style.top = "-999999px";
+            
             document.body.appendChild(textArea);
             textArea.focus();
             textArea.select();
+            
             try {
                 document.execCommand('copy');
                 showCopyToast();
             } catch (err) {
-                console.error('降级复制失败:', err);
                 alert('复制失败，请手动复制：' + text);
             }
+            
             document.body.removeChild(textArea);
         }
 
+        // 复制提示
         function showCopyToast() {
             const toast = document.getElementById('copy-toast');
             toast.style.opacity = '1';
             toast.style.visibility = 'visible';
+            
             setTimeout(() => {
                 toast.style.opacity = '0';
                 toast.style.visibility = 'hidden';
