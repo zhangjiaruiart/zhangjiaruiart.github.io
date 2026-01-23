@@ -27,34 +27,51 @@
         }
 
         /* --- Splash Page (欢迎页) 终极优化 --- */
-        #splash-page {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            z-index: 99999; 
-            background-color: #000; 
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            transition: transform 1s cubic-bezier(0.85, 0, 0.15, 1), opacity 1s ease;
-            overflow: hidden;
-        }
+        /* --- Splash Page (欢迎页) 终极优化 --- */
+#splash-page {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    z-index: 99999; 
+    background-color: #000; 
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    transition: transform 1s cubic-bezier(0.85, 0, 0.15, 1), opacity 1s ease;
+    overflow: hidden;
+}
 
-        #splash-video {
-            position: absolute;
-            top: 50%; left: 50%;
-            min-width: 100%; min-height: 100%;
-            width: auto; height: auto;
-            transform: translate(-50%, -50%);
-            object-fit: cover;
-            filter: brightness(0.7);
-            z-index: -1;
-            background: #000;
-        }
+#splash-video {
+    position: absolute;
+    top: 50%; left: 50%;
+    min-width: 100%; min-height: 100%;
+    width: auto; height: auto;
+    transform: translate(-50%, -50%);
+    object-fit: cover;
+    filter: brightness(0.7);
+    z-index: -1;
+    background: #000;
+    /* 新增：强制视频预加载 + 消除黑屏/首帧问题 */
+    object-position: center;
+    preload: auto;
+    display: block !important;
+}
 
-        /* 强制隐藏所有移动端视频控件 */
-        video::-webkit-media-controls { display: none !important; }
-        video::-webkit-media-controls-enclosure { display: none !important; }
+/* 新增：解决手机端黑屏/电脑端首帧异常 */
+#splash-page::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #000;
+    z-index: -2;
+}
+
+/* 强制隐藏所有移动端视频控件 */
+video::-webkit-media-controls { display: none !important; }
+video::-webkit-media-controls-enclosure { display: none !important; }
 
         .splash-content {
             text-align: center;
@@ -405,16 +422,16 @@
     </style>
 </head>
 <body class="no-scroll"> <div id="splash-page">
-        <video id="splash-video" autoplay loop muted playsinline webkit-playsinline x5-playsinline x5-video-player-type="h5" poster="images/cover.webp">
-            <source src="images/hero-bg.mp4" type="video/mp4">
-        </video>
-        <div class="splash-content">
-            <h1 class="splash-title">ZHANGJIARUI</h1>
-            <button class="enter-arrow-btn" onclick="hideSplash()" aria-label="Enter Portfolio">
-                <div class="arrow-icon"></div>
-            </button>
-        </div>
+    <video id="splash-video" autoplay loop muted playsinline webkit-playsinline x5-playsinline x5-video-player-type="h5">
+        <source src="images/hero-bg.mp4" type="video/mp4">
+    </video>
+    <div class="splash-content">
+        <h1 class="splash-title">ZHANGJIARUI</h1>
+        <button class="enter-arrow-btn" onclick="hideSplash()" aria-label="Enter Portfolio">
+            <div class="arrow-icon"></div>
+        </button>
     </div>
+</div>
 
     <div id="scroll-progress"></div>
     <div id="copy-toast">ID COPIED</div>
@@ -620,24 +637,52 @@
          * 核心修改：检查当前会话是否已看过欢迎页
          * 解决“返回上一页回到splash”的问题
          */
-        document.addEventListener('DOMContentLoaded', () => {
-            const splash = document.getElementById('splash-page');
-            const video = document.getElementById('splash-video');
-
-            // 检查本次会话是否已有访问记录
-            if (sessionStorage.getItem('hasVisited')) {
-                if (splash) splash.style.display = 'none'; // 直接隐藏欢迎页
-                document.body.classList.remove('no-scroll');
-                document.body.classList.add('splash-hidden');
-            } else if (video) {
-                // 仅在首次访问时执行视频强制播放逻辑
-                video.play().catch(e => console.log('Autoplay prevented initially'));
-                document.addEventListener('touchstart', () => { video.play(); }, { once: true });
-                if (window.WeixinJSBridge) {
-                    WeixinJSBridge.invoke('getNetworkType', {}, () => { video.play(); }, false);
-                }
-            }
+        // --- 手机端视频强制播放修复 ---
+document.addEventListener('DOMContentLoaded', () => {
+    const video = document.getElementById('splash-video');
+    if (video) {
+        // 关键修改1：禁用视频海报，避免显示其他图片
+        video.poster = "";
+        
+        // 关键修改2：预加载视频 + 强制立即播放
+        video.preload = "auto";
+        video.load(); // 强制重新加载视频
+        
+        // 1. 尝试直接播放
+        video.play().then(() => {
+            // 播放成功，移除可能的黑屏
+            video.style.opacity = "1";
+        }).catch(e => {
+            console.log('Autoplay prevented initially, try touch play');
+            // 播放失败时强制显示视频区域，避免黑屏
+            video.style.opacity = "1";
         });
+        
+        // 2. 针对微信/移动端，触摸即播放
+        document.addEventListener('touchstart', function() {
+            video.play();
+            video.style.opacity = "1";
+        }, { once: true });
+        
+        // 3. 针对微信JSBridge
+        if (window.WeixinJSBridge) {
+            WeixinJSBridge.invoke('getNetworkType', {}, function (e) {
+                video.play();
+                video.style.opacity = "1";
+            }, false);
+        }
+        
+        // 关键修改3：监听视频加载完成事件，确保无黑屏
+        video.addEventListener('loadeddata', function() {
+            video.style.opacity = "1";
+        });
+        
+        // 关键修改4：视频加载失败时仍保持黑色背景，避免异常图片
+        video.addEventListener('error', function() {
+            video.style.display = "none";
+        });
+    }
+});
 
         function hideSplash() {
             // 用户点击进入按钮时，记录“已访问”状态到会话缓存
