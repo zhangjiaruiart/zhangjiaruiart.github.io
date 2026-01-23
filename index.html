@@ -59,6 +59,13 @@
             background-image: 
                 radial-gradient(circle at center, rgba(255,255,255,0.03) 0%, transparent 70%),
                 var(--splash-bg-gradient) !important;
+            /* 新增：添加默认背景图，防止图片加载失败时纯黑 */
+            background-image: 
+                radial-gradient(circle at center, rgba(255,255,255,0.03) 0%, transparent 70%),
+                var(--splash-bg-gradient),
+                url('images/splash-cover.webp') !important;
+            background-size: cover;
+            background-position: center;
         }
 
         /* 仅首次访问时显示欢迎页 */
@@ -79,6 +86,8 @@
             object-position: center center;
             -webkit-backface-visibility: hidden;
             backface-visibility: hidden;
+            /* 新增：图片加载前的渐显过渡 */
+            transition: opacity 0.8s ease;
         }
 
         /* 封面图降级处理（动画加载失败时显示） */
@@ -356,13 +365,15 @@
         .menu-toggle.active span:nth-child(2) { opacity: 0; }
         .menu-toggle.active span:nth-child(3) { transform: rotate(-45deg) translate(6px, -6px); }
 
-        /* 英雄区样式 - 保留原有 */
+        /* 英雄区样式 - 保留原有，新增图片加载占位 */
         .hero {
             height: 100vh;
             width: 100%;
             overflow: hidden;
             position: relative;
             background-color: #000;
+            /* 新增：添加渐变占位，避免纯黑 */
+            background: linear-gradient(180deg, #111 0%, #000 100%);
         }
 
         #hero-img-wrap {
@@ -383,6 +394,14 @@
             filter: brightness(0.75);
             display: block;
             animation: kenBurns 20s ease-in-out infinite alternate;
+            /* 新增：图片加载前的透明状态 + 渐显过渡 */
+            opacity: 0;
+            transition: opacity 1.2s ease-in-out;
+        }
+
+        /* 新增：图片加载完成后显示 */
+        .hero img.loaded {
+            opacity: 1;
         }
 
         .hero-overlay {
@@ -548,6 +567,8 @@
         .video-ratio {
             aspect-ratio: 16 / 9;
             background-color: #000;
+            /* 新增：视频占位区添加渐变，避免纯黑 */
+            background: linear-gradient(180deg, #111 0%, #000 100%);
         }
 
         .project img {
@@ -852,8 +873,21 @@
             text-transform: uppercase;
         }
     </style>
+    <!-- 新增：内联脚本提前判断首次访问，避免欢迎页显示延迟 -->
+    <script>
+        // 提前执行首次访问判断，在DOM渲染前添加类
+        (function() {
+            const isFirstVisit = !sessionStorage.getItem('hasVisited');
+            if (isFirstVisit) {
+                document.body.classList.add('first-visit', 'no-scroll');
+            } else {
+                document.body.classList.add('splash-hidden');
+                document.body.classList.remove('no-scroll', 'first-visit');
+            }
+        })();
+    </script>
 </head>
-<body class="no-scroll"> 
+<body> <!-- 移除初始的no-scroll类，由内联脚本控制 -->
     <div id="splash-page">
         <!-- 替换视频为WebP动画 -->
         <img src="images/hero-bg.webp" alt="Zhang Jiarui" class="splash-bg"
@@ -1080,18 +1114,7 @@
         
         // 核心初始化函数（优化精简，移除视频处理逻辑）
         function initPage() {
-            // 1. 判断是否首次访问，控制欢迎页显示
-            const isFirstVisit = !sessionStorage.getItem('hasVisited');
-            if (isFirstVisit) {
-                document.body.classList.add('first-visit');
-            } else {
-                // 非首次访问：直接隐藏欢迎页
-                document.body.classList.add('splash-hidden');
-                document.body.classList.remove('first-visit');
-                splashPage.style.display = 'none';
-            }
-
-            // 2. 重置图片状态
+            // 1. 重置图片状态
             document.querySelectorAll('.project img, #hero-img-wrap img').forEach(img => {
                 if (img.complete && !img.classList.contains('loaded')) {
                     handleImageLoad(img);
@@ -1101,10 +1124,10 @@
                 }
             });
 
-            // 3. 初始化交集观察器
+            // 2. 初始化交集观察器
             initRevealObserver();
 
-            // 4. 初始化导航栏和滚动状态
+            // 3. 初始化导航栏和滚动状态
             const currentScrollY = window.pageYOffset || document.documentElement.scrollTop;
             if (currentScrollY > 50) {
                 nav.classList.add("nav-scrolled");
@@ -1114,11 +1137,11 @@
                 btt.classList.remove("visible");
             }
 
-            // 5. 标记页面已加载
+            // 4. 标记页面已加载
             document.body.classList.add('page-loaded');
-            // 6. 移除无滚动限制（非首次访问时）
-            if (!isFirstVisit) {
-                document.body.classList.remove('no-scroll');
+            // 5. 非首次访问时直接隐藏欢迎页
+            if (sessionStorage.getItem('hasVisited')) {
+                splashPage.style.display = 'none';
             }
         }
 
@@ -1128,17 +1151,15 @@
             if (e.persisted) initPage();
         });
 
-        // 隐藏欢迎页（简化逻辑：无需等待视频加载）
+        // 隐藏欢迎页（简化逻辑：无需等待视频加载，移除延迟）
         function hideSplash() {
             sessionStorage.setItem('hasVisited', 'true');
             document.body.classList.add('splash-hidden');
             document.body.classList.remove('no-scroll', 'first-visit');
-            setTimeout(() => {
-                splashPage.style.display = 'none';
-            }, 100);
+            splashPage.style.display = 'none'; // 立即隐藏，移除setTimeout
         }
 
-        // 图片加载处理（保留原有）
+        // 图片加载处理（保留原有，新增hero图片加载完成后显示）
         function handleImageLoad(img) {
             img.classList.add('loaded');
             img.parentElement.classList.add('finished-loading');
