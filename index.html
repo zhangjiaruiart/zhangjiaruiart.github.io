@@ -614,12 +614,39 @@
     <footer>&copy; 2026 ZHANGJIARUI ARTWORKS.</footer>
 
     <script>
-        // --- Splash Page 控制逻辑 ---
+       // --- Splash Page 控制逻辑 ---
+        
+        /**
+         * 核心修改：检查当前会话是否已看过欢迎页
+         * 解决“返回上一页回到splash”的问题
+         */
+        document.addEventListener('DOMContentLoaded', () => {
+            const splash = document.getElementById('splash-page');
+            const video = document.getElementById('splash-video');
+
+            // 检查本次会话是否已有访问记录
+            if (sessionStorage.getItem('hasVisited')) {
+                if (splash) splash.style.display = 'none'; // 直接隐藏欢迎页
+                document.body.classList.remove('no-scroll');
+                document.body.classList.add('splash-hidden');
+            } else if (video) {
+                // 仅在首次访问时执行视频强制播放逻辑
+                video.play().catch(e => console.log('Autoplay prevented initially'));
+                document.addEventListener('touchstart', () => { video.play(); }, { once: true });
+                if (window.WeixinJSBridge) {
+                    WeixinJSBridge.invoke('getNetworkType', {}, () => { video.play(); }, false);
+                }
+            }
+        });
+
         function hideSplash() {
+            // 用户点击进入按钮时，记录“已访问”状态到会话缓存
+            sessionStorage.setItem('hasVisited', 'true');
+            
             document.body.classList.add('splash-hidden');
             document.body.classList.remove('no-scroll');
             
-            // 关键：强制滚动到页面顶部，解决跳转到Eco Art的问题
+            // 强制滚动到页面顶部
             window.scrollTo(0, 0);
 
             // 延迟移除 DOM 以优化性能
@@ -629,27 +656,7 @@
             }, 1000);
         }
 
-        // --- 手机端视频强制播放修复 ---
-        document.addEventListener('DOMContentLoaded', () => {
-            const video = document.getElementById('splash-video');
-            if (video) {
-                // 1. 尝试直接播放
-                video.play().catch(e => console.log('Autoplay prevented initially'));
-                
-                // 2. 针对微信/移动端，触摸即播放
-                document.addEventListener('touchstart', function() {
-                    video.play();
-                }, { once: true });
-                
-                // 3. 针对微信JSBridge
-                if (window.WeixinJSBridge) {
-                    WeixinJSBridge.invoke('getNetworkType', {}, function (e) {
-                        video.play();
-                    }, false);
-                }
-            }
-        });
-
+        /* --- 原有功能逻辑保持不变 --- */
         const nav = document.getElementById('navbar');
         const progress = document.getElementById('scroll-progress');
         const btt = document.getElementById('back-to-top');
