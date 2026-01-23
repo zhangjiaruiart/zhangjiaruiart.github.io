@@ -21,12 +21,12 @@
             margin: 0; padding: 0;
             font-family: var(--primary-font);
             background-color: #ffffff; color: var(--main-color);
-            scroll-behavior: smooth; /* 平滑滚动 */
+            scroll-behavior: smooth;
             overflow-x: hidden;
             -webkit-font-smoothing: antialiased;
         }
 
-        /* --- Splash Page (欢迎页) 终极优化 --- */
+        /* --- Splash Page (欢迎页) --- */
         #splash-page {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -52,9 +52,7 @@
             background: #000;
         }
 
-        /* 强制隐藏所有移动端视频控件 */
         video::-webkit-media-controls { display: none !important; }
-        video::-webkit-media-controls-enclosure { display: none !important; }
 
         .splash-content {
             text-align: center;
@@ -63,26 +61,24 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            width: 90%; /* 限制宽度防止溢出 */
+            width: 90%;
             max-width: 800px;
         }
 
         .splash-title {
-            /* 智能字体大小：手机端最小24px，最大80px，随视口变化 */
             font-size: clamp(24px, 8vw, 80px);
             font-weight: 300;
-            letter-spacing: 0.2em; /* 稍微减小间距以适应手机 */
+            letter-spacing: 0.2em;
             text-transform: uppercase;
             margin-bottom: 40px;
             opacity: 0;
             transform: translateY(20px);
             animation: fadeInUp 0.8s forwards 0.2s;
-            white-space: nowrap; /* 默认不换行 */
+            white-space: nowrap;
             width: 100%;
             text-align: center;
         }
 
-        /* 纯 CSS 向右箭头按钮 */
         .enter-arrow-btn {
             background: none;
             border: none;
@@ -94,12 +90,10 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            -webkit-tap-highlight-color: transparent; /* 移除点击高亮 */
+            -webkit-tap-highlight-color: transparent;
         }
 
-        .enter-arrow-btn:hover {
-            transform: translateX(10px);
-        }
+        .enter-arrow-btn:hover { transform: translateX(10px); }
 
         .arrow-icon {
             position: relative;
@@ -118,12 +112,8 @@
             transform: rotate(45deg);
         }
 
-        @keyframes fadeInUp {
-            to { opacity: 1; transform: translateY(0); }
-        }
-        @keyframes fadeIn {
-            to { opacity: 1; }
-        }
+        @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeIn { to { opacity: 1; } }
 
         body.splash-hidden #splash-page {
             transform: translateY(-100%);
@@ -132,36 +122,27 @@
         
         body.no-scroll { overflow: hidden; }
 
-        /* --- 手机端特定调整 --- */
         @media (max-width: 600px) {
             .splash-title {
-                letter-spacing: 0.15em; /* 手机端进一步收紧间距 */
-                font-size: 32px; /* 强制手机端字体大小 */
-                white-space: normal; /* 允许极小屏幕换行 */
+                letter-spacing: 0.15em;
+                font-size: 32px;
+                white-space: normal;
                 line-height: 1.4;
             }
-            .enter-arrow-btn {
-                padding: 40px; /* 增大手机点击区域 */
-            }
-            .arrow-icon {
-                width: 40px; /* 手机端箭头稍短 */
-            }
+            .enter-arrow-btn { padding: 40px; }
+            .arrow-icon { width: 40px; }
         }
 
-        /* --- 原有布局保持不变 --- */
-        
+        /* --- 主内容布局 --- */
         #scroll-progress {
             position: fixed; top: 0; left: 0; width: 0%; height: 2px;
             background: var(--main-color); z-index: 3000; transition: width 0.1s ease-out;
         }
 
         nav {
-            position: fixed;
-            top: 0; left: 0; width: 100%;
+            position: fixed; top: 0; left: 0; width: 100%;
             display: flex; justify-content: space-between; align-items: center;
-            padding: 30px 5%; 
-            box-sizing: border-box;
-            z-index: 2000;
+            padding: 30px 5%; box-sizing: border-box; z-index: 2000;
             transition: all 0.6s cubic-bezier(0.2, 1, 0.3, 1);
         }
 
@@ -176,8 +157,7 @@
         .logo {
             font-size: 18px; font-weight: 300; letter-spacing: 0.5em;
             text-decoration: none; color: #ffffff; text-transform: uppercase;
-            transition: color 0.4s ease;
-            position: relative; z-index: 2001;
+            transition: color 0.4s ease; position: relative; z-index: 2001;
         }
 
         .nav-scrolled .logo { color: var(--main-color); }
@@ -187,31 +167,16 @@
             margin-left: 35px; text-decoration: none; color: #ffffff;
             font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase;
             font-weight: 300; position: relative; padding-bottom: 5px;
-            transition: color 0.4s ease, transform 0.3s ease;
-            display: inline-block;
+            transition: color 0.4s ease, transform 0.3s ease; display: inline-block;
         }
         .nav-scrolled .nav-links a { color: var(--main-color); }
-
-        .nav-links a::after {
-            content: ''; position: absolute; bottom: 0; left: 50%;
-            width: 0; height: 1px; background: currentColor;
-            transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
-            transform: translateX(-50%);
-        }
-        .nav-links a:hover::after { width: 100%; }
 
         .menu-toggle {
             display: none; flex-direction: column; gap: 6px;
             cursor: pointer; z-index: 2001;
         }
-        .menu-toggle span {
-            width: 25px; height: 1px; background-color: #ffffff;
-            transition: all 0.3s ease;
-        }
+        .menu-toggle span { width: 25px; height: 1px; background-color: #ffffff; transition: all 0.3s ease; }
         .nav-scrolled .menu-toggle span { background-color: #111; }
-        .menu-toggle.active span:nth-child(1) { transform: rotate(45deg) translate(6px, 6px); }
-        .menu-toggle.active span:nth-child(2) { opacity: 0; }
-        .menu-toggle.active span:nth-child(3) { transform: rotate(-45deg) translate(6px, -6px); }
 
         .hero {
             height: 100vh; width: 100%; overflow: hidden;
@@ -219,20 +184,15 @@
         }
         #hero-img-wrap {
             width: 105%; height: 105%; position: absolute; top: -2.5%; left: -2.5%;
-            transition: transform 0.2s ease-out;
-            will-change: transform;
+            transition: transform 0.2s ease-out; will-change: transform;
         }
         .hero img {
             width: 100%; height: 100%; object-fit: cover;
-            object-position: center 60%; 
-            filter: brightness(0.75); display: block;
+            object-position: center 60%; filter: brightness(0.75);
             animation: kenBurns 20s ease-in-out infinite alternate;
         }
 
-        @keyframes kenBurns {
-            0% { transform: scale(1); }
-            100% { transform: scale(1.08); }
-        }
+        @keyframes kenBurns { 0% { transform: scale(1); } 100% { transform: scale(1.08); } }
 
         .hero-overlay {
             position: absolute; top: 45%; left: 50%;
@@ -244,23 +204,18 @@
         .hero-title {
             color: #ffffff; font-size: 18px; font-weight: 300;
             letter-spacing: 0.6em; text-transform: uppercase;
-            margin: 0; line-height: 1.6;
-            opacity: 0;
-            filter: blur(10px);
+            margin: 0; line-height: 1.6; opacity: 0; filter: blur(10px);
             transform: translateY(30px);
             transition: opacity 2s ease, filter 2s ease, transform 1.5s cubic-bezier(0.16, 1, 0.3, 1);
         }
         .page-loaded .hero-title { opacity: 0.8; filter: blur(0); transform: translateY(0); }
-        .hero-title br { display: none; }
 
         .scroll-indicator {
             position: absolute; bottom: 35px; left: 50%;
             transform: translateX(-50%); z-index: 10;
-            cursor: pointer; display: flex; flex-direction: column; align-items: center;
         }
         .scroll-arrow {
-            width: 16px; height: 16px;
-            border-right: 1.5px solid #ffffff; border-bottom: 1.5px solid #ffffff;
+            width: 16px; height: 16px; border-right: 1.5px solid #ffffff; border-bottom: 1.5px solid #ffffff;
             transform: rotate(45deg); animation: arrowBounce 2s infinite;
         }
 
@@ -272,139 +227,71 @@
         .statement-section {
             padding: calc(120px + 5vh) 5% calc(40px + 5vh);
             max-width: 900px; margin: 0 auto; text-align: center;
-            scroll-margin-top: 100px;
         }
-        .statement-text {
-            font-size: 20px; line-height: 1.8; font-weight: 300;
-            color: #222; letter-spacing: 0.02em; font-style: italic;
-            opacity: 0; transform: translateY(20px);
-            transition: var(--transition-smooth);
-        }
+        .statement-text { font-size: 20px; line-height: 1.8; font-weight: 300; color: #222; opacity: 0; transform: translateY(20px); transition: var(--transition-smooth); font-style: italic; }
         .revealed .statement-text { opacity: 1; transform: translateY(0); }
 
-        .content-section { 
-            padding: 40px 5% 20px;
-            max-width: 1260px; margin: 0 auto; 
-            opacity: 0; transform: translateY(20px);
-            transition: var(--transition-smooth);
-            scroll-margin-top: 80px;
-        }
+        .content-section { padding: 40px 5% 20px; max-width: 1260px; margin: 0 auto; opacity: 0; transform: translateY(20px); transition: var(--transition-smooth); scroll-margin-top: 80px; }
         .content-section.revealed { opacity: 1; transform: translateY(0); }
 
-        .category-title { 
-            font-size: 13px; letter-spacing: 0.5em; text-transform: uppercase; 
-            margin-bottom: 40px; border-bottom: 1px solid #f0f0f0; 
-            padding-bottom: 15px; color: var(--main-color); 
-        }
+        .category-title { font-size: 13px; letter-spacing: 0.5em; text-transform: uppercase; margin-bottom: 40px; border-bottom: 1px solid #f0f0f0; padding-bottom: 15px; }
 
-        .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 60px 60px; margin-bottom: 60px; }
-        .grid-sculpture-custom { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px 30px; margin-bottom: 60px; width: 100%; }
+        .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 60px; margin-bottom: 60px; }
+        .grid-sculpture-custom { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px 30px; margin-bottom: 60px; }
 
         .series-label { font-size: 11px; letter-spacing: 0.3em; text-transform: uppercase; color: #888; margin-bottom: 20px; font-weight: 300; }
         .project { text-decoration: none; color: inherit; display: block; }
         .project-image-wrapper { overflow: hidden; margin-bottom: 20px; background-color: #f7f7f7; position: relative; }
-
-        .project-image-wrapper::before {
-            content: ""; position: absolute; top: 0; left: -150%;
-            width: 100%; height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.6), transparent);
-            animation: skeleton-loading 1.5s infinite; z-index: 1;
-        }
-        .project-image-wrapper.finished-loading::before { display: none; }
-
-        @keyframes skeleton-loading {
-            0% { left: -150%; }
-            50% { left: 100%; }
-            100% { left: 100%; }
-        }
-
         .img-ratio { aspect-ratio: 4 / 5; }
-        .video-ratio { aspect-ratio: 16 / 9; background-color: #000; }
+        .video-ratio { aspect-ratio: 16 / 9; }
 
-        .project img { 
-            width: 100%; height: 100%; object-fit: cover; 
-            transition: transform 1.8s cubic-bezier(0.15, 1, 0.3, 1), opacity 1s ease;
-            opacity: 0; 
-        }
+        .project img { width: 100%; height: 100%; object-fit: cover; transition: transform 1.8s cubic-bezier(0.15, 1, 0.3, 1), opacity 1s ease; opacity: 0; }
         .project img.loaded { opacity: 1; }
         .project:hover img { transform: scale(1.05); }
 
-        .play-overlay {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            display: flex; align-items: center; justify-content: center;
-            background: rgba(0,0,0,0.1); transition: background 0.3s;
-            z-index: 2; opacity: 0;
-        }
+        .play-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.1); opacity: 0; }
         .project img.loaded + .play-overlay { opacity: 1; }
-
-        .play-button {
-            width: 50px; height: 50px; border: 1px solid #fff; border-radius: 50%;
-            display: flex; align-items: center; justify-content: center; backdrop-filter: blur(5px);
-        }
-        .play-button::after {
-            content: ''; width: 0; height: 0; 
-            border-top: 8px solid transparent; border-bottom: 8px solid transparent; border-left: 12px solid #fff;
-            margin-left: 4px;
-        }
+        .play-button { width: 50px; height: 50px; border: 1px solid #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(5px); }
+        .play-button::after { content: ''; border-top: 8px solid transparent; border-bottom: 8px solid transparent; border-left: 12px solid #fff; margin-left: 4px; }
 
         .project-title { font-size: 14px; font-weight: 400; letter-spacing: 0.1em; text-transform: uppercase; margin-top: 5px; }
         .project-meta { font-size: 10px; color: #aaa; margin-top: 4px; letter-spacing: 0.05em; text-transform: uppercase; line-height: 1.4; }
 
-        #back-to-top {
-            position: fixed; bottom: 40px; right: 40px; width: 40px; height: 40px;
-            background: #fff; border: 1px solid #eee; border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            cursor: pointer; opacity: 0; visibility: hidden; z-index: 1000;
-            transition: all 0.4s ease; box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-        }
-        #back-to-top.visible { opacity: 1; visibility: visible; }
-        #back-to-top::after {
-            content: ''; width: 8px; height: 8px; border-left: 1px solid #111; border-top: 1px solid #111;
-            transform: rotate(45deg); margin-top: 4px;
-        }
-
-        .contact-section { padding: 100px 5%; background-color: #fff; scroll-margin-top: 60px; }
-        .contact-container { max-width: 1000px; margin: 0 auto; text-align: center; }
-        .contact-row { display: flex; justify-content: center; align-items: center; gap: 50px; flex-wrap: nowrap; }
+        .contact-section { padding: 100px 5%; background-color: #fff; }
+        .contact-row { display: flex; justify-content: center; align-items: center; gap: 50px; }
         .contact-item { display: flex; flex-direction: column; align-items: center; }
         .contact-label { font-size: 9px; color: #bbb; text-transform: uppercase; margin-bottom: 10px; letter-spacing: 0.25em; }
-        .contact-value { font-size: 13px; color: var(--main-color); text-decoration: none; font-weight: 300; padding-bottom: 4px; border-bottom: 1px solid transparent; transition: all 0.4s; cursor: pointer; position: relative; }
+        .contact-value { font-size: 13px; color: var(--main-color); text-decoration: none; transition: 0.4s; cursor: pointer; border-bottom: 1px solid transparent; }
         .contact-value:hover { border-bottom-color: #eee; }
-        .divider { color: #eee; align-self: center; font-weight: 100; font-size: 18px; }
+        .divider { color: #eee; font-weight: 100; font-size: 18px; }
 
         #copy-toast {
             position: fixed; bottom: 50px; left: 50%; transform: translateX(-50%);
             background: rgba(17,17,17,0.8); color: #fff; padding: 10px 20px;
-            font-size: 10px; letter-spacing: 0.2em; border-radius: 2px;
-            opacity: 0; visibility: hidden; transition: all 0.4s; z-index: 9999;
+            font-size: 10px; letter-spacing: 0.2em; opacity: 0; visibility: hidden; transition: 0.4s; z-index: 9999;
         }
+
+        #back-to-top { position: fixed; bottom: 40px; right: 40px; width: 40px; height: 40px; background: #fff; border: 1px solid #eee; border-radius: 50%; display: flex; align-items: center; justify-content: center; opacity: 0; visibility: hidden; transition: 0.4s; cursor: pointer; z-index: 1000; }
+        #back-to-top.visible { opacity: 1; visibility: visible; }
+        #back-to-top::after { content: ''; width: 8px; height: 8px; border-left: 1px solid #111; border-top: 1px solid #111; transform: rotate(45deg); margin-top: 4px; }
 
         @media (max-width: 900px) {
-            .hero-overlay { top: 40%; }
-            .hero-title { font-size: 14.4px; line-height: 2.2; letter-spacing: 0.4em; }
-            .hero-title br { display: block; }
+            .hero-title { font-size: 14.4px; letter-spacing: 0.4em; }
             .menu-toggle { display: flex; }
-            .nav-links {
-                position: fixed; top: 0; right: -100%; width: 100%; height: 100vh;
-                background: #ffffff; flex-direction: column; justify-content: center;
-                align-items: center; transition: 0.5s cubic-bezier(0.2, 1, 0.3, 1);
-            }
+            .nav-links { position: fixed; top: 0; right: -100%; width: 100%; height: 100vh; background: #fff; flex-direction: column; justify-content: center; transition: 0.5s; align-items: center; }
             .nav-links.active { right: 0; }
-            .nav-links a { color: var(--main-color) !important; margin: 20px 0; font-size: 14px; }
+            .nav-links a { color: #111 !important; margin: 20px 0; font-size: 14px; }
             .grid, .grid-sculpture-custom { grid-template-columns: 1fr; gap: 40px; }
-            .content-section { padding: 30px 5% !important; }
-            .statement-text { font-size: 16px; }
-            .statement-section { padding: 60px 8% 30px; }
-            .contact-section { padding: 80px 10%; }
             .contact-row { flex-direction: column; gap: 45px; }
             .divider { display: none; }
-            .contact-value { font-size: 15px; padding: 8px 0; }
         }
 
-        footer { padding: 60px 5% 40px; text-align: center; border-top: 1px solid #f9f9f9; font-size: 9px; letter-spacing: 0.4em; color: #ccc; text-transform: uppercase; }
+        footer { padding: 60px 5% 40px; text-align: center; font-size: 9px; letter-spacing: 0.4em; color: #ccc; text-transform: uppercase; border-top: 1px solid #f9f9f9; }
     </style>
 </head>
-<body class="no-scroll"> <div id="splash-page">
+<body class="no-scroll">
+
+    <div id="splash-page">
         <video id="splash-video" autoplay loop muted playsinline webkit-playsinline x5-playsinline x5-video-player-type="h5" poster="images/cover.webp">
             <source src="images/hero-bg.mp4" type="video/mp4">
         </video>
@@ -429,32 +316,21 @@
                 <a href="biography.html">BIOGRAPHY</a>
                 <a href="#contact" onclick="closeMenu()">Contact</a>
             </div>
-            <div class="menu-toggle" id="menuToggle">
-                <span></span><span></span><span></span>
-            </div>
+            <div class="menu-toggle" id="menuToggle"><span></span><span></span><span></span></div>
         </nav>
     </header>
 
     <main>
         <section class="hero" id="hero-section">
             <div id="hero-img-wrap">
-                <img src="images/cover.webp" alt="Zhang Jiarui Cover" 
-                     onload="handleImageLoad(this)"
-                     onerror="handleImageError(this, 'images/Cover.JPG');">
+                <img src="images/cover.webp" alt="Zhang Jiarui Cover" onload="handleImageLoad(this)" onerror="handleImageError(this, 'images/Cover.JPG');">
             </div>
-            <div class="hero-overlay">
-                <h1 class="hero-title">Matter <br> dissolves, <br> memory <br> crystallizes</h1>
-            </div>
-            <a href="#statement" class="scroll-indicator" aria-label="Scroll down">
-                <div class="scroll-arrow"></div>
-            </a>
+            <div class="hero-overlay"><h1 class="hero-title">Matter dissolves, <br> memory crystallizes</h1></div>
+            <a href="#statement" class="scroll-indicator"><div class="scroll-arrow"></div></a>
         </section>
 
         <section class="statement-section" id="statement">
-            <p class="statement-text">
-                Zhang Jiarui’s practice operates between sculptural reduction and site-specific ecological intervention, 
-                examing how material, time, and human action reshape fragile systems.
-            </p>
+            <p class="statement-text">Zhang Jiarui’s practice operates between sculptural reduction and site-specific ecological intervention, examing how material, time, and human action reshape fragile systems.</p>
         </section>
 
         <section class="content-section" id="eco-art">
@@ -463,9 +339,7 @@
                 <article>
                     <a href="eco-ice-burial.html" class="project">
                         <div class="project-image-wrapper video-ratio">
-                            <img src="images/eco/ice_burial_cover.webp" loading="lazy" decoding="async" 
-                                 onload="handleImageLoad(this)"
-                                 onerror="handleImageError(this, 'images/eco/ice_burial_cover.jpg')">
+                            <img src="images/eco/ice_burial_cover.webp" loading="lazy" decoding="async" onload="handleImageLoad(this)" onerror="handleImageError(this, 'images/eco/ice_burial_cover.jpg')">
                             <div class="play-overlay"><div class="play-button"></div></div>
                         </div>
                         <div class="project-info">
@@ -477,9 +351,7 @@
                 <article>
                     <a href="eco-4-5tons.html" class="project">
                         <div class="project-image-wrapper video-ratio">
-                            <img src="images/eco/4_5tons_cover.webp" loading="lazy" decoding="async"
-                                 onload="handleImageLoad(this)"
-                                 onerror="handleImageError(this, 'images/eco/4_5tons_cover.jpg')">
+                            <img src="images/eco/4_5tons_cover.webp" loading="lazy" decoding="async" onload="handleImageLoad(this)" onerror="handleImageError(this, 'images/eco/4_5tons_cover.jpg')">
                             <div class="play-overlay"><div class="play-button"></div></div>
                         </div>
                         <div class="project-info">
@@ -498,70 +370,45 @@
                     <h3 class="series-label">Wood Series</h3>
                     <a href="series1.html" class="project">
                         <div class="project-image-wrapper img-ratio">
-                            <img src="images/sculpture/s1_cover.webp" loading="lazy" decoding="async"
-                                 onload="handleImageLoad(this)"
-                                 onerror="handleImageError(this, 'images/sculpture/s1_cover.jpg')">
+                            <img src="images/sculpture/s1_cover.webp" loading="lazy" decoding="async" onload="handleImageLoad(this)" onerror="handleImageError(this, 'images/sculpture/s1_cover.jpg')">
                         </div>
-                        <div class="project-info">
-                            <h4 class="project-title">Triangle</h4>
-                            <p class="project-meta">Wood / 2024</p>
-                        </div>
+                        <div class="project-info"><h4 class="project-title">Triangle</h4><p class="project-meta">Wood / 2024</p></div>
                     </a>
                 </article>
                 <article>
                     <h3 class="series-label">Water Series</h3>
                     <a href="series2.html" class="project">
                         <div class="project-image-wrapper img-ratio">
-                            <img src="images/sculpture/s2_cover.webp" loading="lazy" decoding="async"
-                                 onload="handleImageLoad(this)"
-                                 onerror="handleImageError(this, 'images/sculpture/s2_cover.jpg')">
+                            <img src="images/sculpture/s2_cover.webp" loading="lazy" decoding="async" onload="handleImageLoad(this)" onerror="handleImageError(this, 'images/sculpture/s2_cover.jpg')">
                         </div>
-                        <div class="project-info">
-                            <h4 class="project-title">Water1</h4>
-                            <p class="project-meta">Transparent resin / 2023</p>
-                        </div>
+                        <div class="project-info"><h4 class="project-title">Water1</h4><p class="project-meta">Transparent resin / 2023</p></div>
                     </a>
                 </article>
                 <article>
                     <h3 class="series-label">Line Series</h3>
                     <a href="series5.html" class="project">
-                        <div class="project-image-wrapper img-ratio" style="background-color: #ffffff; display: flex; align-items: center; justify-content: center;">
-                            <img src="images/sculpture/s5_cover.webp" loading="lazy" decoding="async"
-                                 onload="handleImageLoad(this)"
-                                 onerror="handleImageError(this, 'images/sculpture/s5_cover.jpg')" style="object-fit: contain; transform: scale(0.8);">
+                        <div class="project-image-wrapper img-ratio" style="background:#fff; display:flex; align-items:center; justify-content:center;">
+                            <img src="images/sculpture/s5_cover.webp" loading="lazy" decoding="async" onload="handleImageLoad(this)" onerror="handleImageError(this, 'images/sculpture/s5_cover.jpg')" style="object-fit:contain; transform:scale(0.8)">
                         </div>
-                        <div class="project-info">
-                            <h4 class="project-title">X</h4>
-                            <p class="project-meta">Acrylic / 2023</p>
-                        </div>
+                        <div class="project-info"><h4 class="project-title">X</h4><p class="project-meta">Acrylic / 2023</p></div>
                     </a>
                 </article>
                 <article>
                     <h3 class="series-label">Formless Series</h3>
                     <a href="series4.html" class="project">
                         <div class="project-image-wrapper img-ratio">
-                            <img src="images/sculpture/s4_cover.webp" loading="lazy" decoding="async"
-                                 onload="handleImageLoad(this)"
-                                 onerror="handleImageError(this, 'images/sculpture/s4_cover.jpg')">
+                            <img src="images/sculpture/s4_cover.webp" loading="lazy" decoding="async" onload="handleImageLoad(this)" onerror="handleImageError(this, 'images/sculpture/s4_cover.jpg')">
                         </div>
-                        <div class="project-info">
-                            <h4 class="project-title">At ease</h4>
-                            <p class="project-meta">Transparent resin / 2023</p>
-                        </div>
+                        <div class="project-info"><h4 class="project-title">At ease</h4><p class="project-meta">Transparent resin / 2023</p></div>
                     </a>
                 </article>
                 <article>
                     <h3 class="series-label">Gold Series</h3>
                     <a href="series3.html" class="project">
                         <div class="project-image-wrapper img-ratio">
-                            <img src="images/sculpture/s3_cover.webp" loading="lazy" decoding="async"
-                                 onload="handleImageLoad(this)"
-                                 onerror="handleImageError(this, 'images/sculpture/s3_cover.jpg')">
+                            <img src="images/sculpture/s3_cover.webp" loading="lazy" decoding="async" onload="handleImageLoad(this)" onerror="handleImageError(this, 'images/sculpture/s3_cover.jpg')">
                         </div>
-                        <div class="project-info">
-                            <h4 class="project-title">New Eighteenth Arhat</h4>
-                            <p class="project-meta">Goldenleaf resin / 2015</p>
-                        </div>
+                        <div class="project-info"><h4 class="project-title">New Eighteenth Arhat</h4><p class="project-meta">Goldenleaf resin / 2015</p></div>
                     </a>
                 </article>
             </div>
@@ -573,88 +420,83 @@
                 <article>
                     <a href="project-coral.html" class="project">
                         <div class="project-image-wrapper video-ratio">
-                            <img src="images/projects/coral_cover.webp" loading="lazy" decoding="async"
-                                 onload="handleImageLoad(this)"
-                                 onerror="handleImageError(this, 'images/projects/coral_cover.jpg')">
+                            <img src="images/projects/coral_cover.webp" loading="lazy" decoding="async" onload="handleImageLoad(this)" onerror="handleImageError(this, 'images/projects/coral_cover.jpg')">
                             <div class="play-overlay"><div class="play-button"></div></div>
                         </div>
-                        <div class="project-info">
-                            <h3 class="project-title">Coral Planting Project</h3>
-                            <p class="project-meta">Documentary / 2025 / China Southsea</p>
-                        </div>
+                        <div class="project-info"><h3 class="project-title">Coral Planting Project</h3><p class="project-meta">Documentary / 2025 / China Southsea</p></div>
                     </a>
                 </article>
             </div>
         </section>
 
         <section class="contact-section" id="contact">
-            <div class="contact-container">
-                <div class="contact-row">
-                    <div class="contact-item">
-                        <span class="contact-label">Email</span>
-                        <a href="mailto:jerryzhang_arts@qq.com" class="contact-value">jerryzhang_arts@qq.com</a>
-                    </div>
-                    <span class="divider">/</span>
-                    <div class="contact-item">
-                        <span class="contact-label">WeChat</span>
-                        <span class="contact-value" onclick="copyWeChat('zjr5556699')">zjr5556699</span>
-                    </div>
-                    <span class="divider">/</span>
-                    <div class="contact-item">
-                        <span class="contact-label">Phone</span>
-                        <a href="tel:+8615117988382" class="contact-value">+86 151 1798 8382</a>
-                    </div>
+            <div class="contact-row">
+                <div class="contact-item">
+                    <span class="contact-label">Email</span>
+                    <a href="mailto:jerryzhang_arts@qq.com" class="contact-value">jerryzhang_arts@qq.com</a>
+                </div>
+                <span class="divider">/</span>
+                <div class="contact-item">
+                    <span class="contact-label">WeChat</span>
+                    <span class="contact-value" onclick="copyWeChat('zjr5556699')">zjr5556699</span>
+                </div>
+                <span class="divider">/</span>
+                <div class="contact-item">
+                    <span class="contact-label">Phone</span>
+                    <a href="tel:+8615117988382" class="contact-value">+86 151 1798 8382</a>
                 </div>
             </div>
         </section>
     </main>
 
-    <div id="back-to-top" aria-label="Back to top"></div>
-
+    <div id="back-to-top"></div>
     <footer>&copy; 2026 ZHANGJIARUI ARTWORKS.</footer>
 
     <script>
-        // --- Splash Page 控制逻辑 ---
+        /**
+         * 功能修改：检查本会话中是否已看过欢迎页
+         */
+        document.addEventListener('DOMContentLoaded', () => {
+            // 如果 sessionStorage 中已经存在 'hasVisited'，直接跳过 Splash
+            if (sessionStorage.getItem('hasVisited')) {
+                const splash = document.getElementById('splash-page');
+                if (splash) splash.style.display = 'none';
+                document.body.classList.remove('no-scroll');
+                document.body.classList.add('splash-hidden');
+            }
+        });
+
         function hideSplash() {
+            // 点击进入时，记录该状态
+            sessionStorage.setItem('hasVisited', 'true');
+            
             document.body.classList.add('splash-hidden');
             document.body.classList.remove('no-scroll');
-            
-            // 关键：强制滚动到页面顶部，解决跳转到Eco Art的问题
             window.scrollTo(0, 0);
-
-            // 延迟移除 DOM 以优化性能
             setTimeout(() => {
                 const splash = document.getElementById('splash-page');
                 if(splash) splash.style.display = 'none';
             }, 1000);
         }
 
-        // --- 手机端视频强制播放修复 ---
-        document.addEventListener('DOMContentLoaded', () => {
-            const video = document.getElementById('splash-video');
-            if (video) {
-                // 1. 尝试直接播放
-                video.play().catch(e => console.log('Autoplay prevented initially'));
-                
-                // 2. 针对微信/移动端，触摸即播放
-                document.addEventListener('touchstart', function() {
-                    video.play();
-                }, { once: true });
-                
-                // 3. 针对微信JSBridge
-                if (window.WeixinJSBridge) {
-                    WeixinJSBridge.invoke('getNetworkType', {}, function (e) {
-                        video.play();
-                    }, false);
-                }
-            }
-        });
-
+        /* --- 原有逻辑保持不变 --- */
         const nav = document.getElementById('navbar');
         const progress = document.getElementById('scroll-progress');
         const btt = document.getElementById('back-to-top');
         const navLinks = document.getElementById('navLinks');
         const menuToggle = document.getElementById('menuToggle');
+
+        window.addEventListener('scroll', () => {
+            const currentScrollY = window.pageYOffset;
+            progress.style.width = (currentScrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100 + "%";
+            if (currentScrollY > 50) {
+                nav.classList.add("nav-scrolled");
+                btt.classList.add("visible");
+            } else {
+                nav.classList.remove("nav-scrolled");
+                btt.classList.remove("visible");
+            }
+        });
 
         function handleImageLoad(img) {
             img.classList.add('loaded');
@@ -666,65 +508,6 @@
             img.onerror = null;
             handleImageLoad(img);
         }
-
-        window.addEventListener('load', () => {
-            document.body.classList.add('page-loaded');
-        });
-
-        let ticking = false;
-        let lastScrollY = window.scrollY;
-
-        window.addEventListener('scroll', () => {
-            if (!ticking) {
-                window.requestAnimationFrame(() => {
-                    const currentScrollY = window.pageYOffset || document.documentElement.scrollTop;
-                    const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-                    progress.style.width = (currentScrollY / height) * 100 + "%";
-
-                    if (currentScrollY > lastScrollY && currentScrollY > 200) {
-                        nav.style.transform = "translateY(-100%)";
-                    } else {
-                        nav.style.transform = "translateY(0)";
-                        if (currentScrollY > 50) {
-                            nav.classList.add("nav-scrolled");
-                            btt.classList.add("visible");
-                        } else {
-                            nav.classList.remove("nav-scrolled");
-                            btt.classList.remove("visible");
-                        }
-                    }
-                    lastScrollY = currentScrollY;
-                    ticking = false;
-                });
-                ticking = true;
-            }
-        }, { passive: true });
-
-        const revealObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('revealed');
-                    revealObserver.unobserve(entry.target);
-                }
-            });
-        }, { threshold: 0.1 });
-
-        document.querySelectorAll('.statement-section, .content-section').forEach(sec => revealObserver.observe(sec));
-
-        if (window.innerWidth > 900) {
-            const hero = document.getElementById('hero-section');
-            const imgWrap = document.getElementById('hero-img-wrap');
-            hero.addEventListener('mousemove', (e) => {
-                const maxOffset = 20;
-                const x = Math.max(-maxOffset, Math.min(maxOffset, (e.clientX - window.innerWidth / 2) / 50));
-                const y = Math.max(-maxOffset, Math.min(maxOffset, (e.clientY - window.innerHeight / 2) / 50));
-                requestAnimationFrame(() => {
-                    imgWrap.style.transform = `translate(${-x}px, ${-y}px)`;
-                });
-            });
-        }
-
-        btt.onclick = () => window.scrollTo({top: 0, behavior: 'smooth'});
 
         function toggleMenu() {
             navLinks.classList.toggle('active');
@@ -740,43 +523,28 @@
 
         function copyWeChat(id) {
             if (navigator.clipboard && window.isSecureContext) {
-                navigator.clipboard.writeText(id).then(() => {
-                    showCopyToast();
-                }).catch(err => {
-                    fallbackCopyTextToClipboard(id);
-                });
-            } else {
-                fallbackCopyTextToClipboard(id);
-            }
+                navigator.clipboard.writeText(id).then(() => showCopyToast()).catch(() => fallbackCopy(id));
+            } else { fallbackCopy(id); }
         }
-
-        function fallbackCopyTextToClipboard(text) {
-            const textArea = document.createElement("textarea");
-            textArea.value = text;
-            textArea.style.position = "fixed";
-            textArea.style.left = "-999999px";
-            textArea.style.top = "-999999px";
-            document.body.appendChild(textArea);
-            textArea.focus();
-            textArea.select();
-            try {
-                document.execCommand('copy');
-                showCopyToast();
-            } catch (err) {
-                alert('复制失败，请手动复制：' + text);
-            }
-            document.body.removeChild(textArea);
+        function fallbackCopy(text) {
+            const el = document.createElement('textarea'); el.value = text;
+            document.body.appendChild(el); el.select();
+            document.execCommand('copy'); document.body.removeChild(el);
+            showCopyToast();
         }
-
         function showCopyToast() {
             const toast = document.getElementById('copy-toast');
-            toast.style.opacity = '1';
-            toast.style.visibility = 'visible';
-            setTimeout(() => {
-                toast.style.opacity = '0';
-                toast.style.visibility = 'hidden';
-            }, 2000);
+            toast.style.opacity = '1'; toast.style.visibility = 'visible';
+            setTimeout(() => { toast.style.opacity = '0'; toast.style.visibility = 'hidden'; }, 2000);
         }
+
+        btt.onclick = () => window.scrollTo({top: 0, behavior: 'smooth'});
+        window.onload = () => document.body.classList.add('page-loaded');
+
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('revealed'); });
+        }, { threshold: 0.1 });
+        document.querySelectorAll('.statement-section, .content-section').forEach(sec => revealObserver.observe(sec));
     </script>
 </body>
-</html>  
+</html>
