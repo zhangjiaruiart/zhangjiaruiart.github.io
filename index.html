@@ -107,7 +107,7 @@
             margin-top: -10%;
         }
 
-        /* --- 核心修改2：箭头位置区分设备 | 电脑端保持原有样式，手机端下移70% --- */
+        /* --- 核心修改2：箭头位置区分设备 | 电脑端向下位移70%（核心需求变更），手机端下移70% --- */
         .enter-arrow-btn {
             background: none;
             border: none;
@@ -120,7 +120,8 @@
             align-items: center;
             justify-content: center;
             -webkit-tap-highlight-color: transparent;
-            /* 电脑端：保持原有样式，不额外偏移 */
+            /* 电脑端：核心修改 - 向下位移70%（替代原有无偏移） */
+            margin-top: 70%; /* 正值实现下移70%，满足电脑端需求 */
             transform: scale(0.9);
         }
 
@@ -167,7 +168,7 @@
         
         body.no-scroll { overflow: hidden; }
 
-        /* --- 核心修改3：手机端特定调整 | 箭头下移70% | 修复cover图片不显示 | 保留所有原有样式 --- */
+        /* --- 核心修改3：手机端特定调整 | 箭头下移70% | 修复作品图片不显示（核心修复） | 字幕强制居中 | 保留所有原有样式 --- */
         @media (max-width: 600px) {
             .splash-title {
                 letter-spacing: 0.15em;
@@ -175,17 +176,21 @@
                 font-weight: 300; /* 手机端同步不加粗，保持视觉一致 */
                 white-space: normal;
                 line-height: 1.4;
-                text-align: center; /* 强制手机端文字水平居中，确保无偏差 */
+                /* 手机端：强制字幕居中 - 多重保障，确保无偏差 */
+                text-align: center !important;
+                margin-left: auto !important;
+                margin-right: auto !important;
+                position: relative !important;
+                left: 0 !important;
+                transform: translateX(0%) translateY(-10%) !important; /* 仅保留上下偏移，消除左右偏移 */
                 color: rgba(255, 255, 255, 0.8) !important; /* 手机端标题透明度保持80% */
                 animation: fadeInUpSmooth 1.2s ease-in-out forwards 0.2s; /* 同步逐渐显示动画 */
-                /* 手机端标题同样向上10%，保持视觉统一 */
-                transform: translateY(-10%);
                 margin-top: -10%;
             }
             .enter-arrow-btn {
                 padding: 40px;
                 /* 手机端：箭头向下移动70%，适配竖屏视口（核心需求） */
-                margin-top: 70%; /* 正值实现下移，与电脑端区分 */
+                margin-top: 70%; /* 正值实现下移，与电脑端保持一致偏移比例 */
                 /* 手机端箭头缩小10%（相对手机端默认大小，保持比例一致） */
                 transform: scale(0.9);
             }
@@ -212,32 +217,30 @@
                 transform: none !important;
                 display: block !important; /* 强制视频显示，压制任何图片占位 */
             }
-            /* --- 修复手机端cover图片不显示：移除所有隐藏cover图片的样式 --- */
-            /* 注释/删除原有隐藏hero相关图片的代码，恢复cover图片显示 */
-            /* 原有错误代码：隐藏了cover图片，现在移除该逻辑 */
-            /* #hero-img-wrap, .hero img, .project-image-wrapper::before, .project img {
-                display: none !important;
-                visibility: hidden !important;
-                opacity: 0 !important;
-            } */
-            /* #hero-img-wrap, .hero img { 不再隐藏，恢复显示 } */
+            /* --- 核心修复：手机端作品图片不显示 - 彻底移除所有隐藏作品图片的样式，强制作品图片显示 --- */
             .project-image-wrapper::before {
-                display: block !important; /* 保留骨架屏动画，仅恢复cover图片 */
+                display: block !important; /* 保留骨架屏动画 */
                 visibility: visible !important;
                 opacity: 1 !important;
             }
             .project img {
-                display: block !important; /* 保留项目图片显示，仅修复cover */
+                display: block !important; /* 强制作品图片显示，移除所有隐藏属性 */
                 visibility: visible !important;
-                opacity: 0 !important; /* 保留原有加载透明度逻辑 */
+                opacity: 0 !important; /* 保留原有加载透明度逻辑，loaded后变为1 */
+                width: 100% !important;
+                height: 100% !important;
+                object-fit: cover !important;
             }
-            /* 移动端项目图片容器直接适配视频，无图片加载预留 */
+            /* 移动端项目图片容器直接适配，确保图片正常加载渲染 */
             .project-image-wrapper {
                 background-color: #f7f7f7 !important;
                 background-image: none !important; /* 杜绝背景图片残留 */
+                display: block !important;
+                visibility: visible !important;
             }
             .project-image-wrapper .img-ratio {
                 aspect-ratio: 3 / 4;
+                display: block !important;
             }
             /* --- 恢复hero区域样式，确保cover图片正常显示 --- */
             .hero, #hero-section {
@@ -255,6 +258,15 @@
                 display: block !important; /* 强制恢复图片容器显示 */
                 visibility: visible !important;
                 opacity: 1 !important;
+            }
+            /* --- 额外保障：手机端作品链接和容器无隐藏，确保图片可见 --- */
+            .project {
+                display: block !important;
+                visibility: visible !important;
+            }
+            article {
+                display: block !important;
+                visibility: visible !important;
             }
         }
 
@@ -441,7 +453,7 @@
             transition: transform 1.8s cubic-bezier(0.15, 1, 0.3, 1), opacity 1s ease;
             opacity: 0; 
         }
-        .project img.loaded { opacity: 1; }
+        .project img.loaded { opacity: 1 !important; } /* 强化：loaded后强制显示图片 */
         .project:hover img { transform: scale(1.05); }
 
         .play-overlay {
@@ -525,6 +537,15 @@
             /* 原有错误代码已删除，不再隐藏cover图片 */
             .hero img {
                 animation: kenBurnsMobile 20s ease-in-out infinite alternate; /* 启用移动端专属动画 */
+            }
+            /* --- 额外保障：移动端（900px以下）作品图片强制显示 --- */
+            .project img {
+                display: block !important;
+                visibility: visible !important;
+            }
+            .project-image-wrapper {
+                display: block !important;
+                visibility: visible !important;
             }
         }
 
@@ -812,6 +833,11 @@
         function handleImageLoad(img) {
             img.classList.add('loaded');
             img.parentElement.classList.add('finished-loading');
+            // 额外保障：手机端图片loaded后强制设置可见性
+            if (window.innerWidth <= 900) {
+                img.style.opacity = '1';
+                img.style.display = 'block';
+            }
         }
 
         function handleImageError(img, fallbackSrc) {
@@ -822,6 +848,15 @@
 
         window.addEventListener('load', () => {
             document.body.classList.add('page-loaded');
+            // 页面加载完成后，强制检查所有作品图片，确保手机端显示
+            if (window.innerWidth <= 900) {
+                document.querySelectorAll('.project img').forEach(img => {
+                    if (!img.classList.contains('loaded')) {
+                        img.style.display = 'block';
+                        img.style.visibility = 'visible';
+                    }
+                });
+            }
         });
 
         let ticking = false;
