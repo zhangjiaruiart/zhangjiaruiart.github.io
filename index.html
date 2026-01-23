@@ -141,7 +141,7 @@
         
         body.no-scroll { overflow: hidden; }
 
-        /* --- 手机端特定调整 --- */
+        /* --- 手机端特定调整（核心优化：解决横屏图片/视频难看问题）--- */
         @media (max-width: 600px) {
             .splash-title {
                 letter-spacing: 0.15em;
@@ -155,11 +155,32 @@
             .arrow-icon {
                 width: 40px;
             }
-            /* 移动端强制视频适配 */
+            /* 移动端强制视频完全适配竖屏，消除横屏观感 */
             #splash-video {
-                width: 100vw;
-                height: 100vh;
+                width: 100vw !important;
+                height: 100vh !important;
+                min-width: unset !important;
+                min-height: unset !important;
                 object-fit: cover !important;
+                object-position: center center !important; /* 强制居中裁剪，优先保留核心内容 */
+            }
+            /* 移动端英雄区图片优化，适配竖屏 */
+            #hero-img-wrap {
+                width: 100% !important;
+                height: 100% !important;
+                top: 0 !important;
+                left: 0 !important;
+            }
+            .hero img {
+                object-position: center center !important; /* 竖屏居中显示，避免横屏偏移 */
+                animation: kenBurnsMobile 20s ease-in-out infinite alternate; /* 适配竖屏的缓慢缩放动画 */
+            }
+            /* 移动端项目图片优化，避免变形 */
+            .project img {
+                object-position: center center !important;
+            }
+            .project-image-wrapper .img-ratio {
+                aspect-ratio: 3 / 4; /* 竖屏更舒适的图片比例 */
             }
         }
 
@@ -246,6 +267,12 @@
         @keyframes kenBurns {
             0% { transform: scale(1); }
             100% { transform: scale(1.08); }
+        }
+
+        /* 新增：移动端专属的Ken Burns动画，更柔和，适配竖屏 */
+        @keyframes kenBurnsMobile {
+            0% { transform: scale(1.02); }
+            100% { transform: scale(1.1); }
         }
 
         .hero-overlay {
@@ -413,6 +440,13 @@
             .contact-row { flex-direction: column; gap: 45px; }
             .divider { display: none; }
             .contact-value { font-size: 15px; padding: 8px 0; }
+            /* 补充：移动端返回顶部按钮位置优化，避免遮挡 */
+            #back-to-top {
+                bottom: 30px;
+                right: 20px;
+                width: 36px;
+                height: 36px;
+            }
         }
 
         footer { padding: 60px 5% 40px; text-align: center; border-top: 1px solid #f9f9f9; font-size: 9px; letter-spacing: 0.4em; color: #ccc; text-transform: uppercase; }
