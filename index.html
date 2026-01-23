@@ -28,11 +28,13 @@
 
         /* --- Splash Page (欢迎页) 终极优化 --- */
         /* --- Splash Page (欢迎页) 终极优化 --- */
+/* --- Splash Page (欢迎页) 终极优化 --- */
 #splash-page {
     position: fixed;
     top: 0; left: 0; width: 100%; height: 100%;
     z-index: 99999; 
-    background-color: #000; 
+    /* 核心：用封面图做兜底，视频加载后覆盖 */
+    background: #000 url('images/cover.webp') center/cover no-repeat;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -50,14 +52,18 @@
     object-fit: cover;
     filter: brightness(0.7);
     z-index: -1;
-    background: #000;
-    /* 新增：强制视频预加载 + 消除黑屏/首帧问题 */
-    object-position: center;
-    preload: auto;
-    display: block !important;
-    /* 关键修复：默认不透明，避免黑屏 */
+    /* 强制视频默认显示，不透明 */
     opacity: 1 !important;
+    display: block !important;
+    preload: "auto";
+    object-position: center;
 }
+
+/* 强制隐藏所有视频控件 */
+video::-webkit-media-controls { display: none !important; }
+video::-webkit-media-controls-enclosure { display: none !important; }
+
+/* 移除重复的 #splash-page 定义和多余的 ::before 伪类 */
 
 /* 新增：给视频容器加视频第一帧截图兜底，彻底解决黑屏 */
 #splash-page {
@@ -658,205 +664,184 @@ video::-webkit-media-controls-enclosure { display: none !important; }
          * 解决“返回上一页回到splash”的问题
          */
         // --- 手机端视频强制播放修复 ---
+// --- Splash Page 核心控制逻辑 ---
 document.addEventListener('DOMContentLoaded', () => {
-            const video = document.getElementById('splash-video');
-            const splash = document.getElementById('splash-page');
+    const video = document.getElementById('splash-video');
+    const splashPage = document.getElementById('splash-page');
+    
+    // 1. 检查会话状态，避免返回时重复显示欢迎页
+    if (sessionStorage.getItem('hasVisited')) {
+        hideSplash();
+        return;
+    }
 
-            // 检查是否已访问过，避免返回时闪烁
-            if (sessionStorage.getItem('hasVisited')) {
-                if (splash) splash.style.display = 'none';
-                document.body.classList.remove('no-scroll');
-                document.body.classList.add('splash-hidden');
-                return;
-            }
-
-            if (video) {
-                // 核心逻辑：视频数据加载够了再显示，防止出现第一帧外的内容
-                video.onloadeddata = () => {
-                    video.style.opacity = "1";
-                };
-
-                video.play().catch(e => console.log('Autoplay waiting'));
-                
-                // 兼容移动端自动播放
-                document.addEventListener('touchstart', () => { video.play(); }, { once: true });
-                if (window.WeixinJSBridge) {
-                    WeixinJSBridge.invoke('getNetworkType', {}, () => { video.play(); }, false);
-                }
-            }
-        });
+    // 2. 视频加载和播放修复（核心：立即显示兜底图，视频加载后无缝衔接）
+    if (video) {
+        // 强制视频加载元数据，优先显示首帧
+        video.preload = 'auto';
+        video.load();
         
-        // 2. 针对微信/移动端，触摸即播放
-        document.addEventListener('touchstart', function() {
+        // 视频加载出首帧后立即播放，覆盖兜底图
+        video.addEventListener('loadedmetadata', () => {
+            video.play().catch(() => {
+                // 自动播放失败时，至少保证视频首帧显示（无黑屏）
+                video.style.display = 'block';
+            });
+        });
+
+        // 兼容移动端/微信播放
+        const playVideo = () => {
             video.play();
-            video.style.opacity = "1";
-        }, { once: true });
-        
-        // 3. 针对微信JSBridge
+            video.style.opacity = '1';
+        };
+        document.addEventListener('touchstart', playVideo, { once: true });
         if (window.WeixinJSBridge) {
-            WeixinJSBridge.invoke('getNetworkType', {}, function (e) {
-                video.play();
-                video.style.opacity = "1";
-            }, false);
+            WeixinJSBridge.invoke('getNetworkType', {}, playVideo);
         }
-        
-        // 关键修改3：监听视频加载完成事件，确保无黑屏
-        video.addEventListener('loadeddata', function() {
-            video.style.opacity = "1";
-        });
-        
-        // 关键修改4：视频加载失败时仍保持黑色背景，避免异常图片
-        video.addEventListener('error', function() {
-            video.style.display = "none";
-        });
     }
 });
 
-        function hideSplash() {
-            // 用户点击进入按钮时，记录“已访问”状态到会话缓存
-            sessionStorage.setItem('hasVisited', 'true');
-            
-            document.body.classList.add('splash-hidden');
-            document.body.classList.remove('no-scroll');
-            
-            // 强制滚动到页面顶部
-            window.scrollTo(0, 0);
+// 隐藏欢迎页的核心函数
+function hideSplash() {
+    sessionStorage.setItem('hasVisited', 'true');
+    document.body.classList.add('splash-hidden');
+    document.body.classList.remove('no-scroll');
+    window.scrollTo(0, 0);
+    
+    setTimeout(() => {
+        const splash = document.getElementById('splash-page');
+        if (splash) splash.style.display = 'none';
+    }, 1000);
+}
 
-            // 延迟移除 DOM 以优化性能
-            setTimeout(() => {
-                const splash = document.getElementById('splash-page');
-                if(splash) splash.style.display = 'none';
-            }, 1000);
-        }
+/* --- 以下是原有功能逻辑，保持不变 --- */
+const nav = document.getElementById('navbar');
+const progress = document.getElementById('scroll-progress');
+const btt = document.getElementById('back-to-top');
+const navLinks = document.getElementById('navLinks');
+const menuToggle = document.getElementById('menuToggle');
 
-        /* --- 原有功能逻辑保持不变 --- */
-        const nav = document.getElementById('navbar');
-        const progress = document.getElementById('scroll-progress');
-        const btt = document.getElementById('back-to-top');
-        const navLinks = document.getElementById('navLinks');
-        const menuToggle = document.getElementById('menuToggle');
+function handleImageLoad(img) {
+    img.classList.add('loaded');
+    img.parentElement.classList.add('finished-loading');
+}
 
-        function handleImageLoad(img) {
-            img.classList.add('loaded');
-            img.parentElement.classList.add('finished-loading');
-        }
+function handleImageError(img, fallbackSrc) {
+    img.src = fallbackSrc;
+    img.onerror = null;
+    handleImageLoad(img);
+}
 
-        function handleImageError(img, fallbackSrc) {
-            img.src = fallbackSrc;
-            img.onerror = null;
-            handleImageLoad(img);
-        }
+window.addEventListener('load', () => {
+    document.body.classList.add('page-loaded');
+});
 
-        window.addEventListener('load', () => {
-            document.body.classList.add('page-loaded');
-        });
+let ticking = false;
+let lastScrollY = window.scrollY;
 
-        let ticking = false;
-        let lastScrollY = window.scrollY;
+window.addEventListener('scroll', () => {
+    if (!ticking) {
+        window.requestAnimationFrame(() => {
+            const currentScrollY = window.pageYOffset || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            progress.style.width = (currentScrollY / height) * 100 + "%";
 
-        window.addEventListener('scroll', () => {
-            if (!ticking) {
-                window.requestAnimationFrame(() => {
-                    const currentScrollY = window.pageYOffset || document.documentElement.scrollTop;
-                    const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-                    progress.style.width = (currentScrollY / height) * 100 + "%";
-
-                    if (currentScrollY > lastScrollY && currentScrollY > 200) {
-                        nav.style.transform = "translateY(-100%)";
-                    } else {
-                        nav.style.transform = "translateY(0)";
-                        if (currentScrollY > 50) {
-                            nav.classList.add("nav-scrolled");
-                            btt.classList.add("visible");
-                        } else {
-                            nav.classList.remove("nav-scrolled");
-                            btt.classList.remove("visible");
-                        }
-                    }
-                    lastScrollY = currentScrollY;
-                    ticking = false;
-                });
-                ticking = true;
-            }
-        }, { passive: true });
-
-        const revealObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('revealed');
-                    revealObserver.unobserve(entry.target);
-                }
-            });
-        }, { threshold: 0.1 });
-
-        document.querySelectorAll('.statement-section, .content-section').forEach(sec => revealObserver.observe(sec));
-
-        if (window.innerWidth > 900) {
-            const hero = document.getElementById('hero-section');
-            const imgWrap = document.getElementById('hero-img-wrap');
-            hero.addEventListener('mousemove', (e) => {
-                const maxOffset = 20;
-                const x = Math.max(-maxOffset, Math.min(maxOffset, (e.clientX - window.innerWidth / 2) / 50));
-                const y = Math.max(-maxOffset, Math.min(maxOffset, (e.clientY - window.innerHeight / 2) / 50));
-                requestAnimationFrame(() => {
-                    imgWrap.style.transform = `translate(${-x}px, ${-y}px)`;
-                });
-            });
-        }
-
-        btt.onclick = () => window.scrollTo({top: 0, behavior: 'smooth'});
-
-        function toggleMenu() {
-            navLinks.classList.toggle('active');
-            menuToggle.classList.toggle('active');
-            document.body.style.overflow = navLinks.classList.contains('active') ? 'hidden' : 'auto';
-        }
-        function closeMenu() {
-            navLinks.classList.remove('active');
-            menuToggle.classList.remove('active');
-            document.body.style.overflow = 'auto';
-        }
-        menuToggle.onclick = toggleMenu;
-
-        function copyWeChat(id) {
-            if (navigator.clipboard && window.isSecureContext) {
-                navigator.clipboard.writeText(id).then(() => {
-                    showCopyToast();
-                }).catch(err => {
-                    fallbackCopyTextToClipboard(id);
-                });
+            if (currentScrollY > lastScrollY && currentScrollY > 200) {
+                nav.style.transform = "translateY(-100%)";
             } else {
-                fallbackCopyTextToClipboard(id);
+                nav.style.transform = "translateY(0)";
+                if (currentScrollY > 50) {
+                    nav.classList.add("nav-scrolled");
+                    btt.classList.add("visible");
+                } else {
+                    nav.classList.remove("nav-scrolled");
+                    btt.classList.remove("visible");
+                }
             }
-        }
+            lastScrollY = currentScrollY;
+            ticking = false;
+        });
+        ticking = true;
+    }
+}, { passive: true });
 
-        function fallbackCopyTextToClipboard(text) {
-            const textArea = document.createElement("textarea");
-            textArea.value = text;
-            textArea.style.position = "fixed";
-            textArea.style.left = "-999999px";
-            textArea.style.top = "-999999px";
-            document.body.appendChild(textArea);
-            textArea.focus();
-            textArea.select();
-            try {
-                document.execCommand('copy');
-                showCopyToast();
-            } catch (err) {
-                alert('复制失败，请手动复制：' + text);
-            }
-            document.body.removeChild(textArea);
+const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add('revealed');
+            revealObserver.unobserve(entry.target);
         }
+    });
+}, { threshold: 0.1 });
 
-        function showCopyToast() {
-            const toast = document.getElementById('copy-toast');
-            toast.style.opacity = '1';
-            toast.style.visibility = 'visible';
-            setTimeout(() => {
-                toast.style.opacity = '0';
-                toast.style.visibility = 'hidden';
-            }, 2000);
-        }
+document.querySelectorAll('.statement-section, .content-section').forEach(sec => revealObserver.observe(sec));
+
+if (window.innerWidth > 900) {
+    const hero = document.getElementById('hero-section');
+    const imgWrap = document.getElementById('hero-img-wrap');
+    hero.addEventListener('mousemove', (e) => {
+        const maxOffset = 20;
+        const x = Math.max(-maxOffset, Math.min(maxOffset, (e.clientX - window.innerWidth / 2) / 50));
+        const y = Math.max(-maxOffset, Math.min(maxOffset, (e.clientY - window.innerHeight / 2) / 50));
+        requestAnimationFrame(() => {
+            imgWrap.style.transform = `translate(${-x}px, ${-y}px)`;
+        });
+    });
+}
+
+btt.onclick = () => window.scrollTo({top: 0, behavior: 'smooth'});
+
+function toggleMenu() {
+    navLinks.classList.toggle('active');
+    menuToggle.classList.toggle('active');
+    document.body.style.overflow = navLinks.classList.contains('active') ? 'hidden' : 'auto';
+}
+function closeMenu() {
+    navLinks.classList.remove('active');
+    menuToggle.classList.remove('active');
+    document.body.style.overflow = 'auto';
+}
+menuToggle.onclick = toggleMenu;
+
+function copyWeChat(id) {
+    if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(id).then(() => {
+            showCopyToast();
+        }).catch(err => {
+            fallbackCopyTextToClipboard(id);
+        });
+    } else {
+        fallbackCopyTextToClipboard(id);
+    }
+}
+
+function fallbackCopyTextToClipboard(text) {
+    const textArea = document.createElement("textarea");
+    textArea.value = text;
+    textArea.style.position = "fixed";
+    textArea.style.left = "-999999px";
+    textArea.style.top = "-999999px";
+    document.body.appendChild(textArea);
+    textArea.focus();
+    textArea.select();
+    try {
+        document.execCommand('copy');
+        showCopyToast();
+    } catch (err) {
+        alert('复制失败，请手动复制：' + text);
+    }
+    document.body.removeChild(textArea);
+}
+
+function showCopyToast() {
+    const toast = document.getElementById('copy-toast');
+    toast.style.opacity = '1';
+    toast.style.visibility = 'visible';
+    setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.visibility = 'hidden';
+    }, 2000);
+}
     </script>
 </body>
 </html>  
