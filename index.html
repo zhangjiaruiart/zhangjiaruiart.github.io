@@ -8,6 +8,7 @@
     <link rel="icon" href="images/favicon.svg" type="image/svg+xml">
     <link rel="icon" href="images/favicon.png" type="image/png" sizes="32x32">
     <link rel="apple-touch-icon" href="images/favicon.png">
+    <!-- 优先预加载兜底图，确保页面加载瞬间显示 -->
     <link rel="preload" as="image" href="images/cover.webp" fetchpriority="high">
 
     <style>
@@ -26,78 +27,42 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        /* --- Splash Page (欢迎页) 终极优化 --- */
-        /* --- Splash Page (欢迎页) 终极优化 --- */
-/* --- Splash Page (欢迎页) 终极优化 --- */
-#splash-page {
-    position: fixed;
-    top: 0; left: 0; width: 100%; height: 100%;
-    z-index: 99999; 
-    /* 核心：用封面图做兜底，视频加载后覆盖 */
-    background: #000 url('images/cover.webp') center/cover no-repeat;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    transition: transform 1s cubic-bezier(0.85, 0, 0.15, 1), opacity 1s ease;
-    overflow: hidden;
-}
+        /* --- Splash Page (欢迎页) 终极优化 - 唯一无重复定义 --- */
+        #splash-page {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 99999; 
+            /* 核心兜底：优先显示封面图，视频加载后覆盖 */
+            background: #000 url('images/cover.webp') center/cover no-repeat;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: transform 1s cubic-bezier(0.85, 0, 0.15, 1), opacity 1s ease;
+            overflow: hidden;
+        }
 
-#splash-video {
-    position: absolute;
-    top: 50%; left: 50%;
-    min-width: 100%; min-height: 100%;
-    width: auto; height: auto;
-    transform: translate(-50%, -50%);
-    object-fit: cover;
-    filter: brightness(0.7);
-    z-index: -1;
-    /* 强制视频默认显示，不透明 */
-    opacity: 1 !important;
-    display: block !important;
-    preload: "auto";
-    object-position: center;
-}
+        #splash-video {
+            position: absolute;
+            top: 50%; left: 50%;
+            min-width: 100%; min-height: 100%;
+            width: auto; height: auto;
+            transform: translate(-50%, -50%);
+            object-fit: cover;
+            filter: brightness(0.7);
+            z-index: -1;
+            /* 强制视频默认显示，无透明/黑屏 */
+            opacity: 1 !important;
+            display: block !important;
+            preload: auto;
+            object-position: center;
+        }
 
-/* 强制隐藏所有视频控件 */
-video::-webkit-media-controls { display: none !important; }
-video::-webkit-media-controls-enclosure { display: none !important; }
-
-/* 移除重复的 #splash-page 定义和多余的 ::before 伪类 */
-
-/* 新增：给视频容器加视频第一帧截图兜底，彻底解决黑屏 */
-#splash-page {
-    position: fixed;
-    top: 0; left: 0; width: 100%; height: 100%;
-    z-index: 99999; 
-    background-color: #000; 
-    /* 新增：添加视频第一帧作为背景图（你需要替换为自己的视频首帧图片路径） */
-    background-image: url('images/hero-bg-first-frame.webp');
-    background-size: cover;
-    background-position: center;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    transition: transform 1s cubic-bezier(0.85, 0, 0.15, 1), opacity 1s ease;
-    overflow: hidden;
-}
-
-/* 新增：解决手机端黑屏/电脑端首帧异常 */
-#splash-page::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: #000;
-    z-index: -2;
-}
-
-/* 强制隐藏所有移动端视频控件 */
-video::-webkit-media-controls { display: none !important; }
-video::-webkit-media-controls-enclosure { display: none !important; }
+        /* 强制隐藏所有视频控件 */
+        video::-webkit-media-controls,
+        video::-webkit-media-controls-enclosure { 
+            display: none !important; 
+        }
 
         .splash-content {
             text-align: center;
@@ -192,7 +157,6 @@ video::-webkit-media-controls-enclosure { display: none !important; }
         }
 
         /* --- 原有布局保持不变 --- */
-        
         #scroll-progress {
             position: fixed; top: 0; left: 0; width: 0%; height: 2px;
             background: var(--main-color); z-index: 3000; transition: width 0.1s ease-out;
@@ -447,17 +411,18 @@ video::-webkit-media-controls-enclosure { display: none !important; }
         footer { padding: 60px 5% 40px; text-align: center; border-top: 1px solid #f9f9f9; font-size: 9px; letter-spacing: 0.4em; color: #ccc; text-transform: uppercase; }
     </style>
 </head>
-<body class="no-scroll"> <div id="splash-page">
-    <video id="splash-video" autoplay loop muted playsinline webkit-playsinline x5-playsinline x5-video-player-type="h5">
-        <source src="images/hero-bg.mp4" type="video/mp4">
-    </video>
-    <div class="splash-content">
-        <h1 class="splash-title">ZHANGJIARUI</h1>
-        <button class="enter-arrow-btn" onclick="hideSplash()" aria-label="Enter Portfolio">
-            <div class="arrow-icon"></div>
-        </button>
+<body class="no-scroll"> 
+    <div id="splash-page">
+        <video id="splash-video" autoplay loop muted playsinline webkit-playsinline x5-playsinline x5-video-player-type="h5">
+            <source src="images/hero-bg.mp4" type="video/mp4">
+        </video>
+        <div class="splash-content">
+            <h1 class="splash-title">ZHANGJIARUI</h1>
+            <button class="enter-arrow-btn" onclick="hideSplash()" aria-label="Enter Portfolio">
+                <div class="arrow-icon"></div>
+            </button>
+        </div>
     </div>
-</div>
 
     <div id="scroll-progress"></div>
     <div id="copy-toast">ID COPIED</div>
@@ -657,191 +622,184 @@ video::-webkit-media-controls-enclosure { display: none !important; }
     <footer>&copy; 2026 ZHANGJIARUI ARTWORKS.</footer>
 
     <script>
-       // --- Splash Page 控制逻辑 ---
-        
-        /**
-         * 核心修改：检查当前会话是否已看过欢迎页
-         * 解决“返回上一页回到splash”的问题
-         */
-        // --- 手机端视频强制播放修复 ---
-// --- Splash Page 核心控制逻辑 ---
-document.addEventListener('DOMContentLoaded', () => {
-    const video = document.getElementById('splash-video');
-    const splashPage = document.getElementById('splash-page');
-    
-    // 1. 检查会话状态，避免返回时重复显示欢迎页
-    if (sessionStorage.getItem('hasVisited')) {
-        hideSplash();
-        return;
-    }
+        // --- Splash Page 核心控制逻辑 ---
+        document.addEventListener('DOMContentLoaded', () => {
+            const video = document.getElementById('splash-video');
+            const splashPage = document.getElementById('splash-page');
+            
+            // 1. 检查会话状态，避免返回时重复显示欢迎页
+            if (sessionStorage.getItem('hasVisited')) {
+                hideSplash();
+                return;
+            }
 
-    // 2. 视频加载和播放修复（核心：立即显示兜底图，视频加载后无缝衔接）
-    if (video) {
-        // 强制视频加载元数据，优先显示首帧
-        video.preload = 'auto';
-        video.load();
-        
-        // 视频加载出首帧后立即播放，覆盖兜底图
-        video.addEventListener('loadedmetadata', () => {
-            video.play().catch(() => {
-                // 自动播放失败时，至少保证视频首帧显示（无黑屏）
-                video.style.display = 'block';
-            });
-        });
+            // 2. 视频加载和播放优化（确保首帧优先显示）
+            if (video) {
+                // 强制视频最高优先级加载
+                video.preload = 'auto';
+                video.load();
+                
+                // 视频加载出首帧后立即播放，覆盖兜底图
+                video.addEventListener('loadedmetadata', () => {
+                    video.play().catch(() => {
+                        // 自动播放失败时，至少保证视频首帧显示（无黑屏）
+                        video.style.display = 'block';
+                    });
+                });
 
-        // 兼容移动端/微信播放
-        const playVideo = () => {
-            video.play();
-            video.style.opacity = '1';
-        };
-        document.addEventListener('touchstart', playVideo, { once: true });
-        if (window.WeixinJSBridge) {
-            WeixinJSBridge.invoke('getNetworkType', {}, playVideo);
-        }
-    }
-});
-
-// 隐藏欢迎页的核心函数
-function hideSplash() {
-    sessionStorage.setItem('hasVisited', 'true');
-    document.body.classList.add('splash-hidden');
-    document.body.classList.remove('no-scroll');
-    window.scrollTo(0, 0);
-    
-    setTimeout(() => {
-        const splash = document.getElementById('splash-page');
-        if (splash) splash.style.display = 'none';
-    }, 1000);
-}
-
-/* --- 以下是原有功能逻辑，保持不变 --- */
-const nav = document.getElementById('navbar');
-const progress = document.getElementById('scroll-progress');
-const btt = document.getElementById('back-to-top');
-const navLinks = document.getElementById('navLinks');
-const menuToggle = document.getElementById('menuToggle');
-
-function handleImageLoad(img) {
-    img.classList.add('loaded');
-    img.parentElement.classList.add('finished-loading');
-}
-
-function handleImageError(img, fallbackSrc) {
-    img.src = fallbackSrc;
-    img.onerror = null;
-    handleImageLoad(img);
-}
-
-window.addEventListener('load', () => {
-    document.body.classList.add('page-loaded');
-});
-
-let ticking = false;
-let lastScrollY = window.scrollY;
-
-window.addEventListener('scroll', () => {
-    if (!ticking) {
-        window.requestAnimationFrame(() => {
-            const currentScrollY = window.pageYOffset || document.documentElement.scrollTop;
-            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-            progress.style.width = (currentScrollY / height) * 100 + "%";
-
-            if (currentScrollY > lastScrollY && currentScrollY > 200) {
-                nav.style.transform = "translateY(-100%)";
-            } else {
-                nav.style.transform = "translateY(0)";
-                if (currentScrollY > 50) {
-                    nav.classList.add("nav-scrolled");
-                    btt.classList.add("visible");
-                } else {
-                    nav.classList.remove("nav-scrolled");
-                    btt.classList.remove("visible");
+                // 兼容移动端/微信播放
+                const playVideo = () => {
+                    video.play();
+                    video.style.opacity = '1';
+                };
+                document.addEventListener('touchstart', playVideo, { once: true });
+                if (window.WeixinJSBridge) {
+                    WeixinJSBridge.invoke('getNetworkType', {}, playVideo);
                 }
             }
-            lastScrollY = currentScrollY;
-            ticking = false;
         });
-        ticking = true;
-    }
-}, { passive: true });
 
-const revealObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            entry.target.classList.add('revealed');
-            revealObserver.unobserve(entry.target);
+        // 隐藏欢迎页的核心函数
+        function hideSplash() {
+            sessionStorage.setItem('hasVisited', 'true');
+            document.body.classList.add('splash-hidden');
+            document.body.classList.remove('no-scroll');
+            window.scrollTo(0, 0);
+            
+            setTimeout(() => {
+                const splash = document.getElementById('splash-page');
+                if (splash) splash.style.display = 'none';
+            }, 1000);
         }
-    });
-}, { threshold: 0.1 });
 
-document.querySelectorAll('.statement-section, .content-section').forEach(sec => revealObserver.observe(sec));
+        /* --- 原有功能逻辑完全保留 --- */
+        const nav = document.getElementById('navbar');
+        const progress = document.getElementById('scroll-progress');
+        const btt = document.getElementById('back-to-top');
+        const navLinks = document.getElementById('navLinks');
+        const menuToggle = document.getElementById('menuToggle');
 
-if (window.innerWidth > 900) {
-    const hero = document.getElementById('hero-section');
-    const imgWrap = document.getElementById('hero-img-wrap');
-    hero.addEventListener('mousemove', (e) => {
-        const maxOffset = 20;
-        const x = Math.max(-maxOffset, Math.min(maxOffset, (e.clientX - window.innerWidth / 2) / 50));
-        const y = Math.max(-maxOffset, Math.min(maxOffset, (e.clientY - window.innerHeight / 2) / 50));
-        requestAnimationFrame(() => {
-            imgWrap.style.transform = `translate(${-x}px, ${-y}px)`;
+        function handleImageLoad(img) {
+            img.classList.add('loaded');
+            img.parentElement.classList.add('finished-loading');
+        }
+
+        function handleImageError(img, fallbackSrc) {
+            img.src = fallbackSrc;
+            img.onerror = null;
+            handleImageLoad(img);
+        }
+
+        window.addEventListener('load', () => {
+            document.body.classList.add('page-loaded');
         });
-    });
-}
 
-btt.onclick = () => window.scrollTo({top: 0, behavior: 'smooth'});
+        let ticking = false;
+        let lastScrollY = window.scrollY;
 
-function toggleMenu() {
-    navLinks.classList.toggle('active');
-    menuToggle.classList.toggle('active');
-    document.body.style.overflow = navLinks.classList.contains('active') ? 'hidden' : 'auto';
-}
-function closeMenu() {
-    navLinks.classList.remove('active');
-    menuToggle.classList.remove('active');
-    document.body.style.overflow = 'auto';
-}
-menuToggle.onclick = toggleMenu;
+        window.addEventListener('scroll', () => {
+            if (!ticking) {
+                window.requestAnimationFrame(() => {
+                    const currentScrollY = window.pageYOffset || document.documentElement.scrollTop;
+                    const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+                    progress.style.width = (currentScrollY / height) * 100 + "%";
 
-function copyWeChat(id) {
-    if (navigator.clipboard && window.isSecureContext) {
-        navigator.clipboard.writeText(id).then(() => {
-            showCopyToast();
-        }).catch(err => {
-            fallbackCopyTextToClipboard(id);
-        });
-    } else {
-        fallbackCopyTextToClipboard(id);
-    }
-}
+                    if (currentScrollY > lastScrollY && currentScrollY > 200) {
+                        nav.style.transform = "translateY(-100%)";
+                    } else {
+                        nav.style.transform = "translateY(0)";
+                        if (currentScrollY > 50) {
+                            nav.classList.add("nav-scrolled");
+                            btt.classList.add("visible");
+                        } else {
+                            nav.classList.remove("nav-scrolled");
+                            btt.classList.remove("visible");
+                        }
+                    }
+                    lastScrollY = currentScrollY;
+                    ticking = false;
+                });
+                ticking = true;
+            }
+        }, { passive: true });
 
-function fallbackCopyTextToClipboard(text) {
-    const textArea = document.createElement("textarea");
-    textArea.value = text;
-    textArea.style.position = "fixed";
-    textArea.style.left = "-999999px";
-    textArea.style.top = "-999999px";
-    document.body.appendChild(textArea);
-    textArea.focus();
-    textArea.select();
-    try {
-        document.execCommand('copy');
-        showCopyToast();
-    } catch (err) {
-        alert('复制失败，请手动复制：' + text);
-    }
-    document.body.removeChild(textArea);
-}
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('revealed');
+                    revealObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1 });
 
-function showCopyToast() {
-    const toast = document.getElementById('copy-toast');
-    toast.style.opacity = '1';
-    toast.style.visibility = 'visible';
-    setTimeout(() => {
-        toast.style.opacity = '0';
-        toast.style.visibility = 'hidden';
-    }, 2000);
-}
+        document.querySelectorAll('.statement-section, .content-section').forEach(sec => revealObserver.observe(sec));
+
+        if (window.innerWidth > 900) {
+            const hero = document.getElementById('hero-section');
+            const imgWrap = document.getElementById('hero-img-wrap');
+            hero.addEventListener('mousemove', (e) => {
+                const maxOffset = 20;
+                const x = Math.max(-maxOffset, Math.min(maxOffset, (e.clientX - window.innerWidth / 2) / 50));
+                const y = Math.max(-maxOffset, Math.min(maxOffset, (e.clientY - window.innerHeight / 2) / 50));
+                requestAnimationFrame(() => {
+                    imgWrap.style.transform = `translate(${-x}px, ${-y}px)`;
+                });
+            });
+        }
+
+        btt.onclick = () => window.scrollTo({top: 0, behavior: 'smooth'});
+
+        function toggleMenu() {
+            navLinks.classList.toggle('active');
+            menuToggle.classList.toggle('active');
+            document.body.style.overflow = navLinks.classList.contains('active') ? 'hidden' : 'auto';
+        }
+        function closeMenu() {
+            navLinks.classList.remove('active');
+            menuToggle.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+        menuToggle.onclick = toggleMenu;
+
+        function copyWeChat(id) {
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(id).then(() => {
+                    showCopyToast();
+                }).catch(err => {
+                    fallbackCopyTextToClipboard(id);
+                });
+            } else {
+                fallbackCopyTextToClipboard(id);
+            }
+        }
+
+        function fallbackCopyTextToClipboard(text) {
+            const textArea = document.createElement("textarea");
+            textArea.value = text;
+            textArea.style.position = "fixed";
+            textArea.style.left = "-999999px";
+            textArea.style.top = "-999999px";
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+            try {
+                document.execCommand('copy');
+                showCopyToast();
+            } catch (err) {
+                alert('复制失败，请手动复制：' + text);
+            }
+            document.body.removeChild(textArea);
+        }
+
+        function showCopyToast() {
+            const toast = document.getElementById('copy-toast');
+            toast.style.opacity = '1';
+            toast.style.visibility = 'visible';
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.visibility = 'hidden';
+            }, 2000);
+        }
     </script>
 </body>
-</html>  
+</html>
