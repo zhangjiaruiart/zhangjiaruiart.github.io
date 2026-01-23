@@ -90,7 +90,7 @@
         /* --- 核心修改：标题文字透明度80%，隐隐约约浮现 --- */
         .splash-title {
             font-size: clamp(20px, 8vw, 70px);
-            font-weight: 300;
+            font-weight: bold; /* 新增：实现文字加粗 */
             letter-spacing: 0.2em;
             text-transform: uppercase;
             margin-bottom: 0; /* 移除默认下边距，改为通过布局控制箭头位置 */
@@ -162,6 +162,7 @@
             .splash-title {
                 letter-spacing: 0.15em;
                 font-size: 32px;
+                font-weight: bold; /* 手机端同步加粗，保持视觉一致 */
                 white-space: normal;
                 line-height: 1.4;
                 color: rgba(255, 255, 255, 0.8) !important; /* 手机端标题透明度保持80% */
@@ -490,7 +491,8 @@
             <source src="images/hero-bg.mp4" type="video/mp4">
         </video>
         <div class="splash-content">
-            <h1 class="splash-title">ZHANGJIARUI</h1>
+            <!-- 核心修改：文字改为 ZHANG JIA RUI（带空格、大写） -->
+            <h1 class="splash-title">ZHANG JIA RUI</h1>
             <button class="enter-arrow-btn" onclick="hideSplash()" aria-label="Enter Portfolio">
                 <div class="arrow-icon"></div>
             </button>
