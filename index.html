@@ -25,6 +25,8 @@
             --white-alpha-80: rgba(255, 255, 255, 0.8);
             --black-alpha-80: rgba(17, 17, 17, 0.8);
             --white-alpha-90: rgba(255, 255, 255, 0.9); /* 补充缺失变量 */
+            /* ✅ 新增：统一的视觉滤镜参数，确保封面和视频色差一致 */
+            --splash-filter: brightness(0.7) contrast(0.95) saturate(0.98);
         }
 
         /* 重置样式 - 精简统一 */
@@ -45,7 +47,7 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        /* 欢迎页核心样式 - 关键修改：添加封面过渡+背景图兜底 */
+        /* 欢迎页核心样式 - 关键修改：统一滤镜+更柔和的过渡 */
         #splash-page {
             position: fixed;
             inset: 0;
@@ -57,10 +59,11 @@
             align-items: center;
             transition: transform 0.5s cubic-bezier(0.85, 0, 0.15, 1), opacity 0.5s ease;
             overflow: hidden;
-            /* ✅ 优化：添加封面图作为背景，双重兜底避免黑屏 */
+            /* ✅ 核心优化1：封面图应用和视频完全一致的滤镜，消除色差 */
             background-image: url('images/splash-poster.jpg') !important;
             background-size: cover !important;
             background-position: center center !important;
+            filter: var(--splash-filter);
         }
 
         /* 仅首次访问时显示欢迎页 */
@@ -74,16 +77,17 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            filter: brightness(0.7);
             z-index: 0;
-            /* ✅ 优化：初始透明，视频加载后淡入 */
+            /* ✅ 核心优化2：统一滤镜参数，和封面图保持一致 */
+            filter: var(--splash-filter);
+            /* ✅ 核心优化3：更平缓的淡入过渡（时长延长+更柔和的曲线） */
             opacity: 0 !important;
             display: block !important;
             preload: auto !important;
             object-position: center center;
             -webkit-backface-visibility: hidden;
             backface-visibility: hidden;
-            transition: opacity 0.8s ease-out; /* 视频淡入过渡 */
+            transition: opacity 1.2s cubic-bezier(0.22, 1, 0.36, 1); /* 更柔和的过渡曲线+稍长时长 */
         }
 
         /* ✅ 优化：视频可播放后显示 */
@@ -111,6 +115,8 @@
             background: transparent !important;
             height: 100%;
             position: relative;
+            /* ✅ 优化：内容层不受滤镜影响，保证文字显示正常 */
+            filter: none !important;
         }
 
         /* 标题样式 - 精简重复属性 */
@@ -802,9 +808,10 @@
                 transform: none !important;
             }
             
-            /* ✅ 优化：移动端适配封面图 */
+            /* ✅ 优化：移动端适配封面图 + 统一滤镜 */
             #splash-page {
                 background-image: url('images/splash-poster-mobile.jpg') !important;
+                filter: var(--splash-filter);
             }
             
             .img-ratio {
