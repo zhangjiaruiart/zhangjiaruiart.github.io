@@ -8,9 +8,9 @@
     <link rel="icon" href="images/favicon.svg" type="image/svg+xml">
     <link rel="icon" href="images/favicon.png" type="image/png" sizes="32x32">
     <link rel="apple-touch-icon" href="images/favicon.png">
-    <!-- 预加载封面图（关键：优先加载占位图，避免黑屏） -->
+    <!-- 预加载动画图（替代原视频预加载） -->
     <link rel="preload" as="image" href="images/splash-cover.webp" fetchpriority="high">
-    <link rel="preload" as="video" href="images/hero-bg.mp4" fetchpriority="high">
+    <link rel="preload" as="image" href="images/hero-bg.webp" fetchpriority="high">
     <link rel="preconnect" href="" crossorigin>
 
     <style>
@@ -44,20 +44,18 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        /* 欢迎页核心样式 - 关键修改：解决黑屏问题 */
+        /* 欢迎页核心样式 - 替换为WebP动画，移除视频相关样式 */
         #splash-page {
             position: fixed;
             inset: 0;
             z-index: 99999;
-            /* 关键1：渐变背景替代纯黑，避免生硬黑屏 */
             background: var(--splash-bg-gradient) !important;
-            display: none; /* 默认隐藏，避免闪现 */
+            display: none; 
             flex-direction: column;
             justify-content: center;
             align-items: center;
             transition: transform 0.5s cubic-bezier(0.85, 0, 0.15, 1), opacity 0.5s ease;
             overflow: hidden;
-            /* 关键2：添加轻微的加载动画背景，提升视觉体验 */
             background-image: 
                 radial-gradient(circle at center, rgba(255,255,255,0.03) 0%, transparent 70%),
                 var(--splash-bg-gradient) !important;
@@ -68,7 +66,8 @@
             display: flex;
         }
 
-        #splash-video {
+        /* WebP动画样式（替代原视频）- 保持和原视频完全一致的布局 */
+        .splash-bg {
             position: absolute;
             inset: 0;
             width: 100%;
@@ -76,22 +75,13 @@
             object-fit: cover;
             filter: brightness(0.7);
             z-index: 0;
-            opacity: 0; /* 初始透明，加载完成后渐显 */
-            display: block !important;
-            preload: auto !important;
+            opacity: 1; /* WebP动画直接显示，无需渐显 */
             object-position: center center;
             -webkit-backface-visibility: hidden;
             backface-visibility: hidden;
-            /* 关键3：视频渐显动画，避免突然出现 */
-            transition: opacity 1s ease-in-out 0.3s;
         }
 
-        /* 视频加载完成后显示 */
-        #splash-video.loaded {
-            opacity: 1 !important;
-        }
-
-        /* 视频封面占位图样式（关键：替代黑屏） */
+        /* 封面图降级处理（动画加载失败时显示） */
         .splash-poster {
             position: absolute;
             inset: 0;
@@ -100,21 +90,40 @@
             object-fit: cover;
             filter: brightness(0.7);
             z-index: -1;
-            opacity: 1;
+            opacity: 0; /* 优先显示动画，隐藏封面 */
             transition: opacity 1s ease-in-out;
         }
 
-        /* 视频加载完成后隐藏封面 */
-        #splash-video.loaded + .splash-poster {
-            opacity: 0;
-            pointer-events: none;
+        /* 动画加载失败时显示封面 */
+        .splash-bg[src=""] + .splash-poster,
+        .splash-bg[src="images/hero-bg.webp"]:error + .splash-poster {
+            opacity: 1;
         }
 
-        /* 隐藏视频控件 - 精简选择器 */
-        video::-webkit-media-controls,
-        video::-moz-media-controls,
-        video::-ms-media-controls { 
-            display: none !important; 
+        /* 加载指示器（简化逻辑：首次访问时显示，点击进入后隐藏） */
+        .splash-loader {
+            position: absolute;
+            top: 70%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 30px;
+            height: 30px;
+            border: 2px solid rgba(255,255,255,0.2);
+            border-radius: 50%;
+            border-top-color: rgba(255,255,255,0.7);
+            animation: spin 1s linear infinite;
+            z-index: 1;
+            opacity: 1;
+            display: block;
+        }
+
+        body.splash-hidden .splash-loader {
+            opacity: 0;
+            display: none;
+        }
+
+        @keyframes spin {
+            to { transform: translate(-50%, -50%) rotate(360deg); }
         }
 
         .splash-content {
@@ -132,7 +141,7 @@
             position: relative;
         }
 
-        /* 标题样式 - 精简重复属性 */
+        /* 标题样式 - 保留原有效果 */
         .splash-title {
             font-size: clamp(20px, 8vw, 70px);
             font-weight: 300;
@@ -152,34 +161,7 @@
             z-index: 1;
         }
 
-        /* 加载指示器（可选：给用户视觉反馈） */
-        .splash-loader {
-            position: absolute;
-            top: 70%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 30px;
-            height: 30px;
-            border: 2px solid rgba(255,255,255,0.2);
-            border-radius: 50%;
-            border-top-color: rgba(255,255,255,0.7);
-            animation: spin 1s linear infinite;
-            z-index: 1;
-            opacity: 0;
-            /* 仅视频加载中显示 */
-            display: none;
-        }
-
-        body.first-visit #splash-page:not(.video-loaded) .splash-loader {
-            opacity: 1;
-            display: block;
-        }
-
-        @keyframes spin {
-            to { transform: translate(-50%, -50%) rotate(360deg); }
-        }
-
-        /* 箭头按钮 - 精简重复属性 */
+        /* 箭头按钮 - 保留原有样式 */
         .enter-arrow-btn {
             background: none;
             cursor: pointer;
@@ -192,7 +174,7 @@
             justify-content: center;
             -webkit-tap-highlight-color: transparent;
             position: absolute;
-            top: 85%; /* 修改：从70%改为85%，向下移动50%距离 */
+            top: 85%;
             left: 50%;
             transform: translate(-50%, 0) scale(0.9);
             margin: 0;
@@ -217,7 +199,7 @@
             transform: rotate(45deg);
         }
 
-        /* 动画统一管理 - 精简重复定义 */
+        /* 动画统一管理 */
         @keyframes fadeInUpSmooth {
             0% {
                 opacity: 0;
@@ -264,16 +246,16 @@
             100% { left: 100%; }
         }
 
-        /* 通用状态类 - 精简重复定义 */
+        /* 通用状态类 */
         body.splash-hidden #splash-page {
             transform: translateY(-100%);
             pointer-events: none;
-            opacity: 0; /* 新增：直接透明，避免过渡闪烁 */
+            opacity: 0;
         }
         
         body.no-scroll { overflow: hidden; }
 
-        /* 导航栏样式 - 精简冗余属性 */
+        /* 导航栏样式 - 保留原有 */
         #scroll-progress {
             position: fixed;
             top: 0;
@@ -374,7 +356,7 @@
         .menu-toggle.active span:nth-child(2) { opacity: 0; }
         .menu-toggle.active span:nth-child(3) { transform: rotate(-45deg) translate(6px, -6px); }
 
-        /* 英雄区样式 - 精简冗余属性 */
+        /* 英雄区样式 - 保留原有 */
         .hero {
             height: 100vh;
             width: 100%;
@@ -457,7 +439,7 @@
             animation: arrowBounce 2s infinite;
         }
 
-        /* 内容区域通用样式 - 精简重复定义 */
+        /* 内容区域通用样式 - 保留原有 */
         .statement-section {
             padding: calc(120px + 5vh) 5% calc(40px + 5vh);
             max-width: 900px;
@@ -504,7 +486,7 @@
             color: var(--main-color);
         }
 
-        /* 网格布局 - 精简重复定义 */
+        /* 网格布局 - 保留原有 */
         .grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -638,7 +620,7 @@
             line-height: 1.4;
         }
 
-        /* 回到顶部按钮 - 精简冗余属性 */
+        /* 回到顶部按钮 - 保留原有 */
         #back-to-top {
             position: fixed;
             bottom: 40px;
@@ -674,7 +656,7 @@
             margin-top: 4px;
         }
 
-        /* 联系区域 - 精简冗余属性 */
+        /* 联系区域 - 保留原有 */
         .contact-section {
             padding: 100px 5%;
             background-color: #fff;
@@ -749,7 +731,7 @@
             z-index: 9999;
         }
 
-        /* 响应式样式 - 合并重复逻辑，精简冗余 */
+        /* 响应式样式 - 保留原有 */
         @media (max-width: 900px) {
             .hero-overlay { top: 40%; }
             .hero-title {
@@ -839,14 +821,14 @@
             
             .enter-arrow-btn {
                 padding: 40px;
-                top: 85%; /* 移动端同步修改箭头位置 */
+                top: 85%;
             }
             
             .arrow-icon {
                 width: 40px;
             }
             
-            #splash-video {
+            .splash-bg {
                 width: 100vw !important;
                 height: 100vh !important;
                 object-fit: cover !important;
@@ -873,14 +855,13 @@
 </head>
 <body class="no-scroll"> 
     <div id="splash-page">
-        <!-- 关键修改1：添加视频封面占位图（替代黑屏） -->
-        <video id="splash-video" autoplay loop muted playsinline webkit-playsinline x5-playsinline x5-video-player-type="h5" x5-video-orientation="portrait" preload="auto">
-            <source src="images/hero-bg.mp4" type="video/mp4">
-        </video>
-        <!-- 封面图：视频加载前显示，建议使用视频第一帧截图 -->
+        <!-- 替换视频为WebP动画 -->
+        <img src="images/hero-bg.webp" alt="Zhang Jiarui" class="splash-bg"
+             onerror="this.onerror=null; this.src='images/splash-cover.webp';">
+        <!-- 封面图降级（动画加载失败时显示） -->
         <img src="images/splash-cover.webp" alt="Zhang Jiarui" class="splash-poster" 
              onerror="this.src='images/cover.webp'">
-        <!-- 关键修改2：添加加载指示器（可选，提升用户体验） -->
+        <!-- 加载指示器 -->
         <div class="splash-loader"></div>
         
         <div class="splash-content">
@@ -1089,8 +1070,7 @@
     <footer>&copy; 2026 ZHANGJIARUI ARTWORKS.</footer>
 
     <script>
-        // 全局变量统一声明
-        const video = document.getElementById('splash-video');
+        // 全局变量（移除视频相关，保留核心变量）
         const splashPage = document.getElementById('splash-page');
         const nav = document.getElementById('navbar');
         const progress = document.getElementById('scroll-progress');
@@ -1098,71 +1078,30 @@
         const navLinks = document.getElementById('navLinks');
         const menuToggle = document.getElementById('menuToggle');
         
-        // 核心初始化函数（整合所有需要执行的逻辑）
+        // 核心初始化函数（优化精简，移除视频处理逻辑）
         function initPage() {
             // 1. 判断是否首次访问，控制欢迎页显示
             const isFirstVisit = !sessionStorage.getItem('hasVisited');
             if (isFirstVisit) {
-                // 首次访问才显示欢迎页
                 document.body.classList.add('first-visit');
-                // 视频播放处理
-                if (video) {
-                    video.removeAttribute('poster');
-                    video.preload = 'auto';
-                    video.load();
-                    
-                    // 关键修改3：监听视频加载状态，添加loaded类
-                    video.addEventListener('loadeddata', () => {
-                        video.classList.add('loaded');
-                        splashPage.classList.add('video-loaded');
-                    });
-                    
-                    // 视频加载失败的降级处理（关键：避免一直黑屏）
-                    video.addEventListener('error', () => {
-                        video.classList.add('loaded');
-                        splashPage.classList.add('video-loaded');
-                        console.log('视频加载失败，使用封面图替代');
-                    });
-                    
-                    // 强制播放函数
-                    const forcePlay = () => {
-                        video.play().then(() => {
-                            console.log('视频强制播放成功');
-                        }).catch(err => {
-                            console.log('自动播放失败，交互触发播放');
-                            // 即使播放失败，也显示封面图，隐藏加载指示器
-                            video.classList.add('loaded');
-                            splashPage.classList.add('video-loaded');
-                            document.addEventListener('click', () => video.play(), { once: true });
-                            document.addEventListener('touchstart', () => video.play(), { once: true });
-                        });
-                    };
-
-                    forcePlay();
-                    video.addEventListener('loadedmetadata', forcePlay);
-                    video.addEventListener('progress', forcePlay);
-                    video.addEventListener('loadeddata', forcePlay);
-                }
             } else {
-                // 非首次访问：直接隐藏欢迎页，无过渡动画
+                // 非首次访问：直接隐藏欢迎页
                 document.body.classList.add('splash-hidden');
                 document.body.classList.remove('first-visit');
-                splashPage.style.display = 'none'; // 彻底隐藏，避免闪现
+                splashPage.style.display = 'none';
             }
 
-            // 2. 重置图片状态（关键：解决后退缓存导致的图片隐藏）
+            // 2. 重置图片状态
             document.querySelectorAll('.project img, #hero-img-wrap img').forEach(img => {
-                // 如果图片已加载但没有loaded类，强制添加
                 if (img.complete && !img.classList.contains('loaded')) {
                     handleImageLoad(img);
                 }
-                // 移动端强制显示
                 if (window.innerWidth <= 900) {
                     img.style.opacity = '1';
                 }
             });
 
-            // 3. 重新初始化交集观察器
+            // 3. 初始化交集观察器
             initRevealObserver();
 
             // 4. 初始化导航栏和滚动状态
@@ -1183,78 +1122,49 @@
             }
         }
 
-        // 页面初始化（首次加载）
+        // 页面初始化（首次加载 + 后退缓存兼容）
         document.addEventListener('DOMContentLoaded', initPage);
-        
-        // 监听pageshow事件（兼容后退缓存）
         window.addEventListener('pageshow', (e) => {
-            // 如果是从缓存中加载页面，重新初始化
-            if (e.persisted) {
-                initPage();
-            }
+            if (e.persisted) initPage();
         });
 
-        // 隐藏欢迎页（点击按钮时）
+        // 隐藏欢迎页（简化逻辑：无需等待视频加载）
         function hideSplash() {
             sessionStorage.setItem('hasVisited', 'true');
             document.body.classList.add('splash-hidden');
-            document.body.classList.remove('no-scroll');
-            document.body.classList.remove('first-visit');
-            window.scrollTo(0, 0);
-            
-            // 立即隐藏，无延迟，避免闪现
+            document.body.classList.remove('no-scroll', 'first-visit');
             setTimeout(() => {
                 splashPage.style.display = 'none';
-            }, 100); // 缩短延迟时间
+            }, 100);
         }
 
-        // 图片加载处理
+        // 图片加载处理（保留原有）
         function handleImageLoad(img) {
             img.classList.add('loaded');
             img.parentElement.classList.add('finished-loading');
-            
-            // 移动端图片额外保障
             if (window.innerWidth <= 900) {
                 img.style.opacity = '1';
             }
         }
 
-        // 图片加载失败处理
+        // 图片加载失败处理（保留原有）
         function handleImageError(img, fallbackSrc) {
             img.src = fallbackSrc;
             img.onerror = null;
             handleImageLoad(img);
         }
 
-        // 页面加载完成处理
-        window.addEventListener('load', () => {
-            document.body.classList.add('page-loaded');
-            
-            // 移动端图片强制显示
-            if (window.innerWidth <= 900) {
-                document.querySelectorAll('.project img').forEach(img => {
-                    if (!img.classList.contains('loaded')) {
-                        img.style.display = 'block';
-                        img.style.visibility = 'visible';
-                    }
-                });
-            }
-        });
-
-        // 滚动事件处理（性能优化：requestAnimationFrame + 节流）
+        // 滚动事件处理（性能优化保留）
         let ticking = false;
         let lastScrollY = window.scrollY;
-
         window.addEventListener('scroll', () => {
             if (!ticking) {
                 window.requestAnimationFrame(() => {
                     const currentScrollY = window.pageYOffset || document.documentElement.scrollTop;
                     const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
                     
-                    // 滚动进度条
                     progress.style.width = (currentScrollY / height) * 100 + "%";
 
-                    // 导航栏显示/隐藏
                     if (currentScrollY > lastScrollY && currentScrollY > 200) {
                         nav.style.transform = "translateY(-100%)";
                     } else {
@@ -1275,13 +1185,12 @@
             }
         }, { passive: true });
 
-        // 元素渐显观察器
+        // 元素渐显观察器（保留原有）
         function initRevealObserver() {
             const revealObserver = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
                         entry.target.classList.add('revealed');
-                        // 不要unobserve，确保后退时能重新触发
                     }
                 });
             }, { threshold: 0.1 });
@@ -1291,7 +1200,7 @@
             });
         }
 
-        // 桌面端鼠标跟随效果
+        // 桌面端鼠标跟随效果（保留原有）
         if (window.innerWidth > 900) {
             const hero = document.getElementById('hero-section');
             const imgWrap = document.getElementById('hero-img-wrap');
@@ -1307,10 +1216,10 @@
             });
         }
 
-        // 回到顶部
+        // 回到顶部（保留原有）
         btt.onclick = () => window.scrollTo({top: 0, behavior: 'smooth'});
 
-        // 菜单切换
+        // 菜单切换（保留原有）
         function toggleMenu() {
             navLinks.classList.toggle('active');
             menuToggle.classList.toggle('active');
@@ -1325,7 +1234,7 @@
 
         menuToggle.onclick = toggleMenu;
 
-        // 复制微信
+        // 复制微信（保留原有）
         function copyWeChat(id) {
             if (navigator.clipboard && window.isSecureContext) {
                 navigator.clipboard.writeText(id).then(showCopyToast).catch(() => fallbackCopyTextToClipboard(id));
@@ -1334,7 +1243,6 @@
             }
         }
 
-        // 复制备用方案
         function fallbackCopyTextToClipboard(text) {
             const textArea = document.createElement("textarea");
             textArea.value = text;
@@ -1356,7 +1264,6 @@
             document.body.removeChild(textArea);
         }
 
-        // 复制提示
         function showCopyToast() {
             const toast = document.getElementById('copy-toast');
             toast.style.opacity = '1';
