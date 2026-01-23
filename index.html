@@ -55,6 +55,26 @@
     object-position: center;
     preload: auto;
     display: block !important;
+    /* 关键修复：默认不透明，避免黑屏 */
+    opacity: 1 !important;
+}
+
+/* 新增：给视频容器加视频第一帧截图兜底，彻底解决黑屏 */
+#splash-page {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    z-index: 99999; 
+    background-color: #000; 
+    /* 新增：添加视频第一帧作为背景图（你需要替换为自己的视频首帧图片路径） */
+    background-image: url('images/hero-bg-first-frame.webp');
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    transition: transform 1s cubic-bezier(0.85, 0, 0.15, 1), opacity 1s ease;
+    overflow: hidden;
 }
 
 /* 新增：解决手机端黑屏/电脑端首帧异常 */
@@ -639,23 +659,31 @@ video::-webkit-media-controls-enclosure { display: none !important; }
          */
         // --- 手机端视频强制播放修复 ---
 document.addEventListener('DOMContentLoaded', () => {
-    const video = document.getElementById('splash-video');
-    if (video) {
-        // 关键修改1：禁用视频海报，避免显示其他图片
-        video.poster = "";
-        
-        // 关键修改2：预加载视频 + 强制立即播放
-        video.preload = "auto";
-        video.load(); // 强制重新加载视频
-        
-        // 1. 尝试直接播放
-        video.play().then(() => {
-            // 播放成功，移除可能的黑屏
-            video.style.opacity = "1";
-        }).catch(e => {
-            console.log('Autoplay prevented initially, try touch play');
-            // 播放失败时强制显示视频区域，避免黑屏
-            video.style.opacity = "1";
+            const video = document.getElementById('splash-video');
+            const splash = document.getElementById('splash-page');
+
+            // 检查是否已访问过，避免返回时闪烁
+            if (sessionStorage.getItem('hasVisited')) {
+                if (splash) splash.style.display = 'none';
+                document.body.classList.remove('no-scroll');
+                document.body.classList.add('splash-hidden');
+                return;
+            }
+
+            if (video) {
+                // 核心逻辑：视频数据加载够了再显示，防止出现第一帧外的内容
+                video.onloadeddata = () => {
+                    video.style.opacity = "1";
+                };
+
+                video.play().catch(e => console.log('Autoplay waiting'));
+                
+                // 兼容移动端自动播放
+                document.addEventListener('touchstart', () => { video.play(); }, { once: true });
+                if (window.WeixinJSBridge) {
+                    WeixinJSBridge.invoke('getNetworkType', {}, () => { video.play(); }, false);
+                }
+            }
         });
         
         // 2. 针对微信/移动端，触摸即播放
