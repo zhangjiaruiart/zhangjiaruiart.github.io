@@ -40,19 +40,24 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        /* 欢迎页核心样式 - 精简冗余属性 */
+        /* 欢迎页核心样式 - 关键修改：默认隐藏，仅首次访问显示 */
         #splash-page {
             position: fixed;
             inset: 0;
             z-index: 99999;
             background: #000 !important;
-            display: flex;
+            display: none; /* 默认隐藏，避免闪现 */
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            transition: transform 1s cubic-bezier(0.85, 0, 0.15, 1), opacity 1s ease;
+            transition: transform 0.5s cubic-bezier(0.85, 0, 0.15, 1), opacity 0.5s ease;
             overflow: hidden;
             background-image: none !important;
+        }
+
+        /* 仅首次访问时显示欢迎页 */
+        body.first-visit #splash-page {
+            display: flex;
         }
 
         #splash-video {
@@ -202,6 +207,7 @@
         body.splash-hidden #splash-page {
             transform: translateY(-100%);
             pointer-events: none;
+            opacity: 0; /* 新增：直接透明，避免过渡闪烁 */
         }
         
         body.no-scroll { overflow: hidden; }
@@ -1020,10 +1026,11 @@
         
         // 核心初始化函数（整合所有需要执行的逻辑）
         function initPage() {
-            // 1. 处理欢迎页
-            if (sessionStorage.getItem('hasVisited')) {
-                hideSplash();
-            } else {
+            // 1. 判断是否首次访问，控制欢迎页显示
+            const isFirstVisit = !sessionStorage.getItem('hasVisited');
+            if (isFirstVisit) {
+                // 首次访问才显示欢迎页
+                document.body.classList.add('first-visit');
                 // 视频播放处理
                 if (video) {
                     video.removeAttribute('poster');
@@ -1046,6 +1053,11 @@
                     video.addEventListener('progress', forcePlay);
                     video.addEventListener('loadeddata', forcePlay);
                 }
+            } else {
+                // 非首次访问：直接隐藏欢迎页，无过渡动画
+                document.body.classList.add('splash-hidden');
+                document.body.classList.remove('first-visit');
+                splashPage.style.display = 'none'; // 彻底隐藏，避免闪现
             }
 
             // 2. 重置图片状态（关键：解决后退缓存导致的图片隐藏）
@@ -1075,6 +1087,10 @@
 
             // 5. 标记页面已加载
             document.body.classList.add('page-loaded');
+            // 6. 移除无滚动限制（非首次访问时）
+            if (!isFirstVisit) {
+                document.body.classList.remove('no-scroll');
+            }
         }
 
         // 页面初始化（首次加载）
@@ -1088,16 +1104,18 @@
             }
         });
 
-        // 隐藏欢迎页
+        // 隐藏欢迎页（点击按钮时）
         function hideSplash() {
             sessionStorage.setItem('hasVisited', 'true');
             document.body.classList.add('splash-hidden');
             document.body.classList.remove('no-scroll');
+            document.body.classList.remove('first-visit');
             window.scrollTo(0, 0);
             
+            // 立即隐藏，无延迟，避免闪现
             setTimeout(() => {
-                if (splashPage) splashPage.style.display = 'none';
-            }, 1000);
+                splashPage.style.display = 'none';
+            }, 100); // 缩短延迟时间
         }
 
         // 图片加载处理
