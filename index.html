@@ -28,42 +28,47 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        /* --- 核心修改：强制视频优先显示，彻底消除黑屏 --- */
+        /* --- 核心修改：彻底移除横屏图片，强制视频独占splash区域，无任何残留 --- */
         #splash-page {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
             z-index: 99999; 
-            background: #000 !important; /* 兜底背景，避免极端情况 */
+            background: #000 !important; /* 纯黑兜底，无任何图片纹理 */
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             transition: transform 1s cubic-bezier(0.85, 0, 0.15, 1), opacity 1s ease;
             overflow: hidden;
+            /* 禁止任何背景图片渲染，彻底消除横屏残留 */
+            background-image: none !important;
         }
 
         #splash-video {
             position: absolute;
-            top: 50%; left: 50%;
-            min-width: 100%; min-height: 100%;
-            width: auto; height: auto;
-            transform: translate(-50%, -50%);
+            top: 0; left: 0;
+            width: 100%; height: 100%;
             object-fit: cover;
             filter: brightness(0.7);
-            z-index: 0; /* 提升层级，直接显示 */
-            /* 强制视频立即显示，无隐藏阶段 */
+            z-index: 0; /* 视频独占底层，无其他元素干扰 */
+            /* 强制视频立即显示，无隐藏、无延迟、无占位图片 */
             opacity: 1 !important;
             display: block !important;
             preload: auto !important;
-            object-position: center;
-            /* 禁用视频加载延迟 */
+            object-position: center center;
+            /* 禁用所有可能导致视频延迟的属性 */
             -webkit-backface-visibility: hidden;
             backface-visibility: hidden;
+            border: none !important;
+            outline: none !important;
         }
 
-        /* 强制隐藏所有视频控件 */
+        /* 强制隐藏所有视频控件，避免干扰视觉 */
         video::-webkit-media-controls,
-        video::-webkit-media-controls-enclosure { 
+        video::-webkit-media-controls-enclosure,
+        video::-webkit-media-controls-panel,
+        video::-moz-media-controls,
+        video::-ms-media-controls { 
             display: none !important; 
         }
 
@@ -76,6 +81,8 @@
             align-items: center;
             width: 90%;
             max-width: 800px;
+            /* 确保内容不遮挡视频核心区域，且无图片相关样式 */
+            background: transparent !important;
         }
 
         .splash-title {
@@ -141,7 +148,7 @@
         
         body.no-scroll { overflow: hidden; }
 
-        /* --- 手机端特定调整（核心优化：解决横屏图片/视频难看问题）--- */
+        /* --- 手机端特定调整：彻底消除横屏，视频独占视口，无任何图片残留 --- */
         @media (max-width: 600px) {
             .splash-title {
                 letter-spacing: 0.15em;
@@ -155,16 +162,20 @@
             .arrow-icon {
                 width: 40px;
             }
-            /* 移动端强制视频完全适配竖屏，消除横屏观感 */
+            /* 移动端视频完全独占视口，无任何留白、无任何图片元素 */
             #splash-video {
                 width: 100vw !important;
                 height: 100vh !important;
+                object-fit: cover !important;
+                object-position: center center !important;
+                /* 禁用任何可能导致视频变形或横屏的属性 */
                 min-width: unset !important;
                 min-height: unset !important;
-                object-fit: cover !important;
-                object-position: center center !important; /* 强制居中裁剪，优先保留核心内容 */
+                max-width: unset !important;
+                max-height: unset !important;
+                transform: none !important;
             }
-            /* 移动端英雄区图片优化，适配竖屏 */
+            /* 移动端英雄区图片优化，适配竖屏（保留原有逻辑，仅优化无残留） */
             #hero-img-wrap {
                 width: 100% !important;
                 height: 100% !important;
@@ -172,15 +183,15 @@
                 left: 0 !important;
             }
             .hero img {
-                object-position: center center !important; /* 竖屏居中显示，避免横屏偏移 */
-                animation: kenBurnsMobile 20s ease-in-out infinite alternate; /* 适配竖屏的缓慢缩放动画 */
+                object-position: center center !important;
+                animation: kenBurnsMobile 20s ease-in-out infinite alternate;
             }
             /* 移动端项目图片优化，避免变形 */
             .project img {
                 object-position: center center !important;
             }
             .project-image-wrapper .img-ratio {
-                aspect-ratio: 3 / 4; /* 竖屏更舒适的图片比例 */
+                aspect-ratio: 3 / 4;
             }
         }
 
@@ -454,8 +465,8 @@
 </head>
 <body class="no-scroll"> 
     <div id="splash-page">
-        <!-- 视频标签强化：添加autoplay的所有兼容属性，强制自动播放 -->
-        <video id="splash-video" autoplay loop muted playsinline webkit-playsinline x5-playsinline x5-video-player-type="h5" x5-video-orientation="portraint" preload="auto">
+        <!-- 视频标签强化：独占splash区域，无任何图片元素，强制直接播放 -->
+        <video id="splash-video" autoplay loop muted playsinline webkit-playsinline x5-playsinline x5-video-player-type="h5" x5-video-orientation="portrait" preload="auto">
             <source src="images/hero-bg.mp4" type="video/mp4">
         </video>
         <div class="splash-content">
@@ -664,7 +675,7 @@
     <footer>&copy; 2026 ZHANGJIARUI ARTWORKS.</footer>
 
     <script>
-        // --- 核心修改：强制视频立即加载并播放，无任何延迟 ---
+        // --- 核心修改：强制视频立即加载播放，无任何图片占位，直接显示视频 ---
         document.addEventListener('DOMContentLoaded', () => {
             const video = document.getElementById('splash-video');
             const splashPage = document.getElementById('splash-page');
@@ -675,20 +686,20 @@
                 return;
             }
 
-            // 2. 强制视频加载和播放，最高优先级
+            // 2. 强制视频独占渲染，无任何图片兜底，立即播放
             if (video) {
-                // 强制预加载并立即播放
+                // 移除所有可能的图片相关属性，强制视频优先
+                video.removeAttribute('poster'); // 关键：移除视频封面图（避免横屏图片）
                 video.preload = 'auto';
                 video.load();
                 
-                // 立即尝试播放，不等待canplaythrough
+                // 立即尝试播放，不等待任何加载完成事件，消除延迟
                 const forcePlay = () => {
                     video.play().then(() => {
-                        console.log('视频强制播放成功');
+                        console.log('视频强制播放成功，无任何图片占位');
                     }).catch(err => {
-                        // 兼容所有浏览器/移动端的播放触发
-                        console.log('自动播放失败，尝试交互触发');
-                        // 监听任何用户交互，立即播放
+                        // 兼容所有移动端/浏览器，交互触发播放（仍无图片）
+                        console.log('自动播放失败，交互触发播放（无图片）');
                         document.addEventListener('click', () => {
                             video.play();
                         }, { once: true });
@@ -698,13 +709,13 @@
                     });
                 };
 
-                // 页面加载完成立即播放
+                // 页面加载完成立即执行，直接显示视频
                 forcePlay();
                 
-                // 视频元数据加载完成后再次强制播放
+                // 所有视频相关事件均触发强制播放，确保无图片残留
                 video.addEventListener('loadedmetadata', forcePlay);
-                // 视频加载进度更新时强制播放
                 video.addEventListener('progress', forcePlay);
+                video.addEventListener('loadeddata', forcePlay);
             }
         });
 
