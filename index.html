@@ -116,6 +116,16 @@
             z-index: 1;
         }
 
+        /* 适配换行后的文字排版 */
+        @media (max-width: 600px) {
+            .splash-title {
+                letter-spacing: 0.15em;
+                font-size: 32px;
+                white-space: normal;
+                line-height: 1.4;
+            }
+        }
+
         /* 倒计时样式：位置和箭头一致，大小匹配 */
         .countdown {
             position: absolute;
@@ -805,13 +815,6 @@
         }
 
         @media (max-width: 600px) {
-            .splash-title {
-                letter-spacing: 0.15em;
-                font-size: 32px;
-                white-space: normal;
-                line-height: 1.4;
-            }
-            
             .enter-arrow-btn {
                 padding: 40px;
                 top: 85%;
@@ -854,7 +857,8 @@
             <source src="images/hero-bg.mp4" type="video/mp4">
         </video>
         <div class="splash-content">
-            <h1 class="splash-title">ZHANG JIA RUI</h1>
+            <!-- 核心修改1：替换黑屏文字为指定内容 -->
+            <h1 class="splash-title">Matter <br> dissolves, <br> memory <br> crystallizes</h1>
             <!-- 添加倒计时元素 -->
             <div class="countdown" id="countdown">3</div>
             <button class="enter-arrow-btn" onclick="hideSplash()" aria-label="Enter Portfolio">
@@ -890,9 +894,8 @@
                      onerror="handleImageError(this, 'images/Cover.JPG');"
                      loading="eager">
             </div>
-            <div class="hero-overlay">
-                <h1 class="hero-title">Matter <br> dissolves, <br> memory <br> crystallizes</h1>
-            </div>
+            <!-- 核心修改2：删除hero区域的指定文字，仅保留空的overlay容器 -->
+            <div class="hero-overlay"></div>
             <a href="#statement" class="scroll-indicator" aria-label="Scroll down">
                 <div class="scroll-arrow"></div>
             </a>
