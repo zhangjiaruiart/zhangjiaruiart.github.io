@@ -39,28 +39,25 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        /* 启动页样式 - 【优化】添加渐变背景+暗角+丝滑过渡 */
+        /* 启动页样式 */
         #splash-page {
             position: fixed;
             inset: 0;
             z-index: 99999;
-            background: linear-gradient(to bottom, rgba(0,0,0,0.1), rgba(0,0,0,0.8));
+            background: #000;
             display: none;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            transition: transform 0.4s cubic-bezier(0.85, 0, 0.15, 1), opacity 0.8s ease;
+            transition: transform 0.4s cubic-bezier(0.85, 0, 0.15, 1), opacity 0.4s ease;
             overflow: hidden;
             will-change: transform, opacity;
-            box-shadow: inset 0 0 120px rgba(0,0,0,0.4);
-            pointer-events: auto;
         }
 
         body.first-visit #splash-page {
             display: flex;
         }
 
-        /* 视频样式 - 【优化】多属性联动淡入+画面微调 */
         #splash-video {
             position: absolute;
             inset: 0;
@@ -73,17 +70,6 @@
             display: block;
             preload: auto;
             object-position: center;
-            transition: 
-                opacity 2.8s cubic-bezier(0.22, 1, 0.36, 1),
-                transform 3.2s cubic-bezier(0.22, 1, 0.36, 1),
-                filter 2s ease;
-            transform: scale(0.95);
-        }
-
-        /* 【新增】视频淡入激活类 */
-        #splash-video.fade-in {
-            opacity: 1;
-            transform: scale(1);
         }
 
         video::-webkit-media-controls,
@@ -127,7 +113,6 @@
             z-index: 1;
         }
 
-        /* 【优化】文字呼吸动画+辉光效果+时序优化 */
         .splash-title-name {
             font-size: clamp(19px, 8vw, 72px);
             font-weight: 300;
@@ -144,8 +129,6 @@
             color: rgba(255,255,255,0.9);
             z-index: 1;
             pointer-events: none;
-            text-shadow: 0 0 12px rgba(255,255,255,0.15);
-            animation: fadeInName 1.8s ease-in-out forwards 0.8s, breath 3s ease-in-out infinite alternate 2s;
         }
 
         /* 倒计时样式 */
@@ -162,13 +145,12 @@
             z-index: 2;
         }
 
-        /* 【优化】进入按钮交互增强（悬停+过渡） */
         .enter-arrow-btn {
             background: none;
             cursor: pointer;
             padding: 25px;
             opacity: 0;
-            transition: all 0.5s cubic-bezier(0.15, 1, 0.3, 1);
+            transition: transform 0.3s ease, opacity 0.5s ease;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -179,42 +161,6 @@
             transform: translate(-50%, 0) scale(0.9);
             border: none;
             z-index: 2;
-        }
-
-        /* 【新增】按钮悬停效果 */
-        .enter-arrow-btn:hover {
-            transform: translate(-50%, 0) scale(1.1);
-        }
-
-        .enter-arrow-btn:hover .arrow-icon {
-            background-color: #fff;
-        }
-
-        .enter-arrow-btn:hover .arrow-icon::after {
-            border-top-color: #fff;
-            border-right-color: #fff;
-        }
-
-        /* 【新增】点击波纹样式 */
-        .ripple {
-            position: absolute;
-            border-radius: 50%;
-            background: rgba(255,255,255,0.2);
-            transform: scale(0);
-            animation: ripple 0.6s linear;
-            pointer-events: none;
-        }
-
-        /* 【新增】鼠标跟随光点（仅桌面端） */
-        .mouse-light {
-            position: absolute;
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
-            pointer-events: none;
-            z-index: 1;
-            transition: transform 0.1s ease;
         }
 
         .arrow-icon {
@@ -706,21 +652,14 @@
             text-transform: uppercase;
         }
 
-        /* 动画关键帧 - 【新增】呼吸/波纹动画 */
+        /* 动画关键帧 */
         @keyframes fadeInUpSmooth {
             0% { opacity: 0; transform: translate(-50%, -55%); }
             100% { opacity: 0.8; transform: translate(-50%, -60%); }
         }
 
         @keyframes fadeInName {
-            0% { opacity: 0; transform: translate(-50%, -40%) scale(0.98); }
-            100% { opacity: 0.85; transform: translate(-50%, -40%) scale(1); }
-        }
-
-        /* 【新增】文字呼吸动画 */
-        @keyframes breath {
-            0%, 100% { opacity: 0.85; transform: translate(-50%, -40%) scale(1); }
-            50% { opacity: 0.95; transform: translate(-50%, -40%) scale(1.01); }
+            to { opacity: 0.8; transform: translate(-50%, -40%); }
         }
 
         @keyframes countDownFade {
@@ -731,14 +670,6 @@
 
         @keyframes showArrow {
             to { opacity: 0.7; transform: translate(-50%, 0) scale(0.9); }
-        }
-
-        /* 【新增】点击波纹动画 */
-        @keyframes ripple {
-            to {
-                transform: scale(4);
-                opacity: 0;
-            }
         }
 
         @keyframes kenBurns {
@@ -854,7 +785,7 @@
         }
 
         @media (max-width: 600px) {
-            /* 启动页适配 - 【优化】动画时长适配 */
+            /* 启动页适配 */
             .splash-title-matter {
                 letter-spacing: 0.15em;
                 font-size: 26px;
@@ -869,10 +800,9 @@
                 white-space: nowrap;
                 top: 50% !important;
                 transform: translate(-50%, -50%) !important;
-                animation: fadeInName 1.5s ease-in-out forwards 0.5s, breath 2.5s ease-in-out infinite alternate 1.5s;
             }
 
-            /* 按钮适配 - 【优化】增大点击区域 */
+            /* 按钮适配 */
             .enter-arrow-btn {
                 padding: 40px;
                 top: 85%;
@@ -886,8 +816,6 @@
                 object-fit: cover;
                 object-position: center;
                 transform: none;
-                transition-duration: 2s, 2.2s;
-                filter: brightness(0.6) contrast(1.02);
             }
             
             .img-ratio { aspect-ratio: 3 / 4; }
@@ -903,8 +831,7 @@
             <h1 class="splash-title-matter">Matter <br> dissolves, <br> memory <br> crystallizes</h1>
             <h1 class="splash-title-name">zhangjiarui</h1>
             <div class="countdown" id="countdown">3</div>
-            <!-- 【修改】传递event参数用于波纹效果 -->
-            <button class="enter-arrow-btn" onclick="hideSplash(event)" aria-label="Enter Portfolio">
+            <button class="enter-arrow-btn" onclick="hideSplash()" aria-label="Enter Portfolio">
                 <div class="arrow-icon"></div>
             </button>
         </div>
@@ -1155,7 +1082,7 @@
             }, 1000);
         };
 
-        // 倒计时结束后播放视频 - 【优化】视频淡入+容错处理
+        // 倒计时结束后播放视频
         const playVideoAfterCountdown = () => {
             if (!dom.video) return;
             
@@ -1170,27 +1097,10 @@
                 dom.titleName.textContent = 'zhang jia rui';
             }
             
-            // 加载视频并等待可播放后再淡入（避免卡顿）
+            // 显示视频和名字
+            dom.video.style.opacity = '1';
             dom.video.load();
-            const triggerFadeIn = () => {
-                if (dom.video.readyState >= 2) { // 2 = 视频可播放状态
-                    dom.video.classList.add('fade-in');
-                } else {
-                    dom.video.addEventListener('canplay', () => {
-                        dom.video.classList.add('fade-in');
-                    }, { once: true });
-                }
-            };
-            triggerFadeIn();
-
-            // 视频加载失败降级处理（避免黑屏）
-            dom.video.addEventListener('error', () => {
-                dom.splashPage.style.background = 'linear-gradient(135deg, #0a0a0a, #1f1f1f)';
-                dom.titleName.style.textShadow = '0 0 15px rgba(255,255,255,0.2)';
-                dom.titleName.style.animation = 'fadeInName 1.5s ease-in-out forwards 0.5s, breath 3s ease-in-out infinite alternate 2s';
-                dom.enterBtn.style.animationName = 'showArrow';
-                dom.enterBtn.style.opacity = '0.7';
-            });
+            dom.titleName.style.animation = 'fadeInName 1s ease-in-out forwards 0.5s';
 
             // 播放视频（处理自动播放限制）
             const playVideo = () => {
@@ -1213,30 +1123,13 @@
             dom.video.addEventListener('loadedmetadata', playVideo, { once: true });
         };
 
-        // 隐藏启动页 - 【优化】添加波纹效果+丝滑退出
-        const hideSplash = (e) => {
-            // 生成点击波纹反馈
-            if (e) {
-                const btn = e.currentTarget;
-                const ripple = document.createElement('span');
-                const diameter = Math.max(btn.clientWidth, btn.clientHeight);
-                const radius = diameter / 2;
-                ripple.style.width = ripple.style.height = `${diameter}px`;
-                ripple.style.left = `${e.clientX - btn.getBoundingClientRect().left - radius}px`;
-                ripple.style.top = `${e.clientY - btn.getBoundingClientRect().top - radius}px`;
-                ripple.classList.add('ripple');
-                btn.parentNode.appendChild(ripple);
-                setTimeout(() => ripple.remove(), 600);
-            }
-
-            // 丝滑退出启动页（替代直接隐藏）
+        // 隐藏启动页
+        const hideSplash = () => {
             sessionStorage.setItem('hasVisited', 'true');
             document.body.classList.add('splash-hidden');
             document.body.classList.remove('no-scroll', 'first-visit');
-            dom.splashPage.style.opacity = 0;
-            dom.splashPage.style.transform = 'translateY(-20px)';
-            setTimeout(() => dom.splashPage.style.display = 'none', 800);
             window.scrollTo(0, 0);
+            setTimeout(() => dom.splashPage.style.display = 'none', 50);
         };
 
         // 图片加载处理
@@ -1333,7 +1226,7 @@
             document.body.style.overflow = 'auto';
         };
 
-        // 初始化页面 - 【优化】添加鼠标跟随+键盘快捷触发
+        // 初始化页面
         const initPage = () => {
             const isFirstVisit = !sessionStorage.getItem('hasVisited');
             
@@ -1341,23 +1234,6 @@
             if (isFirstVisit) {
                 document.body.classList.add('first-visit');
                 startCountdown();
-
-                // 桌面端添加鼠标跟随光点
-                if (window.innerWidth > 900) {
-                    const light = document.createElement('div');
-                    light.classList.add('mouse-light');
-                    dom.splashPage.appendChild(light);
-                    dom.splashPage.addEventListener('mousemove', (e) => {
-                        light.style.transform = `translate(${e.clientX - 40}px, ${e.clientY - 40}px)`;
-                    });
-                }
-
-                // 键盘快捷触发（回车/空格）
-                document.addEventListener('keydown', (e) => {
-                    if (dom.splashPage.style.display !== 'none' && (e.key === 'Enter' || e.key === ' ')) {
-                        hideSplash();
-                    }
-                });
             } else {
                 document.body.classList.add('splash-hidden');
                 document.body.classList.remove('first-visit', 'no-scroll');
