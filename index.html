@@ -91,7 +91,7 @@
             position: relative;
         }
 
-        /* 1. 黑屏倒计时文字：Matter dissolves, memory crystallizes 样式 */
+        /* 1. 黑屏倒计时文字：Matter dissolves, memory crystallizes 样式（保留显示） */
         .splash-title-matter {
             font-size: clamp(20px, 8vw, 70px);
             font-weight: 300;
@@ -100,7 +100,7 @@
             margin: 0;
             opacity: 0;
             position: absolute;
-            top: 50%;
+            top: 40%; /* 上移避免和名字文字重叠 */
             left: 50%;
             transform: translate(-50%, -60%);
             animation: fadeInUpSmooth 1s ease-in-out forwards 0.2s;
@@ -110,7 +110,7 @@
             color: rgba(255,255,255,0.9);
             z-index: 1;
         }
-        /* 2. 视频显示后文字：zhangjiarui 样式（小3号） */
+        /* 2. 视频显示后文字：zhangjiarui 样式（仅显示此文字） */
         .splash-title-name {
             font-size: clamp(17px, 8vw, 64px); /* 比黑屏文字小3号 */
             font-weight: 300;
@@ -119,7 +119,7 @@
             margin: 0;
             opacity: 0;
             position: absolute;
-            top: 50%;
+            top: 60%; /* 下移避免和黑屏文字重叠 */
             left: 50%;
             transform: translate(-50%, -60%);
             width: 100%;
@@ -136,15 +136,17 @@
                 font-size: 32px;
                 white-space: normal;
                 line-height: 1.4;
+                top: 35%;
             }
             .splash-title-name {
                 letter-spacing: 0.15em;
                 font-size: 29px; /* 比黑屏文字小3号 */
                 white-space: nowrap;
+                top: 65%;
             }
         }
 
-        /* 倒计时样式：速度加快50% */
+        /* 倒计时样式：总时长增加1秒（动画时长改回1s） */
         .countdown {
             position: absolute;
             top: 85%;
@@ -154,7 +156,7 @@
             color: var(--white-alpha-70);
             font-weight: 300;
             opacity: 0;
-            animation-duration: 0.5s; /* 原1s→0.5s 加快50% */
+            animation-duration: 1s; /* 修改1：改回1s，增加倒计时显示时长 */
             animation-timing-function: ease-in-out;
             animation-fill-mode: forwards;
             z-index: 2;
@@ -855,10 +857,10 @@
             <source src="images/hero-bg.mp4" type="video/mp4">
         </video>
         <div class="splash-content">
-            <!-- 黑屏倒计时文字 -->
+            <!-- 黑屏倒计时文字（保留显示） -->
             <h1 class="splash-title-matter">Matter <br> dissolves, <br> memory <br> crystallizes</h1>
-            <!-- 视频显示后文字 -->
-            <h1 class="splash-title-name">zhangjiarui </h1>
+            <!-- 视频显示后文字（仅显示zhangjiarui） -->
+            <h1 class="splash-title-name">zhangjiarui</h1>
             <!-- 倒计时 -->
             <div class="countdown" id="countdown">3</div>
             <button class="enter-arrow-btn" onclick="hideSplash()" aria-label="Enter Portfolio">
@@ -1081,7 +1083,7 @@
             titleName: document.querySelector('.splash-title-name')
         };
         
-        // 倒计时函数：速度加快50%
+        // 倒计时函数：总时长增加1秒（修改2：定时器间隔改回1000ms）
         function startCountdown() {
             let count = 3;
             const countdownEl = DOM.countdown;
@@ -1090,7 +1092,7 @@
             countdownEl.style.animationName = 'countDownFade';
             countdownEl.style.animationDelay = '0s';
             
-            // 定时器间隔从1000ms→500ms
+            // 修改点：定时器间隔从500ms改回1000ms，总时长增加1秒（原1.5s→3s）
             const timer = setInterval(() => {
                 count--;
                 if (count > 0) {
@@ -1103,19 +1105,17 @@
                     countdownEl.style.display = 'none';
                     playVideoAfterCountdown();
                 }
-            }, 500);
+            }, 1000); // 修改2：间隔改回1000ms
         }
         
-        // 倒计时结束：隐藏黑屏文字，显示视频+名字文字
+        // 倒计时结束：保留黑屏文字，仅显示视频+名字文字
         function playVideoAfterCountdown() {
             if (DOM.video) {
-                // 隐藏黑屏文字
-                DOM.titleMatter.style.opacity = '0';
-                DOM.titleMatter.style.transition = 'opacity 0.5s ease';
+                // 修改3：删除隐藏黑屏文字的代码，保留Matter dissolves...文字显示
                 // 显示视频
                 DOM.video.style.opacity = '1';
                 DOM.video.load();
-                // 显示名字文字
+                // 显示名字文字（仅zhangjiarui）
                 DOM.titleName.style.animation = 'fadeInName 1s ease-in-out forwards 0.5s';
 
                 const playVideo = () => {
