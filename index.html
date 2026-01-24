@@ -116,6 +116,14 @@
             z-index: 1;
         }
 
+        /* 电脑端字体调整：比原大小小3号（70px→67px），保持适配性 */
+        @media (min-width: 901px) {
+            .splash-title {
+                font-size: clamp(20px, 8vw, 67px); /* 核心修改：字体小3号 */
+                white-space: nowrap; /* 适配单个文字的居中显示 */
+            }
+        }
+
         /* 适配换行后的文字排版 */
         @media (max-width: 600px) {
             .splash-title {
@@ -857,8 +865,8 @@
             <source src="images/hero-bg.mp4" type="video/mp4">
         </video>
         <div class="splash-content">
-            <!-- 核心修改1：替换黑屏文字为指定内容 -->
-            <h1 class="splash-title">Matter <br> dissolves, <br> memory <br> crystallizes</h1>
+            <!-- 核心修改：文字替换为zhangjiarui -->
+            <h1 class="splash-title">zhangjiarui</h1>
             <!-- 添加倒计时元素 -->
             <div class="countdown" id="countdown">3</div>
             <button class="enter-arrow-btn" onclick="hideSplash()" aria-label="Enter Portfolio">
