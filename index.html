@@ -113,16 +113,16 @@
         }
         /* 2. 视频显示后文字：zhangjiarui 样式（仅显示此文字） */
         .splash-title-name {
-            font-size: clamp(18px, 8vw, 70px); /* 关键修改：字体大一号（原17px→18px，原64px→70px） */
+            font-size: clamp(19px, 8vw, 72px); /* 字体大一号（在原18px/70px基础上增大） */
             font-weight: 300;
             letter-spacing: 0.2em;
             text-transform: uppercase;
             margin: 0;
             opacity: 0;
             position: absolute;
-            top: 50%; /* 关键修改：向上移动10%（原60%→50%） */
+            top: 40%; /* 向上移动10%（原50%→40%） */
             left: 50%;
-            transform: translate(-50%, -50%); /* 关键修改：对应top值调整，保持水平垂直居中 */
+            transform: translate(-50%, -40%); /* 对应top值调整，保持水平垂直居中 */
             width: 100%;
             text-align: center;
             color: rgba(255,255,255,0.9);
@@ -219,7 +219,7 @@
         }
 
         @keyframes fadeInName {
-            to { opacity: 0.8; transform: translate(-50%, -50%); } /* 修改：居中显示 */
+            to { opacity: 0.8; transform: translate(-50%, -40%); } /* 对应top值调整 */
         }
 
         @keyframes kenBurns {
@@ -1124,8 +1124,8 @@
                 DOM.titleMatter.style.display = 'none';
                 
                 // 调整zhangjiarui文字居中显示
-                DOM.titleName.style.top = '50%';
-                DOM.titleName.style.transform = 'translate(-50%, -50%)';
+                DOM.titleName.style.top = '40%';
+                DOM.titleName.style.transform = 'translate(-50%, -40%)';
                 
                 // 显示视频
                 DOM.video.style.opacity = '1';
