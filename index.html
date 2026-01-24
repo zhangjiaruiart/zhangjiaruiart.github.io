@@ -130,6 +130,24 @@
             pointer-events: none;
         }
 
+        /* 新增：沙子飘出动画（仅电脑端生效） */
+        @media (min-width: 601px) {
+            .sand-char {
+                display: inline-block;
+                opacity: 0;
+                transform: translateY(30px) rotate(10deg) scale(0.8);
+                animation: sandFall 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+            }
+        }
+
+        /* 沙子飘出关键帧：从下往上、轻微旋转、透明→正常 */
+        @keyframes sandFall {
+            to {
+                opacity: 0.8;
+                transform: translateY(0) rotate(0) scale(1);
+            }
+        }
+
         /* 移动端适配两个文字 */
         @media (max-width: 600px) {
             .splash-title-matter {
@@ -1127,16 +1145,33 @@
                 DOM.titleName.style.top = '40%';
                 DOM.titleName.style.transform = 'translate(-50%, -40%)';
                 
-                // 检测屏幕宽度，电脑端修改文字为带空格版本
+                // 检测屏幕宽度，电脑端修改文字为带空格版本并添加沙子动画
                 if (window.innerWidth > 600) {
-                    DOM.titleName.textContent = 'zhang jia rui';
+                    const text = 'zhang jia rui';
+                    // 清空原有文字，拆分为单个字符并包裹span
+                    DOM.titleName.innerHTML = '';
+                    Array.from(text).forEach((char, index) => {
+                        if (char === ' ') {
+                            // 空格保留，不添加动画
+                            DOM.titleName.innerHTML += '&nbsp;';
+                            return;
+                        }
+                        const span = document.createElement('span');
+                        span.className = 'sand-char';
+                        span.textContent = char;
+                        // 每个字符延迟0.1s，整体延迟视频播放2秒后触发
+                        span.style.animationDelay = `${2 + index * 0.1}s`;
+                        DOM.titleName.appendChild(span);
+                    });
+                } else {
+                    // 手机端保持原有文字和动画
+                    DOM.titleName.textContent = 'zhangjiarui';
+                    DOM.titleName.style.animation = 'fadeInName 1s ease-in-out forwards 0.5s';
                 }
                 
                 // 显示视频
                 DOM.video.style.opacity = '1';
                 DOM.video.load();
-                // 显示名字文字（仅zhangjiarui/zhang jia rui）
-                DOM.titleName.style.animation = 'fadeInName 1s ease-in-out forwards 0.5s';
 
                 const playVideo = () => {
                     DOM.video.play().catch(() => {
