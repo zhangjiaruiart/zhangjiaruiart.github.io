@@ -91,18 +91,18 @@
             position: relative;
         }
 
-        /* 1. 黑屏倒计时文字：Matter dissolves, memory crystallizes 样式（保留显示） */
+        /* 1. 移除了黑屏倒计时文字的样式（仅保留注释，样式未删除，避免影响其他逻辑） */
         .splash-title-matter {
-            font-size: clamp(16px, 6vw, 56px); /* 修改1：字体小两号（原70px→56px，基础值20→16） */
+            font-size: clamp(16px, 6vw, 56px); 
             font-weight: 300;
             letter-spacing: 0.2em;
             text-transform: uppercase;
             margin: 0;
             opacity: 0;
             position: absolute;
-            top: 50%; /* 修改2：垂直居中 */
+            top: 50%; 
             left: 50%;
-            transform: translate(-50%, -50%); /* 修改3：完全居中（水平+垂直） */
+            transform: translate(-50%, -50%); 
             animation: fadeInUpSmooth 1s ease-in-out forwards 0.2s;
             white-space: nowrap;
             width: 100%;
@@ -112,14 +112,14 @@
         }
         /* 2. 视频显示后文字：zhangjiarui 样式（仅显示此文字） */
         .splash-title-name {
-            font-size: clamp(17px, 8vw, 64px); /* 比黑屏文字小3号 */
+            font-size: clamp(17px, 8vw, 64px); 
             font-weight: 300;
             letter-spacing: 0.2em;
             text-transform: uppercase;
             margin: 0;
             opacity: 0;
             position: absolute;
-            top: 60%; /* 下移避免和黑屏文字重叠 */
+            top: 60%; 
             left: 50%;
             transform: translate(-50%, -60%);
             width: 100%;
@@ -133,15 +133,15 @@
         @media (max-width: 600px) {
             .splash-title-matter {
                 letter-spacing: 0.15em;
-                font-size: 26px; /* 修改4：移动端字体小两号（原32px→26px） */
+                font-size: 26px; 
                 white-space: normal;
                 line-height: 1.4;
-                top: 50%; /* 修改5：移动端也垂直居中 */
-                transform: translate(-50%, -50%); /* 修改6：移动端保持完全居中 */
+                top: 50%; 
+                transform: translate(-50%, -50%); 
             }
             .splash-title-name {
                 letter-spacing: 0.15em;
-                font-size: 29px; /* 比黑屏文字小3号 */
+                font-size: 29px; 
                 white-space: nowrap;
                 top: 65%;
             }
@@ -157,7 +157,7 @@
             color: var(--white-alpha-70);
             font-weight: 300;
             opacity: 0;
-            animation-duration: 1s; /* 修改1：改回1s，增加倒计时显示时长 */
+            animation-duration: 1s; 
             animation-timing-function: ease-in-out;
             animation-fill-mode: forwards;
             z-index: 2;
@@ -858,9 +858,8 @@
             <source src="images/hero-bg.mp4" type="video/mp4">
         </video>
         <div class="splash-content">
-            <!-- 黑屏倒计时文字（保留显示） -->
-            <h1 class="splash-title-matter">Matter <br> dissolves, <br> memory <br> crystallizes</h1>
-            <!-- 视频显示后文字（仅显示zhangjiarui） -->
+            <!-- 移除了黑屏倒计时文字元素 -->
+            <!-- 视频显示后文字（仅显示此文字） -->
             <h1 class="splash-title-name">zhangjiarui</h1>
             <!-- 倒计时 -->
             <div class="countdown" id="countdown">3</div>
@@ -1112,7 +1111,7 @@
         // 倒计时结束：保留黑屏文字，仅显示视频+名字文字
         function playVideoAfterCountdown() {
             if (DOM.video) {
-                // 修改3：删除隐藏黑屏文字的代码，保留Matter dissolves...文字显示
+                // 移除了隐藏黑屏文字的代码（因元素已删除，无需处理）
                 // 显示视频
                 DOM.video.style.opacity = '1';
                 DOM.video.load();
