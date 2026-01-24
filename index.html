@@ -9,19 +9,19 @@
     <link rel="icon" href="images/favicon.png" type="image/png" sizes="32x32">
     <link rel="apple-touch-icon" href="images/favicon.png">
     <link rel="preload" as="video" href="images/hero-bg.mp4" fetchpriority="high">
-    <link rel="preconnect" href="" crossorigin>
 
     <style>
+        /* 基础变量 */
         :root {
             --primary-font: "Optima", "Didot", "Helvetica Neue", Helvetica, Arial, sans-serif;
             --main-color: #111;
             --transition-smooth: all 1.2s cubic-bezier(0.15, 1, 0.3, 1);
             --white-alpha-70: rgba(255, 255, 255, 0.7);
-            --white-alpha-80: rgba(255, 255, 255, 0.8);
             --black-alpha-80: rgba(17, 17, 17, 0.8);
             --skeleton-gradient: linear-gradient(90deg, transparent, rgba(255,255,255,0.6), transparent);
         }
 
+        /* 全局重置 */
         * {
             margin: 0;
             padding: 0;
@@ -39,6 +39,7 @@
             -webkit-font-smoothing: antialiased;
         }
 
+        /* 启动页样式 */
         #splash-page {
             position: fixed;
             inset: 0;
@@ -91,38 +92,38 @@
             position: relative;
         }
 
-        /* 1. 黑屏倒计时文字：Matter dissolves, memory crystallizes 样式（保留显示） */
+        /* 启动页文字样式 */
         .splash-title-matter {
-            font-size: clamp(12px, 6vw, 40px); /* 电脑端字体再小两号：原14px→12px，原48px→40px */
+            font-size: clamp(12px, 6vw, 40px);
             font-weight: 300;
             letter-spacing: 0.2em;
             text-transform: uppercase;
             margin: 0;
             opacity: 0;
             position: absolute;
-            top: 50%; /* 垂直居中 */
+            top: 50%;
             left: 50%;
-            transform: translate(-50%, -50%); /* 完全居中（水平+垂直） */
+            transform: translate(-50%, -50%);
             animation: fadeInUpSmooth 1s ease-in-out forwards 0.2s;
-            white-space: normal; /* 取消nowrap，让<br>生效以调整行间距 */
-            line-height: 1.771; /* 行间距在原1.54基础上再增大15%：1.54 × 1.15 = 1.771 */
+            white-space: normal;
+            line-height: 1.771;
             width: 100%;
             text-align: center;
             color: rgba(255,255,255,0.9);
             z-index: 1;
         }
-        /* 2. 视频显示后文字：zhangjiarui 样式（仅显示此文字） */
+
         .splash-title-name {
-            font-size: clamp(19px, 8vw, 72px); /* 字体大一号（在原18px/70px基础上增大） */
+            font-size: clamp(19px, 8vw, 72px);
             font-weight: 300;
             letter-spacing: 0.2em;
             text-transform: uppercase;
             margin: 0;
             opacity: 0;
             position: absolute;
-            top: 40%; /* 向上移动10%（原50%→40%） */
+            top: 40%;
             left: 50%;
-            transform: translate(-50%, -40%); /* 对应top值调整，保持水平垂直居中 */
+            transform: translate(-50%, -40%);
             width: 100%;
             text-align: center;
             color: rgba(255,255,255,0.9);
@@ -130,26 +131,7 @@
             pointer-events: none;
         }
 
-        /* 移动端适配两个文字 */
-        @media (max-width: 600px) {
-            .splash-title-matter {
-                letter-spacing: 0.15em;
-                font-size: 26px; /* 保持原移动端字体大小不变 */
-                white-space: normal;
-                line-height: 1.4; /* 保持原移动端行高不变 */
-                top: 50%;
-                transform: translate(-50%, -50%);
-            }
-            .splash-title-name {
-                letter-spacing: 0.15em;
-                font-size: 29px; /* 保持原移动端字体大小不变 */
-                white-space: nowrap;
-                top: 65%;
-                transform: translate(-50%, -65%); /* 保持原移动端位置不变 */
-            }
-        }
-
-        /* 倒计时样式：总时长增加1秒（动画时长改回1s） */
+        /* 倒计时样式 */
         .countdown {
             position: absolute;
             top: 85%;
@@ -159,16 +141,8 @@
             color: var(--white-alpha-70);
             font-weight: 300;
             opacity: 0;
-            animation-duration: 1s; /* 修改1：改回1s，增加倒计时显示时长 */
-            animation-timing-function: ease-in-out;
-            animation-fill-mode: forwards;
+            animation: countDownFade 1s ease-in-out forwards;
             z-index: 2;
-        }
-
-        @keyframes countDownFade {
-            0% { opacity: 0; transform: translate(-50%, 0) scale(0.8); }
-            50% { opacity: 0.8; transform: translate(-50%, 0) scale(1); }
-            100% { opacity: 0; transform: translate(-50%, 0) scale(0.8); }
         }
 
         .enter-arrow-btn {
@@ -185,13 +159,8 @@
             top: 85%;
             left: 50%;
             transform: translate(-50%, 0) scale(0.9);
-            margin: 0;
             border: none;
             z-index: 2;
-        }
-
-        @keyframes showArrow {
-            to { opacity: 0.7; transform: translate(-50%, 0) scale(0.9); }
         }
 
         .arrow-icon {
@@ -213,50 +182,7 @@
             transform: rotate(45deg);
         }
 
-        @keyframes fadeInUpSmooth {
-            0% { opacity: 0; transform: translate(-50%, -55%); }
-            100% { opacity: 0.8; transform: translate(-50%, -60%); }
-        }
-
-        @keyframes fadeInName {
-            to { opacity: 0.8; transform: translate(-50%, -40%); } /* 对应top值调整 */
-        }
-
-        @keyframes kenBurns {
-            0% { transform: scale(1); }
-            100% { transform: scale(1.08); }
-        }
-
-        @keyframes kenBurnsMobile {
-            0% { transform: scale(1.02); }
-            100% { transform: scale(1.1); }
-        }
-
-        @keyframes arrowBounce {
-            0%, 20%, 50%, 80%, 100% { 
-                transform: translateY(0) rotate(45deg); 
-                opacity: 0.3; 
-            }
-            40% { 
-                transform: translateY(-10px) rotate(45deg); 
-                opacity: 0.8; 
-            }
-        }
-
-        @keyframes skeleton-loading {
-            0% { left: -150%; }
-            50% { left: 100%; }
-            100% { left: 100%; }
-        }
-
-        body.splash-hidden #splash-page {
-            transform: translateY(-100%);
-            pointer-events: none;
-            opacity: 0;
-        }
-        
-        body.no-scroll { overflow: hidden; }
-
+        /* 导航栏样式 */
         #scroll-progress {
             position: fixed;
             top: 0;
@@ -358,6 +284,7 @@
         .menu-toggle.active span:nth-child(2) { opacity: 0; }
         .menu-toggle.active span:nth-child(3) { transform: rotate(-45deg) translate(6px, -6px); }
 
+        /* 主体内容样式 */
         .hero {
             height: 100vh;
             width: 100%;
@@ -440,6 +367,7 @@
             animation: arrowBounce 2s infinite;
         }
 
+        /* 内容区块通用样式 */
         .statement-section {
             padding: calc(120px + 5vh) 5% calc(40px + 5vh);
             max-width: 900px;
@@ -486,6 +414,7 @@
             color: var(--main-color);
         }
 
+        /* 网格布局样式 */
         .grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -539,15 +468,8 @@
             display: none;
         }
 
-        .img-ratio {
-            aspect-ratio: 4 / 5;
-            display: block;
-        }
-
-        .video-ratio {
-            aspect-ratio: 16 / 9;
-            background-color: #000;
-        }
+        .img-ratio { aspect-ratio: 4 / 5; display: block; }
+        .video-ratio { aspect-ratio: 16 / 9; background-color: #000; }
 
         .project img {
             width: 100%;
@@ -559,13 +481,8 @@
             decoding: async;
         }
 
-        .project img.loaded {
-            opacity: 1;
-        }
-
-        .project:hover img {
-            transform: scale(1.05);
-        }
+        .project img.loaded { opacity: 1; }
+        .project:hover img { transform: scale(1.05); }
 
         .play-overlay {
             position: absolute;
@@ -579,9 +496,7 @@
             opacity: 0;
         }
 
-        .project img.loaded + .play-overlay {
-            opacity: 1;
-        }
+        .project img.loaded + .play-overlay { opacity: 1; }
 
         .play-button {
             width: 50px;
@@ -621,6 +536,7 @@
             line-height: 1.4;
         }
 
+        /* 辅助组件样式 */
         #back-to-top {
             position: fixed;
             bottom: 40px;
@@ -641,10 +557,7 @@
             box-shadow: 0 4px 15px rgba(0,0,0,0.05);
         }
 
-        #back-to-top.visible {
-            opacity: 1;
-            visibility: visible;
-        }
+        #back-to-top.visible { opacity: 1; visibility: visible; }
 
         #back-to-top::after {
             content: '';
@@ -656,6 +569,24 @@
             margin-top: 4px;
         }
 
+        #copy-toast {
+            position: fixed;
+            bottom: 50px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--black-alpha-80);
+            color: #fff;
+            padding: 10px 20px;
+            font-size: 10px;
+            letter-spacing: 0.2em;
+            border-radius: 2px;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.4s;
+            z-index: 9999;
+        }
+
+        /* 联系区块样式 */
         .contact-section {
             padding: 100px 5%;
             background-color: #fff;
@@ -699,12 +630,9 @@
             border-bottom: 1px solid transparent;
             transition: all 0.4s;
             cursor: pointer;
-            position: relative;
         }
 
-        .contact-value:hover {
-            border-bottom-color: #eee;
-        }
+        .contact-value:hover { border-bottom-color: #eee; }
 
         .divider {
             color: #eee;
@@ -713,23 +641,65 @@
             font-size: 18px;
         }
 
-        #copy-toast {
-            position: fixed;
-            bottom: 50px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: var(--black-alpha-80);
-            color: #fff;
-            padding: 10px 20px;
-            font-size: 10px;
-            letter-spacing: 0.2em;
-            border-radius: 2px;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.4s;
-            z-index: 9999;
+        /* 页脚样式 */
+        footer {
+            padding: 60px 5% 40px;
+            text-align: center;
+            border-top: 1px solid #f9f9f9;
+            font-size: 9px;
+            letter-spacing: 0.4em;
+            color: #ccc;
+            text-transform: uppercase;
         }
 
+        /* 动画关键帧 */
+        @keyframes fadeInUpSmooth {
+            0% { opacity: 0; transform: translate(-50%, -55%); }
+            100% { opacity: 0.8; transform: translate(-50%, -60%); }
+        }
+
+        @keyframes fadeInName {
+            to { opacity: 0.8; transform: translate(-50%, -40%); }
+        }
+
+        @keyframes countDownFade {
+            0% { opacity: 0; transform: translate(-50%, 0) scale(0.8); }
+            50% { opacity: 0.8; transform: translate(-50%, 0) scale(1); }
+            100% { opacity: 0; transform: translate(-50%, 0) scale(0.8); }
+        }
+
+        @keyframes showArrow {
+            to { opacity: 0.7; transform: translate(-50%, 0) scale(0.9); }
+        }
+
+        @keyframes kenBurns {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.08); }
+        }
+
+        @keyframes kenBurnsMobile {
+            0% { transform: scale(1.02); }
+            100% { transform: scale(1.1); }
+        }
+
+        @keyframes arrowBounce {
+            0%, 20%, 50%, 80%, 100% { 
+                transform: translateY(0) rotate(45deg); 
+                opacity: 0.3; 
+            }
+            40% { 
+                transform: translateY(-10px) rotate(45deg); 
+                opacity: 0.8; 
+            }
+        }
+
+        @keyframes skeleton-loading {
+            0% { left: -150%; }
+            50% { left: 100%; }
+            100% { left: 100%; }
+        }
+
+        /* 媒体查询 - 响应式适配 */
         @media (max-width: 900px) {
             .hero-overlay { top: 40%; }
             .hero-title {
@@ -754,9 +724,7 @@
                 transform: translateX(100%);
             }
             
-            .nav-links.active {
-                transform: translateX(0);
-            }
+            .nav-links.active { transform: translateX(0); }
             
             .nav-links a {
                 color: var(--main-color) !important;
@@ -791,12 +759,9 @@
                 height: 36px;
             }
             
-            .hero img {
-                animation: kenBurnsMobile 20s ease-in-out infinite alternate;
-            }
+            .hero img { animation: kenBurnsMobile 20s ease-in-out infinite alternate; }
             
-            .project img,
-            .project-image-wrapper {
+            .project img, .project-image-wrapper {
                 display: block;
                 visibility: visible;
             }
@@ -807,9 +772,7 @@
                 opacity: 1;
             }
 
-            .countdown {
-                font-size: 20px;
-            }
+            .countdown { font-size: 20px; }
         }
 
         @media (min-width: 901px) {
@@ -821,14 +784,30 @@
         }
 
         @media (max-width: 600px) {
+            /* 启动页适配 */
+            .splash-title-matter {
+                letter-spacing: 0.15em;
+                font-size: 26px;
+                white-space: normal;
+                line-height: 1.4;
+                top: 50%;
+                transform: translate(-50%, -50%);
+            }
+            .splash-title-name {
+                letter-spacing: 0.15em;
+                font-size: 29px;
+                white-space: nowrap;
+                top: 50% !important;
+                transform: translate(-50%, -50%) !important;
+            }
+
+            /* 按钮适配 */
             .enter-arrow-btn {
                 padding: 40px;
                 top: 85%;
             }
             
-            .arrow-icon {
-                width: 40px;
-            }
+            .arrow-icon { width: 40px; }
             
             #splash-video {
                 width: 100vw;
@@ -838,24 +817,7 @@
                 transform: none;
             }
             
-            .img-ratio {
-                aspect-ratio: 3 / 4;
-            }
-            /* 移动端zhangjiarui居中 */
-            .splash-title-name {
-                top: 50% !important;
-                transform: translate(-50%, -50%) !important;
-            }
-        }
-
-        footer {
-            padding: 60px 5% 40px;
-            text-align: center;
-            border-top: 1px solid #f9f9f9;
-            font-size: 9px;
-            letter-spacing: 0.4em;
-            color: #ccc;
-            text-transform: uppercase;
+            .img-ratio { aspect-ratio: 3 / 4; }
         }
     </style>
 </head>
@@ -865,11 +827,8 @@
             <source src="images/hero-bg.mp4" type="video/mp4">
         </video>
         <div class="splash-content">
-            <!-- 黑屏倒计时文字：Matter dissolves, memory crystallizes 样式（保留显示） -->
             <h1 class="splash-title-matter">Matter <br> dissolves, <br> memory <br> crystallizes</h1>
-            <!-- 视频显示后文字：zhangjiarui 样式（仅显示此文字） -->
             <h1 class="splash-title-name">zhangjiarui</h1>
-            <!-- 倒计时 -->
             <div class="countdown" id="countdown">3</div>
             <button class="enter-arrow-btn" onclick="hideSplash()" aria-label="Enter Portfolio">
                 <div class="arrow-icon"></div>
@@ -1071,11 +1030,11 @@
     </main>
 
     <div id="back-to-top" aria-label="Back to top"></div>
-
     <footer>&copy; 2026 ZHANGJIARUI ARTWORKS.</footer>
 
     <script>
-        const DOM = {
+        // DOM元素缓存
+        const dom = {
             video: document.getElementById('splash-video'),
             splashPage: document.getElementById('splash-page'),
             nav: document.getElementById('navbar'),
@@ -1090,244 +1049,145 @@
             titleMatter: document.querySelector('.splash-title-matter'),
             titleName: document.querySelector('.splash-title-name')
         };
-        
-        // 倒计时函数：总时长增加1秒（修改2：定时器间隔改回1000ms）
-        function startCountdown() {
+
+        // 工具函数 - 显示提示
+        const showToast = () => {
+            const toast = document.getElementById('copy-toast');
+            toast.style.opacity = '1';
+            toast.style.visibility = 'visible';
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.visibility = 'hidden';
+            }, 2000);
+        };
+
+        // 倒计时逻辑
+        const startCountdown = () => {
             let count = 3;
-            const countdownEl = DOM.countdown;
+            dom.countdown.textContent = count;
             
-            countdownEl.textContent = count;
-            countdownEl.style.animationName = 'countDownFade';
-            countdownEl.style.animationDelay = '0s';
-            
-            // 修改点：定时器间隔从500ms改回1000ms，总时长增加1秒（原1.5s→3s）
             const timer = setInterval(() => {
                 count--;
                 if (count > 0) {
-                    countdownEl.textContent = count;
-                    countdownEl.style.animationName = 'none';
-                    void countdownEl.offsetWidth;
-                    countdownEl.style.animationName = 'countDownFade';
+                    dom.countdown.textContent = count;
+                    dom.countdown.style.animationName = 'none';
+                    void dom.countdown.offsetWidth; // 重置动画
+                    dom.countdown.style.animationName = 'countDownFade';
                 } else {
                     clearInterval(timer);
-                    countdownEl.style.display = 'none';
+                    dom.countdown.style.display = 'none';
                     playVideoAfterCountdown();
                 }
-            }, 1000); // 修改2：间隔改回1000ms
-        }
-        
-        // 倒计时结束：隐藏黑屏文字，显示视频+居中的名字文字
-        function playVideoAfterCountdown() {
-            if (DOM.video) {
-                // 新增：隐藏Matter dissolves...文字
-                DOM.titleMatter.style.opacity = '0';
-                DOM.titleMatter.style.display = 'none';
-                
-                // 调整zhangjiarui文字居中显示
-                DOM.titleName.style.top = '40%';
-                DOM.titleName.style.transform = 'translate(-50%, -40%)';
-                
-                // 检测屏幕宽度，电脑端修改文字为带空格版本
-                if (window.innerWidth > 600) {
-                    DOM.titleName.textContent = 'zhang jia rui';
-                }
-                
-                // 显示视频
-                DOM.video.style.opacity = '1';
-                DOM.video.load();
-                // 显示名字文字（仅zhangjiarui/zhang jia rui）
-                DOM.titleName.style.animation = 'fadeInName 1s ease-in-out forwards 0.5s';
+            }, 1000);
+        };
 
-                const playVideo = () => {
-                    DOM.video.play().catch(() => {
-                        const triggerPlay = () => {
-                            DOM.video.play();
-                            document.removeEventListener('click', triggerPlay);
-                            document.removeEventListener('touchstart', triggerPlay);
-                        };
-                        document.addEventListener('click', triggerPlay, { once: true });
-                        document.addEventListener('touchstart', triggerPlay, { once: true });
-                    }).then(() => {
-                        setTimeout(() => {
-                            DOM.enterBtn.style.animationName = 'showArrow';
-                            DOM.enterBtn.style.opacity = '0.7';
-                        }, 2000);
-                    });
-                };
-                
-                DOM.video.addEventListener('loadedmetadata', playVideo, { once: true });
-            }
-        }
-        
-        function initPage() {
-            const isFirstVisit = !sessionStorage.getItem('hasVisited');
+        // 倒计时结束后播放视频
+        const playVideoAfterCountdown = () => {
+            if (!dom.video) return;
             
-            if (isFirstVisit) {
-                document.body.classList.add('first-visit');
-                startCountdown();
-            } else {
-                document.body.classList.add('splash-hidden');
-                document.body.classList.remove('first-visit');
-                DOM.splashPage.style.display = 'none';
-                document.body.classList.remove('no-scroll');
-                DOM.enterBtn.style.opacity = '0.7';
-            }
-
-            const allImages = document.querySelectorAll('.project img, #hero-img-wrap img');
-            allImages.forEach(img => {
-                if (img.complete && !img.classList.contains('loaded')) {
-                    handleImageLoad(img);
-                }
-                if (window.innerWidth <= 900) {
-                    img.style.opacity = '1';
-                }
-            });
-
-            initRevealObserver();
-
-            const currentScrollY = window.pageYOffset || document.documentElement.scrollTop;
-            updateNavAndBtt(currentScrollY);
-
-            document.body.classList.add('page-loaded');
+            // 隐藏初始文字，显示名字和视频
+            dom.titleMatter.style.opacity = '0';
+            dom.titleMatter.style.display = 'none';
+            dom.titleName.style.top = '40%';
+            dom.titleName.style.transform = 'translate(-50%, -40%)';
             
-            if (!isFirstVisit) {
-                document.body.classList.remove('no-scroll');
+            // 电脑端调整文字格式
+            if (window.innerWidth > 600) {
+                dom.titleName.textContent = 'zhang jia rui';
             }
+            
+            // 显示视频和名字
+            dom.video.style.opacity = '1';
+            dom.video.load();
+            dom.titleName.style.animation = 'fadeInName 1s ease-in-out forwards 0.5s';
 
-            if (window.innerWidth > 900 && DOM.heroSection && DOM.heroImgWrap) {
-                initMouseFollow();
-            }
-        }
+            // 播放视频（处理自动播放限制）
+            const playVideo = () => {
+                dom.video.play().catch(() => {
+                    const triggerPlay = () => {
+                        dom.video.play();
+                        document.removeEventListener('click', triggerPlay);
+                        document.removeEventListener('touchstart', triggerPlay);
+                    };
+                    document.addEventListener('click', triggerPlay, { once: true });
+                    document.addEventListener('touchstart', triggerPlay, { once: true });
+                }).then(() => {
+                    setTimeout(() => {
+                        dom.enterBtn.style.animationName = 'showArrow';
+                        dom.enterBtn.style.opacity = '0.7';
+                    }, 2000);
+                });
+            };
+            
+            dom.video.addEventListener('loadedmetadata', playVideo, { once: true });
+        };
 
-        function initMouseFollow() {
-            DOM.heroSection.addEventListener('mousemove', (e) => {
+        // 隐藏启动页
+        const hideSplash = () => {
+            sessionStorage.setItem('hasVisited', 'true');
+            document.body.classList.add('splash-hidden');
+            document.body.classList.remove('no-scroll', 'first-visit');
+            window.scrollTo(0, 0);
+            setTimeout(() => dom.splashPage.style.display = 'none', 50);
+        };
+
+        // 图片加载处理
+        const handleImageLoad = (img) => {
+            img.classList.add('loaded');
+            img.parentElement.classList.add('finished-loading');
+            if (window.innerWidth <= 900) img.style.opacity = '1';
+        };
+
+        // 图片加载失败处理
+        const handleImageError = (img, fallbackSrc) => {
+            img.src = fallbackSrc;
+            img.onerror = null;
+            handleImageLoad(img);
+        };
+
+        // 初始化滚动监听
+        const initScrollObserver = () => {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) entry.target.classList.add('revealed');
+                });
+            }, { threshold: 0.1 });
+
+            document.querySelectorAll('.statement-section, .content-section').forEach(sec => observer.observe(sec));
+        };
+
+        // 初始化鼠标跟随效果
+        const initMouseFollow = () => {
+            dom.heroSection.addEventListener('mousemove', (e) => {
                 const maxOffset = 20;
                 const x = Math.max(-maxOffset, Math.min(maxOffset, (e.clientX - window.innerWidth / 2) / 50));
                 const y = Math.max(-maxOffset, Math.min(maxOffset, (e.clientY - window.innerHeight / 2) / 50));
                 
                 requestAnimationFrame(() => {
-                    DOM.heroImgWrap.style.transform = `translate(${-x}px, ${-y}px)`;
+                    dom.heroImgWrap.style.transform = `translate(${-x}px, ${-y}px)`;
                 });
             });
-        }
+        };
 
-        function updateNavAndBtt(scrollY) {
-            if (scrollY > 50) {
-                DOM.nav.classList.add("nav-scrolled");
-                DOM.btt.classList.add("visible");
+        // 更新导航和回到顶部按钮状态
+        const updateNavStatus = (scrollY) => {
+            const isScrolled = scrollY > 50;
+            dom.nav.classList.toggle("nav-scrolled", isScrolled);
+            dom.btt.classList.toggle("visible", isScrolled);
+            
+            // 滚动隐藏/显示导航
+            if (scrollY > dom.lastScrollY && scrollY > 200) {
+                dom.nav.style.transform = "translateY(-100%)";
             } else {
-                DOM.nav.classList.remove("nav-scrolled");
-                DOM.btt.classList.remove("visible");
+                dom.nav.style.transform = "translateY(0)";
             }
-        }
+            dom.lastScrollY = scrollY;
+        };
 
-        function hideSplash() {
-            sessionStorage.setItem('hasVisited', 'true');
-            document.body.classList.add('splash-hidden');
-            document.body.classList.remove('no-scroll', 'first-visit');
-            window.scrollTo(0, 0);
-            
-            setTimeout(() => {
-                DOM.splashPage.style.display = 'none';
-            }, 50);
-        }
-
-        function handleImageLoad(img) {
-            img.classList.add('loaded');
-            img.parentElement.classList.add('finished-loading');
-            
-            if (window.innerWidth <= 900) {
-                img.style.opacity = '1';
-            }
-        }
-
-        function handleImageError(img, fallbackSrc) {
-            img.src = fallbackSrc;
-            img.onerror = null;
-            handleImageLoad(img);
-        }
-
-        function initRevealObserver() {
-            const revealObserver = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('revealed');
-                    }
-                });
-            }, { threshold: 0.1 });
-
-            document.querySelectorAll('.statement-section, .content-section').forEach(sec => {
-                revealObserver.observe(sec);
-            });
-        }
-
-        let ticking = false;
-        let lastScrollY = window.scrollY;
-
-        window.addEventListener('scroll', () => {
-            if (!ticking) {
-                window.requestAnimationFrame(() => {
-                    const currentScrollY = window.pageYOffset || document.documentElement.scrollTop;
-                    const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-                    
-                    DOM.progress.style.width = (currentScrollY / height) * 100 + "%";
-
-                    if (currentScrollY > lastScrollY && currentScrollY > 200) {
-                        DOM.nav.style.transform = "translateY(-100%)";
-                    } else {
-                        DOM.nav.style.transform = "translateY(0)";
-                        updateNavAndBtt(currentScrollY);
-                    }
-                    
-                    lastScrollY = currentScrollY;
-                    ticking = false;
-                });
-                ticking = true;
-            }
-        }, { passive: true });
-
-        window.addEventListener('load', () => {
-            document.body.classList.add('page-loaded');
-            
-            if (window.innerWidth <= 900) {
-                document.querySelectorAll('.project img').forEach(img => {
-                    if (!img.classList.contains('loaded')) {
-                        img.style.display = 'block';
-                        img.style.visibility = 'visible';
-                    }
-                });
-            }
-        });
-
-        DOM.btt.onclick = () => window.scrollTo({top: 0, behavior: 'smooth'});
-
-        function toggleMenu() {
-            DOM.navLinks.classList.toggle('active');
-            DOM.menuToggle.classList.toggle('active');
-            document.body.style.overflow = DOM.navLinks.classList.contains('active') ? 'hidden' : 'auto';
-        }
-
-        function closeMenu() {
-            DOM.navLinks.classList.remove('active');
-            DOM.menuToggle.classList.remove('active');
-            document.body.style.overflow = 'auto';
-        }
-
-        DOM.menuToggle.onclick = toggleMenu;
-
-        function copyWeChat(id) {
-            const copySuccess = () => {
-                const toast = document.getElementById('copy-toast');
-                toast.style.opacity = '1';
-                toast.style.visibility = 'visible';
-                setTimeout(() => {
-                    toast.style.opacity = '0';
-                    toast.style.visibility = 'hidden';
-                }, 2000);
-            };
-
+        // 复制微信ID
+        const copyWeChat = (id) => {
             if (navigator.clipboard) {
-                navigator.clipboard.writeText(id).then(copySuccess).catch(() => fallbackCopy(id));
+                navigator.clipboard.writeText(id).then(showToast).catch(() => fallbackCopy(id));
             } else {
                 fallbackCopy(id);
             }
@@ -1342,19 +1202,103 @@
                 
                 try {
                     document.execCommand('copy');
-                    copySuccess();
+                    showToast();
                 } catch (err) {
                     alert('复制失败，请手动复制：' + text);
                 }
                 
                 document.body.removeChild(textArea);
             }
-        }
+        };
 
-        document.addEventListener('DOMContentLoaded', initPage);
-        window.addEventListener('pageshow', (e) => {
-            if (e.persisted) initPage();
+        // 菜单切换
+        const toggleMenu = () => {
+            dom.navLinks.classList.toggle('active');
+            dom.menuToggle.classList.toggle('active');
+            document.body.style.overflow = dom.navLinks.classList.contains('active') ? 'hidden' : 'auto';
+        };
+
+        // 关闭菜单
+        const closeMenu = () => {
+            dom.navLinks.classList.remove('active');
+            dom.menuToggle.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        };
+
+        // 初始化页面
+        const initPage = () => {
+            const isFirstVisit = !sessionStorage.getItem('hasVisited');
+            
+            // 首次访问处理
+            if (isFirstVisit) {
+                document.body.classList.add('first-visit');
+                startCountdown();
+            } else {
+                document.body.classList.add('splash-hidden');
+                document.body.classList.remove('first-visit', 'no-scroll');
+                dom.splashPage.style.display = 'none';
+                dom.enterBtn.style.opacity = '0.7';
+            }
+
+            // 图片加载处理
+            document.querySelectorAll('.project img, #hero-img-wrap img').forEach(img => {
+                if (img.complete && !img.classList.contains('loaded')) handleImageLoad(img);
+                if (window.innerWidth <= 900) img.style.opacity = '1';
+            });
+
+            // 初始化滚动监听
+            initScrollObserver();
+            
+            // 初始化鼠标跟随（仅桌面端）
+            if (window.innerWidth > 900 && dom.heroSection && dom.heroImgWrap) {
+                initMouseFollow();
+            }
+
+            // 更新导航状态
+            updateNavStatus(window.pageYOffset || document.documentElement.scrollTop);
+            document.body.classList.add('page-loaded');
+        };
+
+        // 滚动监听（节流处理）
+        let ticking = false;
+        dom.lastScrollY = window.scrollY;
+        window.addEventListener('scroll', () => {
+            if (!ticking) {
+                window.requestAnimationFrame(() => {
+                    const scrollY = window.pageYOffset || document.documentElement.scrollTop;
+                    const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+                    
+                    // 更新进度条
+                    dom.progress.style.width = (scrollY / height) * 100 + "%";
+                    // 更新导航状态
+                    updateNavStatus(scrollY);
+                    
+                    ticking = false;
+                });
+                ticking = true;
+            }
+        }, { passive: true });
+
+        // 页面加载完成处理
+        window.addEventListener('load', () => {
+            document.body.classList.add('page-loaded');
+            if (window.innerWidth <= 900) {
+                document.querySelectorAll('.project img').forEach(img => {
+                    if (!img.classList.contains('loaded')) {
+                        img.style.display = 'block';
+                        img.style.visibility = 'visible';
+                    }
+                });
+            }
         });
+
+        // 事件绑定
+        dom.btt.onclick = () => window.scrollTo({top: 0, behavior: 'smooth'});
+        dom.menuToggle.onclick = toggleMenu;
+
+        // 页面初始化
+        document.addEventListener('DOMContentLoaded', initPage);
+        window.addEventListener('pageshow', (e) => e.persisted && initPage());
     </script>
 </body>
 </html>
