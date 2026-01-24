@@ -39,37 +39,51 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        /* 启动页样式 */
+        /* 启动页样式 - 优化：添加渐变遮罩+暗角 */
         #splash-page {
             position: fixed;
             inset: 0;
             z-index: 99999;
-            background: #000;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.1), rgba(0,0,0,0.8));
             display: none;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            transition: transform 0.4s cubic-bezier(0.85, 0, 0.15, 1), opacity 0.4s ease;
+            transition: transform 0.4s cubic-bezier(0.85, 0, 0.15, 1), opacity 0.8s ease;
             overflow: hidden;
             will-change: transform, opacity;
+            box-shadow: inset 0 0 120px rgba(0,0,0,0.4);
+            pointer-events: auto;
         }
 
         body.first-visit #splash-page {
             display: flex;
         }
 
+        /* 视频样式 - 优化：多属性过渡+画面微调 */
         #splash-video {
             position: absolute;
             inset: 0;
-            width: 100%;
-            height: 100%;
+            width: 105%;
+            height: 105%;
             object-fit: cover;
-            filter: brightness(0.7);
+            filter: brightness(0.65) contrast(1.05) saturate(1.02);
             z-index: 0;
             opacity: 0;
             display: block;
             preload: auto;
             object-position: center;
+            transition: 
+                opacity 2.8s cubic-bezier(0.22, 1, 0.36, 1),
+                transform 3.2s cubic-bezier(0.22, 1, 0.36, 1),
+                filter 2s ease;
+            transform: scale(0.95);
+        }
+
+        /* 视频淡入激活类 */
+        #splash-video.fade-in {
+            opacity: 1;
+            transform: scale(1);
         }
 
         video::-webkit-media-controls,
@@ -92,7 +106,7 @@
             position: relative;
         }
 
-        /* 启动页文字样式 */
+        /* 启动页文字样式 - 优化：时序+呼吸效果 */
         .splash-title-matter {
             font-size: clamp(12px, 6vw, 40px);
             font-weight: 300;
@@ -129,28 +143,42 @@
             color: rgba(255,255,255,0.9);
             z-index: 1;
             pointer-events: none;
+            text-shadow: 0 0 12px rgba(255,255,255,0.15);
+            animation: fadeInName 1.8s ease-in-out forwards 0.8s, breath 3s ease-in-out infinite alternate 2s;
         }
 
-        /* 倒计时样式 */
-        .countdown {
+        /* 进度条样式 - 替换倒计时 */
+        .splash-progress {
             position: absolute;
-            top: 85%;
+            bottom: 70px;
             left: 50%;
-            transform: translate(-50%, 0) scale(0.9);
-            font-size: 24px;
-            color: var(--white-alpha-70);
-            font-weight: 300;
-            opacity: 0;
-            animation: countDownFade 1s ease-in-out forwards;
+            transform: translateX(-50%);
+            width: 60%;
+            max-width: 300px;
+            height: 1px;
+            background: rgba(255,255,255,0.2);
             z-index: 2;
+            opacity: 0;
+            animation: fadeIn 0.5s ease forwards 0.2s;
         }
 
+        .splash-progress-bar {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            background: rgba(255,255,255,0.8);
+            width: 0%;
+            transition: width 3s linear;
+        }
+
+        /* 进入按钮 - 优化：悬停+过渡 */
         .enter-arrow-btn {
             background: none;
             cursor: pointer;
             padding: 25px;
             opacity: 0;
-            transition: transform 0.3s ease, opacity 0.5s ease;
+            transition: all 0.5s cubic-bezier(0.15, 1, 0.3, 1);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -161,6 +189,29 @@
             transform: translate(-50%, 0) scale(0.9);
             border: none;
             z-index: 2;
+        }
+
+        .enter-arrow-btn:hover {
+            transform: translate(-50%, 0) scale(1.1);
+        }
+
+        .enter-arrow-btn:hover .arrow-icon {
+            background-color: #fff;
+        }
+
+        .enter-arrow-btn:hover .arrow-icon::after {
+            border-top-color: #fff;
+            border-right-color: #fff;
+        }
+
+        /* 点击波纹样式 */
+        .ripple {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.2);
+            transform: scale(0);
+            animation: ripple 0.6s linear;
+            pointer-events: none;
         }
 
         .arrow-icon {
@@ -180,6 +231,18 @@
             border-top: 2px solid var(--white-alpha-70);
             border-right: 2px solid var(--white-alpha-70);
             transform: rotate(45deg);
+        }
+
+        /* 鼠标跟随光点（仅桌面端） */
+        .mouse-light {
+            position: absolute;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            pointer-events: none;
+            z-index: 1;
+            transition: transform 0.1s ease;
         }
 
         /* 导航栏样式 */
@@ -652,14 +715,32 @@
             text-transform: uppercase;
         }
 
-        /* 动画关键帧 */
+        /* 动画关键帧 - 优化：新增呼吸/淡入/波纹动画 */
         @keyframes fadeInUpSmooth {
             0% { opacity: 0; transform: translate(-50%, -55%); }
+            80% { opacity: 0.8; transform: translate(-50%, -60%); }
             100% { opacity: 0.8; transform: translate(-50%, -60%); }
         }
 
         @keyframes fadeInName {
-            to { opacity: 0.8; transform: translate(-50%, -40%); }
+            0% { opacity: 0; transform: translate(-50%, -40%) scale(0.98); }
+            100% { opacity: 0.85; transform: translate(-50%, -40%) scale(1); }
+        }
+
+        @keyframes breath {
+            0%, 100% { opacity: 0.85; transform: translate(-50%, -40%) scale(1); }
+            50% { opacity: 0.95; transform: translate(-50%, -40%) scale(1.01); }
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+
+        @keyframes ripple {
+            to {
+                transform: scale(4);
+                opacity: 0;
+            }
         }
 
         @keyframes countDownFade {
@@ -699,7 +780,7 @@
             100% { left: 100%; }
         }
 
-        /* 媒体查询 - 响应式适配 */
+        /* 媒体查询 - 优化：响应式动画适配 */
         @media (max-width: 900px) {
             .hero-overlay { top: 40%; }
             .hero-title {
@@ -785,7 +866,7 @@
         }
 
         @media (max-width: 600px) {
-            /* 启动页适配 */
+            /* 启动页适配 - 优化：动画时长适配 */
             .splash-title-matter {
                 letter-spacing: 0.15em;
                 font-size: 26px;
@@ -800,6 +881,7 @@
                 white-space: nowrap;
                 top: 50% !important;
                 transform: translate(-50%, -50%) !important;
+                animation: fadeInName 1.5s ease-in-out forwards 0.5s, breath 2.5s ease-in-out infinite alternate 1.5s;
             }
 
             /* 按钮适配 */
@@ -816,9 +898,16 @@
                 object-fit: cover;
                 object-position: center;
                 transform: none;
+                transition-duration: 2s, 2.2s;
+                filter: brightness(0.6) contrast(1.02);
             }
             
             .img-ratio { aspect-ratio: 3 / 4; }
+
+            /* 进度条适配 */
+            .splash-progress {
+                width: 80%;
+            }
         }
     </style>
 </head>
@@ -830,8 +919,15 @@
         <div class="splash-content">
             <h1 class="splash-title-matter">Matter <br> dissolves, <br> memory <br> crystallizes</h1>
             <h1 class="splash-title-name">zhangjiarui</h1>
-            <div class="countdown" id="countdown">3</div>
-            <button class="enter-arrow-btn" onclick="hideSplash()" aria-label="Enter Portfolio">
+            <!-- 进度条替换原有倒计时 -->
+            <div class="splash-progress">
+                <div class="splash-progress-bar" id="splashProgressBar"></div>
+            </div>
+            <!-- 环境音效（可选，需自行添加音频文件） -->
+            <audio id="splash-audio" preload="none" loop volume="0.15">
+                <source src="images/ambient.mp3" type="audio/mpeg">
+            </audio>
+            <button class="enter-arrow-btn" onclick="hideSplash(event)" aria-label="Enter Portfolio">
                 <div class="arrow-icon"></div>
             </button>
         </div>
@@ -1045,7 +1141,7 @@
             menuToggle: document.getElementById('menuToggle'),
             heroImgWrap: document.getElementById('hero-img-wrap'),
             heroSection: document.getElementById('hero-section'),
-            countdown: document.getElementById('countdown'),
+            splashProgressBar: document.getElementById('splashProgressBar'),
             enterBtn: document.querySelector('.enter-arrow-btn'),
             titleMatter: document.querySelector('.splash-title-matter'),
             titleName: document.querySelector('.splash-title-name')
@@ -1062,27 +1158,21 @@
             }, 2000);
         };
 
-        // 倒计时逻辑
-        const startCountdown = () => {
-            let count = 3;
-            dom.countdown.textContent = count;
-            
-            const timer = setInterval(() => {
-                count--;
-                if (count > 0) {
-                    dom.countdown.textContent = count;
-                    dom.countdown.style.animationName = 'none';
-                    void dom.countdown.offsetWidth; // 重置动画
-                    dom.countdown.style.animationName = 'countDownFade';
-                } else {
-                    clearInterval(timer);
-                    dom.countdown.style.display = 'none';
+        // 进度条逻辑（替换倒计时）
+        const startProgressBar = () => {
+            if (!dom.splashProgressBar) return;
+            // 延迟0.2s开始进度条
+            setTimeout(() => {
+                dom.splashProgressBar.style.width = '100%';
+                // 进度条完成后隐藏，触发视频播放
+                setTimeout(() => {
+                    dom.splashProgressBar.parentElement.style.opacity = 0;
                     playVideoAfterCountdown();
-                }
-            }, 1000);
+                }, 3000);
+            }, 200);
         };
 
-        // 倒计时结束后播放视频
+        // 倒计时结束后播放视频 - 优化：视频淡入逻辑+失败降级
         const playVideoAfterCountdown = () => {
             if (!dom.video) return;
             
@@ -1097,10 +1187,28 @@
                 dom.titleName.textContent = 'zhang jia rui';
             }
             
-            // 显示视频和名字
-            dom.video.style.opacity = '1';
+            // 加载视频并触发淡入
             dom.video.load();
-            dom.titleName.style.animation = 'fadeInName 1s ease-in-out forwards 0.5s';
+            // 等视频可播放后再淡入，避免卡顿
+            const triggerFadeIn = () => {
+                if (dom.video.readyState >= 2) { // 2 = 可播放状态
+                    dom.video.classList.add('fade-in');
+                } else {
+                    dom.video.addEventListener('canplay', () => {
+                        dom.video.classList.add('fade-in');
+                    }, { once: true });
+                }
+            };
+            triggerFadeIn();
+
+            // 视频加载失败降级
+            dom.video.addEventListener('error', () => {
+                dom.splashPage.style.background = 'linear-gradient(135deg, #0a0a0a, #1f1f1f)';
+                dom.titleName.style.textShadow = '0 0 15px rgba(255,255,255,0.2)';
+                dom.titleName.style.animation = 'fadeInName 1.5s ease-in-out forwards 0.5s, breath 3s ease-in-out infinite alternate 2s';
+                dom.enterBtn.style.animationName = 'showArrow';
+                dom.enterBtn.style.opacity = '0.7';
+            });
 
             // 播放视频（处理自动播放限制）
             const playVideo = () => {
@@ -1123,13 +1231,34 @@
             dom.video.addEventListener('loadedmetadata', playVideo, { once: true });
         };
 
-        // 隐藏启动页
-        const hideSplash = () => {
+        // 隐藏启动页 - 优化：添加波纹效果+丝滑退出+环境音效
+        const hideSplash = (e) => {
+            // 生成点击波纹（如果是点击事件）
+            if (e) {
+                const btn = e.currentTarget;
+                const ripple = document.createElement('span');
+                const diameter = Math.max(btn.clientWidth, btn.clientHeight);
+                const radius = diameter / 2;
+                ripple.style.width = ripple.style.height = `${diameter}px`;
+                ripple.style.left = `${e.clientX - btn.getBoundingClientRect().left - radius}px`;
+                ripple.style.top = `${e.clientY - btn.getBoundingClientRect().top - radius}px`;
+                ripple.classList.add('ripple');
+                btn.parentNode.appendChild(ripple);
+                setTimeout(() => ripple.remove(), 600);
+            }
+
+            // 播放环境音效（可选）
+            const audio = document.getElementById('splash-audio');
+            audio.play().catch(() => {});
+
             sessionStorage.setItem('hasVisited', 'true');
             document.body.classList.add('splash-hidden');
             document.body.classList.remove('no-scroll', 'first-visit');
+            // 丝滑退出动画
+            dom.splashPage.style.opacity = 0;
+            dom.splashPage.style.transform = 'translateY(-20px)';
+            setTimeout(() => dom.splashPage.style.display = 'none', 800);
             window.scrollTo(0, 0);
-            setTimeout(() => dom.splashPage.style.display = 'none', 50);
         };
 
         // 图片加载处理
@@ -1226,14 +1355,31 @@
             document.body.style.overflow = 'auto';
         };
 
-        // 初始化页面
+        // 初始化页面 - 优化：添加鼠标光点+键盘快捷触发
         const initPage = () => {
             const isFirstVisit = !sessionStorage.getItem('hasVisited');
             
             // 首次访问处理
             if (isFirstVisit) {
                 document.body.classList.add('first-visit');
-                startCountdown();
+                startProgressBar(); // 替换倒计时为进度条
+
+                // 桌面端添加鼠标跟随光点
+                if (window.innerWidth > 900) {
+                    const light = document.createElement('div');
+                    light.classList.add('mouse-light');
+                    dom.splashPage.appendChild(light);
+                    dom.splashPage.addEventListener('mousemove', (e) => {
+                        light.style.transform = `translate(${e.clientX - 40}px, ${e.clientY - 40}px)`;
+                    });
+                }
+
+                // 键盘快捷触发（回车/空格）
+                document.addEventListener('keydown', (e) => {
+                    if (dom.splashPage.style.display !== 'none' && (e.key === 'Enter' || e.key === ' ')) {
+                        hideSplash();
+                    }
+                });
             } else {
                 document.body.classList.add('splash-hidden');
                 document.body.classList.remove('first-visit', 'no-scroll');
@@ -1302,4 +1448,4 @@
         window.addEventListener('pageshow', (e) => e.persisted && initPage());
     </script>
 </body>
-</html>
+</html>v
