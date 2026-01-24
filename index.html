@@ -93,19 +93,19 @@
 
         /* 1. 黑屏倒计时文字：Matter dissolves, memory crystallizes 样式（保留显示） */
         .splash-title-matter {
-            font-size: clamp(12px, 6vw, 40px); /* 电脑端字体再小两号：原14px→12px，原48px→40px */
+            font-size: clamp(12px, 6vw, 40px); 
             font-weight: 300;
             letter-spacing: 0.2em;
             text-transform: uppercase;
             margin: 0;
             opacity: 0;
             position: absolute;
-            top: 50%; /* 垂直居中 */
+            top: 50%; 
             left: 50%;
-            transform: translate(-50%, -50%); /* 完全居中（水平+垂直） */
+            transform: translate(-50%, -50%); 
             animation: fadeInUpSmooth 1s ease-in-out forwards 0.2s;
-            white-space: normal; /* 取消nowrap，让<br>生效以调整行间距 */
-            line-height: 1.771; /* 行间距在原1.54基础上再增大15%：1.54 × 1.15 = 1.771 */
+            white-space: normal; 
+            line-height: 1.771; 
             width: 100%;
             text-align: center;
             color: rgba(255,255,255,0.9);
@@ -113,16 +113,17 @@
         }
         /* 2. 视频显示后文字：zhangjiarui 样式（仅显示此文字） */
         .splash-title-name {
-            font-size: clamp(19px, 8vw, 72px); /* 字体大一号（在原18px/70px基础上增大） */
+            font-size: clamp(19px, 8vw, 72px); 
             font-weight: 300;
             letter-spacing: 0.2em;
             text-transform: uppercase;
             margin: 0;
-            opacity: 0;
+            /* 修复：默认透明度改为1，电脑端由子元素控制显隐 */
+            opacity: 1;
             position: absolute;
-            top: 40%; /* 向上移动10%（原50%→40%） */
+            top: 40%; 
             left: 50%;
-            transform: translate(-50%, -40%); /* 对应top值调整，保持水平垂直居中 */
+            transform: translate(-50%, -40%); 
             width: 100%;
             text-align: center;
             color: rgba(255,255,255,0.9);
@@ -134,9 +135,12 @@
         @media (min-width: 601px) {
             .sand-char {
                 display: inline-block;
+                /* 初始状态：完全透明、偏移、旋转 */
                 opacity: 0;
-                transform: translateY(30px) rotate(10deg) scale(0.8);
-                animation: sandFall 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+                transform: translateY(50px) rotate(15deg) scale(0.5);
+                animation: sandFall 1.5s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+                /* 字符间距微调 */
+                margin: 0 2px;
             }
         }
 
@@ -152,18 +156,21 @@
         @media (max-width: 600px) {
             .splash-title-matter {
                 letter-spacing: 0.15em;
-                font-size: 26px; /* 保持原移动端字体大小不变 */
+                font-size: 26px; 
                 white-space: normal;
-                line-height: 1.4; /* 保持原移动端行高不变 */
+                line-height: 1.4; 
                 top: 50%;
                 transform: translate(-50%, -50%);
             }
             .splash-title-name {
                 letter-spacing: 0.15em;
-                font-size: 29px; /* 保持原移动端字体大小不变 */
+                font-size: 29px; 
                 white-space: nowrap;
                 top: 65%;
-                transform: translate(-50%, -65%); /* 保持原移动端位置不变 */
+                transform: translate(-50%, -65%); 
+                /* 移动端恢复原有动画 */
+                opacity: 0;
+                animation: fadeInName 1s ease-in-out forwards 0.5s;
             }
         }
 
@@ -177,7 +184,7 @@
             color: var(--white-alpha-70);
             font-weight: 300;
             opacity: 0;
-            animation-duration: 1s; /* 修改1：改回1s，增加倒计时显示时长 */
+            animation-duration: 1s; 
             animation-timing-function: ease-in-out;
             animation-fill-mode: forwards;
             z-index: 2;
@@ -237,7 +244,7 @@
         }
 
         @keyframes fadeInName {
-            to { opacity: 0.8; transform: translate(-50%, -40%); } /* 对应top值调整 */
+            to { opacity: 0.8; transform: translate(-50%, -65%); }
         }
 
         @keyframes kenBurns {
@@ -1166,7 +1173,6 @@
                 } else {
                     // 手机端保持原有文字和动画
                     DOM.titleName.textContent = 'zhangjiarui';
-                    DOM.titleName.style.animation = 'fadeInName 1s ease-in-out forwards 0.5s';
                 }
                 
                 // 显示视频
