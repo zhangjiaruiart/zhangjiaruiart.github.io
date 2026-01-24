@@ -8,9 +8,8 @@
     <link rel="icon" href="images/favicon.svg" type="image/svg+xml">
     <link rel="icon" href="images/favicon.png" type="image/png" sizes="32x32">
     <link rel="apple-touch-icon" href="images/favicon.png">
-    <!-- 预加载关键资源：优先加载hero视频和封面图，减少黑屏 -->
+    <!-- 预加载关键资源：优先加载hero视频，移除封面图预加载 -->
     <link rel="preload" as="video" href="images/hero-bg.mp4" fetchpriority="high">
-    <link rel="preload" as="image" href="images/cover.webp" fetchpriority="high">
     <link rel="preconnect" href="" crossorigin>
 
     <style>
@@ -43,19 +42,19 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        /* 欢迎页核心优化：减少黑屏 - 增加背景占位+视频poster */
+        /* 欢迎页核心修改：移除poster，添加倒计时样式 */
         #splash-page {
             position: fixed;
             inset: 0;
             z-index: 99999;
-            background: #000; /* 基础背景，避免完全透明 */
+            background: #000; /* 黑屏背景 */
             display: none;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            transition: transform 0.4s cubic-bezier(0.85, 0, 0.15, 1), opacity 0.4s ease; /* 缩短过渡时间 */
+            transition: transform 0.4s cubic-bezier(0.85, 0, 0.15, 1), opacity 0.4s ease;
             overflow: hidden;
-            will-change: transform, opacity; /* 优化动画渲染 */
+            will-change: transform, opacity;
         }
 
         body.first-visit #splash-page {
@@ -70,12 +69,11 @@
             object-fit: cover;
             filter: brightness(0.7);
             z-index: 0;
-            opacity: 1;
+            opacity: 0; /* 初始隐藏，倒计时结束后显示 */
             display: block;
             preload: auto;
             object-position: center;
-            /* 核心优化：添加poster，视频加载前显示封面，彻底解决黑屏 */
-            poster: url('images/cover.webp'); 
+            /* 移除poster属性 */
         }
 
         /* 隐藏视频控件 */
@@ -110,7 +108,7 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -60%);
-            animation: fadeInUpSmooth 1s ease-in-out forwards 0.2s; /* 缩短动画时间 */
+            animation: fadeInUpSmooth 1s ease-in-out forwards 0.2s;
             white-space: nowrap;
             width: 100%;
             text-align: center;
@@ -118,13 +116,36 @@
             z-index: 1;
         }
 
+        /* 倒计时样式：位置和箭头一致，大小匹配 */
+        .countdown {
+            position: absolute;
+            top: 85%;
+            left: 50%;
+            transform: translate(-50%, 0) scale(0.9);
+            font-size: 24px; /* 匹配箭头大小 */
+            color: var(--white-alpha-70);
+            font-weight: 300;
+            opacity: 0;
+            animation-duration: 1s;
+            animation-timing-function: ease-in-out;
+            animation-fill-mode: forwards;
+            z-index: 2;
+        }
+
+        /* 倒计时数字动画 */
+        @keyframes countDownFade {
+            0% { opacity: 0; transform: translate(-50%, 0) scale(0.8); }
+            50% { opacity: 0.8; transform: translate(-50%, 0) scale(1); }
+            100% { opacity: 0; transform: translate(-50%, 0) scale(0.8); }
+        }
+
+        /* 箭头按钮：初始隐藏，视频播放后显示 */
         .enter-arrow-btn {
             background: none;
             cursor: pointer;
             padding: 25px;
-            opacity: 0;
-            animation: fadeIn 0.8s forwards 1s; /* 缩短动画延迟 */
-            transition: transform 0.3s ease;
+            opacity: 0; /* 初始隐藏 */
+            transition: transform 0.3s ease, opacity 0.5s ease;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -135,6 +156,12 @@
             transform: translate(-50%, 0) scale(0.9);
             margin: 0;
             border: none;
+            z-index: 2;
+        }
+
+        /* 显示箭头的动画 */
+        @keyframes showArrow {
+            to { opacity: 0.7; transform: translate(-50%, 0) scale(0.9); }
         }
 
         .arrow-icon {
@@ -223,7 +250,7 @@
             padding: 30px 5%;
             z-index: 2000;
             transition: all 0.6s cubic-bezier(0.2, 1, 0.3, 1);
-            will-change: transform, background; /* 优化渲染 */
+            will-change: transform, background;
         }
 
         nav.nav-scrolled {
@@ -320,7 +347,7 @@
             top: -2.5%;
             left: -2.5%;
             transition: transform 0.2s ease-out;
-            will-change: transform; /* 优化鼠标跟随动画 */
+            will-change: transform;
         }
 
         .hero img {
@@ -470,7 +497,7 @@
             overflow: hidden;
             margin-bottom: 20px;
             position: relative;
-            background: #f9f9f9; /* 占位背景，避免空白 */
+            background: #f9f9f9;
         }
 
         .project-image-wrapper::before {
@@ -505,7 +532,6 @@
             object-fit: cover;
             transition: transform 1.8s cubic-bezier(0.15, 1, 0.3, 1), opacity 1s ease;
             opacity: 0;
-            /* 原生懒加载优化：只对非首屏图片启用 */
             loading: lazy;
             decoding: async;
         }
@@ -762,6 +788,11 @@
                 object-fit: contain;
                 opacity: 1;
             }
+
+            /* 移动端倒计时字体调整 */
+            .countdown {
+                font-size: 20px;
+            }
         }
 
         /* series5电脑端图片：放大20% */
@@ -817,12 +848,14 @@
 </head>
 <body class="no-scroll"> 
     <div id="splash-page">
-        <!-- 优化：添加poster属性，视频加载前显示封面，减少黑屏 -->
-        <video id="splash-video" autoplay loop muted playsinline webkit-playsinline x5-playsinline x5-video-player-type="h5" x5-video-orientation="portrait" preload="auto" poster="images/cover.webp">
+        <!-- 移除poster属性 -->
+        <video id="splash-video" autoplay loop muted playsinline webkit-playsinline x5-playsinline x5-video-player-type="h5" x5-video-orientation="portrait" preload="auto">
             <source src="images/hero-bg.mp4" type="video/mp4">
         </video>
         <div class="splash-content">
             <h1 class="splash-title">ZHANG JIA RUI</h1>
+            <!-- 添加倒计时元素 -->
+            <div class="countdown" id="countdown">3</div>
             <button class="enter-arrow-btn" onclick="hideSplash()" aria-label="Enter Portfolio">
                 <div class="arrow-icon"></div>
             </button>
@@ -851,7 +884,6 @@
     <main>
         <section class="hero" id="hero-section">
             <div id="hero-img-wrap">
-                <!-- 优化：优先加载hero图片，不使用懒加载 -->
                 <img src="images/cover.webp" alt="Zhang Jiarui Cover" 
                      onload="handleImageLoad(this)"
                      onerror="handleImageError(this, 'images/Cover.JPG');"
@@ -1040,8 +1072,70 @@
             navLinks: document.getElementById('navLinks'),
             menuToggle: document.getElementById('menuToggle'),
             heroImgWrap: document.getElementById('hero-img-wrap'),
-            heroSection: document.getElementById('hero-section')
+            heroSection: document.getElementById('hero-section'),
+            countdown: document.getElementById('countdown'),
+            enterBtn: document.querySelector('.enter-arrow-btn')
         };
+        
+        // 倒计时动画函数
+        function startCountdown() {
+            let count = 3;
+            const countdownEl = DOM.countdown;
+            
+            // 显示第一个数字（3）
+            countdownEl.textContent = count;
+            countdownEl.style.animationName = 'countDownFade';
+            countdownEl.style.animationDelay = '0s';
+            
+            // 倒计时定时器
+            const timer = setInterval(() => {
+                count--;
+                if (count > 0) {
+                    countdownEl.textContent = count;
+                    countdownEl.style.animationName = 'none';
+                    // 强制重绘
+                    void countdownEl.offsetWidth;
+                    countdownEl.style.animationName = 'countDownFade';
+                } else {
+                    clearInterval(timer);
+                    countdownEl.style.display = 'none';
+                    // 倒计时结束，显示视频并播放
+                    playVideoAfterCountdown();
+                }
+            }, 1000);
+        }
+        
+        // 倒计时结束后播放视频
+        function playVideoAfterCountdown() {
+            if (DOM.video) {
+                // 显示视频
+                DOM.video.style.opacity = '1';
+                DOM.video.load();
+                
+                // 播放视频
+                const playVideo = () => {
+                    DOM.video.play().catch(() => {
+                        // 移动端需要用户交互，绑定一次点击/触摸事件
+                        const triggerPlay = () => {
+                            DOM.video.play();
+                            document.removeEventListener('click', triggerPlay);
+                            document.removeEventListener('touchstart', triggerPlay);
+                        };
+                        document.addEventListener('click', triggerPlay, { once: true });
+                        document.addEventListener('touchstart', triggerPlay, { once: true });
+                    }).then(() => {
+                        // 视频播放后2秒显示箭头按钮
+                        setTimeout(() => {
+                            DOM.enterBtn.style.animationName = 'showArrow';
+                            DOM.enterBtn.style.opacity = '0.7';
+                        }, 2000);
+                    });
+                };
+                
+                // 视频元数据加载完成后播放
+                DOM.video.addEventListener('loadedmetadata', playVideo, { once: true });
+            }
+        }
         
         // 核心初始化函数 - 优化逻辑，减少重复操作
         function initPage() {
@@ -1049,31 +1143,16 @@
             
             if (isFirstVisit) {
                 document.body.classList.add('first-visit');
-                // 优化视频加载：只执行一次播放逻辑，避免重复调用
-                if (DOM.video) {
-                    DOM.video.load();
-                    // 自动播放降级处理：仅在用户交互后触发
-                    const playVideo = () => {
-                        DOM.video.play().catch(() => {
-                            // 移动端需要用户交互，绑定一次点击/触摸事件
-                            const triggerPlay = () => {
-                                DOM.video.play();
-                                document.removeEventListener('click', triggerPlay);
-                                document.removeEventListener('touchstart', triggerPlay);
-                            };
-                            document.addEventListener('click', triggerPlay, { once: true });
-                            document.addEventListener('touchstart', triggerPlay, { once: true });
-                        });
-                    };
-                    // 视频元数据加载完成后播放
-                    DOM.video.addEventListener('loadedmetadata', playVideo, { once: true });
-                }
+                // 启动倒计时
+                startCountdown();
             } else {
                 // 非首次访问：立即隐藏splash，无延迟
                 document.body.classList.add('splash-hidden');
                 document.body.classList.remove('first-visit');
                 DOM.splashPage.style.display = 'none';
                 document.body.classList.remove('no-scroll');
+                // 显示箭头按钮
+                DOM.enterBtn.style.opacity = '0.7';
             }
 
             // 图片加载状态重置 - 优化：批量处理
@@ -1141,7 +1220,7 @@
             
             setTimeout(() => {
                 DOM.splashPage.style.display = 'none';
-            }, 50); // 大幅缩短延迟
+            }, 50);
         }
 
         // 图片加载处理
