@@ -93,7 +93,7 @@
 
         /* 1. 黑屏倒计时文字：Matter dissolves, memory crystallizes 样式（保留显示） */
         .splash-title-matter {
-            font-size: clamp(14px, 6vw, 48px); /* 电脑端字体小两号：原56px→48px，基础值16px→14px */
+            font-size: clamp(12px, 6vw, 40px); /* 电脑端字体再小两号：原14px→12px，原48px→40px */
             font-weight: 300;
             letter-spacing: 0.2em;
             text-transform: uppercase;
@@ -105,7 +105,7 @@
             transform: translate(-50%, -50%); /* 完全居中（水平+垂直） */
             animation: fadeInUpSmooth 1s ease-in-out forwards 0.2s;
             white-space: normal; /* 取消nowrap，让<br>生效以调整行间距 */
-            line-height: 1.54; /* 行间距增大10%：原默认1.4 × 1.1 = 1.54 */
+            line-height: 1.771; /* 行间距在原1.54基础上再增大15%：1.54 × 1.15 = 1.771 */
             width: 100%;
             text-align: center;
             color: rgba(255,255,255,0.9);
