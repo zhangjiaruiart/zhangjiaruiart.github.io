@@ -761,17 +761,20 @@
                 visibility: visible !important;
             }
 
-            /* 修复series5移动端图片显示问题 + 放大25% */
+            /* series5移动端图片：缩小40%（scale=0.6） */
             .series5-wrapper img {
-                transform: scale(1.25) !important; /* 核心修改：放大25% */
-                object-fit: cover !important;
+                transform: scale(0.6) !important; 
+                object-fit: contain !important;
                 opacity: 1 !important;
             }
+        }
 
-            /* 移动端splash-video 移除预览图相关 */
-            #splash-video {
-                poster: none !important; /* 强制移除预览图 */
-                background: none !important; /* 移除背景兜底图 */
+        /* series5电脑端图片：放大20%（scale=1.2） */
+        @media (min-width: 901px) {
+            .series5-wrapper img {
+                transform: scale(1.2) !important; 
+                object-fit: contain !important;
+                opacity: 1 !important;
             }
         }
 
@@ -798,7 +801,6 @@
                 object-fit: cover !important;
                 object-position: center center !important;
                 transform: none !important;
-                poster: none !important; /* 再次强化移除600px以下手机端预览图 */
             }
             
             .img-ratio {
@@ -820,7 +822,6 @@
 </head>
 <body class="no-scroll"> 
     <div id="splash-page">
-        <!-- 移除video标签的poster属性（原本就没有，此处确认无预览图配置） -->
         <video id="splash-video" autoplay loop muted playsinline webkit-playsinline x5-playsinline x5-video-player-type="h5" x5-video-orientation="portrait" preload="auto">
             <source src="images/hero-bg.mp4" type="video/mp4">
         </video>
@@ -941,11 +942,12 @@
                 <article>
                     <h3 class="series-label">Line Series</h3>
                     <a href="series5.html" class="project">
-                        <!-- 新增 series5-wrapper 类名 -->
+                        <!-- series5-wrapper 容器，统一控制缩放 -->
                         <div class="project-image-wrapper img-ratio series5-wrapper" style="background-color: #ffffff; display: flex; align-items: center; justify-content: center;">
                             <img src="images/sculpture/s5_cover.webp" loading="lazy" decoding="async"
                                  onload="handleImageLoad(this)"
-                                 onerror="handleImageError(this, 'images/sculpture/s5_cover.jpg')" style="object-fit: contain; transform: scale(1.0);"> <!-- 核心修改：桌面端先恢复100%大小 -->
+                                 onerror="handleImageError(this, 'images/sculpture/s5_cover.jpg')" 
+                                 style="object-fit: contain;">
                         </div>
                         <div class="project-info">
                             <h4 class="project-title">X</h4>
@@ -1049,11 +1051,7 @@
                 document.body.classList.add('first-visit');
                 // 视频播放处理
                 if (video) {
-                    // 移除预览图相关属性（针对手机端强化）
-                    if (window.innerWidth <= 900) {
-                        video.removeAttribute('poster'); // 确保手机端无预览图
-                        video.style.poster = 'none';
-                    }
+                    video.removeAttribute('poster');
                     video.preload = 'auto';
                     video.load();
                     
