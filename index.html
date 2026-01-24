@@ -1127,10 +1127,15 @@
                 DOM.titleName.style.top = '40%';
                 DOM.titleName.style.transform = 'translate(-50%, -40%)';
                 
+                // 检测屏幕宽度，电脑端修改文字为带空格版本
+                if (window.innerWidth > 600) {
+                    DOM.titleName.textContent = 'zhang jia rui';
+                }
+                
                 // 显示视频
                 DOM.video.style.opacity = '1';
                 DOM.video.load();
-                // 显示名字文字（仅zhangjiarui）
+                // 显示名字文字（仅zhangjiarui/zhang jia rui）
                 DOM.titleName.style.animation = 'fadeInName 1s ease-in-out forwards 0.5s';
 
                 const playVideo = () => {
