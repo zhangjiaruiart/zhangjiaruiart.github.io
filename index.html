@@ -767,6 +767,12 @@
                 object-fit: cover !important;
                 opacity: 1 !important;
             }
+
+            /* 移动端splash-video 移除预览图相关 */
+            #splash-video {
+                poster: none !important; /* 强制移除预览图 */
+                background: none !important; /* 移除背景兜底图 */
+            }
         }
 
         @media (max-width: 600px) {
@@ -792,6 +798,7 @@
                 object-fit: cover !important;
                 object-position: center center !important;
                 transform: none !important;
+                poster: none !important; /* 再次强化移除600px以下手机端预览图 */
             }
             
             .img-ratio {
@@ -813,6 +820,7 @@
 </head>
 <body class="no-scroll"> 
     <div id="splash-page">
+        <!-- 移除video标签的poster属性（原本就没有，此处确认无预览图配置） -->
         <video id="splash-video" autoplay loop muted playsinline webkit-playsinline x5-playsinline x5-video-player-type="h5" x5-video-orientation="portrait" preload="auto">
             <source src="images/hero-bg.mp4" type="video/mp4">
         </video>
@@ -1041,7 +1049,11 @@
                 document.body.classList.add('first-visit');
                 // 视频播放处理
                 if (video) {
-                    video.removeAttribute('poster');
+                    // 移除预览图相关属性（针对手机端强化）
+                    if (window.innerWidth <= 900) {
+                        video.removeAttribute('poster'); // 确保手机端无预览图
+                        video.style.poster = 'none';
+                    }
                     video.preload = 'auto';
                     video.load();
                     
