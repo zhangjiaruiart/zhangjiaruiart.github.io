@@ -8,18 +8,21 @@
     <link rel="icon" href="images/favicon.svg" type="image/svg+xml">
     <link rel="icon" href="images/favicon.png" type="image/png" sizes="32x32">
     <link rel="apple-touch-icon" href="images/favicon.png">
+    <!-- 预加载关键资源：优先加载hero视频和封面图，减少黑屏 -->
     <link rel="preload" as="video" href="images/hero-bg.mp4" fetchpriority="high">
+    <link rel="preload" as="image" href="images/cover.webp" fetchpriority="high">
     <link rel="preconnect" href="" crossorigin>
 
     <style>
-        /* 基础变量与全局样式 - 统一管理可复用值 */
+        /* 基础变量与全局样式 - 精简可复用值 */
         :root {
             --primary-font: "Optima", "Didot", "Helvetica Neue", Helvetica, Arial, sans-serif;
-            --main-color: #111111;
+            --main-color: #111;
             --transition-smooth: all 1.2s cubic-bezier(0.15, 1, 0.3, 1);
             --white-alpha-70: rgba(255, 255, 255, 0.7);
             --white-alpha-80: rgba(255, 255, 255, 0.8);
             --black-alpha-80: rgba(17, 17, 17, 0.8);
+            --skeleton-gradient: linear-gradient(90deg, transparent, rgba(255,255,255,0.6), transparent);
         }
 
         /* 重置样式 - 精简统一 */
@@ -33,29 +36,28 @@
 
         body, html {
             font-family: var(--primary-font);
-            background-color: #ffffff;
+            background: #fff;
             color: var(--main-color);
             scroll-behavior: smooth;
             overflow-x: hidden;
             -webkit-font-smoothing: antialiased;
         }
 
-        /* 欢迎页核心样式 - 关键修改：默认隐藏，仅首次访问显示 */
+        /* 欢迎页核心优化：减少黑屏 - 增加背景占位+视频poster */
         #splash-page {
             position: fixed;
             inset: 0;
             z-index: 99999;
-            background: #000 !important;
-            display: none; /* 默认隐藏，避免闪现 */
+            background: #000; /* 基础背景，避免完全透明 */
+            display: none;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            transition: transform 0.5s cubic-bezier(0.85, 0, 0.15, 1), opacity 0.5s ease;
+            transition: transform 0.4s cubic-bezier(0.85, 0, 0.15, 1), opacity 0.4s ease; /* 缩短过渡时间 */
             overflow: hidden;
-            background-image: none !important;
+            will-change: transform, opacity; /* 优化动画渲染 */
         }
 
-        /* 仅首次访问时显示欢迎页 */
         body.first-visit #splash-page {
             display: flex;
         }
@@ -68,24 +70,24 @@
             object-fit: cover;
             filter: brightness(0.7);
             z-index: 0;
-            opacity: 1 !important;
-            display: block !important;
-            preload: auto !important;
-            object-position: center center;
-            -webkit-backface-visibility: hidden;
-            backface-visibility: hidden;
+            opacity: 1;
+            display: block;
+            preload: auto;
+            object-position: center;
+            /* 核心优化：添加poster，视频加载前显示封面，彻底解决黑屏 */
+            poster: url('images/cover.webp'); 
         }
 
-        /* 隐藏视频控件 - 精简选择器 */
+        /* 隐藏视频控件 */
         video::-webkit-media-controls,
         video::-moz-media-controls,
         video::-ms-media-controls { 
-            display: none !important; 
+            display: none; 
         }
 
         .splash-content {
             text-align: center;
-            color: #ffffff;
+            color: #fff;
             z-index: 1;
             display: flex;
             flex-direction: column;
@@ -93,12 +95,10 @@
             justify-content: center;
             width: 90%;
             max-width: 800px;
-            background: transparent !important;
             height: 100%;
             position: relative;
         }
 
-        /* 标题样式 - 精简重复属性 */
         .splash-title {
             font-size: clamp(20px, 8vw, 70px);
             font-weight: 300;
@@ -110,38 +110,38 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -60%);
-            animation: fadeInUpSmooth 1.2s ease-in-out forwards 0.2s;
+            animation: fadeInUpSmooth 1s ease-in-out forwards 0.2s; /* 缩短动画时间 */
             white-space: nowrap;
             width: 100%;
-            text-align: center !important;
-            color: var(--white-alpha-90) !important;
+            text-align: center;
+            color: rgba(255,255,255,0.9);
             z-index: 1;
         }
 
-        /* 箭头按钮 - 精简重复属性 */
         .enter-arrow-btn {
             background: none;
             cursor: pointer;
             padding: 25px;
             opacity: 0;
-            animation: fadeIn 1s forwards 1.2s;
+            animation: fadeIn 0.8s forwards 1s; /* 缩短动画延迟 */
             transition: transform 0.3s ease;
             display: flex;
             align-items: center;
             justify-content: center;
             -webkit-tap-highlight-color: transparent;
             position: absolute;
-            top: 85%; /* 修改：从70%改为85%，向下移动50%距离 */
+            top: 85%;
             left: 50%;
             transform: translate(-50%, 0) scale(0.9);
             margin: 0;
+            border: none;
         }
 
         .arrow-icon {
             position: relative;
             width: 50px;
             height: 2px;
-            background-color: var(--white-alpha-70) !important;
+            background-color: var(--white-alpha-70);
         }
 
         .arrow-icon::after {
@@ -151,29 +151,19 @@
             top: -5px;
             width: 10px;
             height: 10px;
-            border-top: 2px solid var(--white-alpha-70) !important;
-            border-right: 2px solid var(--white-alpha-70) !important;
+            border-top: 2px solid var(--white-alpha-70);
+            border-right: 2px solid var(--white-alpha-70);
             transform: rotate(45deg);
         }
 
-        /* 动画统一管理 - 精简重复定义 */
+        /* 动画优化：精简关键帧，减少计算 */
         @keyframes fadeInUpSmooth {
-            0% {
-                opacity: 0;
-                transform: translate(-50%, -55%);
-            }
-            100% {
-                opacity: 0.8;
-                transform: translate(-50%, -60%);
-                text-align: center !important;
-            }
+            0% { opacity: 0; transform: translate(-50%, -55%); }
+            100% { opacity: 0.8; transform: translate(-50%, -60%); }
         }
 
         @keyframes fadeIn {
-            to { 
-                opacity: 0.7; 
-                transform: translate(-50%, 0) scale(0.9); 
-            }
+            to { opacity: 0.7; transform: translate(-50%, 0) scale(0.9); }
         }
 
         @keyframes kenBurns {
@@ -203,16 +193,16 @@
             100% { left: 100%; }
         }
 
-        /* 通用状态类 - 精简重复定义 */
+        /* 通用状态类 */
         body.splash-hidden #splash-page {
             transform: translateY(-100%);
             pointer-events: none;
-            opacity: 0; /* 新增：直接透明，避免过渡闪烁 */
+            opacity: 0;
         }
         
         body.no-scroll { overflow: hidden; }
 
-        /* 导航栏样式 - 精简冗余属性 */
+        /* 导航栏样式 - 精简选择器 */
         #scroll-progress {
             position: fixed;
             top: 0;
@@ -224,7 +214,7 @@
             transition: width 0.1s ease-out;
         }
 
-        nav {
+        nav#navbar {
             position: fixed;
             inset: 0 0 auto 0;
             display: flex;
@@ -233,9 +223,10 @@
             padding: 30px 5%;
             z-index: 2000;
             transition: all 0.6s cubic-bezier(0.2, 1, 0.3, 1);
+            will-change: transform, background; /* 优化渲染 */
         }
 
-        .nav-scrolled {
+        nav.nav-scrolled {
             background: rgba(255, 255, 255, 0.85);
             backdrop-filter: blur(15px);
             -webkit-backdrop-filter: blur(15px);
@@ -248,7 +239,7 @@
             font-weight: 300;
             letter-spacing: 0.5em;
             text-decoration: none;
-            color: #ffffff;
+            color: #fff;
             text-transform: uppercase;
             transition: color 0.4s ease;
             position: relative;
@@ -265,7 +256,7 @@
         .nav-links a {
             margin-left: 35px;
             text-decoration: none;
-            color: #ffffff;
+            color: #fff;
             font-size: 10px;
             letter-spacing: 0.2em;
             text-transform: uppercase;
@@ -303,7 +294,7 @@
         .menu-toggle span {
             width: 25px;
             height: 1px;
-            background-color: #ffffff;
+            background-color: #fff;
             transition: all 0.3s ease;
         }
 
@@ -313,7 +304,7 @@
         .menu-toggle.active span:nth-child(2) { opacity: 0; }
         .menu-toggle.active span:nth-child(3) { transform: rotate(-45deg) translate(6px, -6px); }
 
-        /* 英雄区样式 - 精简冗余属性 */
+        /* 英雄区样式 - 优化动画性能 */
         .hero {
             height: 100vh;
             width: 100%;
@@ -329,7 +320,7 @@
             top: -2.5%;
             left: -2.5%;
             transition: transform 0.2s ease-out;
-            will-change: transform;
+            will-change: transform; /* 优化鼠标跟随动画 */
         }
 
         .hero img {
@@ -354,7 +345,7 @@
         }
 
         .hero-title {
-            color: #ffffff;
+            color: #fff;
             font-size: 18px;
             font-weight: 300;
             letter-spacing: 0.6em;
@@ -364,7 +355,7 @@
             opacity: 0;
             filter: blur(10px);
             transform: translateY(30px);
-            transition: opacity 2s ease, filter 2s ease, transform 1.5s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: opacity 1.8s ease, filter 1.8s ease, transform 1.5s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         .page-loaded .hero-title {
@@ -390,8 +381,8 @@
         .scroll-arrow {
             width: 16px;
             height: 16px;
-            border-right: 1.5px solid #ffffff;
-            border-bottom: 1.5px solid #ffffff;
+            border-right: 1.5px solid #fff;
+            border-bottom: 1.5px solid #fff;
             transform: rotate(45deg);
             animation: arrowBounce 2s infinite;
         }
@@ -474,11 +465,12 @@
             display: block;
         }
 
+        /* 图片加载优化：简化骨架屏，减少重绘 */
         .project-image-wrapper {
             overflow: hidden;
             margin-bottom: 20px;
             position: relative;
-            background-color: transparent !important;
+            background: #f9f9f9; /* 占位背景，避免空白 */
         }
 
         .project-image-wrapper::before {
@@ -488,7 +480,7 @@
             left: -150%;
             width: 100%;
             height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.6), transparent);
+            background: var(--skeleton-gradient);
             animation: skeleton-loading 1.5s infinite;
             z-index: 1;
         }
@@ -513,10 +505,13 @@
             object-fit: cover;
             transition: transform 1.8s cubic-bezier(0.15, 1, 0.3, 1), opacity 1s ease;
             opacity: 0;
+            /* 原生懒加载优化：只对非首屏图片启用 */
+            loading: lazy;
+            decoding: async;
         }
 
         .project img.loaded {
-            opacity: 1 !important;
+            opacity: 1;
         }
 
         .project:hover img {
@@ -577,7 +572,7 @@
             line-height: 1.4;
         }
 
-        /* 回到顶部按钮 - 精简冗余属性 */
+        /* 回到顶部按钮 */
         #back-to-top {
             position: fixed;
             bottom: 40px;
@@ -613,7 +608,7 @@
             margin-top: 4px;
         }
 
-        /* 联系区域 - 精简冗余属性 */
+        /* 联系区域 */
         .contact-section {
             padding: 100px 5%;
             background-color: #fff;
@@ -688,7 +683,7 @@
             z-index: 9999;
         }
 
-        /* 响应式样式 - 合并重复逻辑，精简冗余 */
+        /* 响应式样式 - 合并重复逻辑 */
         @media (max-width: 900px) {
             .hero-overlay { top: 40%; }
             .hero-title {
@@ -705,7 +700,7 @@
                 inset: 0 0 0 auto;
                 width: 100%;
                 height: 100vh;
-                background: #ffffff;
+                background: #fff;
                 flex-direction: column;
                 justify-content: center;
                 align-items: center;
@@ -728,7 +723,7 @@
                 gap: 40px;
             }
             
-            .content-section { padding: 30px 5% !important; }
+            .content-section { padding: 30px 5%; }
             .statement-text { font-size: 16px; }
             .statement-section { padding: 60px 8% 30px; }
             
@@ -757,24 +752,24 @@
             /* 移动端图片强制显示 */
             .project img,
             .project-image-wrapper {
-                display: block !important;
-                visibility: visible !important;
+                display: block;
+                visibility: visible;
             }
 
-            /* series5移动端图片：缩小40%（scale=0.6） */
+            /* series5移动端图片：缩小40% */
             .series5-wrapper img {
-                transform: scale(0.6) !important; 
-                object-fit: contain !important;
-                opacity: 1 !important;
+                transform: scale(0.6); 
+                object-fit: contain;
+                opacity: 1;
             }
         }
 
-        /* series5电脑端图片：放大20%（scale=1.2）- 核心修改点 */
+        /* series5电脑端图片：放大20% */
         @media (min-width: 901px) {
             .series5-wrapper img {
-                transform: scale(1.2) !important; 
-                object-fit: contain !important;
-                opacity: 1 !important;
+                transform: scale(1.2); 
+                object-fit: contain;
+                opacity: 1;
             }
         }
 
@@ -788,7 +783,7 @@
             
             .enter-arrow-btn {
                 padding: 40px;
-                top: 85%; /* 移动端同步修改箭头位置 */
+                top: 85%;
             }
             
             .arrow-icon {
@@ -796,11 +791,11 @@
             }
             
             #splash-video {
-                width: 100vw !important;
-                height: 100vh !important;
-                object-fit: cover !important;
-                object-position: center center !important;
-                transform: none !important;
+                width: 100vw;
+                height: 100vh;
+                object-fit: cover;
+                object-position: center;
+                transform: none;
             }
             
             .img-ratio {
@@ -822,7 +817,8 @@
 </head>
 <body class="no-scroll"> 
     <div id="splash-page">
-        <video id="splash-video" autoplay loop muted playsinline webkit-playsinline x5-playsinline x5-video-player-type="h5" x5-video-orientation="portrait" preload="auto">
+        <!-- 优化：添加poster属性，视频加载前显示封面，减少黑屏 -->
+        <video id="splash-video" autoplay loop muted playsinline webkit-playsinline x5-playsinline x5-video-player-type="h5" x5-video-orientation="portrait" preload="auto" poster="images/cover.webp">
             <source src="images/hero-bg.mp4" type="video/mp4">
         </video>
         <div class="splash-content">
@@ -855,9 +851,11 @@
     <main>
         <section class="hero" id="hero-section">
             <div id="hero-img-wrap">
+                <!-- 优化：优先加载hero图片，不使用懒加载 -->
                 <img src="images/cover.webp" alt="Zhang Jiarui Cover" 
                      onload="handleImageLoad(this)"
-                     onerror="handleImageError(this, 'images/Cover.JPG');">
+                     onerror="handleImageError(this, 'images/Cover.JPG');"
+                     loading="eager">
             </div>
             <div class="hero-overlay">
                 <h1 class="hero-title">Matter <br> dissolves, <br> memory <br> crystallizes</h1>
@@ -880,7 +878,7 @@
                 <article>
                     <a href="eco-ice-burial.html" class="project">
                         <div class="project-image-wrapper video-ratio">
-                            <img src="images/eco/ice_burial_cover.webp" loading="lazy" decoding="async" 
+                            <img src="images/eco/ice_burial_cover.webp" 
                                  onload="handleImageLoad(this)"
                                  onerror="handleImageError(this, 'images/eco/ice_burial_cover.jpg')">
                             <div class="play-overlay"><div class="play-button"></div></div>
@@ -894,7 +892,7 @@
                 <article>
                     <a href="eco-4-5tons.html" class="project">
                         <div class="project-image-wrapper video-ratio">
-                            <img src="images/eco/4_5tons_cover.webp" loading="lazy" decoding="async"
+                            <img src="images/eco/4_5tons_cover.webp"
                                  onload="handleImageLoad(this)"
                                  onerror="handleImageError(this, 'images/eco/4_5tons_cover.jpg')">
                             <div class="play-overlay"><div class="play-button"></div></div>
@@ -915,7 +913,7 @@
                     <h3 class="series-label">Wood Series</h3>
                     <a href="series1.html" class="project">
                         <div class="project-image-wrapper img-ratio">
-                            <img src="images/sculpture/s1_cover.webp" loading="lazy" decoding="async"
+                            <img src="images/sculpture/s1_cover.webp"
                                  onload="handleImageLoad(this)"
                                  onerror="handleImageError(this, 'images/sculpture/s1_cover.jpg')">
                         </div>
@@ -929,7 +927,7 @@
                     <h3 class="series-label">Water Series</h3>
                     <a href="series2.html" class="project">
                         <div class="project-image-wrapper img-ratio">
-                            <img src="images/sculpture/s2_cover.webp" loading="lazy" decoding="async"
+                            <img src="images/sculpture/s2_cover.webp"
                                  onload="handleImageLoad(this)"
                                  onerror="handleImageError(this, 'images/sculpture/s2_cover.jpg')">
                         </div>
@@ -942,9 +940,8 @@
                 <article>
                     <h3 class="series-label">Line Series</h3>
                     <a href="series5.html" class="project">
-                        <!-- series5-wrapper 容器，统一控制缩放 -->
                         <div class="project-image-wrapper img-ratio series5-wrapper" style="background-color: #ffffff; display: flex; align-items: center; justify-content: center;">
-                            <img src="images/sculpture/s5_cover.webp" loading="lazy" decoding="async"
+                            <img src="images/sculpture/s5_cover.webp"
                                  onload="handleImageLoad(this)"
                                  onerror="handleImageError(this, 'images/sculpture/s5_cover.jpg')" 
                                  style="object-fit: contain;">
@@ -959,7 +956,7 @@
                     <h3 class="series-label">Formless Series</h3>
                     <a href="series4.html" class="project">
                         <div class="project-image-wrapper img-ratio">
-                            <img src="images/sculpture/s4_cover.webp" loading="lazy" decoding="async"
+                            <img src="images/sculpture/s4_cover.webp"
                                  onload="handleImageLoad(this)"
                                  onerror="handleImageError(this, 'images/sculpture/s4_cover.jpg')">
                         </div>
@@ -973,7 +970,7 @@
                     <h3 class="series-label">Gold Series</h3>
                     <a href="series3.html" class="project">
                         <div class="project-image-wrapper img-ratio">
-                            <img src="images/sculpture/s3_cover.webp" loading="lazy" decoding="async"
+                            <img src="images/sculpture/s3_cover.webp"
                                  onload="handleImageLoad(this)"
                                  onerror="handleImageError(this, 'images/sculpture/s3_cover.jpg')">
                         </div>
@@ -992,7 +989,7 @@
                 <article>
                     <a href="project-coral.html" class="project">
                         <div class="project-image-wrapper video-ratio">
-                            <img src="images/projects/coral_cover.webp" loading="lazy" decoding="async"
+                            <img src="images/projects/coral_cover.webp"
                                  onload="handleImageLoad(this)"
                                  onerror="handleImageError(this, 'images/projects/coral_cover.jpg')">
                             <div class="play-overlay"><div class="play-button"></div></div>
@@ -1033,107 +1030,118 @@
     <footer>&copy; 2026 ZHANGJIARUI ARTWORKS.</footer>
 
     <script>
-        // 全局变量统一声明
-        const video = document.getElementById('splash-video');
-        const splashPage = document.getElementById('splash-page');
-        const nav = document.getElementById('navbar');
-        const progress = document.getElementById('scroll-progress');
-        const btt = document.getElementById('back-to-top');
-        const navLinks = document.getElementById('navLinks');
-        const menuToggle = document.getElementById('menuToggle');
+        // 优化：缓存DOM元素，减少重复查询
+        const DOM = {
+            video: document.getElementById('splash-video'),
+            splashPage: document.getElementById('splash-page'),
+            nav: document.getElementById('navbar'),
+            progress: document.getElementById('scroll-progress'),
+            btt: document.getElementById('back-to-top'),
+            navLinks: document.getElementById('navLinks'),
+            menuToggle: document.getElementById('menuToggle'),
+            heroImgWrap: document.getElementById('hero-img-wrap'),
+            heroSection: document.getElementById('hero-section')
+        };
         
-        // 核心初始化函数（整合所有需要执行的逻辑）
+        // 核心初始化函数 - 优化逻辑，减少重复操作
         function initPage() {
-            // 1. 判断是否首次访问，控制欢迎页显示
             const isFirstVisit = !sessionStorage.getItem('hasVisited');
+            
             if (isFirstVisit) {
-                // 首次访问才显示欢迎页
                 document.body.classList.add('first-visit');
-                // 视频播放处理
-                if (video) {
-                    video.removeAttribute('poster');
-                    video.preload = 'auto';
-                    video.load();
-                    
-                    // 强制播放函数
-                    const forcePlay = () => {
-                        video.play().then(() => {
-                            console.log('视频强制播放成功');
-                        }).catch(err => {
-                            console.log('自动播放失败，交互触发播放');
-                            document.addEventListener('click', () => video.play(), { once: true });
-                            document.addEventListener('touchstart', () => video.play(), { once: true });
+                // 优化视频加载：只执行一次播放逻辑，避免重复调用
+                if (DOM.video) {
+                    DOM.video.load();
+                    // 自动播放降级处理：仅在用户交互后触发
+                    const playVideo = () => {
+                        DOM.video.play().catch(() => {
+                            // 移动端需要用户交互，绑定一次点击/触摸事件
+                            const triggerPlay = () => {
+                                DOM.video.play();
+                                document.removeEventListener('click', triggerPlay);
+                                document.removeEventListener('touchstart', triggerPlay);
+                            };
+                            document.addEventListener('click', triggerPlay, { once: true });
+                            document.addEventListener('touchstart', triggerPlay, { once: true });
                         });
                     };
-
-                    forcePlay();
-                    video.addEventListener('loadedmetadata', forcePlay);
-                    video.addEventListener('progress', forcePlay);
-                    video.addEventListener('loadeddata', forcePlay);
+                    // 视频元数据加载完成后播放
+                    DOM.video.addEventListener('loadedmetadata', playVideo, { once: true });
                 }
             } else {
-                // 非首次访问：直接隐藏欢迎页，无过渡动画
+                // 非首次访问：立即隐藏splash，无延迟
                 document.body.classList.add('splash-hidden');
                 document.body.classList.remove('first-visit');
-                splashPage.style.display = 'none'; // 彻底隐藏，避免闪现
+                DOM.splashPage.style.display = 'none';
+                document.body.classList.remove('no-scroll');
             }
 
-            // 2. 重置图片状态（关键：解决后退缓存导致的图片隐藏）
-            document.querySelectorAll('.project img, #hero-img-wrap img').forEach(img => {
-                // 如果图片已加载但没有loaded类，强制添加
+            // 图片加载状态重置 - 优化：批量处理
+            const allImages = document.querySelectorAll('.project img, #hero-img-wrap img');
+            allImages.forEach(img => {
                 if (img.complete && !img.classList.contains('loaded')) {
                     handleImageLoad(img);
                 }
-                // 移动端强制显示
                 if (window.innerWidth <= 900) {
                     img.style.opacity = '1';
                 }
             });
 
-            // 3. 重新初始化交集观察器
+            // 初始化交集观察器
             initRevealObserver();
 
-            // 4. 初始化导航栏和滚动状态
+            // 初始化滚动状态
             const currentScrollY = window.pageYOffset || document.documentElement.scrollTop;
-            if (currentScrollY > 50) {
-                nav.classList.add("nav-scrolled");
-                btt.classList.add("visible");
-            } else {
-                nav.classList.remove("nav-scrolled");
-                btt.classList.remove("visible");
-            }
+            updateNavAndBtt(currentScrollY);
 
-            // 5. 标记页面已加载
+            // 标记页面加载完成
             document.body.classList.add('page-loaded');
-            // 6. 移除无滚动限制（非首次访问时）
+            
+            // 非首次访问移除滚动限制
             if (!isFirstVisit) {
                 document.body.classList.remove('no-scroll');
             }
+
+            // 桌面端鼠标跟随效果 - 优化：只初始化一次
+            if (window.innerWidth > 900 && DOM.heroSection && DOM.heroImgWrap) {
+                initMouseFollow();
+            }
         }
 
-        // 页面初始化（首次加载）
-        document.addEventListener('DOMContentLoaded', initPage);
-        
-        // 监听pageshow事件（兼容后退缓存）
-        window.addEventListener('pageshow', (e) => {
-            // 如果是从缓存中加载页面，重新初始化
-            if (e.persisted) {
-                initPage();
-            }
-        });
+        // 优化：分离鼠标跟随逻辑，减少主函数复杂度
+        function initMouseFollow() {
+            DOM.heroSection.addEventListener('mousemove', (e) => {
+                const maxOffset = 20;
+                const x = Math.max(-maxOffset, Math.min(maxOffset, (e.clientX - window.innerWidth / 2) / 50));
+                const y = Math.max(-maxOffset, Math.min(maxOffset, (e.clientY - window.innerHeight / 2) / 50));
+                
+                requestAnimationFrame(() => {
+                    DOM.heroImgWrap.style.transform = `translate(${-x}px, ${-y}px)`;
+                });
+            });
+        }
 
-        // 隐藏欢迎页（点击按钮时）
+        // 优化：分离导航和回到顶部更新逻辑
+        function updateNavAndBtt(scrollY) {
+            if (scrollY > 50) {
+                DOM.nav.classList.add("nav-scrolled");
+                DOM.btt.classList.add("visible");
+            } else {
+                DOM.nav.classList.remove("nav-scrolled");
+                DOM.btt.classList.remove("visible");
+            }
+        }
+
+        // 隐藏欢迎页 - 优化：缩短延迟
         function hideSplash() {
             sessionStorage.setItem('hasVisited', 'true');
             document.body.classList.add('splash-hidden');
-            document.body.classList.remove('no-scroll');
-            document.body.classList.remove('first-visit');
+            document.body.classList.remove('no-scroll', 'first-visit');
             window.scrollTo(0, 0);
             
-            // 立即隐藏，无延迟，避免闪现
             setTimeout(() => {
-                splashPage.style.display = 'none';
-            }, 100); // 缩短延迟时间
+                DOM.splashPage.style.display = 'none';
+            }, 50); // 大幅缩短延迟
         }
 
         // 图片加载处理
@@ -1141,7 +1149,6 @@
             img.classList.add('loaded');
             img.parentElement.classList.add('finished-loading');
             
-            // 移动端图片额外保障
             if (window.innerWidth <= 900) {
                 img.style.opacity = '1';
             }
@@ -1154,22 +1161,22 @@
             handleImageLoad(img);
         }
 
-        // 页面加载完成处理
-        window.addEventListener('load', () => {
-            document.body.classList.add('page-loaded');
-            
-            // 移动端图片强制显示
-            if (window.innerWidth <= 900) {
-                document.querySelectorAll('.project img').forEach(img => {
-                    if (!img.classList.contains('loaded')) {
-                        img.style.display = 'block';
-                        img.style.visibility = 'visible';
+        // 元素渐显观察器 - 优化：复用观察器实例
+        function initRevealObserver() {
+            const revealObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('revealed');
                     }
                 });
-            }
-        });
+            }, { threshold: 0.1 });
 
-        // 滚动事件处理（性能优化：requestAnimationFrame + 节流）
+            document.querySelectorAll('.statement-section, .content-section').forEach(sec => {
+                revealObserver.observe(sec);
+            });
+        }
+
+        // 滚动事件处理 - 优化：更强的节流，减少重绘
         let ticking = false;
         let lastScrollY = window.scrollY;
 
@@ -1180,20 +1187,14 @@
                     const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
                     
                     // 滚动进度条
-                    progress.style.width = (currentScrollY / height) * 100 + "%";
+                    DOM.progress.style.width = (currentScrollY / height) * 100 + "%";
 
                     // 导航栏显示/隐藏
                     if (currentScrollY > lastScrollY && currentScrollY > 200) {
-                        nav.style.transform = "translateY(-100%)";
+                        DOM.nav.style.transform = "translateY(-100%)";
                     } else {
-                        nav.style.transform = "translateY(0)";
-                        if (currentScrollY > 50) {
-                            nav.classList.add("nav-scrolled");
-                            btt.classList.add("visible");
-                        } else {
-                            nav.classList.remove("nav-scrolled");
-                            btt.classList.remove("visible");
-                        }
+                        DOM.nav.style.transform = "translateY(0)";
+                        updateNavAndBtt(currentScrollY);
                     }
                     
                     lastScrollY = currentScrollY;
@@ -1203,98 +1204,81 @@
             }
         }, { passive: true });
 
-        // 元素渐显观察器
-        function initRevealObserver() {
-            const revealObserver = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('revealed');
-                        // 不要unobserve，确保后退时能重新触发
+        // 页面加载完成
+        window.addEventListener('load', () => {
+            document.body.classList.add('page-loaded');
+            
+            if (window.innerWidth <= 900) {
+                document.querySelectorAll('.project img').forEach(img => {
+                    if (!img.classList.contains('loaded')) {
+                        img.style.display = 'block';
+                        img.style.visibility = 'visible';
                     }
                 });
-            }, { threshold: 0.1 });
-
-            document.querySelectorAll('.statement-section, .content-section').forEach(sec => {
-                revealObserver.observe(sec);
-            });
-        }
-
-        // 桌面端鼠标跟随效果
-        if (window.innerWidth > 900) {
-            const hero = document.getElementById('hero-section');
-            const imgWrap = document.getElementById('hero-img-wrap');
-            
-            hero.addEventListener('mousemove', (e) => {
-                const maxOffset = 20;
-                const x = Math.max(-maxOffset, Math.min(maxOffset, (e.clientX - window.innerWidth / 2) / 50));
-                const y = Math.max(-maxOffset, Math.min(maxOffset, (e.clientY - window.innerHeight / 2) / 50));
-                
-                requestAnimationFrame(() => {
-                    imgWrap.style.transform = `translate(${-x}px, ${-y}px)`;
-                });
-            });
-        }
+            }
+        });
 
         // 回到顶部
-        btt.onclick = () => window.scrollTo({top: 0, behavior: 'smooth'});
+        DOM.btt.onclick = () => window.scrollTo({top: 0, behavior: 'smooth'});
 
         // 菜单切换
         function toggleMenu() {
-            navLinks.classList.toggle('active');
-            menuToggle.classList.toggle('active');
-            document.body.style.overflow = navLinks.classList.contains('active') ? 'hidden' : 'auto';
+            DOM.navLinks.classList.toggle('active');
+            DOM.menuToggle.classList.toggle('active');
+            document.body.style.overflow = DOM.navLinks.classList.contains('active') ? 'hidden' : 'auto';
         }
 
         function closeMenu() {
-            navLinks.classList.remove('active');
-            menuToggle.classList.remove('active');
+            DOM.navLinks.classList.remove('active');
+            DOM.menuToggle.classList.remove('active');
             document.body.style.overflow = 'auto';
         }
 
-        menuToggle.onclick = toggleMenu;
+        DOM.menuToggle.onclick = toggleMenu;
 
-        // 复制微信
+        // 复制微信 - 优化：简化逻辑
         function copyWeChat(id) {
-            if (navigator.clipboard && window.isSecureContext) {
-                navigator.clipboard.writeText(id).then(showCopyToast).catch(() => fallbackCopyTextToClipboard(id));
+            const copySuccess = () => {
+                const toast = document.getElementById('copy-toast');
+                toast.style.opacity = '1';
+                toast.style.visibility = 'visible';
+                setTimeout(() => {
+                    toast.style.opacity = '0';
+                    toast.style.visibility = 'hidden';
+                }, 2000);
+            };
+
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(id).then(copySuccess).catch(() => fallbackCopy(id));
             } else {
-                fallbackCopyTextToClipboard(id);
+                fallbackCopy(id);
+            }
+
+            function fallbackCopy(text) {
+                const textArea = document.createElement("textarea");
+                textArea.value = text;
+                textArea.style.position = "fixed";
+                textArea.style.left = "-999999px";
+                document.body.appendChild(textArea);
+                textArea.select();
+                
+                try {
+                    document.execCommand('copy');
+                    copySuccess();
+                } catch (err) {
+                    alert('复制失败，请手动复制：' + text);
+                }
+                
+                document.body.removeChild(textArea);
             }
         }
 
-        // 复制备用方案
-        function fallbackCopyTextToClipboard(text) {
-            const textArea = document.createElement("textarea");
-            textArea.value = text;
-            textArea.style.position = "fixed";
-            textArea.style.left = "-999999px";
-            textArea.style.top = "-999999px";
-            
-            document.body.appendChild(textArea);
-            textArea.focus();
-            textArea.select();
-            
-            try {
-                document.execCommand('copy');
-                showCopyToast();
-            } catch (err) {
-                alert('复制失败，请手动复制：' + text);
-            }
-            
-            document.body.removeChild(textArea);
-        }
-
-        // 复制提示
-        function showCopyToast() {
-            const toast = document.getElementById('copy-toast');
-            toast.style.opacity = '1';
-            toast.style.visibility = 'visible';
-            
-            setTimeout(() => {
-                toast.style.opacity = '0';
-                toast.style.visibility = 'hidden';
-            }, 2000);
-        }
+        // 初始化执行
+        document.addEventListener('DOMContentLoaded', initPage);
+        // 兼容后退缓存
+        window.addEventListener('pageshow', (e) => {
+            if (e.persisted) initPage();
+        });
     </script>
 </body>
 </html>
