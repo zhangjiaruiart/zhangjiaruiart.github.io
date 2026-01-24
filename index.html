@@ -8,12 +8,10 @@
     <link rel="icon" href="images/favicon.svg" type="image/svg+xml">
     <link rel="icon" href="images/favicon.png" type="image/png" sizes="32x32">
     <link rel="apple-touch-icon" href="images/favicon.png">
-    <!-- 预加载关键资源：优先加载hero视频，移除封面图预加载 -->
     <link rel="preload" as="video" href="images/hero-bg.mp4" fetchpriority="high">
     <link rel="preconnect" href="" crossorigin>
 
     <style>
-        /* 基础变量与全局样式 - 精简可复用值 */
         :root {
             --primary-font: "Optima", "Didot", "Helvetica Neue", Helvetica, Arial, sans-serif;
             --main-color: #111;
@@ -24,7 +22,6 @@
             --skeleton-gradient: linear-gradient(90deg, transparent, rgba(255,255,255,0.6), transparent);
         }
 
-        /* 重置样式 - 精简统一 */
         * {
             margin: 0;
             padding: 0;
@@ -42,12 +39,11 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        /* 欢迎页核心修改：移除poster，添加倒计时样式 */
         #splash-page {
             position: fixed;
             inset: 0;
             z-index: 99999;
-            background: #000; /* 黑屏背景 */
+            background: #000;
             display: none;
             flex-direction: column;
             justify-content: center;
@@ -69,14 +65,12 @@
             object-fit: cover;
             filter: brightness(0.7);
             z-index: 0;
-            opacity: 0; /* 初始隐藏，倒计时结束后显示 */
+            opacity: 0;
             display: block;
             preload: auto;
             object-position: center;
-            /* 彻底移除poster属性及相关预览图设置 */
         }
 
-        /* 隐藏视频控件 */
         video::-webkit-media-controls,
         video::-moz-media-controls,
         video::-ms-media-controls { 
@@ -97,7 +91,8 @@
             position: relative;
         }
 
-        .splash-title {
+        /* 1. 黑屏倒计时文字：Matter dissolves, memory crystallizes 样式 */
+        .splash-title-matter {
             font-size: clamp(20px, 8vw, 70px);
             font-weight: 300;
             letter-spacing: 0.2em;
@@ -115,54 +110,67 @@
             color: rgba(255,255,255,0.9);
             z-index: 1;
         }
-
-        /* 电脑端字体调整：比原大小小3号（70px→67px），保持适配性 */
-        @media (min-width: 901px) {
-            .splash-title {
-                font-size: clamp(20px, 8vw, 67px); /* 核心修改：字体小3号 */
-                white-space: nowrap; /* 适配单个文字的居中显示 */
-            }
+        /* 2. 视频显示后文字：zhangjiarui 样式（小3号） */
+        .splash-title-name {
+            font-size: clamp(17px, 8vw, 64px); /* 比黑屏文字小3号 */
+            font-weight: 300;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            margin: 0;
+            opacity: 0;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -60%);
+            width: 100%;
+            text-align: center;
+            color: rgba(255,255,255,0.9);
+            z-index: 1;
+            pointer-events: none;
         }
 
-        /* 适配换行后的文字排版 */
+        /* 移动端适配两个文字 */
         @media (max-width: 600px) {
-            .splash-title {
+            .splash-title-matter {
                 letter-spacing: 0.15em;
                 font-size: 32px;
                 white-space: normal;
                 line-height: 1.4;
             }
+            .splash-title-name {
+                letter-spacing: 0.15em;
+                font-size: 29px; /* 比黑屏文字小3号 */
+                white-space: nowrap;
+            }
         }
 
-        /* 倒计时样式：位置和箭头一致，大小匹配 */
+        /* 倒计时样式：速度加快50% */
         .countdown {
             position: absolute;
             top: 85%;
             left: 50%;
             transform: translate(-50%, 0) scale(0.9);
-            font-size: 24px; /* 匹配箭头大小 */
+            font-size: 24px;
             color: var(--white-alpha-70);
             font-weight: 300;
             opacity: 0;
-            animation-duration: 1s;
+            animation-duration: 0.5s; /* 原1s→0.5s 加快50% */
             animation-timing-function: ease-in-out;
             animation-fill-mode: forwards;
             z-index: 2;
         }
 
-        /* 倒计时数字动画 */
         @keyframes countDownFade {
             0% { opacity: 0; transform: translate(-50%, 0) scale(0.8); }
             50% { opacity: 0.8; transform: translate(-50%, 0) scale(1); }
             100% { opacity: 0; transform: translate(-50%, 0) scale(0.8); }
         }
 
-        /* 箭头按钮：初始隐藏，视频播放后显示 */
         .enter-arrow-btn {
             background: none;
             cursor: pointer;
             padding: 25px;
-            opacity: 0; /* 初始隐藏 */
+            opacity: 0;
             transition: transform 0.3s ease, opacity 0.5s ease;
             display: flex;
             align-items: center;
@@ -177,7 +185,6 @@
             z-index: 2;
         }
 
-        /* 显示箭头的动画 */
         @keyframes showArrow {
             to { opacity: 0.7; transform: translate(-50%, 0) scale(0.9); }
         }
@@ -201,14 +208,13 @@
             transform: rotate(45deg);
         }
 
-        /* 动画优化：精简关键帧，减少计算 */
         @keyframes fadeInUpSmooth {
             0% { opacity: 0; transform: translate(-50%, -55%); }
             100% { opacity: 0.8; transform: translate(-50%, -60%); }
         }
 
-        @keyframes fadeIn {
-            to { opacity: 0.7; transform: translate(-50%, 0) scale(0.9); }
+        @keyframes fadeInName {
+            to { opacity: 0.8; transform: translate(-50%, -60%); }
         }
 
         @keyframes kenBurns {
@@ -238,7 +244,6 @@
             100% { left: 100%; }
         }
 
-        /* 通用状态类 */
         body.splash-hidden #splash-page {
             transform: translateY(-100%);
             pointer-events: none;
@@ -247,7 +252,6 @@
         
         body.no-scroll { overflow: hidden; }
 
-        /* 导航栏样式 - 精简选择器 */
         #scroll-progress {
             position: fixed;
             top: 0;
@@ -349,7 +353,6 @@
         .menu-toggle.active span:nth-child(2) { opacity: 0; }
         .menu-toggle.active span:nth-child(3) { transform: rotate(-45deg) translate(6px, -6px); }
 
-        /* 英雄区样式 - 优化动画性能 */
         .hero {
             height: 100vh;
             width: 100%;
@@ -432,7 +435,6 @@
             animation: arrowBounce 2s infinite;
         }
 
-        /* 内容区域通用样式 - 精简重复定义 */
         .statement-section {
             padding: calc(120px + 5vh) 5% calc(40px + 5vh);
             max-width: 900px;
@@ -479,7 +481,6 @@
             color: var(--main-color);
         }
 
-        /* 网格布局 - 精简重复定义 */
         .grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -510,7 +511,6 @@
             display: block;
         }
 
-        /* 图片加载优化：简化骨架屏，减少重绘 */
         .project-image-wrapper {
             overflow: hidden;
             margin-bottom: 20px;
@@ -616,7 +616,6 @@
             line-height: 1.4;
         }
 
-        /* 回到顶部按钮 */
         #back-to-top {
             position: fixed;
             bottom: 40px;
@@ -652,7 +651,6 @@
             margin-top: 4px;
         }
 
-        /* 联系区域 */
         .contact-section {
             padding: 100px 5%;
             background-color: #fff;
@@ -727,7 +725,6 @@
             z-index: 9999;
         }
 
-        /* 响应式样式 - 合并重复逻辑 */
         @media (max-width: 900px) {
             .hero-overlay { top: 40%; }
             .hero-title {
@@ -793,27 +790,23 @@
                 animation: kenBurnsMobile 20s ease-in-out infinite alternate;
             }
             
-            /* 移动端图片强制显示 */
             .project img,
             .project-image-wrapper {
                 display: block;
                 visibility: visible;
             }
 
-            /* series5移动端图片：缩小40% */
             .series5-wrapper img {
                 transform: scale(0.6); 
                 object-fit: contain;
                 opacity: 1;
             }
 
-            /* 移动端倒计时字体调整 */
             .countdown {
                 font-size: 20px;
             }
         }
 
-        /* series5电脑端图片：放大20% */
         @media (min-width: 901px) {
             .series5-wrapper img {
                 transform: scale(1.2); 
@@ -838,7 +831,6 @@
                 object-fit: cover;
                 object-position: center;
                 transform: none;
-                /* 确保手机端无预览图，纯黑屏衔接视频 */
             }
             
             .img-ratio {
@@ -846,7 +838,6 @@
             }
         }
 
-        /* 页脚样式 */
         footer {
             padding: 60px 5% 40px;
             text-align: center;
@@ -860,14 +851,15 @@
 </head>
 <body class="no-scroll"> 
     <div id="splash-page">
-        <!-- 移除所有预览图相关元素，仅保留视频容器 -->
         <video id="splash-video" autoplay loop muted playsinline webkit-playsinline x5-playsinline x5-video-player-type="h5" x5-video-orientation="portrait">
             <source src="images/hero-bg.mp4" type="video/mp4">
         </video>
         <div class="splash-content">
-            <!-- 核心修改：文字替换为zhangjiarui -->
-            <h1 class="splash-title">zhangjiarui</h1>
-            <!-- 添加倒计时元素 -->
+            <!-- 黑屏倒计时文字 -->
+            <h1 class="splash-title-matter">Matter <br> dissolves, <br> memory <br> crystallizes</h1>
+            <!-- 视频显示后文字 -->
+            <h1 class="splash-title-name">zhangjiarui </h1>
+            <!-- 倒计时 -->
             <div class="countdown" id="countdown">3</div>
             <button class="enter-arrow-btn" onclick="hideSplash()" aria-label="Enter Portfolio">
                 <div class="arrow-icon"></div>
@@ -902,7 +894,6 @@
                      onerror="handleImageError(this, 'images/Cover.JPG');"
                      loading="eager">
             </div>
-            <!-- 核心修改2：删除hero区域的指定文字，仅保留空的overlay容器 -->
             <div class="hero-overlay"></div>
             <a href="#statement" class="scroll-indicator" aria-label="Scroll down">
                 <div class="scroll-arrow"></div>
@@ -1074,7 +1065,6 @@
     <footer>&copy; 2026 ZHANGJIARUI ARTWORKS.</footer>
 
     <script>
-        // 优化：缓存DOM元素，减少重复查询
         const DOM = {
             video: document.getElementById('splash-video'),
             splashPage: document.getElementById('splash-page'),
@@ -1086,48 +1076,50 @@
             heroImgWrap: document.getElementById('hero-img-wrap'),
             heroSection: document.getElementById('hero-section'),
             countdown: document.getElementById('countdown'),
-            enterBtn: document.querySelector('.enter-arrow-btn')
+            enterBtn: document.querySelector('.enter-arrow-btn'),
+            titleMatter: document.querySelector('.splash-title-matter'),
+            titleName: document.querySelector('.splash-title-name')
         };
         
-        // 倒计时动画函数
+        // 倒计时函数：速度加快50%
         function startCountdown() {
             let count = 3;
             const countdownEl = DOM.countdown;
             
-            // 显示第一个数字（3）
             countdownEl.textContent = count;
             countdownEl.style.animationName = 'countDownFade';
             countdownEl.style.animationDelay = '0s';
             
-            // 倒计时定时器
+            // 定时器间隔从1000ms→500ms
             const timer = setInterval(() => {
                 count--;
                 if (count > 0) {
                     countdownEl.textContent = count;
                     countdownEl.style.animationName = 'none';
-                    // 强制重绘
                     void countdownEl.offsetWidth;
                     countdownEl.style.animationName = 'countDownFade';
                 } else {
                     clearInterval(timer);
                     countdownEl.style.display = 'none';
-                    // 倒计时结束，显示视频并播放
                     playVideoAfterCountdown();
                 }
-            }, 1000);
+            }, 500);
         }
         
-        // 倒计时结束后播放视频
+        // 倒计时结束：隐藏黑屏文字，显示视频+名字文字
         function playVideoAfterCountdown() {
             if (DOM.video) {
+                // 隐藏黑屏文字
+                DOM.titleMatter.style.opacity = '0';
+                DOM.titleMatter.style.transition = 'opacity 0.5s ease';
                 // 显示视频
                 DOM.video.style.opacity = '1';
                 DOM.video.load();
-                
-                // 播放视频
+                // 显示名字文字
+                DOM.titleName.style.animation = 'fadeInName 1s ease-in-out forwards 0.5s';
+
                 const playVideo = () => {
                     DOM.video.play().catch(() => {
-                        // 移动端需要用户交互，绑定一次点击/触摸事件
                         const triggerPlay = () => {
                             DOM.video.play();
                             document.removeEventListener('click', triggerPlay);
@@ -1136,7 +1128,6 @@
                         document.addEventListener('click', triggerPlay, { once: true });
                         document.addEventListener('touchstart', triggerPlay, { once: true });
                     }).then(() => {
-                        // 视频播放后2秒显示箭头按钮
                         setTimeout(() => {
                             DOM.enterBtn.style.animationName = 'showArrow';
                             DOM.enterBtn.style.opacity = '0.7';
@@ -1144,30 +1135,24 @@
                     });
                 };
                 
-                // 视频元数据加载完成后播放
                 DOM.video.addEventListener('loadedmetadata', playVideo, { once: true });
             }
         }
         
-        // 核心初始化函数 - 优化逻辑，减少重复操作
         function initPage() {
             const isFirstVisit = !sessionStorage.getItem('hasVisited');
             
             if (isFirstVisit) {
                 document.body.classList.add('first-visit');
-                // 启动倒计时
                 startCountdown();
             } else {
-                // 非首次访问：立即隐藏splash，无延迟
                 document.body.classList.add('splash-hidden');
                 document.body.classList.remove('first-visit');
                 DOM.splashPage.style.display = 'none';
                 document.body.classList.remove('no-scroll');
-                // 显示箭头按钮
                 DOM.enterBtn.style.opacity = '0.7';
             }
 
-            // 图片加载状态重置 - 优化：批量处理
             const allImages = document.querySelectorAll('.project img, #hero-img-wrap img');
             allImages.forEach(img => {
                 if (img.complete && !img.classList.contains('loaded')) {
@@ -1178,28 +1163,22 @@
                 }
             });
 
-            // 初始化交集观察器
             initRevealObserver();
 
-            // 初始化滚动状态
             const currentScrollY = window.pageYOffset || document.documentElement.scrollTop;
             updateNavAndBtt(currentScrollY);
 
-            // 标记页面加载完成
             document.body.classList.add('page-loaded');
             
-            // 非首次访问移除滚动限制
             if (!isFirstVisit) {
                 document.body.classList.remove('no-scroll');
             }
 
-            // 桌面端鼠标跟随效果 - 优化：只初始化一次
             if (window.innerWidth > 900 && DOM.heroSection && DOM.heroImgWrap) {
                 initMouseFollow();
             }
         }
 
-        // 优化：分离鼠标跟随逻辑，减少主函数复杂度
         function initMouseFollow() {
             DOM.heroSection.addEventListener('mousemove', (e) => {
                 const maxOffset = 20;
@@ -1212,7 +1191,6 @@
             });
         }
 
-        // 优化：分离导航和回到顶部更新逻辑
         function updateNavAndBtt(scrollY) {
             if (scrollY > 50) {
                 DOM.nav.classList.add("nav-scrolled");
@@ -1223,7 +1201,6 @@
             }
         }
 
-        // 隐藏欢迎页 - 优化：缩短延迟
         function hideSplash() {
             sessionStorage.setItem('hasVisited', 'true');
             document.body.classList.add('splash-hidden');
@@ -1235,7 +1212,6 @@
             }, 50);
         }
 
-        // 图片加载处理
         function handleImageLoad(img) {
             img.classList.add('loaded');
             img.parentElement.classList.add('finished-loading');
@@ -1245,14 +1221,12 @@
             }
         }
 
-        // 图片加载失败处理
         function handleImageError(img, fallbackSrc) {
             img.src = fallbackSrc;
             img.onerror = null;
             handleImageLoad(img);
         }
 
-        // 元素渐显观察器 - 优化：复用观察器实例
         function initRevealObserver() {
             const revealObserver = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
@@ -1267,7 +1241,6 @@
             });
         }
 
-        // 滚动事件处理 - 优化：更强的节流，减少重绘
         let ticking = false;
         let lastScrollY = window.scrollY;
 
@@ -1277,10 +1250,8 @@
                     const currentScrollY = window.pageYOffset || document.documentElement.scrollTop;
                     const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
                     
-                    // 滚动进度条
                     DOM.progress.style.width = (currentScrollY / height) * 100 + "%";
 
-                    // 导航栏显示/隐藏
                     if (currentScrollY > lastScrollY && currentScrollY > 200) {
                         DOM.nav.style.transform = "translateY(-100%)";
                     } else {
@@ -1295,7 +1266,6 @@
             }
         }, { passive: true });
 
-        // 页面加载完成
         window.addEventListener('load', () => {
             document.body.classList.add('page-loaded');
             
@@ -1309,10 +1279,8 @@
             }
         });
 
-        // 回到顶部
         DOM.btt.onclick = () => window.scrollTo({top: 0, behavior: 'smooth'});
 
-        // 菜单切换
         function toggleMenu() {
             DOM.navLinks.classList.toggle('active');
             DOM.menuToggle.classList.toggle('active');
@@ -1327,7 +1295,6 @@
 
         DOM.menuToggle.onclick = toggleMenu;
 
-        // 复制微信 - 优化：简化逻辑
         function copyWeChat(id) {
             const copySuccess = () => {
                 const toast = document.getElementById('copy-toast');
@@ -1364,9 +1331,7 @@
             }
         }
 
-        // 初始化执行
         document.addEventListener('DOMContentLoaded', initPage);
-        // 兼容后退缓存
         window.addEventListener('pageshow', (e) => {
             if (e.persisted) initPage();
         });
