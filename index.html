@@ -5,33 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>ZHANG JIARUI | ARTIST - Ecological Art, Sculpture, and Projects</title>
     <meta name="description" content="Zhang Jiarui Artworks - A portfolio of Ecological Art, Sculpture, and Projects examining material, time, and systems.">
-    <!-- 资源预加载优化 -->
-    <link rel="preconnect" href="/">
-    <link rel="preconnect" href="images/">
     <link rel="icon" href="images/favicon.svg" type="image/svg+xml">
     <link rel="icon" href="images/favicon.png" type="image/png" sizes="32x32">
     <link rel="apple-touch-icon" href="images/favicon.png">
-    <!-- 关键资源预加载，非关键资源延后 -->
-    <link rel="preload" as="image" href="images/cover.webp" fetchpriority="high">
-    <link rel="preload" as="image" href="images/splash-poster.jpg" media="(min-width: 901px)">
-    <link rel="preload" as="image" href="images/splash-poster-mobile.jpg" media="(max-width: 900px)">
-    <!-- 视频仅首次访问预加载，减少带宽占用 -->
-    <link rel="preload" as="video" href="images/hero-bg.mp4" fetchpriority="low" media="(prefers-reduced-motion: no-preference)">
+    <link rel="preload" as="video" href="images/hero-bg.mp4" fetchpriority="high">
 
     <style>
-        /* 基础变量 - 精简并标准化 */
+        /* 基础变量 */
         :root {
             --primary-font: "Optima", "Didot", "Helvetica Neue", Helvetica, Arial, sans-serif;
             --main-color: #111;
-            --transition-base: all 0.6s cubic-bezier(0.2, 1, 0.3, 1);
             --transition-smooth: all 1.2s cubic-bezier(0.15, 1, 0.3, 1);
-            --transition-fast: all 0.3s ease;
             --white-alpha-70: rgba(255, 255, 255, 0.7);
             --black-alpha-80: rgba(17, 17, 17, 0.8);
             --skeleton-gradient: linear-gradient(90deg, transparent, rgba(255,255,255,0.6), transparent);
         }
 
-        /* 全局重置 - 精简并优化 */
+        /* 全局重置 */
         * {
             margin: 0;
             padding: 0;
@@ -40,29 +30,24 @@
             outline: none;
         }
 
-        html {
-            scroll-behavior: smooth;
-            overflow-x: hidden;
-        }
-
-        body {
+        body, html {
             font-family: var(--primary-font);
             background: #fff;
             color: var(--main-color);
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
+            scroll-behavior: smooth;
             overflow-x: hidden;
-            /* 避免页面抖动 */
-            padding-right: 0 !important;
+            -webkit-font-smoothing: antialiased;
         }
 
-        /* 启动页优化 - 减少重绘，优化动画性能 */
+        /* 启动页样式 - 【核心修改：替换为背景图片，保留暗调效果】 */
         #splash-page {
             position: fixed;
             inset: 0;
             z-index: 99999;
+            /* 替换为背景图片 + 暗调叠加，保留原有层次感 */
             background: rgba(0,0,0,0.9) url(images/splash-poster.jpg) center center / cover no-repeat;
-            background-blend-mode: multiply;
+            background-blend-mode: multiply; /* 叠加暗调，保持暗暗的效果 */
+            /* 保留：背景轻微呼吸动画，避免静态单调 */
             background-size: 120% 120%;
             animation: bgBreath 8s ease-in-out infinite alternate;
             display: none;
@@ -72,9 +57,8 @@
             transition: transform 0.4s cubic-bezier(0.85, 0, 0.15, 1), opacity 0.4s ease;
             overflow: hidden;
             will-change: transform, opacity;
-            box-shadow: inset 0 0 150px rgba(0,0,0,0.8);
-            /* GPU加速 */
-            transform: translateZ(0);
+            /* 保留：暗角效果，强化视觉聚焦 */
+            box-shadow: inset 0 0 150px rgba(0,0,0,0.8); /* 加深暗角，适配图片背景 */
         }
 
         body.first-visit #splash-page {
@@ -91,10 +75,8 @@
             z-index: 0;
             opacity: 0;
             display: block;
-            preload: none; /* 减少初始加载 */
+            preload: auto;
             object-position: center;
-            /* 优化视频渲染 */
-            transform: translateZ(0);
         }
 
         video::-webkit-media-controls,
@@ -117,7 +99,7 @@
             position: relative;
         }
 
-        /* 启动页文字样式 - 优化动画性能 */
+        /* 启动页文字样式 */
         .splash-title-matter {
             font-size: clamp(12px, 6vw, 40px);
             font-weight: 300;
@@ -136,9 +118,9 @@
             text-align: center;
             color: rgba(255,255,255,0.9);
             z-index: 1;
-            will-change: opacity, transform;
         }
 
+        /* 保留：文字辉光效果 */
         .splash-title-name {
             font-size: clamp(19px, 8vw, 72px);
             font-weight: 300;
@@ -155,11 +137,11 @@
             color: rgba(255,255,255,0.9);
             z-index: 1;
             pointer-events: none;
+            /* 保留：微弱辉光，增强和背景的层次感 */
             text-shadow: 0 0 8px rgba(255,255,255,0.08);
-            will-change: opacity, transform;
         }
 
-        /* 倒计时样式 - 优化动画 */
+        /* 倒计时样式 */
         .countdown {
             position: absolute;
             top: 85%;
@@ -171,7 +153,6 @@
             opacity: 0;
             animation: countDownFade 1s ease-in-out forwards;
             z-index: 2;
-            will-change: opacity, transform;
         }
 
         .enter-arrow-btn {
@@ -179,7 +160,7 @@
             cursor: pointer;
             padding: 25px;
             opacity: 0;
-            transition: var(--transition-fast);
+            transition: transform 0.3s ease, opacity 0.5s ease;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -190,7 +171,6 @@
             transform: translate(-50%, 0) scale(0.9);
             border: none;
             z-index: 2;
-            will-change: opacity, transform;
         }
 
         .arrow-icon {
@@ -212,7 +192,7 @@
             transform: rotate(45deg);
         }
 
-        /* 导航栏样式 - 优化过渡和性能 */
+        /* 导航栏样式 */
         #scroll-progress {
             position: fixed;
             top: 0;
@@ -222,7 +202,6 @@
             background: var(--main-color);
             z-index: 3000;
             transition: width 0.1s ease-out;
-            will-change: width;
         }
 
         nav#navbar {
@@ -233,10 +212,8 @@
             align-items: center;
             padding: 30px 5%;
             z-index: 2000;
-            transition: var(--transition-base);
+            transition: all 0.6s cubic-bezier(0.2, 1, 0.3, 1);
             will-change: transform, background;
-            /* GPU加速 */
-            transform: translateZ(0);
         }
 
         nav.nav-scrolled {
@@ -276,7 +253,7 @@
             font-weight: 300;
             position: relative;
             padding-bottom: 5px;
-            transition: var(--transition-fast);
+            transition: color 0.4s ease, transform 0.3s ease;
             display: inline-block;
         }
 
@@ -292,7 +269,6 @@
             background: currentColor;
             transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
             transform: translateX(-50%);
-            will-change: width;
         }
 
         .nav-links a:hover::after { width: 100%; }
@@ -303,14 +279,13 @@
             gap: 6px;
             cursor: pointer;
             z-index: 2001;
-            -webkit-tap-highlight-color: transparent;
         }
 
         .menu-toggle span {
             width: 25px;
             height: 1px;
             background-color: #fff;
-            transition: var(--transition-fast);
+            transition: all 0.3s ease;
         }
 
         .nav-scrolled .menu-toggle span { background-color: #111; }
@@ -319,15 +294,13 @@
         .menu-toggle.active span:nth-child(2) { opacity: 0; }
         .menu-toggle.active span:nth-child(3) { transform: rotate(-45deg) translate(6px, -6px); }
 
-        /* 主体内容样式 - 优化性能 */
+        /* 主体内容样式 */
         .hero {
             height: 100vh;
             width: 100%;
             overflow: hidden;
             position: relative;
             background-color: #000;
-            /* 避免滚动闪烁 */
-            contain: layout paint;
         }
 
         #hero-img-wrap {
@@ -338,8 +311,6 @@
             left: -2.5%;
             transition: transform 0.2s ease-out;
             will-change: transform;
-            /* GPU加速 */
-            transform: translateZ(0);
         }
 
         .hero img {
@@ -350,7 +321,6 @@
             filter: brightness(0.75);
             display: block;
             animation: kenBurns 20s ease-in-out infinite alternate;
-            will-change: transform;
         }
 
         .hero-overlay {
@@ -376,7 +346,6 @@
             filter: blur(10px);
             transform: translateY(30px);
             transition: opacity 1.8s ease, filter 1.8s ease, transform 1.5s cubic-bezier(0.16, 1, 0.3, 1);
-            will-change: opacity, filter, transform;
         }
 
         .page-loaded .hero-title {
@@ -397,7 +366,6 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            -webkit-tap-highlight-color: transparent;
         }
 
         .scroll-arrow {
@@ -407,17 +375,15 @@
             border-bottom: 1.5px solid #fff;
             transform: rotate(45deg);
             animation: arrowBounce 2s infinite;
-            will-change: transform, opacity;
         }
 
-        /* 内容区块通用样式 - 优化曝光动画 */
+        /* 内容区块通用样式 */
         .statement-section {
             padding: calc(120px + 5vh) 5% calc(40px + 5vh);
             max-width: 900px;
             margin: 0 auto;
             text-align: center;
             scroll-margin-top: 100px;
-            contain: layout paint;
         }
 
         .statement-text {
@@ -430,7 +396,6 @@
             opacity: 0;
             transform: translateY(20px);
             transition: var(--transition-smooth);
-            will-change: opacity, transform;
         }
 
         .content-section {
@@ -441,7 +406,6 @@
             transform: translateY(20px);
             transition: var(--transition-smooth);
             scroll-margin-top: 80px;
-            contain: layout paint;
         }
 
         .revealed .statement-text,
@@ -460,7 +424,7 @@
             color: var(--main-color);
         }
 
-        /* 网格布局样式 - 优化响应式性能 */
+        /* 网格布局样式 */
         .grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -489,8 +453,6 @@
             text-decoration: none;
             color: inherit;
             display: block;
-            /* 避免hover闪烁 */
-            contain: layout paint;
         }
 
         .project-image-wrapper {
@@ -498,8 +460,6 @@
             margin-bottom: 20px;
             position: relative;
             background: #f9f9f9;
-            /* 优化图片容器性能 */
-            transform: translateZ(0);
         }
 
         .project-image-wrapper::before {
@@ -512,7 +472,6 @@
             background: var(--skeleton-gradient);
             animation: skeleton-loading 1.5s infinite;
             z-index: 1;
-            will-change: left;
         }
 
         .project-image-wrapper.finished-loading::before {
@@ -530,8 +489,6 @@
             opacity: 0;
             loading: lazy;
             decoding: async;
-            /* 优化图片加载 */
-            will-change: transform, opacity;
         }
 
         .project img.loaded { opacity: 1; }
@@ -547,7 +504,6 @@
             transition: background 0.3s;
             z-index: 2;
             opacity: 0;
-            will-change: opacity, background;
         }
 
         .project img.loaded + .play-overlay { opacity: 1; }
@@ -590,7 +546,7 @@
             line-height: 1.4;
         }
 
-        /* 辅助组件样式 - 优化性能 */
+        /* 辅助组件样式 */
         #back-to-top {
             position: fixed;
             bottom: 40px;
@@ -607,10 +563,8 @@
             opacity: 0;
             visibility: hidden;
             z-index: 1000;
-            transition: var(--transition-fast);
+            transition: all 0.4s ease;
             box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-            -webkit-tap-highlight-color: transparent;
-            will-change: opacity, visibility;
         }
 
         #back-to-top.visible { opacity: 1; visibility: visible; }
@@ -638,9 +592,8 @@
             border-radius: 2px;
             opacity: 0;
             visibility: hidden;
-            transition: var(--transition-fast);
+            transition: all 0.4s;
             z-index: 9999;
-            will-change: opacity, visibility;
         }
 
         /* 联系区块样式 */
@@ -648,7 +601,6 @@
             padding: 100px 5%;
             background-color: #fff;
             scroll-margin-top: 60px;
-            contain: layout paint;
         }
 
         .contact-container {
@@ -686,9 +638,8 @@
             font-weight: 300;
             padding-bottom: 4px;
             border-bottom: 1px solid transparent;
-            transition: var(--transition-fast);
+            transition: all 0.4s;
             cursor: pointer;
-            -webkit-tap-highlight-color: transparent;
         }
 
         .contact-value:hover { border-bottom-color: #eee; }
@@ -711,7 +662,7 @@
             text-transform: uppercase;
         }
 
-        /* 动画关键帧 - 优化性能，减少计算量 */
+        /* 动画关键帧 - 保留：黑屏背景呼吸动画 */
         @keyframes bgBreath {
             0% {
                 background-position: center center;
@@ -765,11 +716,13 @@
 
         @keyframes skeleton-loading {
             0% { left: -150%; }
-            100% { left: 150%; } /* 简化动画路径 */
+            50% { left: 100%; }
+            100% { left: 100%; }
         }
 
-        /* 媒体查询 - 优化移动端性能 */
+        /* 媒体查询 - 响应式适配 */
         @media (max-width: 900px) {
+            /* 核心新增：手机端替换为专属背景图 */
             #splash-page {
                 background: rgba(0,0,0,0.9) url(images/splash-poster-mobile.jpg) center center / cover no-repeat;
                 background-blend-mode: multiply;
@@ -796,7 +749,6 @@
                 align-items: center;
                 transition: 0.5s cubic-bezier(0.2, 1, 0.3, 1);
                 transform: translateX(100%);
-                will-change: transform;
             }
             
             .nav-links.active { transform: translateX(0); }
@@ -841,6 +793,7 @@
                 visibility: visible;
             }
 
+            /* 关键修改：手机端series5图片放大25% (0.6 → 0.75) */
             .series5-wrapper img {
                 transform: scale(0.75); 
                 object-fit: contain;
@@ -859,6 +812,7 @@
         }
 
         @media (max-width: 600px) {
+            /* 启动页适配 */
             .splash-title-matter {
                 letter-spacing: 0.15em;
                 font-size: 26px;
@@ -875,6 +829,7 @@
                 transform: translate(-50%, -50%) !important;
             }
 
+            /* 按钮适配 */
             .enter-arrow-btn {
                 padding: 40px;
                 top: 85%;
@@ -891,14 +846,6 @@
             }
             
             .img-ratio { aspect-ratio: 3 / 4; }
-        }
-
-        /* 减少动画卡顿 - 针对性能较差设备 */
-        @media (prefers-reduced-motion: reduce) {
-            * {
-                animation-duration: 0.001s !important;
-                transition-duration: 0.001s !important;
-            }
         }
     </style>
 </head>
@@ -939,15 +886,10 @@
     <main>
         <section class="hero" id="hero-section">
             <div id="hero-img-wrap">
-                <!-- 响应式图片优化 -->
-                <picture>
-                    <source srcset="images/cover.webp" type="image/webp">
-                    <source srcset="images/Cover.JPG" type="image/jpeg">
-                    <img src="images/cover.webp" alt="Zhang Jiarui Cover" 
-                         onload="handleImageLoad(this)"
-                         onerror="handleImageError(this, 'images/Cover.JPG');"
-                         loading="eager">
-                </picture>
+                <img src="images/cover.webp" alt="Zhang Jiarui Cover" 
+                     onload="handleImageLoad(this)"
+                     onerror="handleImageError(this, 'images/Cover.JPG');"
+                     loading="eager">
             </div>
             <div class="hero-overlay"></div>
             <a href="#statement" class="scroll-indicator" aria-label="Scroll down">
@@ -968,13 +910,9 @@
                 <article>
                     <a href="eco-ice-burial.html" class="project">
                         <div class="project-image-wrapper video-ratio">
-                            <picture>
-                                <source srcset="images/eco/ice_burial_cover.webp" type="image/webp">
-                                <source srcset="images/eco/ice_burial_cover.jpg" type="image/jpeg">
-                                <img src="images/eco/ice_burial_cover.webp" 
-                                     onload="handleImageLoad(this)"
-                                     onerror="handleImageError(this, 'images/eco/ice_burial_cover.jpg')">
-                            </picture>
+                            <img src="images/eco/ice_burial_cover.webp" 
+                                 onload="handleImageLoad(this)"
+                                 onerror="handleImageError(this, 'images/eco/ice_burial_cover.jpg')">
                             <div class="play-overlay"><div class="play-button"></div></div>
                         </div>
                         <div class="project-info">
@@ -986,13 +924,9 @@
                 <article>
                     <a href="eco-4-5tons.html" class="project">
                         <div class="project-image-wrapper video-ratio">
-                            <picture>
-                                <source srcset="images/eco/4_5tons_cover.webp" type="image/webp">
-                                <source srcset="images/eco/4_5tons_cover.jpg" type="image/jpeg">
-                                <img src="images/eco/4_5tons_cover.webp"
-                                     onload="handleImageLoad(this)"
-                                     onerror="handleImageError(this, 'images/eco/4_5tons_cover.jpg')">
-                            </picture>
+                            <img src="images/eco/4_5tons_cover.webp"
+                                 onload="handleImageLoad(this)"
+                                 onerror="handleImageError(this, 'images/eco/4_5tons_cover.jpg')">
                             <div class="play-overlay"><div class="play-button"></div></div>
                         </div>
                         <div class="project-info">
@@ -1011,13 +945,9 @@
                     <h3 class="series-label">Wood Series</h3>
                     <a href="series1.html" class="project">
                         <div class="project-image-wrapper img-ratio">
-                            <picture>
-                                <source srcset="images/sculpture/s1_cover.webp" type="image/webp">
-                                <source srcset="images/sculpture/s1_cover.jpg" type="image/jpeg">
-                                <img src="images/sculpture/s1_cover.webp"
-                                     onload="handleImageLoad(this)"
-                                     onerror="handleImageError(this, 'images/sculpture/s1_cover.jpg')">
-                            </picture>
+                            <img src="images/sculpture/s1_cover.webp"
+                                 onload="handleImageLoad(this)"
+                                 onerror="handleImageError(this, 'images/sculpture/s1_cover.jpg')">
                         </div>
                         <div class="project-info">
                             <h4 class="project-title">Triangle</h4>
@@ -1029,13 +959,9 @@
                     <h3 class="series-label">Water Series</h3>
                     <a href="series2.html" class="project">
                         <div class="project-image-wrapper img-ratio">
-                            <picture>
-                                <source srcset="images/sculpture/s2_cover.webp" type="image/webp">
-                                <source srcset="images/sculpture/s2_cover.jpg" type="image/jpeg">
-                                <img src="images/sculpture/s2_cover.webp"
-                                     onload="handleImageLoad(this)"
-                                     onerror="handleImageError(this, 'images/sculpture/s2_cover.jpg')">
-                            </picture>
+                            <img src="images/sculpture/s2_cover.webp"
+                                 onload="handleImageLoad(this)"
+                                 onerror="handleImageError(this, 'images/sculpture/s2_cover.jpg')">
                         </div>
                         <div class="project-info">
                             <h4 class="project-title">Water1</h4>
@@ -1047,14 +973,10 @@
                     <h3 class="series-label">Line Series</h3>
                     <a href="series5.html" class="project">
                         <div class="project-image-wrapper img-ratio series5-wrapper" style="background-color: #ffffff; display: flex; align-items: center; justify-content: center;">
-                            <picture>
-                                <source srcset="images/sculpture/s5_cover.webp" type="image/webp">
-                                <source srcset="images/sculpture/s5_cover.jpg" type="image/jpeg">
-                                <img src="images/sculpture/s5_cover.webp"
-                                     onload="handleImageLoad(this)"
-                                     onerror="handleImageError(this, 'images/sculpture/s5_cover.jpg')" 
-                                     style="object-fit: contain;">
-                            </picture>
+                            <img src="images/sculpture/s5_cover.webp"
+                                 onload="handleImageLoad(this)"
+                                 onerror="handleImageError(this, 'images/sculpture/s5_cover.jpg')" 
+                                 style="object-fit: contain;">
                         </div>
                         <div class="project-info">
                             <h4 class="project-title">X</h4>
@@ -1066,13 +988,9 @@
                     <h3 class="series-label">Formless Series</h3>
                     <a href="series4.html" class="project">
                         <div class="project-image-wrapper img-ratio">
-                            <picture>
-                                <source srcset="images/sculpture/s4_cover.webp" type="image/webp">
-                                <source srcset="images/sculpture/s4_cover.jpg" type="image/jpeg">
-                                <img src="images/sculpture/s4_cover.webp"
-                                     onload="handleImageLoad(this)"
-                                     onerror="handleImageError(this, 'images/sculpture/s4_cover.jpg')">
-                            </picture>
+                            <img src="images/sculpture/s4_cover.webp"
+                                 onload="handleImageLoad(this)"
+                                 onerror="handleImageError(this, 'images/sculpture/s4_cover.jpg')">
                         </div>
                         <div class="project-info">
                             <h4 class="project-title">At ease</h4>
@@ -1084,13 +1002,9 @@
                     <h3 class="series-label">Gold Series</h3>
                     <a href="series3.html" class="project">
                         <div class="project-image-wrapper img-ratio">
-                            <picture>
-                                <source srcset="images/sculpture/s3_cover.webp" type="image/webp">
-                                <source srcset="images/sculpture/s3_cover.jpg" type="image/jpeg">
-                                <img src="images/sculpture/s3_cover.webp"
-                                     onload="handleImageLoad(this)"
-                                     onerror="handleImageError(this, 'images/sculpture/s3_cover.jpg')">
-                            </picture>
+                            <img src="images/sculpture/s3_cover.webp"
+                                 onload="handleImageLoad(this)"
+                                 onerror="handleImageError(this, 'images/sculpture/s3_cover.jpg')">
                         </div>
                         <div class="project-info">
                             <h4 class="project-title">New Eighteenth Arhat</h4>
@@ -1107,13 +1021,9 @@
                 <article>
                     <a href="project-coral.html" class="project">
                         <div class="project-image-wrapper video-ratio">
-                            <picture>
-                                <source srcset="images/projects/coral_cover.webp" type="image/webp">
-                                <source srcset="images/projects/coral_cover.jpg" type="image/jpeg">
-                                <img src="images/projects/coral_cover.webp"
-                                     onload="handleImageLoad(this)"
-                                     onerror="handleImageError(this, 'images/projects/coral_cover.jpg')">
-                            </picture>
+                            <img src="images/projects/coral_cover.webp"
+                                 onload="handleImageLoad(this)"
+                                 onerror="handleImageError(this, 'images/projects/coral_cover.jpg')">
                             <div class="play-overlay"><div class="play-button"></div></div>
                         </div>
                         <div class="project-info">
@@ -1151,10 +1061,7 @@
     <footer>&copy; 2026 ZHANGJIARUI ARTWORKS.</footer>
 
     <script>
-        // 性能优化：使用严格模式
-        'use strict';
-
-        // DOM元素缓存 - 优化查询性能
+        // DOM元素缓存
         const dom = {
             video: document.getElementById('splash-video'),
             splashPage: document.getElementById('splash-page'),
@@ -1168,46 +1075,21 @@
             countdown: document.getElementById('countdown'),
             enterBtn: document.querySelector('.enter-arrow-btn'),
             titleMatter: document.querySelector('.splash-title-matter'),
-            titleName: document.querySelector('.splash-title-name'),
-            copyToast: document.getElementById('copy-toast'),
-            // 批量缓存
-            projectImages: document.querySelectorAll('.project img'),
-            contentSections: document.querySelectorAll('.statement-section, .content-section')
-        };
-
-        // 节流函数 - 优化高频事件
-        const throttle = (func, delay = 16) => {
-            let timer = null;
-            return (...args) => {
-                if (!timer) {
-                    timer = setTimeout(() => {
-                        func.apply(this, args);
-                        timer = null;
-                    }, delay);
-                }
-            };
-        };
-
-        // 防抖函数 - 优化低频事件
-        const debounce = (func, delay = 200) => {
-            let timer = null;
-            return (...args) => {
-                clearTimeout(timer);
-                timer = setTimeout(() => func.apply(this, args), delay);
-            };
+            titleName: document.querySelector('.splash-title-name')
         };
 
         // 工具函数 - 显示提示
         const showToast = () => {
-            dom.copyToast.style.opacity = '1';
-            dom.copyToast.style.visibility = 'visible';
+            const toast = document.getElementById('copy-toast');
+            toast.style.opacity = '1';
+            toast.style.visibility = 'visible';
             setTimeout(() => {
-                dom.copyToast.style.opacity = '0';
-                dom.copyToast.style.visibility = 'hidden';
+                toast.style.opacity = '0';
+                toast.style.visibility = 'hidden';
             }, 2000);
         };
 
-        // 倒计时逻辑 - 优化性能
+        // 倒计时逻辑
         const startCountdown = () => {
             let count = 3;
             dom.countdown.textContent = count;
@@ -1216,10 +1098,9 @@
                 count--;
                 if (count > 0) {
                     dom.countdown.textContent = count;
-                    // 优化动画重置
-                    dom.countdown.style.animation = 'none';
-                    void dom.countdown.offsetWidth;
-                    dom.countdown.style.animation = 'countDownFade 1s ease-in-out forwards';
+                    dom.countdown.style.animationName = 'none';
+                    void dom.countdown.offsetWidth; // 重置动画
+                    dom.countdown.style.animationName = 'countDownFade';
                 } else {
                     clearInterval(timer);
                     dom.countdown.style.display = 'none';
@@ -1228,31 +1109,33 @@
             }, 1000);
         };
 
-        // 倒计时结束后播放视频 - 优化加载逻辑
+        // 倒计时结束后播放视频 - 保留：视频加载失败兜底样式
         const playVideoAfterCountdown = () => {
             if (!dom.video) return;
             
+            // 隐藏初始文字，显示名字和视频
             dom.titleMatter.style.opacity = '0';
             dom.titleMatter.style.display = 'none';
             dom.titleName.style.top = '40%';
             dom.titleName.style.transform = 'translate(-50%, -40%)';
             
+            // 电脑端调整文字格式
             if (window.innerWidth > 600) {
                 dom.titleName.textContent = 'zhang jia rui';
             }
             
+            // 显示视频和名字
             dom.video.style.opacity = '1';
-            // 优化视频加载
             dom.video.load();
             dom.titleName.style.animation = 'fadeInName 1s ease-in-out forwards 0.5s';
 
-            // 视频加载失败兜底
+            // 保留：视频加载失败时的兜底样式（适配图片背景）
             dom.video.addEventListener('error', () => {
                 dom.splashPage.style.background = 'radial-gradient(circle at center, rgba(15,15,15,0.9) 0%, rgba(0,0,0,1) 80%)';
                 dom.titleName.style.textShadow = '0 0 10px rgba(255,255,255,0.1)';
             }, { once: true });
 
-            // 优化视频播放逻辑
+            // 播放视频（处理自动播放限制）
             const playVideo = () => {
                 dom.video.play().catch(() => {
                     const triggerPlay = () => {
@@ -1264,7 +1147,7 @@
                     document.addEventListener('touchstart', triggerPlay, { once: true });
                 }).then(() => {
                     setTimeout(() => {
-                        dom.enterBtn.style.animation = 'showArrow 0.5s ease-in-out forwards';
+                        dom.enterBtn.style.animationName = 'showArrow';
                         dom.enterBtn.style.opacity = '0.7';
                     }, 2000);
                 });
@@ -1273,58 +1156,43 @@
             dom.video.addEventListener('loadedmetadata', playVideo, { once: true });
         };
 
-        // 隐藏启动页 - 优化过渡
+        // 隐藏启动页
         const hideSplash = () => {
             sessionStorage.setItem('hasVisited', 'true');
             document.body.classList.add('splash-hidden');
             document.body.classList.remove('no-scroll', 'first-visit');
             window.scrollTo(0, 0);
-            // 优化动画结束后再隐藏
-            dom.splashPage.style.opacity = '0';
-            dom.splashPage.style.transform = 'scale(1.05)';
-            setTimeout(() => dom.splashPage.style.display = 'none', 400);
+            setTimeout(() => dom.splashPage.style.display = 'none', 50);
         };
 
-        // 图片加载处理 - 优化逻辑
+        // 图片加载处理
         const handleImageLoad = (img) => {
-            if (img.classList.contains('loaded')) return; // 避免重复处理
             img.classList.add('loaded');
             img.parentElement.classList.add('finished-loading');
             if (window.innerWidth <= 900) img.style.opacity = '1';
         };
 
-        // 图片加载失败处理 - 优化容错
+        // 图片加载失败处理
         const handleImageError = (img, fallbackSrc) => {
-            if (img.src === fallbackSrc) return; // 避免无限循环
             img.src = fallbackSrc;
             img.onerror = null;
             handleImageLoad(img);
         };
 
-        // 初始化滚动监听 - 优化性能
+        // 初始化滚动监听
         const initScrollObserver = () => {
-            // 优化Observer配置
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('revealed');
-                        observer.unobserve(entry.target); // 只观察一次，提升性能
-                    }
+                    if (entry.isIntersecting) entry.target.classList.add('revealed');
                 });
-            }, { 
-                threshold: 0.1,
-                rootMargin: '0px 0px -50px 0px' // 提前一点点触发，提升体验
-            });
+            }, { threshold: 0.1 });
 
-            dom.contentSections.forEach(sec => observer.observe(sec));
+            document.querySelectorAll('.statement-section, .content-section').forEach(sec => observer.observe(sec));
         };
 
-        // 初始化鼠标跟随效果 - 节流优化
+        // 初始化鼠标跟随效果
         const initMouseFollow = () => {
-            if (!dom.heroSection || !dom.heroImgWrap) return;
-            
-            // 节流鼠标移动事件，减少计算量
-            const handleMouseMove = throttle((e) => {
+            dom.heroSection.addEventListener('mousemove', (e) => {
                 const maxOffset = 20;
                 const x = Math.max(-maxOffset, Math.min(maxOffset, (e.clientX - window.innerWidth / 2) / 50));
                 const y = Math.max(-maxOffset, Math.min(maxOffset, (e.clientY - window.innerHeight / 2) / 50));
@@ -1332,32 +1200,28 @@
                 requestAnimationFrame(() => {
                     dom.heroImgWrap.style.transform = `translate(${-x}px, ${-y}px)`;
                 });
-            }, 16);
-
-            dom.heroSection.addEventListener('mousemove', handleMouseMove, { passive: true });
+            });
         };
 
-        // 更新导航和回到顶部按钮状态 - 优化逻辑
+        // 更新导航和回到顶部按钮状态
         const updateNavStatus = (scrollY) => {
             const isScrolled = scrollY > 50;
             dom.nav.classList.toggle("nav-scrolled", isScrolled);
             dom.btt.classList.toggle("visible", isScrolled);
             
-            // 优化导航隐藏逻辑
+            // 滚动隐藏/显示导航
             if (scrollY > dom.lastScrollY && scrollY > 200) {
                 dom.nav.style.transform = "translateY(-100%)";
-            } else if (scrollY < dom.lastScrollY || scrollY < 100) {
+            } else {
                 dom.nav.style.transform = "translateY(0)";
             }
             dom.lastScrollY = scrollY;
         };
 
-        // 复制微信ID - 优化兼容性
+        // 复制微信ID
         const copyWeChat = (id) => {
             if (navigator.clipboard) {
-                navigator.clipboard.writeText(id)
-                    .then(showToast)
-                    .catch(() => fallbackCopy(id));
+                navigator.clipboard.writeText(id).then(showToast).catch(() => fallbackCopy(id));
             } else {
                 fallbackCopy(id);
             }
@@ -1371,9 +1235,8 @@
                 textArea.select();
                 
                 try {
-                    const successful = document.execCommand('copy');
-                    if (successful) showToast();
-                    else alert('复制失败，请手动复制：' + text);
+                    document.execCommand('copy');
+                    showToast();
                 } catch (err) {
                     alert('复制失败，请手动复制：' + text);
                 }
@@ -1382,35 +1245,28 @@
             }
         };
 
-        // 菜单切换 - 优化交互
+        // 菜单切换
         const toggleMenu = () => {
             dom.navLinks.classList.toggle('active');
             dom.menuToggle.classList.toggle('active');
-            // 优化body滚动锁定
-            document.body.style.overflow = dom.navLinks.classList.contains('active') ? 'hidden' : '';
-            document.body.style.paddingRight = dom.navLinks.classList.contains('active') ? '0px' : '';
+            document.body.style.overflow = dom.navLinks.classList.contains('active') ? 'hidden' : 'auto';
         };
 
-        // 关闭菜单 - 优化逻辑
+        // 关闭菜单
         const closeMenu = () => {
-            if (dom.navLinks.classList.contains('active')) {
-                dom.navLinks.classList.remove('active');
-                dom.menuToggle.classList.remove('active');
-                document.body.style.overflow = '';
-                document.body.style.paddingRight = '';
-            }
+            dom.navLinks.classList.remove('active');
+            dom.menuToggle.classList.remove('active');
+            document.body.style.overflow = 'auto';
         };
 
-        // 初始化页面 - 懒初始化非关键功能
+        // 初始化页面
         const initPage = () => {
             const isFirstVisit = !sessionStorage.getItem('hasVisited');
-            dom.lastScrollY = window.scrollY;
             
             // 首次访问处理
             if (isFirstVisit) {
                 document.body.classList.add('first-visit');
-                // 异步启动倒计时，不阻塞主线程
-                setTimeout(startCountdown, 100);
+                startCountdown();
             } else {
                 document.body.classList.add('splash-hidden');
                 document.body.classList.remove('first-visit', 'no-scroll');
@@ -1418,20 +1274,18 @@
                 dom.enterBtn.style.opacity = '0.7';
             }
 
-            // 图片加载处理 - 批量处理
-            dom.projectImages.forEach(img => {
-                if (img.complete && !img.classList.contains('loaded')) {
-                    handleImageLoad(img);
-                }
+            // 图片加载处理
+            document.querySelectorAll('.project img, #hero-img-wrap img').forEach(img => {
+                if (img.complete && !img.classList.contains('loaded')) handleImageLoad(img);
                 if (window.innerWidth <= 900) img.style.opacity = '1';
             });
 
-            // 初始化滚动监听（核心功能优先）
+            // 初始化滚动监听
             initScrollObserver();
             
-            // 懒初始化鼠标跟随（非核心功能）
-            if (window.innerWidth > 900) {
-                setTimeout(initMouseFollow, 500);
+            // 初始化鼠标跟随（仅桌面端）
+            if (window.innerWidth > 900 && dom.heroSection && dom.heroImgWrap) {
+                initMouseFollow();
             }
 
             // 更新导航状态
@@ -1439,25 +1293,31 @@
             document.body.classList.add('page-loaded');
         };
 
-        // 滚动监听 - 优化节流和性能
-        const handleScroll = throttle(() => {
-            const scrollY = window.pageYOffset || document.documentElement.scrollTop;
-            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-            
-            // 更新进度条
-            dom.progress.style.width = `${(scrollY / height) * 100}%`;
-            // 更新导航状态
-            updateNavStatus(scrollY);
-        }, 16);
+        // 滚动监听（节流处理）
+        let ticking = false;
+        dom.lastScrollY = window.scrollY;
+        window.addEventListener('scroll', () => {
+            if (!ticking) {
+                window.requestAnimationFrame(() => {
+                    const scrollY = window.pageYOffset || document.documentElement.scrollTop;
+                    const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+                    
+                    // 更新进度条
+                    dom.progress.style.width = (scrollY / height) * 100 + "%";
+                    // 更新导航状态
+                    updateNavStatus(scrollY);
+                    
+                    ticking = false;
+                });
+                ticking = true;
+            }
+        }, { passive: true });
 
-        window.addEventListener('scroll', handleScroll, { passive: true });
-
-        // 页面加载完成处理 - 优化逻辑
+        // 页面加载完成处理
         window.addEventListener('load', () => {
             document.body.classList.add('page-loaded');
-            // 移动端图片强制显示
             if (window.innerWidth <= 900) {
-                dom.projectImages.forEach(img => {
+                document.querySelectorAll('.project img').forEach(img => {
                     if (!img.classList.contains('loaded')) {
                         img.style.display = 'block';
                         img.style.visibility = 'visible';
@@ -1466,28 +1326,13 @@
             }
         });
 
-        // 事件绑定 - 优化委托和性能
-        dom.btt.addEventListener('click', () => window.scrollTo({top: 0, behavior: 'smooth'}), { passive: true });
-        dom.menuToggle.addEventListener('click', toggleMenu, { passive: true });
+        // 事件绑定
+        dom.btt.onclick = () => window.scrollTo({top: 0, behavior: 'smooth'});
+        dom.menuToggle.onclick = toggleMenu;
 
-        // 页面初始化 - 兼容不同加载场景
+        // 页面初始化
         document.addEventListener('DOMContentLoaded', initPage);
-        window.addEventListener('pageshow', (e) => {
-            if (e.persisted) initPage();
-        });
-
-        // 窗口大小变化 - 防抖处理
-        window.addEventListener('resize', debounce(() => {
-            // 重新初始化鼠标跟随
-            if (window.innerWidth > 900) {
-                initMouseFollow();
-            }
-            // 更新导航状态
-            updateNavStatus(window.scrollY);
-        }, 200));
-
-        // 优化触摸体验
-        document.addEventListener('touchstart', () => {}, { passive: true });
+        window.addEventListener('pageshow', (e) => e.persisted && initPage());
     </script>
 </body>
 </html>
