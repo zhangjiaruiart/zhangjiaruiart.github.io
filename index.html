@@ -52,6 +52,7 @@
             position: fixed;
             inset: 0;
             z-index: 999999 !important; /* 拉满层级，确保覆盖所有内容 */
+            /* 核心修复1：电脑端默认背景图，确保黑屏区域显示splash-poster.jpg */
             background: rgba(0,0,0,0.9) url(images/splash-poster.jpg) center center / cover no-repeat;
             background-blend-mode: multiply;
             background-size: 120% 120%;
@@ -80,7 +81,7 @@
             object-fit: cover;
             filter: brightness(0.7);
             z-index: 0;
-            opacity: 0;
+            opacity: 0; /* 视频默认透明，确保背景图先显示 */
             display: block;
             preload: auto;
             object-position: center;
@@ -729,7 +730,7 @@
 
         /* 媒体查询 - 响应式适配 */
         @media (max-width: 900px) {
-            /* 核心新增：手机端替换为专属背景图 */
+            /* 核心修复2：移动端单独设置mobile背景图，不影响电脑端 */
             #splash-page {
                 background: rgba(0,0,0,0.9) url(images/splash-poster-mobile.jpg) center center / cover no-repeat;
                 background-blend-mode: multiply;
@@ -811,6 +812,11 @@
         }
 
         @media (min-width: 901px) {
+            /* 核心修复3：明确电脑端背景图，防止被覆盖 */
+            #splash-page {
+                background: rgba(0,0,0,0.9) url(images/splash-poster.jpg) center center / cover no-repeat;
+                background-blend-mode: multiply;
+            }
             .series5-wrapper img {
                 transform: scale(1.2); 
                 object-fit: contain;
@@ -1131,14 +1137,16 @@
                 dom.titleName.textContent = 'zhang jia rui';
             }
             
-            // 显示视频和名字
-            dom.video.style.opacity = '1';
+            // 显示视频和名字（核心修复4：视频透明度渐变，保留背景图兜底）
+            dom.video.style.opacity = '1'; // 视频显示，但背景图仍作为底层
             dom.video.load();
             dom.titleName.style.animation = 'fadeInName 1s ease-in-out forwards 0.5s';
 
             // 保留：视频加载失败时的兜底样式（适配图片背景）
             dom.video.addEventListener('error', () => {
-                dom.splashPage.style.background = 'radial-gradient(circle at center, rgba(15,15,15,0.9) 0%, rgba(0,0,0,1) 80%)';
+                // 视频加载失败时，强制显示背景图
+                dom.splashPage.style.background = 'radial-gradient(circle at center, rgba(15,15,15,0.9) 0%, rgba(0,0,0,1) 80%), url(images/splash-poster.jpg) center center / cover no-repeat';
+                dom.splashPage.style.background-blend-mode = 'multiply';
                 dom.titleName.style.textShadow = '0 0 10px rgba(255,255,255,0.1)';
             }, { once: true });
 
