@@ -39,30 +39,34 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        /* 启动页样式 - 【核心修改：替换为背景图片，保留暗调效果】 */
+        /* ========== 关键修改1：强化启动页初始样式，确保优先渲染 ========== */
+        body.first-visit {
+            overflow: hidden !important; /* 强制隐藏滚动 */
+        }
+        body.first-visit #hero-section {
+            display: none !important; /* 首次访问时完全隐藏hero区域 */
+        }
         #splash-page {
             position: fixed;
             inset: 0;
-            z-index: 99999;
-            /* 替换为背景图片 + 暗调叠加，保留原有层次感 */
+            z-index: 999999 !important; /* 提升层级到最高 */
             background: rgba(0,0,0,0.9) url(images/splash-poster.jpg) center center / cover no-repeat;
-            background-blend-mode: multiply; /* 叠加暗调，保持暗暗的效果 */
-            /* 保留：背景轻微呼吸动画，避免静态单调 */
+            background-blend-mode: multiply;
             background-size: 120% 120%;
             animation: bgBreath 8s ease-in-out infinite alternate;
-            display: none;
+            /* 首次访问默认显示，避免JS加载延迟导致的闪现 */
+            display: flex; 
             flex-direction: column;
             justify-content: center;
             align-items: center;
             transition: transform 0.4s cubic-bezier(0.85, 0, 0.15, 1), opacity 0.4s ease;
             overflow: hidden;
             will-change: transform, opacity;
-            /* 保留：暗角效果，强化视觉聚焦 */
-            box-shadow: inset 0 0 150px rgba(0,0,0,0.8); /* 加深暗角，适配图片背景 */
+            box-shadow: inset 0 0 150px rgba(0,0,0,0.8);
         }
-
-        body.first-visit #splash-page {
-            display: flex;
+        /* 非首次访问时隐藏启动页 */
+        body:not(.first-visit) #splash-page {
+            display: none !important;
         }
 
         #splash-video {
@@ -120,7 +124,6 @@
             z-index: 1;
         }
 
-        /* 保留：文字辉光效果 */
         .splash-title-name {
             font-size: clamp(19px, 8vw, 72px);
             font-weight: 300;
@@ -137,7 +140,6 @@
             color: rgba(255,255,255,0.9);
             z-index: 1;
             pointer-events: none;
-            /* 保留：微弱辉光，增强和背景的层次感 */
             text-shadow: 0 0 8px rgba(255,255,255,0.08);
         }
 
@@ -662,7 +664,7 @@
             text-transform: uppercase;
         }
 
-        /* 动画关键帧 - 保留：黑屏背景呼吸动画 */
+        /* 动画关键帧 */
         @keyframes bgBreath {
             0% {
                 background-position: center center;
@@ -722,7 +724,6 @@
 
         /* 媒体查询 - 响应式适配 */
         @media (max-width: 900px) {
-            /* 核心新增：手机端替换为专属背景图 */
             #splash-page {
                 background: rgba(0,0,0,0.9) url(images/splash-poster-mobile.jpg) center center / cover no-repeat;
                 background-blend-mode: multiply;
@@ -793,7 +794,6 @@
                 visibility: visible;
             }
 
-            /* 关键修改：手机端series5图片放大25% (0.6 → 0.75) */
             .series5-wrapper img {
                 transform: scale(0.75); 
                 object-fit: contain;
@@ -812,7 +812,6 @@
         }
 
         @media (max-width: 600px) {
-            /* 启动页适配 */
             .splash-title-matter {
                 letter-spacing: 0.15em;
                 font-size: 26px;
@@ -829,7 +828,6 @@
                 transform: translate(-50%, -50%) !important;
             }
 
-            /* 按钮适配 */
             .enter-arrow-btn {
                 padding: 40px;
                 top: 85%;
@@ -849,7 +847,7 @@
         }
     </style>
 </head>
-<body class="no-scroll"> 
+<body class="first-visit"> 
     <div id="splash-page">
         <video id="splash-video" autoplay loop muted playsinline webkit-playsinline x5-playsinline x5-video-player-type="h5" x5-video-orientation="portrait">
             <source src="images/hero-bg.mp4" type="video/mp4">
@@ -1109,7 +1107,7 @@
             }, 1000);
         };
 
-        // 倒计时结束后播放视频 - 保留：视频加载失败兜底样式
+        // 倒计时结束后播放视频
         const playVideoAfterCountdown = () => {
             if (!dom.video) return;
             
@@ -1129,7 +1127,7 @@
             dom.video.load();
             dom.titleName.style.animation = 'fadeInName 1s ease-in-out forwards 0.5s';
 
-            // 保留：视频加载失败时的兜底样式（适配图片背景）
+            // 视频加载失败时的兜底样式
             dom.video.addEventListener('error', () => {
                 dom.splashPage.style.background = 'radial-gradient(circle at center, rgba(15,15,15,0.9) 0%, rgba(0,0,0,1) 80%)';
                 dom.titleName.style.textShadow = '0 0 10px rgba(255,255,255,0.1)';
@@ -1156,11 +1154,13 @@
             dom.video.addEventListener('loadedmetadata', playVideo, { once: true });
         };
 
-        // 隐藏启动页
+        // ========== 关键修改2：隐藏启动页时显示hero区域 ==========
         const hideSplash = () => {
             sessionStorage.setItem('hasVisited', 'true');
             document.body.classList.add('splash-hidden');
-            document.body.classList.remove('no-scroll', 'first-visit');
+            document.body.classList.remove('first-visit', 'no-scroll');
+            // 显示hero区域
+            dom.heroSection.style.display = 'block';
             window.scrollTo(0, 0);
             setTimeout(() => dom.splashPage.style.display = 'none', 50);
         };
@@ -1266,12 +1266,16 @@
             // 首次访问处理
             if (isFirstVisit) {
                 document.body.classList.add('first-visit');
+                // 强制隐藏hero区域
+                dom.heroSection.style.display = 'none';
                 startCountdown();
             } else {
                 document.body.classList.add('splash-hidden');
                 document.body.classList.remove('first-visit', 'no-scroll');
                 dom.splashPage.style.display = 'none';
                 dom.enterBtn.style.opacity = '0.7';
+                // 显示hero区域
+                dom.heroSection.style.display = 'block';
             }
 
             // 图片加载处理
