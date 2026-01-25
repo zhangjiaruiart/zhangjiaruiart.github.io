@@ -39,30 +39,37 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        /* 启动页样式 - 【核心修改：替换为背景图片，保留暗调效果】 */
+        /* ========== 核心修复：强制Splash页面优先渲染，隐藏hero区域 ========== */
+        /* 强制首次访问时Splash页面默认显示，不依赖JS */
+        body.first-visit, body.no-scroll {
+            overflow: hidden !important; /* 彻底禁止滚动 */
+        }
+        /* 强制隐藏hero区域，直到Splash页面关闭 */
+        body.first-visit #hero-section {
+            display: none !important;
+        }
         #splash-page {
             position: fixed;
             inset: 0;
-            z-index: 99999;
-            /* 替换为背景图片 + 暗调叠加，保留原有层次感 */
+            z-index: 999999 !important; /* 拉满层级，确保覆盖所有内容 */
             background: rgba(0,0,0,0.9) url(images/splash-poster.jpg) center center / cover no-repeat;
-            background-blend-mode: multiply; /* 叠加暗调，保持暗暗的效果 */
-            /* 保留：背景轻微呼吸动画，避免静态单调 */
+            background-blend-mode: multiply;
             background-size: 120% 120%;
             animation: bgBreath 8s ease-in-out infinite alternate;
-            display: none;
+            /* 核心修改：默认display:flex，确保加载初期就显示，背景色兜底防止空白 */
+            display: flex !important; 
             flex-direction: column;
             justify-content: center;
             align-items: center;
             transition: transform 0.4s cubic-bezier(0.85, 0, 0.15, 1), opacity 0.4s ease;
             overflow: hidden;
             will-change: transform, opacity;
-            /* 保留：暗角效果，强化视觉聚焦 */
-            box-shadow: inset 0 0 150px rgba(0,0,0,0.8); /* 加深暗角，适配图片背景 */
+            box-shadow: inset 0 0 150px rgba(0,0,0,0.8);
+            background-color: #000; /* 背景图加载前兜底，避免空白 */
         }
-
-        body.first-visit #splash-page {
-            display: flex;
+        /* 非首次访问时隐藏Splash页面 */
+        body:not(.first-visit) #splash-page {
+            display: none !important;
         }
 
         #splash-video {
@@ -1156,11 +1163,13 @@
             dom.video.addEventListener('loadedmetadata', playVideo, { once: true });
         };
 
-        // 隐藏启动页
+        // 隐藏启动页 - 核心修改：显示hero区域
         const hideSplash = () => {
             sessionStorage.setItem('hasVisited', 'true');
             document.body.classList.add('splash-hidden');
             document.body.classList.remove('no-scroll', 'first-visit');
+            // 显示hero区域
+            dom.heroSection.style.display = 'block';
             window.scrollTo(0, 0);
             setTimeout(() => dom.splashPage.style.display = 'none', 50);
         };
@@ -1266,12 +1275,16 @@
             // 首次访问处理
             if (isFirstVisit) {
                 document.body.classList.add('first-visit');
+                // 强制隐藏hero区域
+                dom.heroSection.style.display = 'none';
                 startCountdown();
             } else {
                 document.body.classList.add('splash-hidden');
                 document.body.classList.remove('first-visit', 'no-scroll');
                 dom.splashPage.style.display = 'none';
                 dom.enterBtn.style.opacity = '0.7';
+                // 显示hero区域
+                dom.heroSection.style.display = 'block';
             }
 
             // 图片加载处理
