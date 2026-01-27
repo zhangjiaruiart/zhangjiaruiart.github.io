@@ -26,8 +26,41 @@
         }
 
         .logo { font-size: 14px; font-weight: 300; letter-spacing: 0.5em; text-decoration: none; color: #111; text-transform: uppercase; }
+        .nav-right { display: flex; align-items: center; gap: 35px; }
         .back-link { font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; text-decoration: none; color: #aaa; transition: all 0.3s ease; }
         .back-link:hover { color: #111; padding-left: 10px; }
+
+        /* 语言切换按钮样式（和首页保持一致） */
+        .language-switch {
+            display: flex;
+            align-items: center;
+        }
+
+        .lang-btn {
+            background: none;
+            border: none;
+            color: #111;
+            font-size: 10px;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            font-weight: 300;
+            cursor: pointer;
+            padding: 5px 10px;
+            transition: all 0.4s ease;
+            opacity: 0.7;
+        }
+
+        .lang-btn.active {
+            opacity: 1;
+            font-weight: 500;
+        }
+
+        .lang-separator {
+            color: #111;
+            font-size: 8px;
+            margin: 0 5px;
+            opacity: 0.5;
+        }
 
         .container { max-width: 1400px; margin: 0 auto; padding: 120px 5% 60px; }
 
@@ -99,18 +132,38 @@
         /* 响应式适配 */
         @media (max-width: 1100px) {
             .image-grid { grid-template-columns: repeat(3, 1fr); } /* 平板端 3x2 */
+            /* 平板端语言切换按钮样式调整 */
+            .lang-btn { font-size: 14px; }
         }
         @media (max-width: 600px) {
             .image-grid { grid-template-columns: repeat(2, 1fr); } /* 手机端 2x3 */
             .container { padding-top: 100px; }
+            nav { padding: 15px 5%; }
+            .logo { font-size: 12px; letter-spacing: 0.3em; }
+            .nav-right { gap: 20px; }
+            .back-link { font-size: 12px; }
+            /* 手机端语言切换按钮样式调整 */
+            .lang-btn { font-size: 12px; padding: 0 5px; }
         }
     </style>
 </head>
 <body>
 
     <nav>
-        <a href="index.html" class="logo">ZHANGJIARUI ARTWorkS</a>
-        <a href="index.html" class="back-link">← BACK</a>
+        <a href="index.html" class="logo" data-lang="en">ZHANGJIARUI ARTWorkS</a>
+        <a href="index.html" class="logo" data-lang="zh" style="display: none;">张家瑞艺术作品</a>
+        
+        <div class="nav-right">
+            <a href="index.html" class="back-link" data-lang="en">← BACK</a>
+            <a href="index.html" class="back-link" data-lang="zh" style="display: none;">← 返回</a>
+            
+            <!-- 语言切换按钮（和首页位置/样式一致） -->
+            <div class="language-switch">
+                <button class="lang-btn active" id="lang-en" onclick="switchLanguage('en')">English</button>
+                <span class="lang-separator">|</span>
+                <button class="lang-btn" id="lang-zh" onclick="switchLanguage('zh')">中文</button>
+            </div>
+        </div>
     </nav>
 
     <div id="overlay"><img src="" alt="Full View"></div>
@@ -123,15 +176,21 @@
         </section>
 
         <section class="project-info">
-            <h1 class="title">4.5 Tons</h1>
-            <span class="meta">Installation / In Collaboration with Betta Liu / 2024 / Inner Mongolia</span>
+            <h1 class="title" data-lang="en">4.5 Tons</h1>
+            <h1 class="title" data-lang="zh" style="display: none;">4.5吨</h1>
+            
+            <span class="meta" data-lang="en">Installation / In Collaboration with Betta Liu / 2024 / Inner Mongolia</span>
+            <span class="meta" data-lang="zh" style="display: none;">装置艺术 / 与刘洋合作 / 2024 / 中国内蒙古</span>
             
             <div class="description">
-                <p><strong>4.5 Tons</strong> is an ecological art installation completed in the autumn of 2024 in the Kubuqi Desert of Inner Mongolia, a collaboration between the author and artist Betta Liu. A temporary wall composed of approximately 4.5 tons of ice was positioned in a desert no-man's-land. During its brief 21-hour lifespan, it became an abrupt yet emotionally resonant presence.</p>
+                <p data-lang="en"><strong>4.5 Tons</strong> is an ecological art installation completed in the autumn of 2024 in the Kubuqi Desert of Inner Mongolia, a collaboration between the author and artist Betta Liu. A temporary wall composed of approximately 4.5 tons of ice was positioned in a desert no-man's-land. During its brief 21-hour lifespan, it became an abrupt yet emotionally resonant presence.</p>
+                <p data-lang="zh" style="display: none;"><strong>4.5吨</strong>是作者与艺术家刘洋合作，于2024年秋季在内蒙古库布齐沙漠完成的生态艺术装置作品。一堵由约4.5吨冰构成的临时墙体被置于沙漠无人区，在其短暂的21小时生命周期中，成为一个突兀却又饱含情感共鸣的存在。</p>
 
-                <p>From an ecological art perspective, <em>4.5 Tons</em> explicitly rejects the aesthetic cult of permanence. As a material, ice naturally carries an unstable certainty. Under the desert’s intense sunlight and ground heat, the ice wall undergoes a complete cycle: the establishment of form, the loosening of structure, partial collapse, and final disappearance. Ultimately, it leaves only a faint, transient mark on the sand—pointing toward a state of existence that is both solemn and fragile.</p>
+                <p data-lang="en">From an ecological art perspective, <em>4.5 Tons</em> explicitly rejects the aesthetic cult of permanence. As a material, ice naturally carries an unstable certainty. Under the desert’s intense sunlight and ground heat, the ice wall undergoes a complete cycle: the establishment of form, the loosening of structure, partial collapse, and final disappearance. Ultimately, it leaves only a faint, transient mark on the sand—pointing toward a state of existence that is both solemn and fragile.</p>
+                <p data-lang="zh" style="display: none;">从生态艺术的视角来看，<em>4.5吨</em>明确拒绝永恒性的审美崇拜。冰作为材料，天然携带着一种不稳定的确定性。在沙漠强烈的日照和地温作用下，冰墙经历了完整的循环：形态的确立、结构的松动、局部坍塌直至最终消失。最终只在沙地上留下微弱而短暂的印记——指向一种既庄严又脆弱的存在状态。</p>
 
-                <p>This dynamic process shares a profound philosophical resonance with the concept of the <strong>"Rhizome"</strong> proposed by Deleuze and Guattari. Melting no longer signifies mere disappearance, but a classic rupture-regeneration mechanism: while the form collapses, new energy and relationships are being generated and diffused. The work disintegrates at the material level but continues to spread across relational, perceptual, and cultural dimensions.</p>
+                <p data-lang="en">This dynamic process shares a profound philosophical resonance with the concept of the <strong>"Rhizome"</strong> proposed by Deleuze and Guattari. Melting no longer signifies mere disappearance, but a classic rupture-regeneration mechanism: while the form collapses, new energy and relationships are being generated and diffused. The work disintegrates at the material level but continues to spread across relational, perceptual, and cultural dimensions.</p>
+                <p data-lang="zh" style="display: none;">这一动态过程与德勒兹和加塔利提出的<strong>"块茎"</strong>概念产生了深刻的哲学共鸣。融化不再仅仅意味着消失，而是一种经典的断裂-再生机制：在形态崩塌的同时，新的能量和关系正在生成与扩散。作品在物质层面瓦解，却在关系、感知和文化维度持续蔓延。</p>
             </div>
         </section>
 
@@ -157,9 +216,41 @@
         </section>
     </div>
 
-    <footer>&copy; 2026 ZHANGJIARUI ARTWORKS.</footer>
+    <footer>
+        <span data-lang="en">&copy; 2026 ZHANGJIARUI ARTWORKS.</span>
+        <span data-lang="zh" style="display: none;">&copy; 2026 张家瑞艺术作品.</span>
+    </footer>
 
     <script>
+        // 语言切换功能（和首页逻辑保持一致）
+        const switchLanguage = (lang) => {
+            // 更新按钮状态
+            const langEnBtn = document.getElementById('lang-en');
+            const langZhBtn = document.getElementById('lang-zh');
+            
+            if (lang === 'en') {
+                langEnBtn.classList.add('active');
+                langZhBtn.classList.remove('active');
+                document.title = '4.5 TONS | ZHANG JIARUI';
+            } else {
+                langEnBtn.classList.remove('active');
+                langZhBtn.classList.add('active');
+                document.title = '4.5吨 | 张家瑞';
+            }
+            
+            // 切换所有带语言标记的元素
+            document.querySelectorAll('[data-lang]').forEach(el => {
+                if (el.getAttribute('data-lang') === lang) {
+                    el.style.display = el.tagName === 'P' || el.tagName === 'SPAN' || el.tagName === 'H1' || el.tagName === 'A' ? 'block' : 'inline';
+                } else {
+                    el.style.display = 'none';
+                }
+            });
+            
+            // 保存语言偏好到本地存储
+            localStorage.setItem('preferredLanguage', lang);
+        };
+
         // 淡入观察器
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
@@ -183,6 +274,12 @@
         overlay.addEventListener('click', () => {
             overlay.style.display = 'none';
             document.body.style.overflow = 'auto';
+        });
+
+        // 初始化语言设置
+        document.addEventListener('DOMContentLoaded', () => {
+            const savedLang = localStorage.getItem('preferredLanguage') || 'en';
+            switchLanguage(savedLang);
         });
     </script>
 </body>
