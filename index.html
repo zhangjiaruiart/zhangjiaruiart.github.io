@@ -341,6 +341,16 @@
             overflow: hidden;
             position: relative;
             background-color: #000;
+            /* 关键修改：添加初始隐藏，避免启动页闪现hero图 */
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
+        }
+
+        /* 新增：启动页隐藏后显示hero区域 */
+        body.splash-hidden .hero {
+            opacity: 1;
+            visibility: visible;
         }
 
         #hero-img-wrap {
