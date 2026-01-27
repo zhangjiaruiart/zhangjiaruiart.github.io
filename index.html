@@ -879,6 +879,10 @@
                 object-fit: contain;
                 opacity: 1;
             }
+            /* 核心修改：电脑端中文导航链接字体增大为12px（比原来的10px大两号） */
+            .nav-links.zh a {
+                font-size: 12px;
+            }
         }
 
         @media (max-width: 600px) {
@@ -1407,10 +1411,14 @@
                 dom.langEnBtn.classList.add('active');
                 dom.langZhBtn.classList.remove('active');
                 document.getElementById('copy-toast').textContent = 'ID COPIED';
+                // 移除中文导航栏字体放大类
+                dom.navLinks.classList.remove('zh');
             } else {
                 dom.langEnBtn.classList.remove('active');
                 dom.langZhBtn.classList.add('active');
                 document.getElementById('copy-toast').textContent = '已复制ID';
+                // 添加中文导航栏字体放大类
+                dom.navLinks.classList.add('zh');
             }
             
             // 切换所有带语言标记的元素
