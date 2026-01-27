@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,7 +7,7 @@
     <style>
         body, html {
             margin: 0; padding: 0;
-            font-family: "Optima", "Didot", "Helvetica Neue", Helvetica, Arial, sans-serif;
+            font-family: "Optima", "Didot", "Helvetica Neue", Helvetica, Arial, "PingFang SC", sans-serif;
             background-color: #ffffff; color: #111;
             line-height: 1.6; scroll-behavior: smooth;
             overflow-x: hidden;
@@ -39,6 +39,16 @@
         }
         .logo:hover { opacity: 0.6; }
 
+        .nav-right {
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+        }
+
         .nav-links a { 
             margin-left: 35px; text-decoration: none; color: #111; 
             font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; 
@@ -56,6 +66,39 @@
         .nav-links a:hover::after { 
             transform: scaleX(1); 
             transform-origin: left;
+        }
+
+        /* 语言切换按钮样式（和其他页面保持一致） */
+        .language-switch {
+            display: flex;
+            align-items: center;
+            margin-left: 35px;
+        }
+
+        .lang-btn {
+            background: none;
+            border: none;
+            color: #111;
+            font-size: 10px;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            font-weight: 300;
+            cursor: pointer;
+            padding: 5px 10px;
+            transition: all 0.4s ease;
+            opacity: 0.7;
+        }
+
+        .lang-btn.active {
+            opacity: 1;
+            font-weight: 500;
+        }
+
+        .lang-separator {
+            color: #111;
+            font-size: 8px;
+            margin: 0 5px;
+            opacity: 0.5;
         }
 
         /* --- 2. 揭幕入场动画 --- */
@@ -140,25 +183,53 @@
             font-size: 9px; letter-spacing: 0.4em; color: #ccc; text-transform: uppercase; 
         }
 
+        /* 移动端适配 */
         @media (max-width: 900px) {
             .container { grid-template-columns: 1fr; gap: 50px; margin-top: 120px; }
             .profile-image-wrapper { position: relative; top: 0; }
             .nav-links { display: none; }
+            .language-switch { margin-left: 0; }
             .cv-item { flex-direction: column; gap: 4px; margin-bottom: 20px; }
             .cv-item:hover { transform: none; }
+            
+            /* 移动端语言按钮适配 */
+            .lang-btn { font-size: 12px; padding: 0 5px; }
+            nav { padding: 20px 5%; }
+            .nav-scrolled { padding: 15px 5%; }
+            .logo { font-size: 14px; letter-spacing: 0.3em; }
         }
     </style>
 </head>
 <body>
 
     <nav id="navbar">
-        <a href="index.html" class="logo">ZHANGJIARUI ARTWORKS</a>
-        <div class="nav-links">
-            <a href="index.html#eco-art">Ecological Art</a>
-            <a href="index.html#sculpture">Sculpture</a>
-            <a href="index.html#projects">Projects</a>
-            <a href="biography.html">BIOGRAPHY</a>
-            <a href="index.html#contact">Contact</a>
+        <a href="index.html" class="logo" data-lang="en">ZHANGJIARUI ARTWORKS</a>
+        <a href="index.html" class="logo" data-lang="zh" style="display: none;">张家瑞艺术作品</a>
+        
+        <div class="nav-right">
+            <div class="nav-links">
+                <a href="index.html#eco-art" data-lang="en">Ecological Art</a>
+                <a href="index.html#eco-art" data-lang="zh" style="display: none;">生态艺术</a>
+                
+                <a href="index.html#sculpture" data-lang="en">Sculpture</a>
+                <a href="index.html#sculpture" data-lang="zh" style="display: none;">雕塑</a>
+                
+                <a href="index.html#projects" data-lang="en">Projects</a>
+                <a href="index.html#projects" data-lang="zh" style="display: none;">项目</a>
+                
+                <a href="biography.html" data-lang="en">BIOGRAPHY</a>
+                <a href="biography.html" data-lang="zh" style="display: none;">简历</a>
+                
+                <a href="index.html#contact" data-lang="en">Contact</a>
+                <a href="index.html#contact" data-lang="zh" style="display: none;">联系</a>
+            </div>
+            
+            <!-- 语言切换按钮（和其他页面样式/交互一致） -->
+            <div class="language-switch">
+                <button class="lang-btn active" id="lang-en" onclick="switchLanguage('en')">English</button>
+                <span class="lang-separator">|</span>
+                <button class="lang-btn" id="lang-zh" onclick="switchLanguage('zh')">中文</button>
+            </div>
         </div>
     </nav>
 
@@ -171,67 +242,91 @@
 
         <div class="about-text">
             <div class="reveal delay-1">
-                <h1>Zhang Jiarui</h1>
-                <div class="birth-info">b. 1990, China</div>
+                <h1 data-lang="en">Zhang Jiarui</h1>
+                <h1 data-lang="zh" style="display: none;">张家瑞</h1>
+                
+                <div class="birth-info" data-lang="en">b. 1990, China</div>
+                <div class="birth-info" data-lang="zh" style="display: none;">1990年生于中国</div>
             </div>
 
             <div class="statement reveal delay-2">
-                <p>Zhang Jiarui's artistic creation revolves around two intertwined paths: "the contemporary transformation of traditional art" and "the on-site practice of ecological art." These two paths form a profound intertextuality in both creative logic and methodology.</p>
-                <p>The first trajectory focuses on reconfiguring traditional sculpture within a contemporary visual framework. Working primarily with natural materials such as wood and red clay, I draw on Chinese craftsmanship techniques, including mortise-and-tenon joinery. Rather than reproducing traditional forms or symbolic narratives, I distill elements such as structural balance and linear rhythm into a reduced, contemporary language. This approach is informed by Minimalism’s pursuit of pure form and by the emotional intensity of Mark Rothko’s work, allowing traditional aesthetics to evolve organically within present-day contexts.</p>
-                <p>The second trajectory extends beyond the studio into ecological and industrial sites. Through residencies in the Kubuqi Desert, the Xisha Islands, and abandoned steel industry zones, I explore desert, marine, and industrial ecologies. Using ice, coral restoration processes, and discarded machinery, my work investigates human intervention, minimal action, and the entanglement of production and nature. Together, these practices seek to rethink the relationships between humanity and nature, culture and ecology, positioning art as an active, site-responsive practice rather than a passive representation.</p>
+                <p data-lang="en">Zhang Jiarui's artistic creation revolves around two intertwined paths: "the contemporary transformation of traditional art" and "the on-site practice of ecological art." These two paths form a profound intertextuality in both creative logic and methodology.</p>
+                <p data-lang="zh" style="display: none;">张家瑞的艺术创作围绕两条相互交织的脉络展开：“传统艺术的当代转化”与“生态艺术的在地实践”。这两条脉络在创作逻辑与方法论层面形成了深刻的互文关系。</p>
+
+                <p data-lang="en">The first trajectory focuses on reconfiguring traditional sculpture within a contemporary visual framework. Working primarily with natural materials such as wood and red clay, I draw on Chinese craftsmanship techniques, including mortise-and-tenon joinery. Rather than reproducing traditional forms or symbolic narratives, I distill elements such as structural balance and linear rhythm into a reduced, contemporary language. This approach is informed by Minimalism’s pursuit of pure form and by the emotional intensity of Mark Rothko’s work, allowing traditional aesthetics to evolve organically within present-day contexts.</p>
+                <p data-lang="zh" style="display: none;">第一条脉络聚焦于在当代视觉框架中重构传统雕塑。我主要以木材、红泥等天然材料为创作载体，借鉴榫卯结构等中国传统工艺技法。并非复刻传统形制或符号化叙事，而是将结构平衡、线性韵律等元素提炼为简约的当代语言。这种创作思路既受极简主义对纯粹形式的追求启发，也吸收了马克·罗斯科作品中的情感张力，让传统美学在当下语境中有机生长。</p>
+
+                <p data-lang="en">The second trajectory extends beyond the studio into ecological and industrial sites. Through residencies in the Kubuqi Desert, the Xisha Islands, and abandoned steel industry zones, I explore desert, marine, and industrial ecologies. Using ice, coral restoration processes, and discarded machinery, my work investigates human intervention, minimal action, and the entanglement of production and nature. Together, these practices seek to rethink the relationships between humanity and nature, culture and ecology, positioning art as an active, site-responsive practice rather than a passive representation.</p>
+                <p data-lang="zh" style="display: none;">第二条脉络则从工作室延伸至生态与工业现场。通过在库布齐沙漠、西沙群岛、废弃钢铁工业区等地的驻留创作，我探索沙漠生态、海洋生态与工业生态的多重面向。以冰、珊瑚修复过程、废弃机械为创作媒介，我的作品探讨人类干预、极简行动，以及生产与自然的交织关系。这些实践共同试图重新思考人与自然、文化与生态的关系，将艺术定位为一种主动的、回应现场的实践，而非被动的再现。</p>
             </div>
 
             <div class="cv-section reveal delay-3">
-                <h2>Education</h2>
+                <h2 data-lang="en">Education</h2>
+                <h2 data-lang="zh" style="display: none;">教育背景</h2>
+                
                 <div class="cv-item">
                     <div class="cv-year">2025 - PRES.</div>
-                    <div class="cv-detail">China Central Academy of Fine Arts , Ph.D</div>
+                    <div class="cv-detail" data-lang="en">China Central Academy of Fine Arts , Ph.D</div>
+                    <div class="cv-detail" data-lang="zh" style="display: none;">中央美术学院，博士在读</div>
                 </div>
                 <div class="cv-item">
                     <div class="cv-year">2017 - 2020</div>
-                    <div class="cv-detail">China Central Academy of Fine Arts , MFA — Sculpture</div>
+                    <div class="cv-detail" data-lang="en">China Central Academy of Fine Arts , MFA — Sculpture</div>
+                    <div class="cv-detail" data-lang="zh" style="display: none;">中央美术学院，硕士，雕塑系</div>
                 </div>
                 <div class="cv-item">
                     <div class="cv-year">2010 - 2015</div>
-                    <div class="cv-detail">China Central Academy of Fine Arts , BFA — Sculpture</div>
+                    <div class="cv-detail" data-lang="en">China Central Academy of Fine Arts , BFA — Sculpture</div>
+                    <div class="cv-detail" data-lang="zh" style="display: none;">中央美术学院，学士，雕塑系</div>
                 </div>
             </div>
 
             <div class="cv-section reveal delay-3">
-                <h2>Exhibitions</h2>
+                <h2 data-lang="en">Exhibitions</h2>
+                <h2 data-lang="zh" style="display: none;">展览经历</h2>
+                
                 <div class="cv-item">
                     <div class="cv-year">2018</div>
-                    <div class="cv-detail">Taoxichuan Art Museum, Jingdezhen</div>
+                    <div class="cv-detail" data-lang="en">Taoxichuan Art Museum, Jingdezhen</div>
+                    <div class="cv-detail" data-lang="zh" style="display: none;">陶溪川美术馆，景德镇</div>
                 </div>
                 <div class="cv-item">
                     <div class="cv-year">2016</div>
-                    <div class="cv-detail">Pingshan Art Museum, Shenzhen</div>
+                    <div class="cv-detail" data-lang="en">Pingshan Art Museum, Shenzhen</div>
+                    <div class="cv-detail" data-lang="zh" style="display: none;">坪山美术馆，深圳</div>
                 </div>
                 <div class="cv-item">
                     <div class="cv-year">2015</div>
-                    <div class="cv-detail">CAFAM, Beijing</div>
+                    <div class="cv-detail" data-lang="en">CAFAM, Beijing</div>
+                    <div class="cv-detail" data-lang="zh" style="display: none;">中央美术学院美术馆，北京</div>
                 </div>
             </div>
 
             <div class="cv-section reveal delay-3">
-                <h2>Awards</h2>
+                <h2 data-lang="en">Awards</h2>
+                <h2 data-lang="zh" style="display: none;">获奖情况</h2>
+                
                 <div class="cv-item">
                     <div class="cv-year">2019</div>
-                    <div class="cv-detail">Wang Shikuo ScholarshipGold</div>
+                    <div class="cv-detail" data-lang="en">Wang Shikuo ScholarshipGold</div>
+                    <div class="cv-detail" data-lang="zh" style="display: none;">王式廓奖学金，金奖</div>
                 </div>
                 <div class="cv-item">
                     <div class="cv-year">2015</div>
-                    <div class="cv-detail">Third Prize for Outstanding Graduation Project of CAFA</div>
+                    <div class="cv-detail" data-lang="en">Third Prize for Outstanding Graduation Project of CAFA</div>
+                    <div class="cv-detail" data-lang="zh" style="display: none;">中央美术学院优秀毕业创作，三等奖</div>
                 </div>
             </div>
         </div>
     </div>
 
     <footer>
-        &copy; 2026 ZHANGJIARUI ARTWORKS.
+        <span data-lang="en">&copy; 2026 ZHANGJIARUI ARTWORKS.</span>
+        <span data-lang="zh" style="display: none;">&copy; 2026 张家瑞艺术作品.</span>
     </footer>
 
     <script>
+        // 动态导航栏滚动效果（保留原有逻辑）
         window.onscroll = function() {
             var nav = document.getElementById('navbar');
             if (window.pageYOffset > 50) {
@@ -240,6 +335,54 @@
                 nav.classList.remove("nav-scrolled");
             }
         };
+
+        // 语言切换核心功能（和其他页面逻辑一致）
+        const switchLanguage = (lang) => {
+            // 更新按钮激活状态
+            const langEnBtn = document.getElementById('lang-en');
+            const langZhBtn = document.getElementById('lang-zh');
+            
+            if (lang === 'en') {
+                langEnBtn.classList.add('active');
+                langZhBtn.classList.remove('active');
+                document.title = 'BIOGRAPHY | ZHANG JIARUI';
+            } else {
+                langEnBtn.classList.remove('active');
+                langZhBtn.classList.add('active');
+                document.title = '简历 | 张家瑞';
+            }
+            
+            // 切换所有带语言标记的文本元素
+            document.querySelectorAll('[data-lang]').forEach(el => {
+                const elLang = el.getAttribute('data-lang');
+                if (elLang === lang) {
+                    // 根据标签类型适配显示方式
+                    if (el.tagName === 'A' || el.tagName === 'H1' || el.tagName === 'H2' || el.tagName === 'SPAN' || el.tagName === 'DIV' || el.tagName === 'P') {
+                        if (el.tagName === 'P' || el.classList.contains('birth-info')) {
+                            el.style.display = 'block';
+                        } else if (el.tagName === 'DIV' && el.classList.contains('cv-detail')) {
+                            el.style.display = 'block';
+                        } else {
+                            el.style.display = 'inline-block';
+                        }
+                    } else {
+                        el.style.display = 'block';
+                    }
+                } else {
+                    el.style.display = 'none';
+                }
+            });
+            
+            // 保存语言偏好到本地存储，和其他页面同步
+            localStorage.setItem('preferredLanguage', lang);
+        };
+
+        // 页面加载时初始化语言设置
+        document.addEventListener('DOMContentLoaded', () => {
+            // 优先读取本地存储的语言偏好，默认英文
+            const savedLang = localStorage.getItem('preferredLanguage') || 'en';
+            switchLanguage(savedLang);
+        });
     </script>
 
 </body>
