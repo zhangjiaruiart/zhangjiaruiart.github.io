@@ -7,7 +7,6 @@
     <meta name="description" content="Zhang Jiarui Artworks - A portfolio of Ecological Art, Sculpture, and Projects examining material, time, and systems.">
     <link rel="icon" href="images/favicon.svg" type="image/svg+xml">
     <link rel="icon" href="images/favicon.png" type="image/png" sizes="32x32">
-    <link rel="apple-touch-icon" href="images/favicon.png">
     <link rel="preload" as="video" href="images/hero-bg.mp4" fetchpriority="high">
 
     <style>
@@ -39,13 +38,13 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        /* 启动页样式 - 【核心修改：替换为背景图片，保留暗调效果】 */
+        /* 启动页样式 - 【核心修改：降低背景透明度从0.9→0.7，提亮背景】 */
         #splash-page {
             position: fixed;
             inset: 0;
             z-index: 99999;
-            /* 替换为背景图片 + 暗调叠加，保留原有层次感 */
-            background: rgba(0,0,0,0.9) url(images/splash-poster.jpg) center center / cover no-repeat;
+            /* 核心修改：rgba(0,0,0,0.7) 从0.9改为0.7，背景更亮 */
+            background: rgba(0,0,0,0.7) url(images/splash-poster.jpg) center center / cover no-repeat;
             background-blend-mode: multiply; /* 叠加暗调，保持暗暗的效果 */
             /* 保留：背景轻微呼吸动画，避免静态单调 */
             background-size: 120% 120%;
@@ -763,9 +762,9 @@
 
         /* 媒体查询 - 响应式适配 */
         @media (max-width: 900px) {
-            /* 核心新增：手机端替换为专属背景图 */
+            /* 核心新增：手机端替换为专属背景图 + 同步降低透明度从0.9→0.7 */
             #splash-page {
-                background: rgba(0,0,0,0.9) url(images/splash-poster-mobile.jpg) center center / cover no-repeat;
+                background: rgba(0,0,0,0.7) url(images/splash-poster-mobile.jpg) center center / cover no-repeat;
                 background-blend-mode: multiply;
             }
 
