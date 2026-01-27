@@ -27,8 +27,41 @@
         }
 
         .logo { font-size: 14px; font-weight: 300; letter-spacing: 0.5em; text-decoration: none; color: #111; text-transform: uppercase; }
+        .nav-right { display: flex; align-items: center; gap: 35px; }
         .back { font-size: 10px; letter-spacing: 0.2em; text-decoration: none; color: #aaa; text-transform: uppercase; transition: color 0.3s; }
         .back:hover { color: #111; }
+
+        /* 语言切换按钮样式（和其他页面保持一致） */
+        .language-switch {
+            display: flex;
+            align-items: center;
+        }
+
+        .lang-btn {
+            background: none;
+            border: none;
+            color: #111;
+            font-size: 10px;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            font-weight: 300;
+            cursor: pointer;
+            padding: 5px 10px;
+            transition: all 0.4s ease;
+            opacity: 0.7;
+        }
+
+        .lang-btn.active {
+            opacity: 1;
+            font-weight: 500;
+        }
+
+        .lang-separator {
+            color: #111;
+            font-size: 8px;
+            margin: 0 5px;
+            opacity: 0.5;
+        }
 
         /* 容器调整 */
         .container { max-width: 1100px; margin: 120px auto 80px; padding: 0 5%; }
@@ -112,13 +145,30 @@
             .container { margin-top: 100px; }
             .title { font-size: 20px; }
             .image-grid { grid-template-columns: 1fr; gap: 15px; }
+            nav { padding: 15px 5%; }
+            .logo { font-size: 12px; letter-spacing: 0.3em; }
+            .nav-right { gap: 20px; }
+            .back { font-size: 12px; }
+            .lang-btn { font-size: 12px; padding: 0 5px; }
         }
     </style>
 </head>
 <body>
     <nav>
-        <a href="index.html" class="logo">ZHANGJIARUI ARTWORKS</a>
-        <a href="index.html" class="back">← BACK</a>
+        <a href="index.html" class="logo" data-lang="en">ZHANGJIARUI ARTWORKS</a>
+        <a href="index.html" class="logo" data-lang="zh" style="display: none;">张家瑞艺术作品</a>
+        
+        <div class="nav-right">
+            <a href="index.html" class="back" data-lang="en">← BACK</a>
+            <a href="index.html" class="back" data-lang="zh" style="display: none;">← 返回</a>
+            
+            <!-- 语言切换按钮（和其他页面样式/位置一致） -->
+            <div class="language-switch">
+                <button class="lang-btn active" id="lang-en" onclick="switchLanguage('en')">English</button>
+                <span class="lang-separator">|</span>
+                <button class="lang-btn" id="lang-zh" onclick="switchLanguage('zh')">中文</button>
+            </div>
+        </div>
     </nav>
 
     <div class="container">
@@ -127,18 +177,27 @@
         </div>
 
         <section class="project-info">
-            <h1 class="title">Coral Planting Project</h1>
-            <span class="meta">Documentary / 2025 / China Southsea</span>
+            <h1 class="title" data-lang="en">Coral Planting Project</h1>
+            <h1 class="title" data-lang="zh" style="display: none;">珊瑚种植计划</h1>
+            
+            <span class="meta" data-lang="en">Documentary / 2025 / China Southsea</span>
+            <span class="meta" data-lang="zh" style="display: none;">纪录片 / 2025 / 中国南海</span>
 
             <div class="description">
-                <p><strong>The Coral Planting Project</strong> is an ecological restoration film created in the China Southsea in 2025, arising from my participation in a Chinese marine scientific expedition. Working alongside marine scientists and professional divers, I took part in the transplantation of 24,000 coral seedlings. The film focuses on the process of “reforesting” the seabed, presenting coral restoration as an ecological practice shaped by time, environmental conditions, and sustained care. Its aim is not merely the survival of individual coral species, but the recovery of the regenerative capacity of the coral reef system as a whole.
-</p>
-                <p>Unlike conventional nature documentaries, the work emphasizes the rhythmic silence of the underwater environment and the technical precision of restoration procedures. The repeated act of fixing coral fragments onto nursery structures becomes a meditative bodily practice, revealing the concept of “assisted recovery” as a gray zone between the artificial and the natural. Humans are no longer positioned as dominant agents, but as participants within an ecological process co-shaped by currents, light, temperature, and marine life. Each coral seedling functions as a modest yet tangible marker of hope within a damaged seascape.</p>
-                <p>At the same time, <strong>The Coral Planting Project</strong> operates as an artistic reflection on time, fragility, and ecological coexistence. By recording the gradual growth of coral colonies, the film bridges scientific documentation and artistic perception, drawing attention to the long-term and often invisible labor beneath the ocean’s surface. In this sense, art is not a representation of nature, but a perceptual apparatus that runs parallel to scientific practice, inviting viewers to reconsider humanity’s position and responsibility within the marine ecosystem.</p>
+                <p data-lang="en"><strong>The Coral Planting Project</strong> is an ecological restoration film created in the China Southsea in 2025, arising from my participation in a Chinese marine scientific expedition. Working alongside marine scientists and professional divers, I took part in the transplantation of 24,000 coral seedlings. The film focuses on the process of “reforesting” the seabed, presenting coral restoration as an ecological practice shaped by time, environmental conditions, and sustained care. Its aim is not merely the survival of individual coral species, but the recovery of the regenerative capacity of the coral reef system as a whole.</p>
+                <p data-lang="zh" style="display: none;"><strong>珊瑚种植计划</strong>是2025年我参与中国海洋科考项目期间，在中国南海创作的一部生态修复纪录片。我与海洋科学家和专业潜水员一同参与了24000株珊瑚幼苗的移植工作。影片聚焦于海底“重新造林”的过程，将珊瑚修复呈现为一种由时间、环境条件和持续照护所塑造的生态实践。其目的不仅是单个珊瑚物种的存活，更是整个珊瑚礁生态系统再生能力的恢复。</p>
+
+                <p data-lang="en">Unlike conventional nature documentaries, the work emphasizes the rhythmic silence of the underwater environment and the technical precision of restoration procedures. The repeated act of fixing coral fragments onto nursery structures becomes a meditative bodily practice, revealing the concept of “assisted recovery” as a gray zone between the artificial and the natural. Humans are no longer positioned as dominant agents, but as participants within an ecological process co-shaped by currents, light, temperature, and marine life. Each coral seedling functions as a modest yet tangible marker of hope within a damaged seascape.</p>
+                <p data-lang="zh" style="display: none;">与传统自然纪录片不同，这部作品强调水下环境富有韵律的寂静，以及修复流程的技术精准性。将珊瑚断枝固定到培育架上的重复动作，成为一种冥想式的身体实践，揭示出“辅助恢复”这一概念是人工与自然之间的灰色地带。人类不再被定位为主导者，而是作为由洋流、光线、温度和海洋生物共同塑造的生态过程中的参与者。每一株珊瑚幼苗，都是受损海景中微小却切实的希望标记。</p>
+
+                <p data-lang="en">At the same time, <strong>The Coral Planting Project</strong> operates as an artistic reflection on time, fragility, and ecological coexistence. By recording the gradual growth of coral colonies, the film bridges scientific documentation and artistic perception, drawing attention to the long-term and often invisible labor beneath the ocean’s surface. In this sense, art is not a representation of nature, but a perceptual apparatus that runs parallel to scientific practice, inviting viewers to reconsider humanity’s position and responsibility within the marine ecosystem.</p>
+                <p data-lang="zh" style="display: none;">同时，<strong>珊瑚种植计划</strong>也是对时间、脆弱性和生态共生的艺术反思。通过记录珊瑚群落的缓慢生长，影片架起了科学记录与艺术感知之间的桥梁，让人们关注到海面之下那些长期且往往不为人见的劳作。从这个意义上讲，艺术并非自然的再现，而是与科学实践并行的感知工具，邀请观众重新思考人类在海洋生态系统中的位置与责任。</p>
             </div>
         </section>
 
-        <h2 class="gallery-title">Field Documentation</h2>
+        <h2 class="gallery-title" data-lang="en">Field Documentation</h2>
+        <h2 class="gallery-title" data-lang="zh" style="display: none;">现场纪实</h2>
+        
         <div class="image-grid" id="gallery">
             <div class="image-item"><img src="images/projects/coral/1.webp" alt="01" loading="lazy" onerror="this.src='https://via.placeholder.com/600x600?text=01'"></div>
             <div class="image-item"><img src="images/projects/coral/2.webp" alt="02" loading="lazy" onerror="this.src='https://via.placeholder.com/600x600?text=02'"></div>
@@ -156,9 +215,48 @@
         <img src="" alt="Enlarged view">
     </div>
 
-    <footer>&copy; 2026 ZHANGJIARUI ARTWORKS.</footer>
+    <footer>
+        <span data-lang="en">&copy; 2026 ZHANGJIARUI ARTWORKS.</span>
+        <span data-lang="zh" style="display: none;">&copy; 2026 张家瑞艺术作品.</span>
+    </footer>
 
     <script>
+        // 语言切换核心功能（和其他页面逻辑一致）
+        const switchLanguage = (lang) => {
+            // 更新按钮激活状态
+            const langEnBtn = document.getElementById('lang-en');
+            const langZhBtn = document.getElementById('lang-zh');
+            
+            if (lang === 'en') {
+                langEnBtn.classList.add('active');
+                langZhBtn.classList.remove('active');
+                document.title = 'Coral Planting Project | ZHANG JIARUI';
+            } else {
+                langEnBtn.classList.remove('active');
+                langZhBtn.classList.add('active');
+                document.title = '珊瑚种植计划 | 张家瑞';
+            }
+            
+            // 切换所有带语言标记的文本元素
+            document.querySelectorAll('[data-lang]').forEach(el => {
+                const elLang = el.getAttribute('data-lang');
+                if (elLang === lang) {
+                    // 根据标签类型适配显示方式
+                    if (el.tagName === 'A' || el.tagName === 'H1' || el.tagName === 'H2' || el.tagName === 'SPAN' || el.tagName === 'P') {
+                        el.style.display = el.tagName === 'P' ? 'block' : 'inline-block';
+                    } else {
+                        el.style.display = 'block';
+                    }
+                } else {
+                    el.style.display = 'none';
+                }
+            });
+            
+            // 保存语言偏好到本地存储，和其他页面同步
+            localStorage.setItem('preferredLanguage', lang);
+        };
+
+        // Lightbox 图片放大功能（保留原有逻辑）
         const lightbox = document.getElementById('lightbox');
         const lightboxImg = lightbox.querySelector('img');
         const galleryImages = document.querySelectorAll('.image-item img');
@@ -176,6 +274,13 @@
         lightbox.addEventListener('click', () => {
             lightbox.classList.remove('active');
             document.body.style.overflow = 'auto'; // 恢复滚动
+        });
+
+        // 页面加载时初始化语言设置
+        document.addEventListener('DOMContentLoaded', () => {
+            // 优先读取本地存储的语言偏好，默认英文
+            const savedLang = localStorage.getItem('preferredLanguage') || 'en';
+            switchLanguage(savedLang);
         });
     </script>
 </body>
