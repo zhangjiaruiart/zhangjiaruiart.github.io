@@ -26,8 +26,41 @@
         }
 
         .logo { font-size: 14px; font-weight: 300; letter-spacing: 0.5em; text-decoration: none; color: #111; text-transform: uppercase; }
+        .nav-right { display: flex; align-items: center; gap: 35px; }
         .back { font-size: 10px; letter-spacing: 0.2em; text-decoration: none; color: #aaa; text-transform: uppercase; transition: color 0.3s; }
         .back:hover { color: #111; }
+
+        /* 语言切换按钮样式（和其他页面保持一致） */
+        .language-switch {
+            display: flex;
+            align-items: center;
+        }
+
+        .lang-btn {
+            background: none;
+            border: none;
+            color: #111;
+            font-size: 10px;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            font-weight: 300;
+            cursor: pointer;
+            padding: 5px 10px;
+            transition: all 0.4s ease;
+            opacity: 0.7;
+        }
+
+        .lang-btn.active {
+            opacity: 1;
+            font-weight: 500;
+        }
+
+        .lang-separator {
+            color: #111;
+            font-size: 8px;
+            margin: 0 5px;
+            opacity: 0.5;
+        }
 
         /* 容器调整 */
         .container { max-width: 1100px; margin: 120px auto 80px; padding: 0 5%; }
@@ -66,13 +99,30 @@
         @media (max-width: 768px) {
             .container { margin-top: 100px; }
             .title { font-size: 20px; }
+            nav { padding: 15px 5%; }
+            .logo { font-size: 12px; letter-spacing: 0.3em; }
+            .nav-right { gap: 20px; }
+            .back { font-size: 12px; }
+            .lang-btn { font-size: 12px; padding: 0 5px; }
         }
     </style>
 </head>
 <body>
     <nav>
-        <a href="index.html" class="logo">ZHANGJIARUI ARTWORKS</a>
-        <a href="index.html" class="back">← BACK</a>
+        <a href="index.html" class="logo" data-lang="en">ZHANGJIARUI ARTWORKS</a>
+        <a href="index.html" class="logo" data-lang="zh" style="display: none;">张家瑞艺术作品</a>
+        
+        <div class="nav-right">
+            <a href="index.html" class="back" data-lang="en">← BACK</a>
+            <a href="index.html" class="back" data-lang="zh" style="display: none;">← 返回</a>
+            
+            <!-- 语言切换按钮（和其他页面样式/位置一致） -->
+            <div class="language-switch">
+                <button class="lang-btn active" id="lang-en" onclick="switchLanguage('en')">English</button>
+                <span class="lang-separator">|</span>
+                <button class="lang-btn" id="lang-zh" onclick="switchLanguage('zh')">中文</button>
+            </div>
+        </div>
     </nav>
 
     <div class="container">
@@ -81,19 +131,72 @@
         </div>
 
         <section class="project-info">
-            <h1 class="title">Ice Burial</h1>
-            <span class="meta">Performance art / 2025 / China Southsea</span>
+            <h1 class="title" data-lang="en">Ice Burial</h1>
+            <h1 class="title" data-lang="zh" style="display: none;">冰葬</h1>
+            
+            <span class="meta" data-lang="en">Performance art / 2025 / China Southsea</span>
+            <span class="meta" data-lang="zh" style="display: none;">行为艺术 / 2025 / 中国南海</span>
 
             <div class="description">
-                <p>On June 26, 2025, in the South China Sea near the Xisha Islands, I dove to a depth of six meters with a brick of ice made from local seawater. Underwater, I carved the words “You, Me, Him” into its smooth surface with my fingernail. As the ice melted in the 26°C water, the words slowly disappeared. When the ice was gone, I surfaced—ending this quiet ritual.</p>
+                <p data-lang="en">On June 26, 2025, in the South China Sea near the Xisha Islands, I dove to a depth of six meters with a brick of ice made from local seawater. Underwater, I carved the words “You, Me, Him” into its smooth surface with my fingernail. As the ice melted in the 26°C water, the words slowly disappeared. When the ice was gone, I surfaced—ending this quiet ritual.</p>
+                <p data-lang="zh" style="display: none;">2025年6月26日，在中国南海西沙群岛附近海域，我携一块由当地海水制成的冰砖下潜至6米深处。在水下，我用指甲在冰砖光滑的表面刻下“你、我、他”三个字。随着冰块在26℃的海水中逐渐融化，字迹慢慢消失。当冰块完全消融，我浮出水面——这场安静的仪式就此结束。</p>
 
-                <p>The ice, once liquid, is a trace of time. Its melting echoes the loss of polar ice in the climate crisis and the fleeting nature of human existence. Though ephemeral, the act of inscription affirms our desire to leave a mark. “You, Me, Him” is not just a phrase—it evokes the shared fate of humankind and asks: Who are we, together, in this disappearing world?</p>
+                <p data-lang="en">The ice, once liquid, is a trace of time. Its melting echoes the loss of polar ice in the climate crisis and the fleeting nature of human existence. Though ephemeral, the act of inscription affirms our desire to leave a mark. “You, Me, Him” is not just a phrase—it evokes the shared fate of humankind and asks: Who are we, together, in this disappearing world?</p>
+                <p data-lang="zh" style="display: none;">这块曾为液态的冰，是时间的痕迹。它的融化呼应着气候危机中极地冰川的消逝，也映射着人类存在的短暂本质。尽管转瞬即逝，但刻字的行为印证了我们想要留下印记的渴望。“你、我、他”不只是一个短语——它唤起人类共同的命运，并追问：在这个正在消逝的世界里，我们共同是谁？</p>
 
-                <p>This is not a spectacle, but a gesture—a moment of co-existence with nature. The ice returns to the sea, the words are washed away. What remains is the question itself.</p>
+                <p data-lang="en">This is not a spectacle, but a gesture—a moment of co-existence with nature. The ice returns to the sea, the words are washed away. What remains is the question itself.</p>
+                <p data-lang="zh" style="display: none;">这并非一场奇观，而是一个姿态——一次与自然共处的瞬间。冰回归大海，字迹被冲刷殆尽。留存下来的，是问题本身。</p>
             </div>
         </section>
     </div>
 
-    <footer>&copy; 2026 ZHANGJIARUI ARTWORKS.</footer>
+    <footer>
+        <span data-lang="en">&copy; 2026 ZHANGJIARUI ARTWORKS.</span>
+        <span data-lang="zh" style="display: none;">&copy; 2026 张家瑞艺术作品.</span>
+    </footer>
+
+    <script>
+        // 语言切换核心功能（和其他页面逻辑一致）
+        const switchLanguage = (lang) => {
+            // 更新按钮激活状态
+            const langEnBtn = document.getElementById('lang-en');
+            const langZhBtn = document.getElementById('lang-zh');
+            
+            if (lang === 'en') {
+                langEnBtn.classList.add('active');
+                langZhBtn.classList.remove('active');
+                document.title = 'Ice Burial | ZHANG JIARUI';
+            } else {
+                langEnBtn.classList.remove('active');
+                langZhBtn.classList.add('active');
+                document.title = '冰葬 | 张家瑞';
+            }
+            
+            // 切换所有带语言标记的文本元素
+            document.querySelectorAll('[data-lang]').forEach(el => {
+                const elLang = el.getAttribute('data-lang');
+                if (elLang === lang) {
+                    // 根据标签类型适配显示方式
+                    if (el.tagName === 'A' || el.tagName === 'H1' || el.tagName === 'SPAN' || el.tagName === 'P') {
+                        el.style.display = el.tagName === 'P' ? 'block' : 'inline-block';
+                    } else {
+                        el.style.display = 'block';
+                    }
+                } else {
+                    el.style.display = 'none';
+                }
+            });
+            
+            // 保存语言偏好到本地存储，和其他页面同步
+            localStorage.setItem('preferredLanguage', lang);
+        };
+
+        // 页面加载时初始化语言设置
+        document.addEventListener('DOMContentLoaded', () => {
+            // 优先读取本地存储的语言偏好，默认英文
+            const savedLang = localStorage.getItem('preferredLanguage') || 'en';
+            switchLanguage(savedLang);
+        });
+    </script>
 </body>
 </html>
