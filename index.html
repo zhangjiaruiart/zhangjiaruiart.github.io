@@ -73,11 +73,10 @@
             object-fit: cover;
             filter: brightness(0.7);
             z-index: 0;
-            opacity: 1; /* 修复：默认显示视频，不再隐藏 */
+            opacity: 0;
             display: block;
             preload: auto;
             object-position: center;
-            transition: opacity 0.5s ease-in-out; /* 保留过渡动画 */
         }
 
         video::-webkit-media-controls,
@@ -729,20 +728,6 @@
                 background-blend-mode: multiply;
             }
 
-            /* ========== 核心修改：修复手机端视频显示 ========== */
-            #splash-video {
-                /* 移除强制隐藏，保留过渡和适配 */
-                opacity: 1 !important;
-                transition: opacity 0.5s ease-in-out;
-                object-fit: cover !important;
-                object-position: center center !important;
-            }
-
-            /* 移除playing类的依赖（视频始终显示） */
-            #splash-video.playing {
-                opacity: 1 !important;
-            }
-
             .hero-overlay { top: 40%; }
             .hero-title {
                 font-size: 14.4px;
@@ -1140,6 +1125,8 @@
             }
             
             // 显示视频和名字
+            dom.video.style.opacity = '1';
+            dom.video.load();
             dom.titleName.style.animation = 'fadeInName 1s ease-in-out forwards 0.5s';
 
             // 保留：视频加载失败时的兜底样式（适配图片背景）
@@ -1150,13 +1137,7 @@
 
             // 播放视频（处理自动播放限制）
             const playVideo = () => {
-                dom.video.play().then(() => {
-                    // ========== 核心修改：箭头显示不再依赖视频播放状态 ==========
-                    setTimeout(() => {
-                        dom.enterBtn.style.animationName = 'showArrow';
-                        dom.enterBtn.style.opacity = '0.7';
-                    }, 2000);
-                }).catch(() => {
+                dom.video.play().catch(() => {
                     const triggerPlay = () => {
                         dom.video.play();
                         document.removeEventListener('click', triggerPlay);
@@ -1164,19 +1145,13 @@
                     };
                     document.addEventListener('click', triggerPlay, { once: true });
                     document.addEventListener('touchstart', triggerPlay, { once: true });
-                    // 即使视频播放失败，也显示箭头
+                }).then(() => {
                     setTimeout(() => {
                         dom.enterBtn.style.animationName = 'showArrow';
                         dom.enterBtn.style.opacity = '0.7';
                     }, 2000);
                 });
             };
-            
-            // 无论视频是否加载成功，都显示箭头
-            setTimeout(() => {
-                dom.enterBtn.style.animationName = 'showArrow';
-                dom.enterBtn.style.opacity = '0.7';
-            }, 2000);
             
             dom.video.addEventListener('loadedmetadata', playVideo, { once: true });
         };
