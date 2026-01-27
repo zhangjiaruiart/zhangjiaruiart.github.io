@@ -728,6 +728,22 @@
                 background-blend-mode: multiply;
             }
 
+            /* ========== 核心修改：手机端视频样式优化 ========== */
+            #splash-video {
+                /* 强制隐藏视频加载过程中的画面 */
+                opacity: 0 !important;
+                /* 增加过渡动画，避免突然显示 */
+                transition: opacity 0.5s ease-in-out;
+                /* 确保视频完全覆盖容器，无变形 */
+                object-fit: cover !important;
+                object-position: center center !important;
+            }
+
+            /* 只有视频播放时才显示 */
+            #splash-video.playing {
+                opacity: 1 !important;
+            }
+
             .hero-overlay { top: 40%; }
             .hero-title {
                 font-size: 14.4px;
@@ -1125,8 +1141,6 @@
             }
             
             // 显示视频和名字
-            dom.video.style.opacity = '1';
-            dom.video.load();
             dom.titleName.style.animation = 'fadeInName 1s ease-in-out forwards 0.5s';
 
             // 保留：视频加载失败时的兜底样式（适配图片背景）
@@ -1137,19 +1151,23 @@
 
             // 播放视频（处理自动播放限制）
             const playVideo = () => {
-                dom.video.play().catch(() => {
+                dom.video.play().then(() => {
+                    // ========== 核心修改：只有视频开始播放后才添加playing类显示 ==========
+                    dom.video.classList.add('playing');
+                    setTimeout(() => {
+                        dom.enterBtn.style.animationName = 'showArrow';
+                        dom.enterBtn.style.opacity = '0.7';
+                    }, 2000);
+                }).catch(() => {
                     const triggerPlay = () => {
-                        dom.video.play();
+                        dom.video.play().then(() => {
+                            dom.video.classList.add('playing');
+                        });
                         document.removeEventListener('click', triggerPlay);
                         document.removeEventListener('touchstart', triggerPlay);
                     };
                     document.addEventListener('click', triggerPlay, { once: true });
                     document.addEventListener('touchstart', triggerPlay, { once: true });
-                }).then(() => {
-                    setTimeout(() => {
-                        dom.enterBtn.style.animationName = 'showArrow';
-                        dom.enterBtn.style.opacity = '0.7';
-                    }, 2000);
                 });
             };
             
