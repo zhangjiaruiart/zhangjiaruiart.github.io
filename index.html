@@ -273,6 +273,47 @@
 
         .nav-links a:hover::after { width: 100%; }
 
+        /* 新增：语言切换按钮样式 */
+        .language-switch {
+            display: flex;
+            align-items: center;
+            margin-left: 35px;
+        }
+
+        .lang-btn {
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 10px;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            font-weight: 300;
+            cursor: pointer;
+            padding: 5px 10px;
+            transition: all 0.4s ease;
+            opacity: 0.7;
+        }
+
+        .lang-btn.active {
+            opacity: 1;
+            font-weight: 500;
+        }
+
+        .nav-scrolled .lang-btn {
+            color: var(--main-color);
+        }
+
+        .lang-separator {
+            color: #fff;
+            font-size: 8px;
+            margin: 0 5px;
+            opacity: 0.5;
+        }
+
+        .nav-scrolled .lang-separator {
+            color: var(--main-color);
+        }
+
         .menu-toggle {
             display: none;
             flex-direction: column;
@@ -770,6 +811,15 @@
                 font-size: 14px;
             }
             
+            /* 移动端语言切换按钮样式调整 */
+            .language-switch {
+                margin: 20px 0;
+            }
+            
+            .lang-btn {
+                font-size: 14px;
+            }
+            
             .grid, .grid-sculpture-custom {
                 grid-template-columns: 1fr;
                 gap: 40px;
@@ -893,6 +943,12 @@
                 <a href="#projects" onclick="closeMenu()">Projects</a>
                 <a href="biography.html">BIOGRAPHY</a>
                 <a href="#contact" onclick="closeMenu()">Contact</a>
+                <!-- 新增：语言切换按钮 -->
+                <div class="language-switch">
+                    <button class="lang-btn active" id="lang-en" onclick="switchLanguage('en')">English</button>
+                    <span class="lang-separator">|</span>
+                    <button class="lang-btn" id="lang-zh" onclick="switchLanguage('zh')">中文</button>
+                </div>
             </div>
             <div class="menu-toggle" id="menuToggle">
                 <span></span><span></span><span></span>
@@ -915,14 +971,19 @@
         </section>
 
         <section class="statement-section" id="statement">
-            <p class="statement-text">
+            <p class="statement-text" data-lang="en">
                 Zhang Jiarui’s practice operates between sculptural reduction and site-specific ecological intervention, 
                 examing how material, time, and human action reshape fragile systems.
+            </p>
+            <p class="statement-text" data-lang="zh" style="display: none;">
+                张家瑞的艺术实践介于雕塑简化与特定场域生态干预之间，
+                探讨物质、时间和人类行为如何重塑脆弱的生态系统。
             </p>
         </section>
 
         <section class="content-section" id="eco-art">
-            <h2 class="category-title">Ecological Art</h2>
+            <h2 class="category-title" data-lang="en">Ecological Art</h2>
+            <h2 class="category-title" data-lang="zh" style="display: none;">生态艺术</h2>
             <div class="grid">
                 <article>
                     <a href="eco-ice-burial.html" class="project">
@@ -933,8 +994,10 @@
                             <div class="play-overlay"><div class="play-button"></div></div>
                         </div>
                         <div class="project-info">
-                            <h3 class="project-title">Ice Burial</h3>
-                            <p class="project-meta">Performance art / 2025 / China Southsea</p>
+                            <h3 class="project-title" data-lang="en">Ice Burial</h3>
+                            <h3 class="project-title" data-lang="zh" style="display: none;">冰葬</h3>
+                            <p class="project-meta" data-lang="en">Performance art / 2025 / China Southsea</p>
+                            <p class="project-meta" data-lang="zh" style="display: none;">行为艺术 / 2025 / 中国南海</p>
                         </div>
                     </a>
                 </article>
@@ -947,8 +1010,10 @@
                             <div class="play-overlay"><div class="play-button"></div></div>
                         </div>
                         <div class="project-info">
-                            <h3 class="project-title">4.5 Tons</h3>
-                            <p class="project-meta">Installation / 2024 / IN COLLABORATION WITH BETTA LIU / Inner Mongolia</p>
+                            <h3 class="project-title" data-lang="en">4.5 Tons</h3>
+                            <h3 class="project-title" data-lang="zh" style="display: none;">4.5吨</h3>
+                            <p class="project-meta" data-lang="en">Installation / 2024 / IN COLLABORATION WITH BETTA LIU / Inner Mongolia</p>
+                            <p class="project-meta" data-lang="zh" style="display: none;">装置艺术 / 2024 / 与刘贝塔合作 / 内蒙古</p>
                         </div>
                     </a>
                 </article>
@@ -956,10 +1021,12 @@
         </section>
 
         <section class="content-section" id="sculpture">
-            <h2 class="category-title">Sculpture</h2>
+            <h2 class="category-title" data-lang="en">Sculpture</h2>
+            <h2 class="category-title" data-lang="zh" style="display: none;">雕塑</h2>
             <div class="grid-sculpture-custom">
                 <article>
-                    <h3 class="series-label">Wood Series</h3>
+                    <h3 class="series-label" data-lang="en">Wood Series</h3>
+                    <h3 class="series-label" data-lang="zh" style="display: none;">木系列</h3>
                     <a href="series1.html" class="project">
                         <div class="project-image-wrapper img-ratio">
                             <img src="images/sculpture/s1_cover.webp"
@@ -967,13 +1034,16 @@
                                  onerror="handleImageError(this, 'images/sculpture/s1_cover.jpg')">
                         </div>
                         <div class="project-info">
-                            <h4 class="project-title">Triangle</h4>
-                            <p class="project-meta">Wood / 2024</p>
+                            <h4 class="project-title" data-lang="en">Triangle</h4>
+                            <h4 class="project-title" data-lang="zh" style="display: none;">三角</h4>
+                            <p class="project-meta" data-lang="en">Wood / 2024</p>
+                            <p class="project-meta" data-lang="zh" style="display: none;">木材 / 2024</p>
                         </div>
                     </a>
                 </article>
                 <article>
-                    <h3 class="series-label">Water Series</h3>
+                    <h3 class="series-label" data-lang="en">Water Series</h3>
+                    <h3 class="series-label" data-lang="zh" style="display: none;">水系列</h3>
                     <a href="series2.html" class="project">
                         <div class="project-image-wrapper img-ratio">
                             <img src="images/sculpture/s2_cover.webp"
@@ -981,13 +1051,16 @@
                                  onerror="handleImageError(this, 'images/sculpture/s2_cover.jpg')">
                         </div>
                         <div class="project-info">
-                            <h4 class="project-title">Water1</h4>
-                            <p class="project-meta">Transparent resin / 2023</p>
+                            <h4 class="project-title" data-lang="en">Water1</h4>
+                            <h4 class="project-title" data-lang="zh" style="display: none;">水1</h4>
+                            <p class="project-meta" data-lang="en">Transparent resin / 2023</p>
+                            <p class="project-meta" data-lang="zh" style="display: none;">透明树脂 / 2023</p>
                         </div>
                     </a>
                 </article>
                 <article>
-                    <h3 class="series-label">Line Series</h3>
+                    <h3 class="series-label" data-lang="en">Line Series</h3>
+                    <h3 class="series-label" data-lang="zh" style="display: none;">线系列</h3>
                     <a href="series5.html" class="project">
                         <div class="project-image-wrapper img-ratio series5-wrapper" style="background-color: #ffffff; display: flex; align-items: center; justify-content: center;">
                             <img src="images/sculpture/s5_cover.webp"
@@ -996,13 +1069,16 @@
                                  style="object-fit: contain;">
                         </div>
                         <div class="project-info">
-                            <h4 class="project-title">X</h4>
-                            <p class="project-meta">Acrylic / 2023</p>
+                            <h4 class="project-title" data-lang="en">X</h4>
+                            <h4 class="project-title" data-lang="zh" style="display: none;">X</h4>
+                            <p class="project-meta" data-lang="en">Acrylic / 2023</p>
+                            <p class="project-meta" data-lang="zh" style="display: none;">亚克力 / 2023</p>
                         </div>
                     </a>
                 </article>
                 <article>
-                    <h3 class="series-label">Formless Series</h3>
+                    <h3 class="series-label" data-lang="en">Formless Series</h3>
+                    <h3 class="series-label" data-lang="zh" style="display: none;">无形系列</h3>
                     <a href="series4.html" class="project">
                         <div class="project-image-wrapper img-ratio">
                             <img src="images/sculpture/s4_cover.webp"
@@ -1010,13 +1086,16 @@
                                  onerror="handleImageError(this, 'images/sculpture/s4_cover.jpg')">
                         </div>
                         <div class="project-info">
-                            <h4 class="project-title">At ease</h4>
-                            <p class="project-meta">Transparent resin / 2023</p>
+                            <h4 class="project-title" data-lang="en">At ease</h4>
+                            <h4 class="project-title" data-lang="zh" style="display: none;">自在</h4>
+                            <p class="project-meta" data-lang="en">Transparent resin / 2023</p>
+                            <p class="project-meta" data-lang="zh" style="display: none;">透明树脂 / 2023</p>
                         </div>
                     </a>
                 </article>
                 <article>
-                    <h3 class="series-label">Gold Series</h3>
+                    <h3 class="series-label" data-lang="en">Gold Series</h3>
+                    <h3 class="series-label" data-lang="zh" style="display: none;">金系列</h3>
                     <a href="series3.html" class="project">
                         <div class="project-image-wrapper img-ratio">
                             <img src="images/sculpture/s3_cover.webp"
@@ -1024,8 +1103,10 @@
                                  onerror="handleImageError(this, 'images/sculpture/s3_cover.jpg')">
                         </div>
                         <div class="project-info">
-                            <h4 class="project-title">New Eighteenth Arhat</h4>
-                            <p class="project-meta">Goldenleaf resin / 2015</p>
+                            <h4 class="project-title" data-lang="en">New Eighteenth Arhat</h4>
+                            <h4 class="project-title" data-lang="zh" style="display: none;">新十八罗汉</h4>
+                            <p class="project-meta" data-lang="en">Goldenleaf resin / 2015</p>
+                            <p class="project-meta" data-lang="zh" style="display: none;">金箔树脂 / 2015</p>
                         </div>
                     </a>
                 </article>
@@ -1033,7 +1114,8 @@
         </section>
 
         <section class="content-section" id="projects">
-            <h2 class="category-title">Projects</h2>
+            <h2 class="category-title" data-lang="en">Projects</h2>
+            <h2 class="category-title" data-lang="zh" style="display: none;">项目</h2>
             <div class="grid">
                 <article>
                     <a href="project-coral.html" class="project">
@@ -1044,8 +1126,10 @@
                             <div class="play-overlay"><div class="play-button"></div></div>
                         </div>
                         <div class="project-info">
-                            <h3 class="project-title">Coral Planting Project</h3>
-                            <p class="project-meta">Documentary / 2025 / China Southsea</p>
+                            <h3 class="project-title" data-lang="en">Coral Planting Project</h3>
+                            <h3 class="project-title" data-lang="zh" style="display: none;">珊瑚种植计划</h3>
+                            <p class="project-meta" data-lang="en">Documentary / 2025 / China Southsea</p>
+                            <p class="project-meta" data-lang="zh" style="display: none;">纪录片 / 2025 / 中国南海</p>
                         </div>
                     </a>
                 </article>
@@ -1056,17 +1140,20 @@
             <div class="contact-container">
                 <div class="contact-row">
                     <div class="contact-item">
-                        <span class="contact-label">Email</span>
+                        <span class="contact-label" data-lang="en">Email</span>
+                        <span class="contact-label" data-lang="zh" style="display: none;">邮箱</span>
                         <a href="mailto:jerryzhang_arts@qq.com" class="contact-value">jerryzhang_arts@qq.com</a>
                     </div>
                     <span class="divider">/</span>
                     <div class="contact-item">
-                        <span class="contact-label">WeChat</span>
+                        <span class="contact-label" data-lang="en">WeChat</span>
+                        <span class="contact-label" data-lang="zh" style="display: none;">微信</span>
                         <span class="contact-value" onclick="copyWeChat('zjr5556699')">zjr5556699</span>
                     </div>
                     <span class="divider">/</span>
                     <div class="contact-item">
-                        <span class="contact-label">Phone</span>
+                        <span class="contact-label" data-lang="en">Phone</span>
+                        <span class="contact-label" data-lang="zh" style="display: none;">电话</span>
                         <a href="tel:+8615117988382" class="contact-value">+86 151 1798 8382</a>
                     </div>
                 </div>
@@ -1075,7 +1162,10 @@
     </main>
 
     <div id="back-to-top" aria-label="Back to top"></div>
-    <footer>&copy; 2026 ZHANGJIARUI ARTWORKS.</footer>
+    <footer>
+        <span data-lang="en">&copy; 2026 ZHANGJIARUI ARTWORKS.</span>
+        <span data-lang="zh" style="display: none;">&copy; 2026 张家瑞艺术作品.</span>
+    </footer>
 
     <script>
         // DOM元素缓存
@@ -1092,7 +1182,10 @@
             countdown: document.getElementById('countdown'),
             enterBtn: document.querySelector('.enter-arrow-btn'),
             titleMatter: document.querySelector('.splash-title-matter'),
-            titleName: document.querySelector('.splash-title-name')
+            titleName: document.querySelector('.splash-title-name'),
+            // 新增：语言切换相关元素
+            langEnBtn: document.getElementById('lang-en'),
+            langZhBtn: document.getElementById('lang-zh')
         };
 
         // 工具函数 - 显示提示
@@ -1298,6 +1391,59 @@
             document.body.style.overflow = 'auto';
         };
 
+        // 新增：语言切换功能
+        const switchLanguage = (lang) => {
+            // 更新按钮状态
+            if (lang === 'en') {
+                dom.langEnBtn.classList.add('active');
+                dom.langZhBtn.classList.remove('active');
+                document.getElementById('copy-toast').textContent = 'ID COPIED';
+            } else {
+                dom.langEnBtn.classList.remove('active');
+                dom.langZhBtn.classList.add('active');
+                document.getElementById('copy-toast').textContent = '已复制ID';
+            }
+            
+            // 切换所有带语言标记的元素
+            document.querySelectorAll('[data-lang]').forEach(el => {
+                if (el.getAttribute('data-lang') === lang) {
+                    el.style.display = el.tagName === 'P' || el.tagName === 'SPAN' || el.tagName === 'H1' || el.tagName === 'H2' || el.tagName === 'H3' || el.tagName === 'H4' ? 'block' : 'inline';
+                } else {
+                    el.style.display = 'none';
+                }
+            });
+            
+            // 更新导航链接文本
+            const navLinks = document.querySelectorAll('.nav-links a');
+            if (lang === 'zh') {
+                navLinks[0].textContent = '生态艺术';
+                navLinks[1].textContent = '雕塑';
+                navLinks[2].textContent = '项目';
+                navLinks[3].textContent = '个人简介';
+                navLinks[4].textContent = '联系我们';
+                // 更新logo
+                document.querySelector('.logo').textContent = '张家瑞艺术作品';
+            } else {
+                navLinks[0].textContent = 'Ecological Art';
+                navLinks[1].textContent = 'Sculpture';
+                navLinks[2].textContent = 'Projects';
+                navLinks[3].textContent = 'BIOGRAPHY';
+                navLinks[4].textContent = 'Contact';
+                // 恢复logo
+                document.querySelector('.logo').textContent = 'ZHANGJIARUI ARTWORKS';
+            }
+            
+            // 更新页面标题
+            if (lang === 'zh') {
+                document.title = '张家瑞 | 艺术家 - 生态艺术、雕塑与项目';
+            } else {
+                document.title = 'ZHANG JIARUI | ARTIST - Ecological Art, Sculpture, and Projects';
+            }
+            
+            // 保存语言偏好到本地存储
+            localStorage.setItem('preferredLanguage', lang);
+        };
+
         // 初始化页面
         const initPage = () => {
             const isFirstVisit = !sessionStorage.getItem('hasVisited');
@@ -1330,6 +1476,10 @@
             // 更新导航状态
             updateNavStatus(window.pageYOffset || document.documentElement.scrollTop);
             document.body.classList.add('page-loaded');
+            
+            // 初始化语言设置
+            const savedLang = localStorage.getItem('preferredLanguage') || 'en';
+            switchLanguage(savedLang);
         };
 
         // 滚动监听（节流处理）
