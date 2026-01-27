@@ -864,7 +864,16 @@
             .countdown { font-size: 20px; }
         }
 
+        /* 新增：电脑端语言切换按钮垂直对齐调整 */
         @media (min-width: 901px) {
+            .language-switch {
+                align-items: baseline;
+                margin-bottom: 5px;
+            }
+            .lang-btn {
+                padding: 0 10px;
+                line-height: 1;
+            }
             .series5-wrapper img {
                 transform: scale(1.2); 
                 object-fit: contain;
@@ -976,7 +985,7 @@
                 examing how material, time, and human action reshape fragile systems.
             </p>
             <p class="statement-text" data-lang="zh" style="display: none;">
-                张家瑞的艺术实践介于雕塑与在场性生态创作之间，
+                张家瑞的艺术实践介于雕塑与在场性生态创作之间，<br>
                 探讨物质、时间和人类行为如何重塑脆弱的系统。
             </p>
         </section>
