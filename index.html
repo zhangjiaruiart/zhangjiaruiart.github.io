@@ -38,17 +38,16 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        /* 启动页样式 - 【核心修改：降低背景透明度从0.9→0.7，提亮背景】 */
+        /* 启动页样式 - 核心修改：移除背景图片，仅保留暗层，视频第一帧作为封面 */
         #splash-page {
             position: fixed;
             inset: 0;
             z-index: 99999;
-            /* 核心修改：rgba(0,0,0,0.7) 从0.9改为0.7，背景更亮 */
-            background: rgba(0,0,0,0.7) url(images/splash-poster.jpg) center center / cover no-repeat;
-            background-blend-mode: multiply; /* 叠加暗调，保持暗暗的效果 */
-            /* 保留：背景轻微呼吸动画，避免静态单调 */
-            background-size: 120% 120%;
-            animation: bgBreath 8s ease-in-out infinite alternate;
+            /* 核心修改：移除背景图片，仅保留黑色半透明层 */
+            background: rgba(0,0,0,0.7);
+            background-blend-mode: multiply;
+            /* 移除背景size和position，改为针对视频的动画 */
+            animation: videoBreath 8s ease-in-out infinite alternate;
             display: none;
             flex-direction: column;
             justify-content: center;
@@ -56,14 +55,14 @@
             transition: transform 0.4s cubic-bezier(0.85, 0, 0.15, 1), opacity 0.4s ease;
             overflow: hidden;
             will-change: transform, opacity;
-            /* 保留：暗角效果，强化视觉聚焦 */
-            box-shadow: inset 0 0 150px rgba(0,0,0,0.8); /* 加深暗角，适配图片背景 */
+            box-shadow: inset 0 0 150px rgba(0,0,0,0.8);
         }
 
         body.first-visit #splash-page {
             display: flex;
         }
 
+        /* 视频样式 - 核心修改：初始显示第一帧作为封面，opacity改为1 */
         #splash-video {
             position: absolute;
             inset: 0;
@@ -72,10 +71,16 @@
             object-fit: cover;
             filter: brightness(0.7);
             z-index: 0;
-            opacity: 0;
+            /* 核心修改：初始opacity为1，直接显示视频第一帧作为封面 */
+            opacity: 1;
             display: block;
             preload: auto;
             object-position: center;
+            /* 强制禁用视频变形 */
+            transform: none !important;
+            min-width: 100%;
+            min-height: 100%;
+            transition: opacity 0.5s ease-in-out;
         }
 
         video::-webkit-media-controls,
@@ -136,7 +141,6 @@
             color: rgba(255,255,255,0.9);
             z-index: 1;
             pointer-events: none;
-            /* 保留：微弱辉光，增强和背景的层次感 */
             text-shadow: 0 0 8px rgba(255,255,255,0.08);
         }
 
@@ -341,7 +345,6 @@
             overflow: hidden;
             position: relative;
             background-color: #000;
-            /* 关键修改：添加初始隐藏，避免启动页闪现hero图 */
             opacity: 0;
             visibility: hidden;
             transition: opacity 0.5s ease, visibility 0.5s ease;
@@ -712,15 +715,13 @@
             text-transform: uppercase;
         }
 
-        /* 动画关键帧 - 保留：黑屏背景呼吸动画 */
-        @keyframes bgBreath {
+        /* 动画关键帧 - 修改：从背景动画改为视频呼吸动画 */
+        @keyframes videoBreath {
             0% {
-                background-position: center center;
-                background-size: 120% 120%;
+                transform: scale(1.0);
             }
             100% {
-                background-position: center center;
-                background-size: 115% 115%;
+                transform: scale(1.02);
             }
         }
 
@@ -772,21 +773,21 @@
 
         /* 媒体查询 - 响应式适配 */
         @media (max-width: 900px) {
-            /* 核心新增：手机端替换为专属背景图 + 同步降低透明度从0.9→0.7 */
+            /* 核心修改：移动端也移除背景图片，仅保留暗层 */
             #splash-page {
-                background: rgba(0,0,0,0.7) url(images/splash-poster-mobile.jpg) center center / cover no-repeat;
+                background: rgba(0,0,0,0.7);
                 background-blend-mode: multiply;
             }
 
             /* 修复手机端视频显示问题 - 关键修改 */
             #splash-video {
-                /* 强制视频竖屏显示，避免横屏帧出现 */
                 object-fit: cover !important;
                 object-position: center center !important;
-                /* 添加过渡动画，避免瞬间切换 */
                 transition: opacity 0.5s ease-in-out;
-                /* 确保视频层级正确 */
                 z-index: 0;
+                width: 100vw !important;
+                height: 100vh !important;
+                transform: none !important;
             }
 
             .hero-overlay { top: 40%; }
@@ -897,17 +898,14 @@
         @media (max-width: 600px) {
             /* 启动页适配 - 增强视频样式约束 */
             #splash-video {
-                /* 进一步强化手机端视频样式，防止横屏帧 */
                 width: 100vw !important;
                 height: 100vh !important;
                 min-width: 100vw !important;
                 min-height: 100vh !important;
                 max-width: 100vw !important;
                 max-height: 100vh !important;
-                /* 确保视频不会变形 */
                 transform: none !important;
-                /* 延迟显示，确保视频完全加载 */
-                opacity: 0;
+                opacity: 1; /* 移动端强制显示视频第一帧 */
             }
 
             .splash-title-matter {
@@ -1241,11 +1239,11 @@
             }, 1000);
         };
 
-        // 倒计时结束后播放视频 - 保留：视频加载失败兜底样式
+        // 倒计时结束后播放视频 - 视频已作为封面显示，此处仅处理播放逻辑
         const playVideoAfterCountdown = () => {
             if (!dom.video) return;
             
-            // 隐藏初始文字，显示名字和视频
+            // 隐藏初始文字，显示名字
             dom.titleMatter.style.opacity = '0';
             dom.titleMatter.style.display = 'none';
             dom.titleName.style.top = '40%';
@@ -1256,13 +1254,13 @@
                 dom.titleName.textContent = 'zhang jia rui';
             }
             
-            // 保留：视频加载失败时的兜底样式（适配图片背景）
+            // 视频加载失败兜底
             dom.video.addEventListener('error', () => {
                 dom.splashPage.style.background = 'radial-gradient(circle at center, rgba(15,15,15,0.9) 0%, rgba(0,0,0,1) 80%)';
                 dom.titleName.style.textShadow = '0 0 10px rgba(255,255,255,0.1)';
             }, { once: true });
 
-            // 播放视频（处理自动播放限制）
+            // 确保视频正常播放（处理自动播放限制）
             const playVideo = () => {
                 dom.video.play().catch(() => {
                     const triggerPlay = () => {
@@ -1273,15 +1271,7 @@
                     document.addEventListener('click', triggerPlay, { once: true });
                     document.addEventListener('touchstart', triggerPlay, { once: true });
                 }).then(() => {
-                    // 修复手机端视频显示：添加延迟确保视频完全加载后再显示
-                    if (window.innerWidth <= 900) {
-                        setTimeout(() => {
-                            dom.video.style.opacity = '1';
-                        }, 300); // 延迟300ms显示视频，避免第一帧横屏
-                    } else {
-                        dom.video.style.opacity = '1';
-                    }
-                    
+                    // 显示进入按钮
                     setTimeout(() => {
                         dom.enterBtn.style.animationName = 'showArrow';
                         dom.enterBtn.style.opacity = '0.7';
@@ -1290,23 +1280,12 @@
             };
             
             // 确保视频元数据加载完成
-            const handleVideoLoaded = () => {
-                // 手机端额外处理：预加载视频第一帧并隐藏
-                if (window.innerWidth <= 900) {
-                    dom.video.style.opacity = '0';
-                }
-                playVideo();
-            };
-            
-            // 监听视频加载完成事件
             if (dom.video.readyState >= 2) {
-                handleVideoLoaded();
+                playVideo();
             } else {
-                dom.video.addEventListener('loadedmetadata', handleVideoLoaded, { once: true });
+                dom.video.addEventListener('loadedmetadata', playVideo, { once: true });
             }
             
-            // 加载视频
-            dom.video.load();
             dom.titleName.style.animation = 'fadeInName 1s ease-in-out forwards 0.5s';
         };
 
@@ -1477,6 +1456,11 @@
             // 首次访问处理
             if (isFirstVisit) {
                 document.body.classList.add('first-visit');
+                // 预加载视频第一帧作为封面
+                if (dom.video) {
+                    dom.video.load();
+                    dom.video.currentTime = 0; // 定位到第一帧
+                }
                 startCountdown();
             } else {
                 document.body.classList.add('splash-hidden');
