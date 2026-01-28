@@ -38,54 +38,44 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        /* 启动页样式 - 核心修改：固定图片和视频的裁切/位置规则 */
+        /* 启动页样式 - 【核心修改：降低背景透明度从0.9→0.7，提亮背景】 */
         #splash-page {
             position: fixed;
             inset: 0;
             z-index: 99999;
-            /* 核心：固定背景图片的位置和缩放，与视频完全一致 */
+            /* 核心修改：rgba(0,0,0,0.7) 从0.9改为0.7，背景更亮 */
             background: rgba(0,0,0,0.7) url(images/splash-poster.jpg) center center / cover no-repeat;
-            background-blend-mode: multiply;
-            /* 关键：禁用呼吸动画的size变化，先保证对齐 */
-            background-size: cover;
-            background-position: center center;
+            background-blend-mode: multiply; /* 叠加暗调，保持暗暗的效果 */
+            /* 保留：背景轻微呼吸动画，避免静态单调 */
+            background-size: 120% 120%;
             animation: bgBreath 8s ease-in-out infinite alternate;
             display: none;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            transition: transform 0.4s cubic-bezier(0.85, 0, 0.15, 1), opacity 0.4s ease, background 0.8s ease-in-out;
+            transition: transform 0.4s cubic-bezier(0.85, 0, 0.15, 1), opacity 0.4s ease;
             overflow: hidden;
             will-change: transform, opacity;
-            box-shadow: inset 0 0 150px rgba(0,0,0,0.8);
-            /* 强制裁切规则一致 */
-            background-clip: border-box;
+            /* 保留：暗角效果，强化视觉聚焦 */
+            box-shadow: inset 0 0 150px rgba(0,0,0,0.8); /* 加深暗角，适配图片背景 */
         }
 
         body.first-visit #splash-page {
             display: flex;
         }
 
-        /* 视频样式 - 核心修改：与图片完全一致的裁切/位置 */
         #splash-video {
             position: absolute;
             inset: 0;
             width: 100%;
             height: 100%;
-            /* 关键：与图片的background-size/position完全匹配 */
             object-fit: cover;
-            object-position: center center; /* 可根据实际偏差微调，比如 center 20% */
             filter: brightness(0.7);
             z-index: 0;
             opacity: 0;
             display: block;
             preload: auto;
-            /* 强制禁用视频的任何变形 */
-            transform: none !important;
-            min-width: 100%;
-            min-height: 100%;
-            /* 过渡动画：与图片融合 */
-            transition: opacity 0.8s ease-in-out;
+            object-position: center;
         }
 
         video::-webkit-media-controls,
@@ -722,13 +712,15 @@
             text-transform: uppercase;
         }
 
-        /* 动画关键帧 - 调整呼吸动画：只动position，不动size，避免偏移 */
+        /* 动画关键帧 - 保留：黑屏背景呼吸动画 */
         @keyframes bgBreath {
             0% {
                 background-position: center center;
+                background-size: 120% 120%;
             }
             100% {
-                background-position: center 1%; /* 微小位移，避免size变化导致偏移 */
+                background-position: center center;
+                background-size: 115% 115%;
             }
         }
 
@@ -784,8 +776,6 @@
             #splash-page {
                 background: rgba(0,0,0,0.7) url(images/splash-poster-mobile.jpg) center center / cover no-repeat;
                 background-blend-mode: multiply;
-                background-size: cover;
-                background-position: center center;
             }
 
             /* 修复手机端视频显示问题 - 关键修改 */
@@ -797,9 +787,6 @@
                 transition: opacity 0.5s ease-in-out;
                 /* 确保视频层级正确 */
                 z-index: 0;
-                width: 100vw !important;
-                height: 100vh !important;
-                transform: none !important;
             }
 
             .hero-overlay { top: 40%; }
@@ -1254,7 +1241,7 @@
             }, 1000);
         };
 
-        // 倒计时结束后播放视频 - 优化：同步淡入淡出，确保第一帧对齐
+        // 倒计时结束后播放视频 - 保留：视频加载失败兜底样式
         const playVideoAfterCountdown = () => {
             if (!dom.video) return;
             
@@ -1286,9 +1273,7 @@
                     document.addEventListener('click', triggerPlay, { once: true });
                     document.addEventListener('touchstart', triggerPlay, { once: true });
                 }).then(() => {
-                    // 核心修改：图片背景和视频同步过渡
-                    dom.splashPage.style.backgroundImage = 'none'; // 隐藏图片
-                    // 视频淡入
+                    // 修复手机端视频显示：添加延迟确保视频完全加载后再显示
                     if (window.innerWidth <= 900) {
                         setTimeout(() => {
                             dom.video.style.opacity = '1';
@@ -1306,8 +1291,6 @@
             
             // 确保视频元数据加载完成
             const handleVideoLoaded = () => {
-                // 预加载视频第一帧
-                dom.video.currentTime = 0;
                 // 手机端额外处理：预加载视频第一帧并隐藏
                 if (window.innerWidth <= 900) {
                     dom.video.style.opacity = '0';
