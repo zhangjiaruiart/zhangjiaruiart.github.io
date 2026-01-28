@@ -43,8 +43,8 @@
             position: fixed;
             inset: 0;
             z-index: 99999;
-            /* 核心修改：移除背景图片，仅保留黑色半透明层 */
-            background: rgba(0,0,0,0.7);
+            /* 核心修复：初始背景改为完全透明，避免灰屏 */
+            background: transparent;
             background-blend-mode: multiply;
             /* 移除背景size和position，改为针对视频的动画 */
             animation: videoBreath 8s ease-in-out infinite alternate;
@@ -58,6 +58,11 @@
             box-shadow: inset 0 0 150px rgba(0,0,0,0.8);
         }
 
+        /* 新增：视频加载完成后添加的类 */
+        #splash-page.video-loaded {
+            background: rgba(0,0,0,0.7);
+        }
+
         body.first-visit #splash-page {
             display: flex;
         }
@@ -69,7 +74,8 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            filter: brightness(0.7);
+            /* 核心修复：提高亮度，减少灰屏感 */
+            filter: brightness(0.85);
             z-index: 0;
             /* 核心修改：初始opacity为1，直接显示视频第一帧作为封面 */
             opacity: 1;
@@ -775,8 +781,13 @@
         @media (max-width: 900px) {
             /* 核心修改：移动端也移除背景图片，仅保留暗层 */
             #splash-page {
-                background: rgba(0,0,0,0.7);
+                background: transparent;
                 background-blend-mode: multiply;
+            }
+            
+            /* 视频加载完成后添加的类 */
+            #splash-page.video-loaded {
+                background: rgba(0,0,0,0.7);
             }
 
             /* 修复手机端视频显示问题 - 关键修改 */
@@ -788,6 +799,7 @@
                 width: 100vw !important;
                 height: 100vh !important;
                 transform: none !important;
+                filter: brightness(0.85) !important;
             }
 
             .hero-overlay { top: 40%; }
@@ -906,6 +918,7 @@
                 max-height: 100vh !important;
                 transform: none !important;
                 opacity: 1; /* 移动端强制显示视频第一帧 */
+                filter: brightness(0.85) !important;
             }
 
             .splash-title-matter {
@@ -1458,8 +1471,22 @@
                 document.body.classList.add('first-visit');
                 // 预加载视频第一帧作为封面
                 if (dom.video) {
+                    // 核心修复：监听视频加载完成事件，添加半透明背景层
+                    const handleVideoLoaded = () => {
+                        dom.splashPage.classList.add('video-loaded');
+                    };
+                    
+                    // 立即加载视频
                     dom.video.load();
                     dom.video.currentTime = 0; // 定位到第一帧
+                    
+                    // 监听视频加载事件
+                    if (dom.video.readyState >= 2) {
+                        handleVideoLoaded();
+                    } else {
+                        dom.video.addEventListener('loadedmetadata', handleVideoLoaded, { once: true });
+                        dom.video.addEventListener('loadeddata', handleVideoLoaded, { once: true });
+                    }
                 }
                 startCountdown();
             } else {
