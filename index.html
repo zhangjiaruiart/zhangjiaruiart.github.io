@@ -222,17 +222,21 @@
             pointer-events: none;
         }
 
+        /* Hero区域文本样式 - 适配屏幕 */
         .hero-title {
             color: #fff;
-            font-size: 18px;
+            font-size: clamp(18px, 3vw, 28px); /* 响应式字号：最小18px，最大28px，中间按视口宽度比例 */
             font-weight: 300;
-            letter-spacing: 0.6em;
-            text-transform: uppercase;
+            letter-spacing: 0.4em;
+            text-transform: none; /* 取消大写，更贴合文本风格 */
             margin: 0;
-            line-height: 1.6;
-            opacity: 0.8;
+            line-height: 1.8;
+            opacity: 0.9;
             filter: blur(0);
             transform: translateY(0);
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
         }
 
         .hero-title br { display: none; }
@@ -268,7 +272,7 @@
         }
 
         .statement-text {
-            font-size: 23px; /* 原20px，增大3px（3号） */
+            font-size: 20px;
             line-height: 1.8;
             font-weight: 300;
             color: #222;
@@ -567,9 +571,9 @@
         @media (max-width: 900px) {
             .hero-overlay { top: 40%; }
             .hero-title {
-                font-size: 14.4px;
-                line-height: 2.2;
-                letter-spacing: 0.4em;
+                font-size: clamp(14px, 4vw, 22px); /* 移动端响应式：最小14px，最大22px */
+                line-height: 2.0;
+                letter-spacing: 0.2em;
             }
             .hero-title br { display: block; }
             
@@ -611,7 +615,7 @@
             }
             
             .content-section { padding: 30px 5%; }
-            .statement-text { font-size: 19px; } /* 原16px，增大3px（3号） */
+            .statement-text { font-size: 16px; }
             .statement-section { padding: 60px 8% 30px; }
             
             .contact-section { padding: 80px 10%; }
@@ -707,19 +711,25 @@
                      onerror="handleImageError(this, 'images/Cover.JPG');"
                      loading="eager">
             </div>
-            <div class="hero-overlay"></div>
+            <!-- Hero区域添加目标文本 -->
+            <div class="hero-overlay">
+                <h1 class="hero-title" data-lang="en">Matter dissolves, Memory crystallizes</h1>
+                <h1 class="hero-title" data-lang="zh" style="display: none;">物质消散，记忆结晶</h1>
+            </div>
             <a href="#statement" class="scroll-indicator" aria-label="Scroll down">
                 <div class="scroll-arrow"></div>
             </a>
         </section>
 
+        <!-- 恢复statement部分原始文字 -->
         <section class="statement-section" id="statement">
-            <!-- 替换为指定文本，并调整字号 -->
             <p class="statement-text" data-lang="en">
-                Matter dissolves, Memory crystallizes
+                Zhang Jiarui’s practice operates between  <br> sculptural reduction and site-specific ecological intervention, <br>
+                examing how material, time, and human action reshape fragile systems.
             </p>
             <p class="statement-text" data-lang="zh" style="display: none;">
-                物质消散，记忆结晶
+                张家瑞的艺术实践介于雕塑与在场性生态艺术创作之间，<br>
+                探讨物质、时间和人类行为如何重塑脆弱的生态系统。
             </p>
         </section>
 
