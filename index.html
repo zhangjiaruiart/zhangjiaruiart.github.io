@@ -4,23 +4,29 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>ZHANG JIARUI | ARTIST - Ecological Art, Sculpture, and Projects</title>
-    <meta name="description" content="Zhang Jiarui Artworks - A portfolio of Ecological Art, Sculpture, and Artistic Projects examining material, time, and systems.">
+    <meta name="description" content="Zhang Jiarui Artworks - A portfolio of Ecological Art, Sculpture, and Projects examining material, time, and systems.">
     <link rel="icon" href="images/favicon.svg" type="image/svg+xml">
     <link rel="icon" href="images/favicon.png" type="image/png" sizes="32x32">
-    <link rel="preload" as="video" href="images/hero-bg.mp4" fetchpriority="high">
-    <link rel="preload" as="image" href="images/cover.webp" fetchpriority="high">
 
     <style>
+        /* 基础变量 */
         :root {
             --primary-font: "Optima", "Didot", "Helvetica Neue", Helvetica, Arial, sans-serif;
             --main-color: #111;
-            --transition-smooth: all 0.8s cubic-bezier(0.15, 1, 0.3, 1);
+            --transition-smooth: all 1.2s cubic-bezier(0.15, 1, 0.3, 1);
             --white-alpha-70: rgba(255, 255, 255, 0.7);
             --black-alpha-80: rgba(17, 17, 17, 0.8);
             --skeleton-gradient: linear-gradient(90deg, transparent, rgba(255,255,255,0.6), transparent);
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; border: none; outline: none; }
+        /* 全局重置 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            border: none;
+            outline: none;
+        }
 
         body, html {
             font-family: var(--primary-font);
@@ -31,197 +37,643 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        /* --- 启动页性能优化 --- */
-        #splash-page {
-            position: fixed; inset: 0; z-index: 99999;
-            background: #000;
-            display: none; flex-direction: column;
-            justify-content: center; align-items: center;
-            transition: transform 0.6s cubic-bezier(0.85, 0, 0.15, 1), opacity 0.6s ease;
-            overflow: hidden;
-            will-change: transform, opacity;
-        }
-
-        body.first-visit #splash-page { display: flex; }
-
-        #splash-video {
-            position: absolute; inset: 0;
-            width: 100%; height: 100%;
-            object-fit: cover; filter: brightness(0.6);
-            opacity: 1; will-change: opacity;
-        }
-
-        .splash-content {
-            text-align: center; color: #fff; z-index: 1;
-            display: flex; flex-direction: column;
-            justify-content: center; align-items: center;
-            width: 100%; height: 100%; position: relative;
-        }
-
-        .splash-title-matter {
-            font-size: clamp(12px, 6vw, 40px); font-weight: 300;
-            letter-spacing: 0.2em; text-transform: uppercase;
-            opacity: 0; position: absolute; top: 50%; left: 50%;
-            transform: translate(-50%, -50%);
-            animation: fadeInUpSmooth 1s ease-in-out forwards 0.2s;
-            width: 90%; text-align: center; line-height: 1.771;
-            color: rgba(255,255,255,0.9);
-        }
-
-        .splash-title-name {
-            font-size: clamp(19px, 8vw, 72px); font-weight: 300;
-            letter-spacing: 0.2em; text-transform: uppercase;
-            opacity: 0; position: absolute; top: 40%; left: 50%;
-            transform: translate(-50%, -40%);
-            width: 100%; text-align: center;
-            color: rgba(255,255,255,0.9);
-        }
-
-        .countdown {
-            position: absolute; top: 85%; left: 50%;
-            transform: translateX(-50%); font-size: 24px;
-            color: var(--white-alpha-70); opacity: 0;
-            animation: countDownFade 1s ease-in-out forwards;
-        }
-
-        .enter-arrow-btn {
-            background: none; cursor: pointer; padding: 25px;
-            opacity: 0; transition: transform 0.3s ease, opacity 0.5s ease;
-            display: flex; align-items: center; justify-content: center;
-            position: absolute; top: 85%; left: 50%;
-            transform: translateX(-50%); z-index: 2;
-        }
-
-        .arrow-icon { position: relative; width: 50px; height: 2px; background-color: var(--white-alpha-70); }
-        .arrow-icon::after {
-            content: ''; position: absolute; right: 0; top: -5px;
-            width: 10px; height: 10px; border-top: 2px solid var(--white-alpha-70);
-            border-right: 2px solid var(--white-alpha-70); transform: rotate(45deg);
-        }
-
-        /* --- 导航 --- */
+        /* 导航栏样式 */
         #scroll-progress {
-            position: fixed; top: 0; left: 0; width: 0%; height: 2px;
-            background: var(--main-color); z-index: 3000;
-            will-change: width;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 0%;
+            height: 2px;
+            background: var(--main-color);
+            z-index: 3000;
+            transition: width 0.1s ease-out;
         }
 
         nav#navbar {
-            position: fixed; inset: 0 0 auto 0;
-            display: flex; justify-content: space-between; align-items: center;
-            padding: 30px 5%; z-index: 2000;
+            position: fixed;
+            inset: 0 0 auto 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 30px 5%;
+            z-index: 2000;
             transition: all 0.6s cubic-bezier(0.2, 1, 0.3, 1);
             will-change: transform, background;
         }
 
         nav.nav-scrolled {
-            background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(15px);
-            padding: 15px 5%; border-bottom: 1px solid rgba(0,0,0,0.05);
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            padding: 15px 5%;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
         }
 
-        .logo { font-size: 18px; font-weight: 300; letter-spacing: 0.5em; text-decoration: none; color: #fff; text-transform: uppercase; transition: color 0.4s ease; }
+        .logo {
+            font-size: 18px;
+            font-weight: 300;
+            letter-spacing: 0.5em;
+            text-decoration: none;
+            color: #fff;
+            text-transform: uppercase;
+            transition: color 0.4s ease;
+            position: relative;
+            z-index: 2001;
+        }
+
         .nav-scrolled .logo { color: var(--main-color); }
 
-        .nav-links { display: flex; align-items: center; }
-        .nav-links a {
-            margin-left: 35px; text-decoration: none; color: #fff;
-            font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase;
-            font-weight: 300; position: relative; padding-bottom: 5px;
-            transition: color 0.4s ease, transform 0.3s ease;
+        .nav-links {
+            display: flex;
+            align-items: center;
         }
+
+        .nav-links a {
+            margin-left: 35px;
+            text-decoration: none;
+            color: #fff;
+            font-size: 10px;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            font-weight: 300;
+            position: relative;
+            padding-bottom: 5px;
+            transition: color 0.4s ease, transform 0.3s ease;
+            display: inline-block;
+        }
+
         .nav-scrolled .nav-links a { color: var(--main-color); }
-        .nav-links.zh a { font-size: 12px; }
 
-        .language-switch { display: flex; align-items: center; margin-left: 35px; }
-        .lang-btn { background: none; color: #fff; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; cursor: pointer; opacity: 0.7; transition: 0.4s; }
-        .lang-btn.active { opacity: 1; font-weight: 500; }
-        .nav-scrolled .lang-btn { color: var(--main-color); }
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 1px;
+            background: currentColor;
+            transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+            transform: translateX(-50%);
+        }
 
-        .menu-toggle { display: none; flex-direction: column; gap: 6px; cursor: pointer; z-index: 2001; }
-        .menu-toggle span { width: 25px; height: 1px; background-color: #fff; transition: 0.3s; }
+        .nav-links a:hover::after { width: 100%; }
+
+        /* 新增：语言切换按钮样式 */
+        .language-switch {
+            display: flex;
+            align-items: center;
+            margin-left: 35px;
+        }
+
+        .lang-btn {
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 10px;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            font-weight: 300;
+            cursor: pointer;
+            padding: 5px 10px;
+            transition: all 0.4s ease;
+            opacity: 0.7;
+        }
+
+        .lang-btn.active {
+            opacity: 1;
+            font-weight: 500;
+        }
+
+        .nav-scrolled .lang-btn {
+            color: var(--main-color);
+        }
+
+        .lang-separator {
+            color: #fff;
+            font-size: 8px;
+            margin: 0 5px;
+            opacity: 0.5;
+        }
+
+        .nav-scrolled .lang-separator {
+            color: var(--main-color);
+        }
+
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            gap: 6px;
+            cursor: pointer;
+            z-index: 2001;
+        }
+
+        .menu-toggle span {
+            width: 25px;
+            height: 1px;
+            background-color: #fff;
+            transition: all 0.3s ease;
+        }
+
         .nav-scrolled .menu-toggle span { background-color: #111; }
 
-        /* --- Hero --- */
+        .menu-toggle.active span:nth-child(1) { transform: rotate(45deg) translate(6px, 6px); }
+        .menu-toggle.active span:nth-child(2) { opacity: 0; }
+        .menu-toggle.active span:nth-child(3) { transform: rotate(-45deg) translate(6px, -6px); }
+
+        /* 主体内容样式 */
         .hero {
-            height: 100vh; width: 100%; overflow: hidden; position: relative; background-color: #000;
-            opacity: 0; visibility: hidden; transition: opacity 0.5s ease;
+            height: 100vh;
+            width: 100%;
+            overflow: hidden;
+            position: relative;
+            background-color: #000;
+            opacity: 1;
+            visibility: visible;
         }
-        body.splash-hidden .hero { opacity: 1; visibility: visible; }
 
         #hero-img-wrap {
-            width: 105%; height: 105%; position: absolute; top: -2.5%; left: -2.5%;
+            width: 105%;
+            height: 105%;
+            position: absolute;
+            top: -2.5%;
+            left: -2.5%;
+            transition: transform 0.2s ease-out;
             will-change: transform;
         }
-        .hero img { width: 100%; height: 100%; object-fit: cover; object-position: center 60%; filter: brightness(0.75); animation: kenBurns 20s ease-in-out infinite alternate; }
+
+        .hero img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center 60%;
+            filter: brightness(0.75);
+            display: block;
+            animation: kenBurns 20s ease-in-out infinite alternate;
+        }
+
+        .hero-overlay {
+            position: absolute;
+            top: 45%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            width: 90%;
+            z-index: 5;
+            pointer-events: none;
+        }
 
         .hero-title {
-            color: #fff; font-size: 18px; font-weight: 300; letter-spacing: 0.6em; text-transform: uppercase;
-            opacity: 0; filter: blur(10px); transform: translateY(30px);
-            transition: opacity 1.8s ease, filter 1.8s ease, transform 1.5s cubic-bezier(0.16, 1, 0.3, 1);
+            color: #fff;
+            font-size: 18px;
+            font-weight: 300;
+            letter-spacing: 0.6em;
+            text-transform: uppercase;
+            margin: 0;
+            line-height: 1.6;
+            opacity: 0.8;
+            filter: blur(0);
+            transform: translateY(0);
         }
-        .page-loaded .hero-title { opacity: 0.8; filter: blur(0); transform: translateY(0); }
 
-        /* --- 作品网格与性能优化 --- */
-        .content-section { padding: 40px 5% 20px; max-width: 1260px; margin: 0 auto; opacity: 0; transform: translateY(20px); transition: var(--transition-smooth); will-change: transform, opacity; }
-        .content-section.revealed { opacity: 1; transform: translateY(0); }
+        .hero-title br { display: none; }
 
-        .project-image-wrapper { overflow: hidden; margin-bottom: 20px; position: relative; background: #fafafa; }
+        .scroll-indicator {
+            position: absolute;
+            bottom: 35px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .scroll-arrow {
+            width: 16px;
+            height: 16px;
+            border-right: 1.5px solid #fff;
+            border-bottom: 1.5px solid #fff;
+            transform: rotate(45deg);
+            animation: arrowBounce 2s infinite;
+        }
+
+        /* 内容区块通用样式 */
+        .statement-section {
+            padding: calc(120px + 5vh) 5% calc(40px + 5vh);
+            max-width: 900px;
+            margin: 0 auto;
+            text-align: center;
+            scroll-margin-top: 100px;
+        }
+
+        .statement-text {
+            font-size: 20px;
+            line-height: 1.8;
+            font-weight: 300;
+            color: #222;
+            letter-spacing: 0.02em;
+            font-style: italic;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .content-section {
+            padding: 40px 5% 20px;
+            max-width: 1260px;
+            margin: 0 auto;
+            opacity: 1;
+            transform: translateY(0);
+            scroll-margin-top: 80px;
+        }
+
+        .category-title {
+            font-size: 13px;
+            letter-spacing: 0.5em;
+            text-transform: uppercase;
+            margin-bottom: 40px;
+            border-bottom: 1px solid #f0f0f0;
+            padding-bottom: 15px;
+            color: var(--main-color);
+        }
+
+        /* 网格布局样式 */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 60px;
+            margin-bottom: 60px;
+        }
+
+        .grid-sculpture-custom {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px 30px;
+            margin-bottom: 60px;
+            width: 100%;
+        }
+
+        .series-label {
+            font-size: 11px;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            color: #888;
+            margin-bottom: 20px;
+            font-weight: 300;
+        }
+
+        .project {
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+
+        .project-image-wrapper {
+            overflow: hidden;
+            margin-bottom: 20px;
+            position: relative;
+            background: #f9f9f9;
+        }
+
         .project-image-wrapper::before {
-            content: ""; position: absolute; inset: 0; left: -150%;
-            background: var(--skeleton-gradient); animation: skeleton-loading 1.5s infinite; z-index: 1;
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -150%;
+            width: 100%;
+            height: 100%;
+            background: var(--skeleton-gradient);
+            animation: skeleton-loading 1.5s infinite;
+            z-index: 1;
         }
-        .project-image-wrapper.finished-loading::before { display: none; }
 
-        .project img { width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 1s ease, transform 1.2s ease; will-change: opacity; }
+        .project-image-wrapper.finished-loading::before {
+            display: none;
+        }
+
+        .img-ratio { aspect-ratio: 4 / 5; display: block; }
+        .video-ratio { aspect-ratio: 16 / 9; background-color: #000; }
+
+        .project img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 1.8s cubic-bezier(0.15, 1, 0.3, 1), opacity 1s ease;
+            opacity: 0;
+            loading: lazy;
+            decoding: async;
+        }
+
         .project img.loaded { opacity: 1; }
         .project:hover img { transform: scale(1.05); }
 
-        /* --- 动画 --- */
-        @keyframes fadeInUpSmooth { 0% { opacity: 0; transform: translate(-50%, -45%); } 100% { opacity: 0.8; transform: translate(-50%, -50%); } }
-        @keyframes fadeInName { to { opacity: 0.8; transform: translate(-50%, -40%); } }
-        @keyframes countDownFade { 0%, 100% { opacity: 0; } 50% { opacity: 0.8; } }
-        @keyframes kenBurns { 0% { transform: scale(1); } 100% { transform: scale(1.08); } }
-        @keyframes skeleton-loading { 0% { left: -150%; } 100% { left: 150%; } }
-
-        /* --- 移动端 --- */
-        @media (max-width: 900px) {
-            #splash-video { object-fit: cover !important; width: 100vw !important; height: 100vh !important; }
-            .menu-toggle { display: flex; }
-            .nav-links {
-                position: fixed; inset: 0 0 0 auto; width: 100%; height: 100vh;
-                background: #fff; flex-direction: column; justify-content: center;
-                transition: 0.5s cubic-bezier(0.2, 1, 0.3, 1); transform: translateX(100%);
-            }
-            .nav-links.active { transform: translateX(0); }
-            .nav-links a { color: #111 !important; margin: 20px 0; font-size: 14px; }
-            .grid, .grid-sculpture-custom { grid-template-columns: 1fr; gap: 40px; }
-            .contact-row { flex-direction: column; gap: 40px; }
-            .divider { display: none; }
+        .play-overlay {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0,0,0,0.1);
+            transition: background 0.3s;
+            z-index: 2;
+            opacity: 0;
         }
 
-        /* 常用辅助类 */
-        .img-ratio { aspect-ratio: 4 / 5; display: block; }
-        .video-ratio { aspect-ratio: 16 / 9; background: #000; }
-        .category-title { font-size: 13px; letter-spacing: 0.5em; text-transform: uppercase; margin-bottom: 40px; border-bottom: 1px solid #f0f0f0; padding-bottom: 15px; }
-        #back-to-top { position: fixed; bottom: 40px; right: 40px; width: 40px; height: 40px; background: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; opacity: 0; visibility: hidden; transition: 0.4s; box-shadow: 0 4px 15px rgba(0,0,0,0.05); z-index: 1000; }
+        .project img.loaded + .play-overlay { opacity: 1; }
+
+        .play-button {
+            width: 50px;
+            height: 50px;
+            border: 1px solid #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(5px);
+        }
+
+        .play-button::after {
+            content: '';
+            width: 0;
+            height: 0;
+            border-top: 8px solid transparent;
+            border-bottom: 8px solid transparent;
+            border-left: 12px solid #fff;
+            margin-left: 4px;
+        }
+
+        .project-title {
+            font-size: 14px;
+            font-weight: 400;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            margin-top: 5px;
+        }
+
+        .project-meta {
+            font-size: 10px;
+            color: #aaa;
+            margin-top: 4px;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            line-height: 1.4;
+        }
+
+        /* 辅助组件样式 */
+        #back-to-top {
+            position: fixed;
+            bottom: 40px;
+            right: 40px;
+            width: 40px;
+            height: 40px;
+            background: #fff;
+            border: 1px solid #eee;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            z-index: 1000;
+            transition: all 0.4s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
         #back-to-top.visible { opacity: 1; visibility: visible; }
+
+        #back-to-top::after {
+            content: '';
+            width: 8px;
+            height: 8px;
+            border-left: 1px solid #111;
+            border-top: 1px solid #111;
+            transform: rotate(45deg);
+            margin-top: 4px;
+        }
+
+        #copy-toast {
+            position: fixed;
+            bottom: 50px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--black-alpha-80);
+            color: #fff;
+            padding: 10px 20px;
+            font-size: 10px;
+            letter-spacing: 0.2em;
+            border-radius: 2px;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.4s;
+            z-index: 9999;
+        }
+
+        /* 联系区块样式 */
+        .contact-section {
+            padding: 100px 5%;
+            background-color: #fff;
+            scroll-margin-top: 60px;
+        }
+
+        .contact-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .contact-row {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 50px;
+            flex-wrap: nowrap;
+        }
+
+        .contact-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .contact-label {
+            font-size: 9px;
+            color: #bbb;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            letter-spacing: 0.25em;
+        }
+
+        .contact-value {
+            font-size: 13px;
+            color: var(--main-color);
+            text-decoration: none;
+            font-weight: 300;
+            padding-bottom: 4px;
+            border-bottom: 1px solid transparent;
+            transition: all 0.4s;
+            cursor: pointer;
+        }
+
+        .contact-value:hover { border-bottom-color: #eee; }
+
+        .divider {
+            color: #eee;
+            align-self: center;
+            font-weight: 100;
+            font-size: 18px;
+        }
+
+        /* 页脚样式 */
+        footer {
+            padding: 60px 5% 40px;
+            text-align: center;
+            border-top: 1px solid #f9f9f9;
+            font-size: 9px;
+            letter-spacing: 0.4em;
+            color: #ccc;
+            text-transform: uppercase;
+        }
+
+        /* 动画关键帧 */
+        @keyframes kenBurns {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.08); }
+        }
+
+        @keyframes kenBurnsMobile {
+            0% { transform: scale(1.02); }
+            100% { transform: scale(1.1); }
+        }
+
+        @keyframes arrowBounce {
+            0%, 20%, 50%, 80%, 100% { 
+                transform: translateY(0) rotate(45deg); 
+                opacity: 0.3; 
+            }
+            40% { 
+                transform: translateY(-10px) rotate(45deg); 
+                opacity: 0.8; 
+            }
+        }
+
+        @keyframes skeleton-loading {
+            0% { left: -150%; }
+            50% { left: 100%; }
+            100% { left: 100%; }
+        }
+
+        /* 媒体查询 - 响应式适配 */
+        @media (max-width: 900px) {
+            .hero-overlay { top: 40%; }
+            .hero-title {
+                font-size: 14.4px;
+                line-height: 2.2;
+                letter-spacing: 0.4em;
+            }
+            .hero-title br { display: block; }
+            
+            .menu-toggle { display: flex; }
+            
+            .nav-links {
+                position: fixed;
+                inset: 0 0 0 auto;
+                width: 100%;
+                height: 100vh;
+                background: #fff;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                transition: 0.5s cubic-bezier(0.2, 1, 0.3, 1);
+                transform: translateX(100%);
+            }
+            
+            .nav-links.active { transform: translateX(0); }
+            
+            .nav-links a {
+                color: var(--main-color) !important;
+                margin: 20px 0;
+                font-size: 14px;
+            }
+            
+            /* 移动端语言切换按钮样式调整 */
+            .language-switch {
+                margin: 20px 0;
+            }
+            
+            .lang-btn {
+                font-size: 14px;
+            }
+            
+            .grid, .grid-sculpture-custom {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+            
+            .content-section { padding: 30px 5%; }
+            .statement-text { font-size: 16px; }
+            .statement-section { padding: 60px 8% 30px; }
+            
+            .contact-section { padding: 80px 10%; }
+            .contact-row {
+                flex-direction: column;
+                gap: 45px;
+            }
+            .divider { display: none; }
+            .contact-value {
+                font-size: 15px;
+                padding: 8px 0;
+            }
+            
+            #back-to-top {
+                bottom: 30px;
+                right: 20px;
+                width: 36px;
+                height: 36px;
+            }
+            
+            .hero img { animation: kenBurnsMobile 20s ease-in-out infinite alternate; }
+            
+            .project img, .project-image-wrapper {
+                display: block;
+                visibility: visible;
+            }
+
+            /* 关键修改：手机端series5图片放大25% (0.6 → 0.75) */
+            .series5-wrapper img {
+                transform: scale(0.75); 
+                object-fit: contain;
+                opacity: 1;
+            }
+        }
+
+        /* 新增：电脑端语言切换按钮垂直对齐调整 */
+        @media (min-width: 901px) {
+            .language-switch {
+                align-items: baseline;
+                margin-bottom: 5px;
+            }
+            .lang-btn {
+                padding: 0 10px;
+                line-height: 1;
+            }
+            .series5-wrapper img {
+                transform: scale(1.2); 
+                object-fit: contain;
+                opacity: 1;
+            }
+            /* 核心修改：电脑端中文导航链接字体增大为12px（比原来的10px大两号） */
+            .nav-links.zh a {
+                font-size: 12px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .img-ratio { aspect-ratio: 3 / 4; }
+        }
     </style>
 </head>
-<body class="no-scroll"> 
-    <div id="splash-page">
-        <video id="splash-video" autoplay loop muted playsinline webkit-playsinline x5-playsinline x5-video-player-type="h5">
-            <source src="images/hero-bg.mp4" type="video/mp4">
-        </video>
-        <div class="splash-content">
-            <h1 class="splash-title-matter">Matter <br> dissolves, <br> memory <br> crystallizes</h1>
-            <h1 class="splash-title-name">ZHANG JIARUI</h1>
-            <div class="countdown" id="countdown">3</div>
-            <button class="enter-arrow-btn" onclick="hideSplash()" aria-label="Enter Portfolio">
-                <div class="arrow-icon"></div>
-            </button>
-        </div>
-    </div>
-
+<body> 
     <div id="scroll-progress"></div>
     <div id="copy-toast">ID COPIED</div>
 
@@ -234,183 +686,472 @@
                 <a href="#projects" onclick="closeMenu()">Projects</a>
                 <a href="biography.html">BIOGRAPHY</a>
                 <a href="#contact" onclick="closeMenu()">Contact</a>
+                <!-- 新增：语言切换按钮 -->
                 <div class="language-switch">
-                    <button class="lang-btn active" id="lang-en" onclick="switchLanguage('en')">EN</button>
-                    <span style="margin:0 5px; color:inherit; opacity:0.3">|</span>
-                    <button class="lang-btn" id="lang-zh" onclick="switchLanguage('zh')">ZH</button>
+                    <button class="lang-btn active" id="lang-en" onclick="switchLanguage('en')">English</button>
+                    <span class="lang-separator">|</span>
+                    <button class="lang-btn" id="lang-zh" onclick="switchLanguage('zh')">中文</button>
                 </div>
             </div>
-            <div class="menu-toggle" id="menuToggle"><span></span><span></span><span></span></div>
+            <div class="menu-toggle" id="menuToggle">
+                <span></span><span></span><span></span>
+            </div>
         </nav>
     </header>
 
     <main>
         <section class="hero" id="hero-section">
             <div id="hero-img-wrap">
-                <img src="images/cover.webp" alt="Zhang Jiarui Cover" onload="handleImageLoad(this)" fetchpriority="high">
+                <img src="images/cover.webp" alt="Zhang Jiarui Cover" 
+                     onload="handleImageLoad(this)"
+                     onerror="handleImageError(this, 'images/Cover.JPG');"
+                     loading="eager">
             </div>
-            <div class="hero-overlay"><h1 class="hero-title">Matter dissolves, <br> memory crystallizes</h1></div>
-            <div class="scroll-indicator" onclick="document.getElementById('statement').scrollIntoView()"><div class="scroll-arrow"></div></div>
+            <div class="hero-overlay"></div>
+            <a href="#statement" class="scroll-indicator" aria-label="Scroll down">
+                <div class="scroll-arrow"></div>
+            </a>
         </section>
 
         <section class="statement-section" id="statement">
-            <p class="statement-text" data-lang="en">Zhang Jiarui’s practice operates between sculptural reduction and site-specific ecological intervention.</p>
-            <p class="statement-text" data-lang="zh" style="display: none;">张家瑞的艺术实践介于雕塑与在场性生态艺术创作之间。</p>
+            <p class="statement-text" data-lang="en">
+                Zhang Jiarui’s practice operates between sculptural reduction and site-specific ecological intervention, 
+                examing how material, time, and human action reshape fragile systems.
+            </p>
+            <p class="statement-text" data-lang="zh" style="display: none;">
+                张家瑞的艺术实践介于雕塑与在场性生态艺术创作之间，<br>
+                探讨物质、时间和人类行为如何重塑脆弱的生态系统。
+            </p>
         </section>
 
         <section class="content-section" id="eco-art">
             <h2 class="category-title" data-lang="en">Ecological Art</h2>
             <h2 class="category-title" data-lang="zh" style="display: none;">生态艺术</h2>
             <div class="grid">
-                <article><a href="eco-ice-burial.html" class="project">
-                    <div class="project-image-wrapper video-ratio"><img src="images/eco/ice_burial_cover.webp" onload="handleImageLoad(this)"></div>
-                    <div class="project-info"><h3 class="project-title">Ice Burial</h3><p class="project-meta">2025</p></div>
-                </a></article>
-                </div>
+                <article>
+                    <a href="eco-ice-burial.html" class="project">
+                        <div class="project-image-wrapper video-ratio">
+                            <img src="images/eco/ice_burial_cover.webp" 
+                                 onload="handleImageLoad(this)"
+                                 onerror="handleImageError(this, 'images/eco/ice_burial_cover.jpg')">
+                            <div class="play-overlay"><div class="play-button"></div></div>
+                        </div>
+                        <div class="project-info">
+                            <h3 class="project-title" data-lang="en">Ice Burial</h3>
+                            <h3 class="project-title" data-lang="zh" style="display: none;">冰葬</h3>
+                            <p class="project-meta" data-lang="en">Performance art / 2025 / China Southsea</p>
+                            <p class="project-meta" data-lang="zh" style="display: none;">行为艺术 / 2025 / 中国南海</p>
+                        </div>
+                    </a>
+                </article>
+                <article>
+                    <a href="eco-4-5tons.html" class="project">
+                        <div class="project-image-wrapper video-ratio">
+                            <img src="images/eco/4_5tons_cover.webp"
+                                 onload="handleImageLoad(this)"
+                                 onerror="handleImageError(this, 'images/eco/4_5tons_cover.jpg')">
+                            <div class="play-overlay"><div class="play-button"></div></div>
+                        </div>
+                        <div class="project-info">
+                            <h3 class="project-title" data-lang="en">4.5 Tons</h3>
+                            <h3 class="project-title" data-lang="zh" style="display: none;">4.5吨</h3>
+                            <p class="project-meta" data-lang="en">Installation / 2024 / IN COLLABORATION WITH BETTA LIU / Inner Mongolia</p>
+                            <p class="project-meta" data-lang="zh" style="display: none;">装置艺术 / 2024 / 与刘洋合作 / 中国内蒙古</p>
+                        </div>
+                    </a>
+                </article>
+            </div>
+        </section>
+
+        <section class="content-section" id="sculpture">
+            <h2 class="category-title" data-lang="en">Sculpture</h2>
+            <h2 class="category-title" data-lang="zh" style="display: none;">雕塑</h2>
+            <div class="grid-sculpture-custom">
+                <article>
+                    <h3 class="series-label" data-lang="en">Wood Series</h3>
+                    <h3 class="series-label" data-lang="zh" style="display: none;">木系列</h3>
+                    <a href="series1.html" class="project">
+                        <div class="project-image-wrapper img-ratio">
+                            <img src="images/sculpture/s1_cover.webp"
+                                 onload="handleImageLoad(this)"
+                                 onerror="handleImageError(this, 'images/sculpture/s1_cover.jpg')">
+                        </div>
+                        <div class="project-info">
+                            <h4 class="project-title" data-lang="en">Triangle</h4>
+                            <h4 class="project-title" data-lang="zh" style="display: none;">三角形</h4>
+                            <p class="project-meta" data-lang="en">Wood / 2024</p>
+                            <p class="project-meta" data-lang="zh" style="display: none;">木 / 2024</p>
+                        </div>
+                    </a>
+                </article>
+                <article>
+                    <h3 class="series-label" data-lang="en">Water Series</h3>
+                    <h3 class="series-label" data-lang="zh" style="display: none;">水系列</h3>
+                    <a href="series2.html" class="project">
+                        <div class="project-image-wrapper img-ratio">
+                            <img src="images/sculpture/s2_cover.webp"
+                                 onload="handleImageLoad(this)"
+                                 onerror="handleImageError(this, 'images/sculpture/s2_cover.jpg')">
+                        </div>
+                        <div class="project-info">
+                            <h4 class="project-title" data-lang="en">Water1</h4>
+                            <h4 class="project-title" data-lang="zh" style="display: none;">水</h4>
+                            <p class="project-meta" data-lang="en">Transparent resin / 2023</p>
+                            <p class="project-meta" data-lang="zh" style="display: none;">透明树脂 / 2023</p>
+                        </div>
+                    </a>
+                </article>
+                <article>
+                    <h3 class="series-label" data-lang="en">Line Series</h3>
+                    <h3 class="series-label" data-lang="zh" style="display: none;">线系列</h3>
+                    <a href="series5.html" class="project">
+                        <div class="project-image-wrapper img-ratio series5-wrapper" style="background-color: #ffffff; display: flex; align-items: center; justify-content: center;">
+                            <img src="images/sculpture/s5_cover.webp"
+                                 onload="handleImageLoad(this)"
+                                 onerror="handleImageError(this, 'images/sculpture/s5_cover.jpg')" 
+                                 style="object-fit: contain;">
+                        </div>
+                        <div class="project-info">
+                            <h4 class="project-title" data-lang="en">X</h4>
+                            <h4 class="project-title" data-lang="zh" style="display: none;">X</h4>
+                            <p class="project-meta" data-lang="en">Acrylic / 2023</p>
+                            <p class="project-meta" data-lang="zh" style="display: none;">亚克力 / 2023</p>
+                        </div>
+                    </a>
+                </article>
+                <article>
+                    <h3 class="series-label" data-lang="en">Formless Series</h3>
+                    <h3 class="series-label" data-lang="zh" style="display: none;">无形系列</h3>
+                    <a href="series4.html" class="project">
+                        <div class="project-image-wrapper img-ratio">
+                            <img src="images/sculpture/s4_cover.webp"
+                                 onload="handleImageLoad(this)"
+                                 onerror="handleImageError(this, 'images/sculpture/s4_cover.jpg')">
+                        </div>
+                        <div class="project-info">
+                            <h4 class="project-title" data-lang="en">At ease</h4>
+                            <h4 class="project-title" data-lang="zh" style="display: none;">自在</h4>
+                            <p class="project-meta" data-lang="en">Transparent resin / 2023</p>
+                            <p class="project-meta" data-lang="zh" style="display: none;">透明树脂 / 2023</p>
+                        </div>
+                    </a>
+                </article>
+                <article>
+                    <h3 class="series-label" data-lang="en">Gold Series</h3>
+                    <h3 class="series-label" data-lang="zh" style="display: none;">金系列</h3>
+                    <a href="series3.html" class="project">
+                        <div class="project-image-wrapper img-ratio">
+                            <img src="images/sculpture/s3_cover.webp"
+                                 onload="handleImageLoad(this)"
+                                 onerror="handleImageError(this, 'images/sculpture/s3_cover.jpg')">
+                        </div>
+                        <div class="project-info">
+                            <h4 class="project-title" data-lang="en">New Eighteenth Arhat</h4>
+                            <h4 class="project-title" data-lang="zh" style="display: none;">新十八罗汉</h4>
+                            <p class="project-meta" data-lang="en">Goldenleaf resin / 2015</p>
+                            <p class="project-meta" data-lang="zh" style="display: none;">金箔、树脂 / 2015</p>
+                        </div>
+                    </a>
+                </article>
+            </div>
+        </section>
+
+        <section class="content-section" id="projects">
+            <h2 class="category-title" data-lang="en">Projects</h2>
+            <h2 class="category-title" data-lang="zh" style="display: none;">项目</h2>
+            <div class="grid">
+                <article>
+                    <a href="project-coral.html" class="project">
+                        <div class="project-image-wrapper video-ratio">
+                            <img src="images/projects/coral_cover.webp"
+                                 onload="handleImageLoad(this)"
+                                 onerror="handleImageError(this, 'images/projects/coral_cover.jpg')">
+                            <div class="play-overlay"><div class="play-button"></div></div>
+                        </div>
+                        <div class="project-info">
+                            <h3 class="project-title" data-lang="en">Coral Planting Project</h3>
+                            <h3 class="project-title" data-lang="zh" style="display: none;">珊瑚种植纪录片</h3>
+                            <p class="project-meta" data-lang="en">Documentary / 2025 / China Southsea</p>
+                            <p class="project-meta" data-lang="zh" style="display: none;">纪录片 / 2025 / 中国南海</p>
+                        </div>
+                    </a>
+                </article>
+            </div>
         </section>
 
         <section class="contact-section" id="contact">
             <div class="contact-container">
                 <div class="contact-row">
-                    <div class="contact-item"><span class="contact-label">Email</span><a href="mailto:jerryzhang_arts@qq.com" class="contact-value">jerryzhang_arts@qq.com</a></div>
+                    <div class="contact-item">
+                        <span class="contact-label" data-lang="en">Email</span>
+                        <span class="contact-label" data-lang="zh" style="display: none;">邮箱</span>
+                        <a href="mailto:jerryzhang_arts@qq.com" class="contact-value">jerryzhang_arts@qq.com</a>
+                    </div>
                     <span class="divider">/</span>
-                    <div class="contact-item"><span class="contact-label">WeChat</span><span class="contact-value" onclick="copyWeChat('zjr5556699')">zjr5556699</span></div>
+                    <div class="contact-item">
+                        <span class="contact-label" data-lang="en">WeChat</span>
+                        <span class="contact-label" data-lang="zh" style="display: none;">微信</span>
+                        <span class="contact-value" onclick="copyWeChat('zjr5556699')">zjr5556699</span>
+                    </div>
+                    <span class="divider">/</span>
+                    <div class="contact-item">
+                        <span class="contact-label" data-lang="en">Phone</span>
+                        <span class="contact-label" data-lang="zh" style="display: none;">电话</span>
+                        <a href="tel:+8615117988382" class="contact-value">+86 151 1798 8382</a>
+                    </div>
                 </div>
             </div>
         </section>
     </main>
 
-    <div id="back-to-top"></div>
-    <footer>&copy; 2026 ZHANGJIARUI ARTWORKS.</footer>
+    <div id="back-to-top" aria-label="Back to top"></div>
+    <footer>
+        <span data-lang="en">&copy; 2026 ZHANGJIARUI ARTWORKS.</span>
+        <span data-lang="zh" style="display: none;">&copy; 2026 张家瑞艺术作品.</span>
+    </footer>
 
     <script>
+        // DOM元素缓存
         const dom = {
-            video: document.getElementById('splash-video'),
-            splash: document.getElementById('splash-page'),
             nav: document.getElementById('navbar'),
-            prog: document.getElementById('scroll-progress'),
+            progress: document.getElementById('scroll-progress'),
             btt: document.getElementById('back-to-top'),
-            links: document.getElementById('navLinks'),
-            menu: document.getElementById('menuToggle'),
-            hero: document.getElementById('hero-img-wrap'),
-            cd: document.getElementById('countdown'),
-            name: document.querySelector('.splash-title-name'),
-            matter: document.querySelector('.splash-title-matter'),
-            arrow: document.querySelector('.enter-arrow-btn')
+            navLinks: document.getElementById('navLinks'),
+            menuToggle: document.getElementById('menuToggle'),
+            heroImgWrap: document.getElementById('hero-img-wrap'),
+            heroSection: document.getElementById('hero-section'),
+            // 新增：语言切换相关元素
+            langEnBtn: document.getElementById('lang-en'),
+            langZhBtn: document.getElementById('lang-zh')
         };
 
-        // 核心滚动节流逻辑
-        let lastScrollY = 0;
-        let ticking = false;
+        // 工具函数 - 显示提示
+        const showToast = () => {
+            const toast = document.getElementById('copy-toast');
+            toast.style.opacity = '1';
+            toast.style.visibility = 'visible';
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.visibility = 'hidden';
+            }, 2000);
+        };
 
-        const handleScroll = () => {
-            const scrollY = window.pageYOffset || document.documentElement.scrollTop;
-            const winH = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-            
-            // 进度条渲染
-            dom.prog.style.width = (scrollY / winH * 100) + "%";
-            
-            // 导航栏状态切换
+        // 图片加载处理
+        const handleImageLoad = (img) => {
+            img.classList.add('loaded');
+            img.parentElement.classList.add('finished-loading');
+            if (window.innerWidth <= 900) img.style.opacity = '1';
+        };
+
+        // 图片加载失败处理
+        const handleImageError = (img, fallbackSrc) => {
+            img.src = fallbackSrc;
+            img.onerror = null;
+            handleImageLoad(img);
+        };
+
+        // 初始化滚动监听
+        const initScrollObserver = () => {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) entry.target.classList.add('revealed');
+                });
+            }, { threshold: 0.1 });
+
+            document.querySelectorAll('.statement-section, .content-section').forEach(sec => observer.observe(sec));
+        };
+
+        // 初始化鼠标跟随效果
+        const initMouseFollow = () => {
+            dom.heroSection.addEventListener('mousemove', (e) => {
+                const maxOffset = 20;
+                const x = Math.max(-maxOffset, Math.min(maxOffset, (e.clientX - window.innerWidth / 2) / 50));
+                const y = Math.max(-maxOffset, Math.min(maxOffset, (e.clientY - window.innerHeight / 2) / 50));
+                
+                requestAnimationFrame(() => {
+                    dom.heroImgWrap.style.transform = `translate(${-x}px, ${-y}px)`;
+                });
+            });
+        };
+
+        // 更新导航和回到顶部按钮状态
+        const updateNavStatus = (scrollY) => {
             const isScrolled = scrollY > 50;
             dom.nav.classList.toggle("nav-scrolled", isScrolled);
             dom.btt.classList.toggle("visible", isScrolled);
             
-            // 滚动方向判断（隐藏/显示导航）
-            if (scrollY > lastScrollY && scrollY > 300) {
+            // 滚动隐藏/显示导航
+            if (scrollY > dom.lastScrollY && scrollY > 200) {
                 dom.nav.style.transform = "translateY(-100%)";
             } else {
                 dom.nav.style.transform = "translateY(0)";
             }
-            
-            lastScrollY = scrollY;
-            ticking = false;
+            dom.lastScrollY = scrollY;
         };
 
+        // 复制微信ID
+        const copyWeChat = (id) => {
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(id).then(showToast).catch(() => fallbackCopy(id));
+            } else {
+                fallbackCopy(id);
+            }
+
+            function fallbackCopy(text) {
+                const textArea = document.createElement("textarea");
+                textArea.value = text;
+                textArea.style.position = "fixed";
+                textArea.style.left = "-999999px";
+                document.body.appendChild(textArea);
+                textArea.select();
+                
+                try {
+                    document.execCommand('copy');
+                    showToast();
+                } catch (err) {
+                    alert('复制失败，请手动复制：' + text);
+                }
+                
+                document.body.removeChild(textArea);
+            }
+        };
+
+        // 菜单切换
+        const toggleMenu = () => {
+            dom.navLinks.classList.toggle('active');
+            dom.menuToggle.classList.toggle('active');
+            document.body.style.overflow = dom.navLinks.classList.contains('active') ? 'hidden' : 'auto';
+        };
+
+        // 关闭菜单
+        const closeMenu = () => {
+            dom.navLinks.classList.remove('active');
+            dom.menuToggle.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        };
+
+        // 新增：语言切换功能
+        const switchLanguage = (lang) => {
+            // 更新按钮状态
+            if (lang === 'en') {
+                dom.langEnBtn.classList.add('active');
+                dom.langZhBtn.classList.remove('active');
+                document.getElementById('copy-toast').textContent = 'ID COPIED';
+                // 移除中文导航栏字体放大类
+                dom.navLinks.classList.remove('zh');
+            } else {
+                dom.langEnBtn.classList.remove('active');
+                dom.langZhBtn.classList.add('active');
+                document.getElementById('copy-toast').textContent = '已复制ID';
+                // 添加中文导航栏字体放大类
+                dom.navLinks.classList.add('zh');
+            }
+            
+            // 切换所有带语言标记的元素
+            document.querySelectorAll('[data-lang]').forEach(el => {
+                if (el.getAttribute('data-lang') === lang) {
+                    el.style.display = el.tagName === 'P' || el.tagName === 'SPAN' || el.tagName === 'H1' || el.tagName === 'H2' || el.tagName === 'H3' || el.tagName === 'H4' ? 'block' : 'inline';
+                } else {
+                    el.style.display = 'none';
+                }
+            });
+            
+            // 更新导航链接文本
+            const navLinks = document.querySelectorAll('.nav-links a');
+            if (lang === 'zh') {
+                navLinks[0].textContent = '生态艺术';
+                navLinks[1].textContent = '雕塑';
+                navLinks[2].textContent = '项目';
+                navLinks[3].textContent = '个人简介';
+                navLinks[4].textContent = '联系我们';
+                // 更新logo
+                document.querySelector('.logo').textContent = '张家瑞艺术作品';
+            } else {
+                navLinks[0].textContent = 'Ecological Art';
+                navLinks[1].textContent = 'Sculpture';
+                navLinks[2].textContent = 'Projects';
+                navLinks[3].textContent = 'BIOGRAPHY';
+                navLinks[4].textContent = 'Contact';
+                // 恢复logo
+                document.querySelector('.logo').textContent = 'ZHANGJIARUI ARTWORKS';
+            }
+            
+            // 更新页面标题
+            if (lang === 'zh') {
+                document.title = '张家瑞 | 艺术家 - 生态艺术、雕塑与项目';
+            } else {
+                document.title = 'ZHANG JIARUI | ARTIST - Ecological Art, Sculpture, and Projects';
+            }
+            
+            // 保存语言偏好到本地存储
+            localStorage.setItem('preferredLanguage', lang);
+        };
+
+        // 初始化页面
+        const initPage = () => {
+            // 图片加载处理
+            document.querySelectorAll('.project img, #hero-img-wrap img').forEach(img => {
+                if (img.complete && !img.classList.contains('loaded')) handleImageLoad(img);
+                if (window.innerWidth <= 900) img.style.opacity = '1';
+            });
+
+            // 初始化滚动监听
+            initScrollObserver();
+            
+            // 初始化鼠标跟随（仅桌面端）
+            if (window.innerWidth > 900 && dom.heroSection && dom.heroImgWrap) {
+                initMouseFollow();
+            }
+
+            // 更新导航状态
+            updateNavStatus(window.pageYOffset || document.documentElement.scrollTop);
+            document.body.classList.add('page-loaded');
+            
+            // 初始化语言设置
+            const savedLang = localStorage.getItem('preferredLanguage') || 'en';
+            switchLanguage(savedLang);
+        };
+
+        // 滚动监听（节流处理）
+        let ticking = false;
+        dom.lastScrollY = window.scrollY;
         window.addEventListener('scroll', () => {
             if (!ticking) {
-                requestAnimationFrame(handleScroll);
+                window.requestAnimationFrame(() => {
+                    const scrollY = window.pageYOffset || document.documentElement.scrollTop;
+                    const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+                    
+                    // 更新进度条
+                    dom.progress.style.width = (scrollY / height) * 100 + "%";
+                    // 更新导航状态
+                    updateNavStatus(scrollY);
+                    
+                    ticking = false;
+                });
                 ticking = true;
             }
         }, { passive: true });
 
-        // 启动页优化
-        const startSplash = () => {
-            let count = 3;
-            const timer = setInterval(() => {
-                count--;
-                dom.cd.textContent = count;
-                if (count <= 0) {
-                    clearInterval(timer);
-                    dom.cd.style.display = 'none';
-                    dom.matter.style.opacity = '0';
-                    setTimeout(() => {
-                        dom.name.style.animation = 'fadeInName 1s forwards';
-                        dom.arrow.style.opacity = '0.7';
-                        dom.video.play().catch(() => {});
-                    }, 500);
-                }
-            }, 1000);
-        };
-
-        const hideSplash = () => {
-            sessionStorage.setItem('hasVisited', 'true');
-            dom.splash.style.opacity = '0';
-            dom.splash.style.transform = 'translateY(-100%)';
-            document.body.classList.remove('no-scroll', 'first-visit');
-            document.body.classList.add('splash-hidden');
-            setTimeout(() => dom.splash.style.display = 'none', 600);
-        };
-
-        // 其它交互逻辑（中英切换、复制等）
-        const switchLanguage = (lang) => {
-            const isZh = lang === 'zh';
-            localStorage.setItem('prefLang', lang);
-            document.querySelectorAll('[data-lang]').forEach(el => {
-                el.style.display = el.getAttribute('data-lang') === lang ? 'block' : 'none';
-            });
-            dom.links.classList.toggle('zh', isZh);
-            document.getElementById('lang-zh').classList.toggle('active', isZh);
-            document.getElementById('lang-en').classList.toggle('active', !isZh);
-        };
-
-        const handleImageLoad = (img) => {
-            img.classList.add('loaded');
-            img.parentElement.classList.add('finished-loading');
-        };
-
-        const copyWeChat = (id) => {
-            navigator.clipboard.writeText(id).then(() => {
-                const t = document.getElementById('copy-toast');
-                t.style.opacity = '1'; t.style.visibility = 'visible';
-                setTimeout(() => { t.style.opacity = '0'; t.style.visibility = 'hidden'; }, 2000);
-            });
-        };
-
-        // 初始化
-        document.addEventListener('DOMContentLoaded', () => {
-            const visited = sessionStorage.getItem('hasVisited');
-            if (!visited) {
-                document.body.classList.add('first-visit');
-                startSplash();
-            } else {
-                dom.splash.style.display = 'none';
-                document.body.classList.remove('no-scroll');
-                document.body.classList.add('splash-hidden');
+        // 页面加载完成处理
+        window.addEventListener('load', () => {
+            document.body.classList.add('page-loaded');
+            if (window.innerWidth <= 900) {
+                document.querySelectorAll('.project img').forEach(img => {
+                    if (!img.classList.contains('loaded')) {
+                        img.style.display = 'block';
+                        img.style.visibility = 'visible';
+                    }
+                });
             }
-            
-            // 元素淡入观察器
-            const obs = new IntersectionObserver(es => {
-                es.forEach(e => e.isIntersecting && e.target.classList.add('revealed'));
-            }, { threshold: 0.1 });
-            document.querySelectorAll('.statement-section, .content-section').forEach(s => obs.observe(s));
         });
 
-        dom.menu.onclick = () => {
-            dom.links.classList.toggle('active');
-            dom.menu.classList.toggle('active');
-        };
+        // 事件绑定
         dom.btt.onclick = () => window.scrollTo({top: 0, behavior: 'smooth'});
-        window.onload = () => document.body.classList.add('page-loaded');
+        dom.menuToggle.onclick = toggleMenu;
+
+        // 页面初始化
+        document.addEventListener('DOMContentLoaded', initPage);
+        window.addEventListener('pageshow', (e) => e.persisted && initPage());
     </script>
 </body>
 </html>
