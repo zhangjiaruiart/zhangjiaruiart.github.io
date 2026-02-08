@@ -222,24 +222,6 @@
             pointer-events: none;
         }
 
-        /* 🔥 新增：hero副标题样式 + 渐隐动画 */
-        .hero-subtitle {
-            color: #fff;
-            font-size: 16px;
-            font-weight: 300;
-            letter-spacing: 0.2em;
-            line-height: 1.8;
-            opacity: 0;
-            animation: fadeIn 3s ease-in-out 1s forwards; /* 1s延迟后渐隐出现，持续3s */
-            margin-bottom: 20px;
-        }
-
-        /* 🔥 新增：渐隐动画关键帧 */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
         .hero-title {
             color: #fff;
             font-size: 18px;
@@ -286,7 +268,7 @@
         }
 
         .statement-text {
-            font-size: 20px;
+            font-size: 23px; /* 原20px，增大3px（3号） */
             line-height: 1.8;
             font-weight: 300;
             color: #222;
@@ -584,13 +566,6 @@
         /* 媒体查询 - 响应式适配 */
         @media (max-width: 900px) {
             .hero-overlay { top: 40%; }
-            
-            /* 🔥 移动端适配新增的副标题 */
-            .hero-subtitle {
-                font-size: 14px;
-                letter-spacing: 0.15em;
-            }
-
             .hero-title {
                 font-size: 14.4px;
                 line-height: 2.2;
@@ -636,7 +611,7 @@
             }
             
             .content-section { padding: 30px 5%; }
-            .statement-text { font-size: 16px; }
+            .statement-text { font-size: 19px; } /* 原16px，增大3px（3号） */
             .statement-section { padding: 60px 8% 30px; }
             
             .contact-section { padding: 80px 10%; }
@@ -732,23 +707,19 @@
                      onerror="handleImageError(this, 'images/Cover.JPG');"
                      loading="eager">
             </div>
-            <!-- 🔥 在hero-overlay中添加副标题 -->
-            <div class="hero-overlay">
-                <p class="hero-subtitle">Matter dissolves, Memory crystallizes.</p>
-            </div>
+            <div class="hero-overlay"></div>
             <a href="#statement" class="scroll-indicator" aria-label="Scroll down">
                 <div class="scroll-arrow"></div>
             </a>
         </section>
 
         <section class="statement-section" id="statement">
+            <!-- 替换为指定文本，并调整字号 -->
             <p class="statement-text" data-lang="en">
-                Zhang Jiarui’s practice operates between  <br> sculptural reduction and site-specific ecological intervention, <br>
-                examing how material, time, and human action reshape fragile systems.
+                Matter dissolves, Memory crystallizes
             </p>
             <p class="statement-text" data-lang="zh" style="display: none;">
-                张家瑞的艺术实践介于雕塑与在场性生态艺术创作之间，<br>
-                探讨物质、时间和人类行为如何重塑脆弱的生态系统。
+                物质消散，记忆结晶
             </p>
         </section>
 
