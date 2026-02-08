@@ -231,15 +231,31 @@
             text-transform: none; /* 取消大写，更贴合文本风格 */
             margin: 0;
             line-height: 1.8;
-            opacity: 0.9;
+            opacity: 0; /* 初始透明，用于渐入动画 */
             filter: blur(0);
-            transform: translateY(0);
+            transform: translateY(20px); /* 初始向下偏移，用于渐入动画 */
             width: 100%;
             max-width: 800px;
             margin: 0 auto;
+            animation: fadeIn 1.5s ease-out 0.5s forwards; /* 渐入动画：延迟0.5s，持续1.5s */
+            white-space: nowrap; /* 强制文字一行显示 */
+            overflow: hidden; /* 隐藏溢出内容 */
+            text-overflow: ellipsis; /* 超长时显示省略号（可选） */
         }
 
-        .hero-title br { display: none; }
+        /* 新增：渐入动画关键帧 */
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            100% {
+                opacity: 0.9;
+                transform: translateY(0);
+            }
+        }
+
+        .hero-title br { display: none !important; } /* 强制隐藏换行符 */
 
         .scroll-indicator {
             position: absolute;
@@ -574,8 +590,9 @@
                 font-size: clamp(14px, 4vw, 22px); /* 移动端响应式：最小14px，最大22px */
                 line-height: 2.0;
                 letter-spacing: 0.2em;
+                white-space: normal; /* 移动端恢复正常换行，保证可读性 */
+                animation: fadeIn 1.5s ease-out 0.5s forwards;
             }
-            .hero-title br { display: block; }
             
             .menu-toggle { display: flex; }
             
@@ -711,7 +728,7 @@
                      onerror="handleImageError(this, 'images/Cover.JPG');"
                      loading="eager">
             </div>
-            <!-- Hero区域添加目标文本 -->
+            <!-- Hero区域添加目标文本 - 移除br标签，确保一行显示 -->
             <div class="hero-overlay">
                 <h1 class="hero-title" data-lang="en">Matter dissolves, Memory crystallizes</h1>
                 <h1 class="hero-title" data-lang="zh" style="display: none;">物质消散，记忆结晶</h1>
