@@ -285,9 +285,31 @@
             margin: 0 auto;
             text-align: center;
             scroll-margin-top: 100px;
+            /* 新增：背景GIF样式 */
+            background-image: url('images/hero-bg.webp');
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-attachment: fixed;
+            position: relative;
         }
-
+        
+        /* 新增：添加半透明遮罩，确保文字可读性 */
+        .statement-section::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.85);
+            z-index: 1;
+        }
+        
+        /* 确保文字显示在遮罩上方 */
         .statement-text {
+            position: relative;
+            z-index: 2;
             font-size: 20px;
             line-height: 1.8;
             font-weight: 300;
@@ -635,7 +657,11 @@
             
             .content-section { padding: 30px 5%; }
             .statement-text { font-size: 16px; }
-            .statement-section { padding: 60px 8% 30px; }
+            .statement-section { 
+                padding: 60px 8% 30px; 
+                /* 移动端调整背景属性，提升性能 */
+                background-attachment: scroll;
+            }
             
             .contact-section { padding: 80px 10%; }
             .contact-row {
