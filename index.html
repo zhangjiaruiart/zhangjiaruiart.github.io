@@ -222,25 +222,25 @@
             pointer-events: none;
         }
 
-        /* Hero区域文本样式 - 适配屏幕 */
+        /* Hero区域文本样式 - 适配屏幕（核心修改：保证文本完整显示） */
         .hero-title {
             color: #fff;
-            font-size: clamp(18px, 3vw, 28px); /* 响应式字号：最小18px，最大28px，中间按视口宽度比例 */
+            font-size: clamp(16px, 2.8vw, 26px); /* 调整字号范围，避免溢出 */
             font-weight: 300;
-            letter-spacing: 0.4em;
-            text-transform: none; /* 取消大写，更贴合文本风格 */
+            letter-spacing: 0.3em; /* 减小字间距，增加文本容纳空间 */
+            text-transform: none;
             margin: 0;
             line-height: 1.8;
-            opacity: 0; /* 初始透明，用于渐入动画 */
+            opacity: 0;
             filter: blur(0);
-            transform: translateY(20px); /* 初始向下偏移，用于渐入动画 */
+            transform: translateY(20px);
             width: 100%;
-            max-width: 800px;
+            max-width: 900px; /* 增大最大宽度，容纳完整文本 */
             margin: 0 auto;
-            animation: fadeIn 1.5s ease-out 0.5s forwards; /* 渐入动画：延迟0.5s，持续1.5s */
-            white-space: nowrap; /* 强制文字一行显示 */
-            overflow: hidden; /* 隐藏溢出内容 */
-            text-overflow: ellipsis; /* 超长时显示省略号（可选） */
+            animation: fadeIn 1.5s ease-out 0.5s forwards;
+            white-space: nowrap; /* 保持一行显示 */
+            overflow: visible; /* 关键修改：不隐藏溢出内容 */
+            /* 移除省略号，避免文本截断 */
         }
 
         /* 新增：渐入动画关键帧 */
@@ -255,7 +255,7 @@
             }
         }
 
-        .hero-title br { display: none !important; } /* 强制隐藏换行符 */
+        .hero-title br { display: none !important; }
 
         .scroll-indicator {
             position: absolute;
@@ -587,11 +587,13 @@
         @media (max-width: 900px) {
             .hero-overlay { top: 40%; }
             .hero-title {
-                font-size: clamp(14px, 4vw, 22px); /* 移动端响应式：最小14px，最大22px */
+                font-size: clamp(14px, 3.5vw, 20px); /* 调整移动端字号，更紧凑 */
                 line-height: 2.0;
                 letter-spacing: 0.2em;
-                white-space: normal; /* 移动端恢复正常换行，保证可读性 */
+                white-space: normal; /* 移动端允许换行，保证完整显示 */
                 animation: fadeIn 1.5s ease-out 0.5s forwards;
+                overflow: visible;
+                max-width: 95%; /* 移动端使用更宽的宽度 */
             }
             
             .menu-toggle { display: flex; }
