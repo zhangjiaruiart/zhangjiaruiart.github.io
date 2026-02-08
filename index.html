@@ -222,6 +222,24 @@
             pointer-events: none;
         }
 
+        /* 🔥 新增：hero副标题样式 + 渐隐动画 */
+        .hero-subtitle {
+            color: #fff;
+            font-size: 16px;
+            font-weight: 300;
+            letter-spacing: 0.2em;
+            line-height: 1.8;
+            opacity: 0;
+            animation: fadeIn 3s ease-in-out 1s forwards; /* 1s延迟后渐隐出现，持续3s */
+            margin-bottom: 20px;
+        }
+
+        /* 🔥 新增：渐隐动画关键帧 */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
         .hero-title {
             color: #fff;
             font-size: 18px;
@@ -566,6 +584,13 @@
         /* 媒体查询 - 响应式适配 */
         @media (max-width: 900px) {
             .hero-overlay { top: 40%; }
+            
+            /* 🔥 移动端适配新增的副标题 */
+            .hero-subtitle {
+                font-size: 14px;
+                letter-spacing: 0.15em;
+            }
+
             .hero-title {
                 font-size: 14.4px;
                 line-height: 2.2;
@@ -707,7 +732,10 @@
                      onerror="handleImageError(this, 'images/Cover.JPG');"
                      loading="eager">
             </div>
-            <div class="hero-overlay"></div>
+            <!-- 🔥 在hero-overlay中添加副标题 -->
+            <div class="hero-overlay">
+                <p class="hero-subtitle">Matter dissolves, Memory crystallizes.</p>
+            </div>
             <a href="#statement" class="scroll-indicator" aria-label="Scroll down">
                 <div class="scroll-arrow"></div>
             </a>
