@@ -625,6 +625,9 @@
                 max-width: 95%; /* 移动端使用更宽的宽度 */
             }
             
+            /* 核心修改：移动端恢复br标签显示，实现文字分行 */
+            .hero-title br { display: block !important; }
+            
             .menu-toggle { display: flex; }
             
             .nav-links {
@@ -764,10 +767,10 @@
                      onerror="handleImageError(this, 'images/Cover.JPG');"
                      loading="eager">
             </div>
-            <!-- Hero区域添加目标文本 - 移除br标签，确保一行显示 -->
+            <!-- Hero区域添加目标文本 - 恢复br标签实现移动端分行 -->
             <div class="hero-overlay">
-                <h1 class="hero-title" data-lang="en">Matter dissolves, Memory crystallizes</h1>
-                <h1 class="hero-title" data-lang="zh" style="display: none;">物质消散，记忆结晶</h1>
+                <h1 class="hero-title" data-lang="en">Matter dissolves,<br>Memory crystallizes</h1>
+                <h1 class="hero-title" data-lang="zh" style="display: none;">物质消散，<br>记忆结晶</h1>
             </div>
             <a href="#statement" class="scroll-indicator" aria-label="Scroll down">
                 <div class="scroll-arrow"></div>
