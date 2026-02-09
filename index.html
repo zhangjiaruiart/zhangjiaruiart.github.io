@@ -614,18 +614,32 @@
 
         /* 媒体查询 - 响应式适配 */
         @media (max-width: 900px) {
-            .hero-overlay { top: 40%; }
-            .hero-title {
-                font-size: clamp(16px, 5.5vw, 22px); /* 修改：手机端字号增大两号 */
-                line-height: 2.0;
-                letter-spacing: 0.2em;
-                white-space: normal; /* 移动端允许换行，保证完整显示 */
-                animation: fadeIn 1.5s ease-out 0.5s forwards;
-                overflow: visible;
-                max-width: 95%; /* 移动端使用更宽的宽度 */
+            /* ========== 修复黑条核心修改 ========== */
+            .hero {
+                height: 100svh; /* 使用svh替代vh，适配移动端视口 */
+                min-height: -webkit-fill-available; /* 兼容iOS */
             }
             
-            /* 核心修改：移动端恢复br标签显示，实现文字分行 */
+            .statement-section {
+                padding: 60px 5% 60px;
+                background-attachment: local; /* 改为local避免滚动间隙 */
+                min-height: 100svh; /* 匹配hero高度，消除间隙 */
+                text-align: left;
+                margin-top: -1px; /* 抵消可能的1px间隙 */
+                background-position: top center; /* 背景从顶部开始，避免黑条 */
+            }
+            
+            .hero-overlay { top: 40%; }
+            .hero-title {
+                font-size: clamp(16px, 5.5vw, 22px);
+                line-height: 2.0;
+                letter-spacing: 0.2em;
+                white-space: normal;
+                animation: fadeIn 1.5s ease-out 0.5s forwards;
+                overflow: visible;
+                max-width: 95%;
+            }
+            
             .hero-title br { display: block !important; }
             
             .menu-toggle { display: flex; }
@@ -651,7 +665,6 @@
                 font-size: 14px;
             }
             
-            /* 移动端语言切换按钮样式调整 */
             .language-switch {
                 margin: 20px 0;
             }
@@ -667,26 +680,18 @@
             
             .content-section { padding: 30px 5%; }
             
-            /* ========== 核心修改：移动端statement-text英文排版优化 ========== */
+            /* ========== 移动端statement-text英文排版优化 ========== */
             .statement-text { 
-                font-size: 18px;          /* 合适的移动端字号 */
-                line-height: 2.2;         /* 增加行高，优化英文阅读体验 */
-                letter-spacing: 0.005em;  /* 极小的字间距，适配英文排版 */
-                word-spacing: 0.05em;     /* 增加单词间距，提升可读性 */
-                padding: 0 8%;            /* 增加左右内边距，避免文字贴边 */
-                text-align: left;         /* 左对齐更符合英文阅读习惯 */
-                max-width: 100%;          /* 利用全屏宽度 */
-                transform: translateY(0); /* 取消向上偏移，居中显示 */
-                hyphens: auto;            /* 自动连字符，优化长单词换行 */
-                white-space: normal;      /* 正常换行 */
-            }
-            
-            .statement-section { 
-                padding: 60px 5% 60px;    /* 调整上下内边距，平衡布局 */
-                /* 移动端调整背景属性，提升性能 */
-                background-attachment: scroll;
-                min-height: 70vh;         /* 增加最小高度，保证内容展示 */
-                text-align: left;         /* 统一文本对齐方式 */
+                font-size: 18px;
+                line-height: 2.2;
+                letter-spacing: 0.005em;
+                word-spacing: 0.05em;
+                padding: 0 8%;
+                text-align: left;
+                max-width: 100%;
+                transform: translateY(0);
+                hyphens: auto;
+                white-space: normal;
             }
             
             .contact-section { padding: 80px 10%; }
@@ -714,7 +719,6 @@
                 visibility: visible;
             }
 
-            /* 关键修改：手机端series5图片放大25% (0.6 → 0.75) */
             .series5-wrapper img {
                 transform: scale(0.75); 
                 object-fit: contain;
@@ -737,11 +741,9 @@
                 object-fit: contain;
                 opacity: 1;
             }
-            /* 核心修改：电脑端中文导航链接字体增大为15px（比原来的10px大两号） */
             .nav-links.zh a {
                 font-size: 15px;
             }
-            /* 修改：电脑端statement文字向上移动25% */
             .statement-text {
                 transform: translateY(-25%);
             }
