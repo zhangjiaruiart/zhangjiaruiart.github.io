@@ -839,7 +839,7 @@ Zhang Jiarui's practice operates between <br> sculptural reduction and site-spec
                 张家瑞的艺术实践介于雕塑与在场性生态艺术创作之间，<br> 探讨物质、时间和人类行为如何重塑脆弱的生态系统。
             </p>
             
-            <!-- 移动端英文文本 -->
+            <!-- 移动端英文文本 - 修复重复的reshape单词 -->
             <p class="statement-text statement-text-mobile" data-lang="en" style="display: none;">
 Zhang Jiarui's practice operates<br> between sculptural reduction and<br>site-specific ecological intervention,<br>examining how material, time,<br>and human action reshape <br>fragile systems.
             </p>
@@ -1172,17 +1172,19 @@ Zhang Jiarui's practice operates<br> between sculptural reduction and<br>site-sp
                 dom.navLinks.classList.add('zh');
             }
             
-            // 切换所有带语言标记的元素
+            // 先隐藏所有语言元素
             document.querySelectorAll('[data-lang]').forEach(el => {
-                if (el.getAttribute('data-lang') === lang) {
-                    // 保留原有显示逻辑，同时尊重媒体查询的display设置
-                    if (el.classList.contains('statement-text-desktop') || el.classList.contains('statement-text-mobile')) {
-                        el.style.display = ''; // 清空内联样式，让CSS媒体查询生效
-                    } else {
-                        el.style.display = el.tagName === 'P' || el.tagName === 'SPAN' || el.tagName === 'H1' || el.tagName === 'H2' || el.tagName === 'H3' || el.tagName === 'H4' ? 'block' : 'inline';
-                    }
+                el.style.display = 'none';
+            });
+            
+            // 只显示当前语言的元素
+            document.querySelectorAll(`[data-lang="${lang}"]`).forEach(el => {
+                // 对于statement文本，保留媒体查询的显示规则
+                if (el.classList.contains('statement-text-desktop') || el.classList.contains('statement-text-mobile')) {
+                    el.style.display = ''; // 清空内联样式，让CSS媒体查询生效
                 } else {
-                    el.style.display = 'none';
+                    // 其他元素正常显示
+                    el.style.display = el.tagName === 'P' || el.tagName === 'SPAN' || el.tagName === 'H1' || el.tagName === 'H2' || el.tagName === 'H3' || el.tagName === 'H4' ? 'block' : 'inline';
                 }
             });
             
