@@ -318,7 +318,7 @@
             font-size: 20px;
             line-height: 1.8;
             font-weight: 300;
-            color: #222;
+            color: #fff; /* 修改：文字改为白色 */
             letter-spacing: 0.02em;
             font-style: italic;
             opacity: 1;
@@ -616,7 +616,7 @@
         @media (max-width: 900px) {
             .hero-overlay { top: 40%; }
             .hero-title {
-                font-size: clamp(14px, 3.5vw, 20px); /* 调整移动端字号，更紧凑 */
+                font-size: clamp(16px, 5.5vw, 22px); /* 修改：手机端字号增大两号 */
                 line-height: 2.0;
                 letter-spacing: 0.2em;
                 white-space: normal; /* 移动端允许换行，保证完整显示 */
@@ -725,6 +725,10 @@
             /* 核心修改：电脑端中文导航链接字体增大为12px（比原来的10px大两号） */
             .nav-links.zh a {
                 font-size: 12px;
+            }
+            /* 修改：电脑端statement文字向上移动5% */
+            .statement-text {
+                transform: translateY(-5%);
             }
         }
 
