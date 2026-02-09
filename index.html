@@ -667,15 +667,18 @@
             
             .content-section { padding: 30px 5%; }
             
-            /* ========== 核心修改：移动端statement-text样式优化 ========== */
+            /* ========== 核心修改：移动端statement-text英文排版优化 ========== */
             .statement-text { 
-                font-size: 18px;          /* 增大移动端字号，提升可读性 */
-                line-height: 2.0;         /* 增加行高，优化阅读体验 */
-                letter-spacing: 0.01em;   /* 减小字间距，适配手机屏幕 */
+                font-size: 18px;          /* 合适的移动端字号 */
+                line-height: 2.2;         /* 增加行高，优化英文阅读体验 */
+                letter-spacing: 0.005em;  /* 极小的字间距，适配英文排版 */
+                word-spacing: 0.05em;     /* 增加单词间距，提升可读性 */
                 padding: 0 8%;            /* 增加左右内边距，避免文字贴边 */
-                text-align: left;         /* 左对齐更符合移动端阅读习惯 */
+                text-align: left;         /* 左对齐更符合英文阅读习惯 */
                 max-width: 100%;          /* 利用全屏宽度 */
                 transform: translateY(0); /* 取消向上偏移，居中显示 */
+                hyphens: auto;            /* 自动连字符，优化长单词换行 */
+                white-space: normal;      /* 正常换行 */
             }
             
             .statement-section { 
