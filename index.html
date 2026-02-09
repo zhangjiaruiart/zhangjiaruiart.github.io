@@ -298,7 +298,7 @@
             align-items: center;
             justify-content: center;
         }
-        
+
         /* 新增：添加半透明遮罩，确保文字可读性 - 修改透明度从0.85改为0.05 */
         .statement-section::before {
             content: "";
@@ -310,7 +310,7 @@
             background-color: rgba(255, 255, 255, 0.05); /* 修改：降低透明度，让背景更清晰 */
             z-index: 1;
         }
-        
+
         /* 确保文字显示在遮罩上方 */
         .statement-text {
             position: relative;
@@ -331,7 +331,7 @@
         .statement-text-desktop {
             display: block;
         }
-        
+
         /* 移动端statement文本样式 */
         .statement-text-mobile {
             display: none;
@@ -629,7 +629,7 @@
                 height: 100svh; /* 使用svh替代vh，适配移动端视口 */
                 min-height: -webkit-fill-available; /* 兼容iOS */
             }
-            
+
             .statement-section {
                 padding: 60px 5% 60px;
                 background-attachment: local; /* 改为local避免滚动间隙 */
@@ -638,16 +638,16 @@
                 margin-top: -1px; /* 抵消可能的1px间隙 */
                 background-position: top center; /* 背景从顶部开始，避免黑条 */
             }
-            
+
             /* 切换移动端/电脑端文本显示 */
             .statement-text-desktop {
                 display: none !important;
             }
-            
+
             .statement-text-mobile {
                 display: block !important;
             }
-            
+
             .hero-overlay { top: 40%; }
             .hero-title {
                 font-size: clamp(16px, 5.5vw, 22px);
@@ -658,11 +658,11 @@
                 overflow: visible;
                 max-width: 95%;
             }
-            
+
             .hero-title br { display: block !important; }
-            
+
             .menu-toggle { display: flex; }
-            
+
             .nav-links {
                 position: fixed;
                 inset: 0 0 0 auto;
@@ -675,30 +675,30 @@
                 transition: 0.5s cubic-bezier(0.2, 1, 0.3, 1);
                 transform: translateX(100%);
             }
-            
+
             .nav-links.active { transform: translateX(0); }
-            
+
             .nav-links a {
                 color: var(--main-color) !important;
                 margin: 20px 0;
                 font-size: 14px;
             }
-            
+
             .language-switch {
                 margin: 20px 0;
             }
-            
+
             .lang-btn {
                 font-size: 14px;
             }
-            
+
             .grid, .grid-sculpture-custom {
                 grid-template-columns: 1fr;
                 gap: 40px;
             }
-            
+
             .content-section { padding: 30px 5%; }
-            
+
             /* ========== 移动端statement-text英文排版优化 ========== */
             .statement-text { 
                 font-size: 18px;
@@ -712,7 +712,7 @@
                 hyphens: auto;
                 white-space: normal;
             }
-            
+
             /* 移动端英文statement换行优化，避免between后空行 */
             .statement-text[data-lang="en"] {
                 text-align: left;
@@ -723,7 +723,7 @@
                 word-wrap: break-word;
                 overflow-wrap: break-word;
             }
-            
+
             .contact-section { padding: 80px 10%; }
             .contact-row {
                 flex-direction: column;
@@ -734,16 +734,16 @@
                 font-size: 15px;
                 padding: 8px 0;
             }
-            
+
             #back-to-top {
                 bottom: 30px;
                 right: 20px;
                 width: 36px;
                 height: 36px;
             }
-            
+
             .hero img { animation: kenBurnsMobile 20s ease-in-out infinite alternate; }
-            
+
             .project img, .project-image-wrapper {
                 display: block;
                 visibility: visible;
@@ -830,22 +830,25 @@
 
         <!-- statement部分 - 区分电脑端和移动端文本 -->
         <section class="statement-section" id="statement">
+            <!-- 电脑端英文文本 -->
             <!-- 电脑端英文文本 - 保留不变 -->
             <p class="statement-text statement-text-desktop" data-lang="en">
 Zhang Jiarui's practice operates between <br> sculptural reduction and site-specific ecological intervention,<br>examining how material, time, and human action reshape fragile systems.
             </p>
+            <!-- 电脑端中文文本 -->
             <!-- 电脑端中文文本 - 保留不变 -->
             <p class="statement-text statement-text-desktop" data-lang="zh" style="display: none;">
                 张家瑞的艺术实践介于雕塑与在场性生态艺术创作之间，<br> 探讨物质、时间和人类行为如何重塑脆弱的生态系统。
             </p>
-            
-            <!-- 移动端英文文本 - 添加指定内容 -->
+
+            <!-- 移动端英文文本 - 使用指定的分行文本 -->
             <p class="statement-text statement-text-mobile" data-lang="en" style="display: none;">
 Zhang Jiarui's practice operates<br> between sculptural reduction and<br>site-specific ecological intervention,<br>examining how material, time,<br>and human action reshape <br>reshape fragile systems.
             </p>
-            <!-- 移动端中文文本 - 添加指定翻译内容 -->
+            <!-- 移动端中文文本 -->
+            <!-- 移动端中文文本 - 清空内容 -->
             <p class="statement-text statement-text-mobile" data-lang="zh" style="display: none;">
-张家瑞的艺术实践介于<br> 雕塑与在场性生态艺术创作之间，<br>探讨物质、时间和人类行为<br> 如何重塑脆弱的生态系统。
+                张家瑞的艺术实践介于<br> 雕塑与在场性生态艺术创作之间，<br>探讨物质、时间和人类行为<br> 如何重塑脆弱的生态系统。
             </p>
         </section>
 
@@ -1092,7 +1095,7 @@ Zhang Jiarui's practice operates<br> between sculptural reduction and<br>site-sp
                 const maxOffset = 20;
                 const x = Math.max(-maxOffset, Math.min(maxOffset, (e.clientX - window.innerWidth / 2) / 50));
                 const y = Math.max(-maxOffset, Math.min(maxOffset, (e.clientY - window.innerHeight / 2) / 50));
-                
+
                 requestAnimationFrame(() => {
                     dom.heroImgWrap.style.transform = `translate(${-x}px, ${-y}px)`;
                 });
@@ -1104,7 +1107,7 @@ Zhang Jiarui's practice operates<br> between sculptural reduction and<br>site-sp
             const isScrolled = scrollY > 50;
             dom.nav.classList.toggle("nav-scrolled", isScrolled);
             dom.btt.classList.toggle("visible", isScrolled);
-            
+
             // 滚动隐藏/显示导航
             if (scrollY > dom.lastScrollY && scrollY > 200) {
                 dom.nav.style.transform = "translateY(-100%)";
@@ -1129,14 +1132,14 @@ Zhang Jiarui's practice operates<br> between sculptural reduction and<br>site-sp
                 textArea.style.left = "-999999px";
                 document.body.appendChild(textArea);
                 textArea.select();
-                
+
                 try {
                     document.execCommand('copy');
                     showToast();
                 } catch (err) {
                     alert('复制失败，请手动复制：' + text);
                 }
-                
+
                 document.body.removeChild(textArea);
             }
         };
@@ -1171,7 +1174,7 @@ Zhang Jiarui's practice operates<br> between sculptural reduction and<br>site-sp
                 // 添加中文导航栏字体放大类
                 dom.navLinks.classList.add('zh');
             }
-            
+
             // 切换所有带语言标记的元素
             document.querySelectorAll('[data-lang]').forEach(el => {
                 if (el.getAttribute('data-lang') === lang) {
@@ -1185,13 +1188,13 @@ Zhang Jiarui's practice operates<br> between sculptural reduction and<br>site-sp
                     el.style.display = 'none';
                 }
             });
-            
+
             // 强制隐藏另一套语言的statement文本，解决移动端中英文同时显示的问题
             const otherLang = lang === 'en' ? 'zh' : 'en';
             document.querySelectorAll(`[data-lang="${otherLang}"].statement-text-desktop, [data-lang="${otherLang}"].statement-text-mobile`).forEach(el => {
                 el.style.display = 'none';
             });
-            
+
             // 更新导航链接文本
             const navLinks = document.querySelectorAll('.nav-links a');
             if (lang === 'zh') {
@@ -1211,14 +1214,14 @@ Zhang Jiarui's practice operates<br> between sculptural reduction and<br>site-sp
                 // 恢复logo
                 document.querySelector('.logo').textContent = 'ZHANGJIARUI ARTWORKS';
             }
-            
+
             // 更新页面标题
             if (lang === 'zh') {
                 document.title = '张家瑞 | 艺术家 - 生态艺术、雕塑与项目';
             } else {
                 document.title = 'ZHANG JIARUI | ARTIST - Ecological Art, Sculpture, and Projects';
             }
-            
+
             // 保存语言偏好到本地存储
             localStorage.setItem('preferredLanguage', lang);
         };
@@ -1233,7 +1236,7 @@ Zhang Jiarui's practice operates<br> between sculptural reduction and<br>site-sp
 
             // 初始化滚动监听
             initScrollObserver();
-            
+
             // 初始化鼠标跟随（仅桌面端）
             if (window.innerWidth > 900 && dom.heroSection && dom.heroImgWrap) {
                 initMouseFollow();
@@ -1242,7 +1245,7 @@ Zhang Jiarui's practice operates<br> between sculptural reduction and<br>site-sp
             // 更新导航状态
             updateNavStatus(window.pageYOffset || document.documentElement.scrollTop);
             document.body.classList.add('page-loaded');
-            
+
             // 初始化语言设置
             const savedLang = localStorage.getItem('preferredLanguage') || 'en';
             switchLanguage(savedLang);
@@ -1256,12 +1259,12 @@ Zhang Jiarui's practice operates<br> between sculptural reduction and<br>site-sp
                 window.requestAnimationFrame(() => {
                     const scrollY = window.pageYOffset || document.documentElement.scrollTop;
                     const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-                    
+
                     // 更新进度条
                     dom.progress.style.width = (scrollY / height) * 100 + "%";
                     // 更新导航状态
                     updateNavStatus(scrollY);
-                    
+
                     ticking = false;
                 });
                 ticking = true;
