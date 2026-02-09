@@ -680,6 +680,8 @@
                 letter-spacing: 0.1em; /* 中文增加字间距 */
                 text-align: left; /* 左对齐更符合中文阅读习惯 */
                 max-width: 85%; /* 限制最大宽度避免行过长 */
+                /* 强制换行的关键样式 */
+                white-space: pre-line;
             }
             .statement-section { 
                 padding: 60px 8% 30px; 
@@ -745,6 +747,10 @@
             .statement-text {
                 transform: translateY(-25%);
             }
+            /* 电脑端强制取消换行 */
+            .statement-text[data-lang="zh"] {
+                white-space: normal;
+            }
         }
 
         @media (max-width: 600px) {
@@ -796,15 +802,17 @@
             </a>
         </section>
 
-        <!-- 恢复statement部分原始文字 -->
+        <!-- 恢复statement部分原始文字 - 修改中文文本强制分行 -->
         <section class="statement-section" id="statement">
             <p class="statement-text" data-lang="en">
                 Zhang Jiarui’s practice operates between  <br> sculptural reduction and site-specific ecological intervention, <br>
                 examing how material, time, and human action reshape fragile systems.
             </p>
             <p class="statement-text" data-lang="zh" style="display: none;">
-                张家瑞的艺术实践介于雕塑与在场性生态艺术创作之间，<br>
-                探讨物质、时间和人类行为如何重塑脆弱的生态系统。
+                张家瑞的艺术实践介于雕塑
+                与在场性生态艺术创作之间，
+                探讨物质、时间和人类行为
+                如何重塑脆弱的生态系统。
             </p>
         </section>
 
