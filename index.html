@@ -765,13 +765,13 @@
                 <a href="#eco-art" onclick="closeMenu()">Ecological Art</a>
                 <a href="#sculpture" onclick="closeMenu()">Sculpture</a>
                 <a href="#projects" onclick="closeMenu()">Projects</a>
-                <a href="biography.html">BIOGRAPHY</a>
+                <a href="biography.html" onclick="closeMenu()">BIOGRAPHY</a>
                 <a href="#contact" onclick="closeMenu()">Contact</a>
-                <!-- 新增：语言切换按钮 -->
+                <!-- 新增：语言切换按钮 - 增加onclick调用closeMenu() -->
                 <div class="language-switch">
-                    <button class="lang-btn active" id="lang-en" onclick="switchLanguage('en')">English</button>
+                    <button class="lang-btn active" id="lang-en" onclick="switchLanguage('en'); closeMenu();">English</button>
                     <span class="lang-separator">|</span>
-                    <button class="lang-btn" id="lang-zh" onclick="switchLanguage('zh')">中文</button>
+                    <button class="lang-btn" id="lang-zh" onclick="switchLanguage('zh'); closeMenu();">中文</button>
                 </div>
             </div>
             <div class="menu-toggle" id="menuToggle">
