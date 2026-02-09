@@ -666,12 +666,27 @@
             }
             
             .content-section { padding: 30px 5%; }
-            .statement-text { font-size: 16px; }
+            /* 核心修改：手机端statement中文排版优化 */
+            .statement-text { 
+                font-size: 16px;
+                line-height: 2.2; /* 增大行高提升可读性 */
+                letter-spacing: 0.05em; /* 增加少量字间距 */
+                padding: 0 8%; /* 增加左右内边距避免文字贴边 */
+            }
+            /* 单独优化手机端中文statement样式 */
+            .statement-text[data-lang="zh"] {
+                font-size: 15px; /* 中文字号稍小更协调 */
+                line-height: 2.4; /* 中文行高更大提升阅读体验 */
+                letter-spacing: 0.1em; /* 中文增加字间距 */
+                text-align: left; /* 左对齐更符合中文阅读习惯 */
+                max-width: 85%; /* 限制最大宽度避免行过长 */
+            }
             .statement-section { 
                 padding: 60px 8% 30px; 
                 /* 移动端调整背景属性，提升性能 */
                 background-attachment: scroll;
                 min-height: 50vh; /* 移动端调整最小高度 */
+                text-align: left; /* 适配中文左对齐 */
             }
             
             .contact-section { padding: 80px 10%; }
@@ -752,9 +767,9 @@
                 <a href="#contact" onclick="closeMenu()">Contact</a>
                 <!-- 新增：语言切换按钮 -->
                 <div class="language-switch">
-                    <button class="lang-btn active" id="lang-en" onclick="switchLanguage('en')">English</button>
+                    <button class="lang-btn active" id="lang-en" onclick="switchLanguage('en'); closeMenu();">English</button>
                     <span class="lang-separator">|</span>
-                    <button class="lang-btn" id="lang-zh" onclick="switchLanguage('zh')">中文</button>
+                    <button class="lang-btn" id="lang-zh" onclick="switchLanguage('zh'); closeMenu();">中文</button>
                 </div>
             </div>
             <div class="menu-toggle" id="menuToggle">
