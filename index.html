@@ -1172,20 +1172,24 @@ Zhang Jiarui's practice operates<br> between sculptural reduction and<br>site-sp
                 dom.navLinks.classList.add('zh');
             }
             
-            // 先隐藏所有语言元素
+            // 切换所有带语言标记的元素
             document.querySelectorAll('[data-lang]').forEach(el => {
-                el.style.display = 'none';
+                if (el.getAttribute('data-lang') === lang) {
+                    // 对于statement文本，保留媒体查询的显示规则
+                    if (el.classList.contains('statement-text-desktop') || el.classList.contains('statement-text-mobile')) {
+                        el.style.display = ''; // 清空内联样式，让CSS媒体查询生效
+                    } else {
+                        el.style.display = el.tagName === 'P' || el.tagName === 'SPAN' || el.tagName === 'H1' || el.tagName === 'H2' || el.tagName === 'H3' || el.tagName === 'H4' ? 'block' : 'inline';
+                    }
+                } else {
+                    el.style.display = 'none';
+                }
             });
             
-            // 只显示当前语言的元素
-            document.querySelectorAll(`[data-lang="${lang}"]`).forEach(el => {
-                // 对于statement文本，保留媒体查询的显示规则
-                if (el.classList.contains('statement-text-desktop') || el.classList.contains('statement-text-mobile')) {
-                    el.style.display = ''; // 清空内联样式，让CSS媒体查询生效
-                } else {
-                    // 其他元素正常显示
-                    el.style.display = el.tagName === 'P' || el.tagName === 'SPAN' || el.tagName === 'H1' || el.tagName === 'H2' || el.tagName === 'H3' || el.tagName === 'H4' ? 'block' : 'inline';
-                }
+            // 强制隐藏另一套语言的statement文本，解决移动端中英文同时显示的问题
+            const otherLang = lang === 'en' ? 'zh' : 'en';
+            document.querySelectorAll(`[data-lang="${otherLang}"].statement-text-desktop, [data-lang="${otherLang}"].statement-text-mobile`).forEach(el => {
+                el.style.display = 'none';
             });
             
             // 更新导航链接文本
