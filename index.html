@@ -641,11 +641,11 @@
             
             /* 切换移动端/电脑端文本显示 */
             .statement-text-desktop {
-                display: none;
+                display: none !important;
             }
             
             .statement-text-mobile {
-                display: block;
+                display: block !important;
             }
             
             .hero-overlay { top: 40%; }
@@ -1175,7 +1175,12 @@ Zhang Jiarui's practice operates<br> between sculptural reduction and<br>site-sp
             // 切换所有带语言标记的元素
             document.querySelectorAll('[data-lang]').forEach(el => {
                 if (el.getAttribute('data-lang') === lang) {
-                    el.style.display = el.tagName === 'P' || el.tagName === 'SPAN' || el.tagName === 'H1' || el.tagName === 'H2' || el.tagName === 'H3' || el.tagName === 'H4' ? 'block' : 'inline';
+                    // 保留原有显示逻辑，同时尊重媒体查询的display设置
+                    if (el.classList.contains('statement-text-desktop') || el.classList.contains('statement-text-mobile')) {
+                        el.style.display = ''; // 清空内联样式，让CSS媒体查询生效
+                    } else {
+                        el.style.display = el.tagName === 'P' || el.tagName === 'SPAN' || el.tagName === 'H1' || el.tagName === 'H2' || el.tagName === 'H3' || el.tagName === 'H4' ? 'block' : 'inline';
+                    }
                 } else {
                     el.style.display = 'none';
                 }
