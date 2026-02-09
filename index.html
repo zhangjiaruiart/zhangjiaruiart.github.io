@@ -311,22 +311,20 @@
             z-index: 1;
         }
         
-        /* 确保文字显示在遮罩上方 - 核心优化：提升statement文字排版高级感 */
+        /* 确保文字显示在遮罩上方 */
         .statement-text {
             position: relative;
             z-index: 2;
-            font-size: 24px; /* 增大基础字号，提升高级感 */
-            line-height: 2.0; /* 优化行高，增加呼吸感 */
+            font-size: 24px;
+            line-height: 1.8;
             font-weight: 300;
             color: #fff; /* 修改：文字改为白色 */
-            letter-spacing: 0.03em; /* 微调字间距，提升精致感 */
+            letter-spacing: 0.02em;
             font-style: italic;
             opacity: 1;
             transform: translateY(0);
-            max-width: 800px; /* 优化最大宽度，避免行过长 */
+            max-width: 900px; /* 保留文字区域的最大宽度 */
             margin: 0 auto;
-            text-rendering: optimizeLegibility; /* 优化文字渲染 */
-            -webkit-font-smoothing: antialiased; /* 抗锯齿 */
         }
 
         .content-section {
@@ -668,31 +666,12 @@
             }
             
             .content-section { padding: 30px 5%; }
-            /* 核心优化：手机端statement中文排版高级感 */
-            .statement-text { 
-                font-size: 18px; /* 移动端优化字号 */
-                line-height: 2.2; /* 优化行高，提升阅读体验 */
-                letter-spacing: 0.05em; /* 增加少量字间距 */
-                padding: 0 8%; /* 增加左右内边距避免文字贴边 */
-                max-width: 90%; /* 移动端放宽宽度限制 */
-            }
-            /* 单独优化手机端中文statement样式 */
-            .statement-text[data-lang="zh"] {
-                font-size: 17px; /* 中文字号优化 */
-                line-height: 2.4; /* 中文行高更大提升阅读体验 */
-                letter-spacing: 0.1em; /* 中文增加字间距 */
-                text-align: left; /* 左对齐更符合中文阅读习惯 */
-                max-width: 85%; /* 限制最大宽度避免行过长 */
-                /* 强制换行的关键样式 */
-                white-space: pre-line;
-            }
+            .statement-text { font-size: 16px; }
             .statement-section { 
                 padding: 60px 8% 30px; 
                 /* 移动端调整背景属性，提升性能 */
                 background-attachment: scroll;
                 min-height: 50vh; /* 移动端调整最小高度 */
-                text-align: left; /* 适配中文左对齐 */
-                justify-content: flex-start; /* 移动端文字靠上对齐 */
             }
             
             .contact-section { padding: 80px 10%; }
@@ -747,21 +726,9 @@
             .nav-links.zh a {
                 font-size: 15px;
             }
-            /* 优化：电脑端statement文字排版 */
+            /* 修改：电脑端statement文字向上移动25% */
             .statement-text {
-                transform: translateY(-25%); /* 保持向上偏移 */
-                font-size: 28px; /* 电脑端更大字号，提升高级感 */
-                line-height: 2.1; /* 优化行高 */
-                letter-spacing: 0.02em; /* 微调字间距 */
-                text-align: center; /* 电脑端居中对齐 */
-            }
-            /* 电脑端强制取消换行 */
-            .statement-text[data-lang="zh"] {
-                white-space: normal;
-                font-size: 26px; /* 中文字号略小，更协调 */
-                line-height: 2.2; /* 中文行高优化 */
-                letter-spacing: 0.08em; /* 中文字间距优化 */
-                text-align: center; /* 中文电脑端也居中 */
+                transform: translateY(-25%);
             }
         }
 
@@ -785,9 +752,9 @@
                 <a href="#contact" onclick="closeMenu()">Contact</a>
                 <!-- 新增：语言切换按钮 -->
                 <div class="language-switch">
-                    <button class="lang-btn active" id="lang-en" onclick="switchLanguage('en'); closeMenu();">English</button>
+                    <button class="lang-btn active" id="lang-en" onclick="switchLanguage('en')">English</button>
                     <span class="lang-separator">|</span>
-                    <button class="lang-btn" id="lang-zh" onclick="switchLanguage('zh'); closeMenu();">中文</button>
+                    <button class="lang-btn" id="lang-zh" onclick="switchLanguage('zh')">中文</button>
                 </div>
             </div>
             <div class="menu-toggle" id="menuToggle">
@@ -814,17 +781,15 @@
             </a>
         </section>
 
-        <!-- 恢复statement部分原始文字 - 修改中文文本强制分行 -->
+        <!-- 恢复statement部分原始文字 -->
         <section class="statement-section" id="statement">
             <p class="statement-text" data-lang="en">
                 Zhang Jiarui’s practice operates between  <br> sculptural reduction and site-specific ecological intervention, <br>
                 examing how material, time, and human action reshape fragile systems.
             </p>
             <p class="statement-text" data-lang="zh" style="display: none;">
-                张家瑞的艺术实践介于雕塑
-                与在场性生态艺术创作之间，
-                探讨物质、时间和人类行为
-                如何重塑脆弱的生态系统。
+                张家瑞的艺术实践介于雕塑与在场性生态艺术创作之间，<br>
+                探讨物质、时间和人类行为如何重塑脆弱的生态系统。
             </p>
         </section>
 
