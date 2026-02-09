@@ -694,6 +694,17 @@
                 white-space: normal;
             }
             
+            /* 移动端英文statement换行优化，避免between后空行 */
+            .statement-text[data-lang="en"] {
+                text-align: left;
+                line-height: 2.4;
+                padding: 0 8%;
+                max-width: 100%;
+                white-space: pre-line;
+                word-wrap: break-word;
+                overflow-wrap: break-word;
+            }
+            
             .contact-section { padding: 80px 10%; }
             .contact-row {
                 flex-direction: column;
@@ -801,8 +812,8 @@
         <!-- 恢复statement部分原始文字，优化移动端换行语义 -->
         <section class="statement-section" id="statement">
             <p class="statement-text" data-lang="en">
-                Zhang Jiarui's practice operates between <br> sculptural reduction and site-specific ecological intervention,<br>
-                examining how material, time, and human action reshape fragile systems.
+Zhang Jiarui's practice operates between sculptural reduction and site-specific ecological intervention,
+examining how material, time, and human action reshape fragile systems.
             </p>
             <p class="statement-text" data-lang="zh" style="display: none;">
                 张家瑞的艺术实践介于雕塑与在场性生态艺术创作之间，<br>
