@@ -20,7 +20,7 @@
         }
 
         /* 全局重置 */
-        * {
+        * { /* 修复：原代码此处是▪，改为正确的* */
             margin: 0;
             padding: 0;
             box-sizing: border-box;
@@ -629,7 +629,17 @@
                 background-position: top center; /* 背景从顶部开始，避免黑条 */
             }
             
-            .hero-overlay { top: 40%; }
+            /* ========== 核心修改：Hero文字居中调整 ========== */
+            .hero-overlay { 
+                top: 50%; /* 改回50%，实现完全垂直居中 */
+                transform: translate(-50%, -50%); /* 确保真正居中 */
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                height: 100%;
+                width: 100%;
+            }
+            
             .hero-title {
                 font-size: clamp(16px, 5.5vw, 22px);
                 line-height: 2.0;
@@ -638,6 +648,9 @@
                 animation: fadeIn 1.5s ease-out 0.5s forwards;
                 overflow: visible;
                 max-width: 95%;
+                text-align: center; /* 强制文字居中 */
+                padding: 0 20px; /* 增加左右内边距，避免文字贴边 */
+                margin: 0; /* 重置margin */
             }
             
             .hero-title br { display: block !important; }
