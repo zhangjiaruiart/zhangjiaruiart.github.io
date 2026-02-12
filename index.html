@@ -9,18 +9,14 @@
     <link rel="icon" href="images/favicon.png" type="image/png" sizes="32x32">
 
     <style>
-        /* 基础变量 */
         :root {
             --primary-font: "Optima", "Didot", "Helvetica Neue", Helvetica, Arial, sans-serif;
             --main-color: #111;
             --transition-smooth: all 1.2s cubic-bezier(0.15, 1, 0.3, 1);
-            --white-alpha-70: rgba(255, 255, 255, 0.7);
-            --black-alpha-80: rgba(17, 17, 17, 0.8);
             --skeleton-gradient: linear-gradient(90deg, transparent, rgba(255,255,255,0.6), transparent);
         }
 
-        /* 全局重置 */
-        * { /* 修复：原代码此处是▪，改为正确的* */
+        * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
@@ -37,7 +33,6 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        /* 导航栏样式 */
         #scroll-progress {
             position: fixed;
             top: 0;
@@ -58,7 +53,6 @@
             padding: 30px 5%;
             z-index: 2000;
             transition: all 0.6s cubic-bezier(0.2, 1, 0.3, 1);
-            will-change: transform, background;
         }
 
         nav.nav-scrolled {
@@ -118,7 +112,6 @@
 
         .nav-links a:hover::after { width: 100%; }
 
-        /* 新增：语言切换按钮样式 */
         .language-switch {
             display: flex;
             align-items: center;
@@ -144,7 +137,8 @@
             font-weight: 500;
         }
 
-        .nav-scrolled .lang-btn {
+        .nav-scrolled .lang-btn,
+        .nav-scrolled .lang-separator {
             color: var(--main-color);
         }
 
@@ -153,10 +147,6 @@
             font-size: 8px;
             margin: 0 5px;
             opacity: 0.5;
-        }
-
-        .nav-scrolled .lang-separator {
-            color: var(--main-color);
         }
 
         .menu-toggle {
@@ -180,15 +170,12 @@
         .menu-toggle.active span:nth-child(2) { opacity: 0; }
         .menu-toggle.active span:nth-child(3) { transform: rotate(-45deg) translate(6px, -6px); }
 
-        /* 主体内容样式 */
         .hero {
             height: 100vh;
             width: 100%;
             overflow: hidden;
             position: relative;
             background-color: #000;
-            opacity: 1;
-            visibility: visible;
         }
 
         #hero-img-wrap {
@@ -198,7 +185,6 @@
             top: -2.5%;
             left: -2.5%;
             transition: transform 0.2s ease-out;
-            will-change: transform;
         }
 
         .hero img {
@@ -222,33 +208,23 @@
             pointer-events: none;
         }
 
-        /* Hero区域文本样式 - 适配屏幕（核心修改：保证文本完整显示） */
         .hero-title {
             color: #fff;
-            font-size: clamp(16px, 2.8vw, 26px); /* 调整字号范围，避免溢出 */
+            font-size: clamp(16px, 2.8vw, 26px);
             font-weight: 300;
-            letter-spacing: 0.3em; /* 减小字间距，增加文本容纳空间 */
-            text-transform: none;
-            margin: 0;
+            letter-spacing: 0.3em;
             line-height: 1.8;
             opacity: 0;
-            filter: blur(0);
             transform: translateY(20px);
             width: 100%;
-            max-width: 900px; /* 增大最大宽度，容纳完整文本 */
+            max-width: 900px;
             margin: 0 auto;
             animation: fadeIn 1.5s ease-out 0.5s forwards;
-            white-space: nowrap; /* 保持一行显示 */
-            overflow: visible; /* 关键修改：不隐藏溢出内容 */
-            /* 移除省略号，避免文本截断 */
+            white-space: nowrap;
+            overflow: visible;
         }
 
-        /* 新增：渐入动画关键帧 */
         @keyframes fadeIn {
-            0% {
-                opacity: 0;
-                transform: translateY(20px);
-            }
             100% {
                 opacity: 0.9;
                 transform: translateY(0);
@@ -278,28 +254,24 @@
             animation: arrowBounce 2s infinite;
         }
 
-        /* 内容区块通用样式 */
         .statement-section {
             padding: calc(120px + 5vh) 5% calc(40px + 5vh);
-            max-width: none; /* 修改：移除最大宽度限制，让背景铺满 */
-            width: 100%; /* 修改：确保宽度100% */
+            width: 100%;
             margin: 0 auto;
             text-align: center;
             scroll-margin-top: 100px;
-            /* 新增：背景GIF样式 - 修改为铺满屏幕 */
             background-image: url('images/hero-bg.webp');
-            background-position: center center; /* 修改：居中显示 */
+            background-position: center center;
             background-repeat: no-repeat;
-            background-size: cover; /* 修改：覆盖整个容器 */
+            background-size: cover;
             background-attachment: fixed;
             position: relative;
-            min-height: 60vh; /* 修改：添加最小高度，保证背景展示效果 */
-            display: flex; /* 修改：flex布局确保内容居中 */
+            min-height: 60vh;
+            display: flex;
             align-items: center;
             justify-content: center;
         }
         
-        /* 新增：添加半透明遮罩，确保文字可读性 - 修改透明度从0.85改为0.05 */
         .statement-section::before {
             content: "";
             position: absolute;
@@ -307,23 +279,20 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(255, 255, 255, 0.05); /* 修改：降低透明度，让背景更清晰 */
+            background-color: rgba(255, 255, 255, 0.05);
             z-index: 1;
         }
         
-        /* 确保文字显示在遮罩上方 */
         .statement-text {
             position: relative;
             z-index: 2;
             font-size: 24px;
             line-height: 1.8;
             font-weight: 300;
-            color: #fff; /* 修改：文字改为白色 */
+            color: #fff;
             letter-spacing: 0.02em;
             font-style: italic;
-            opacity: 1;
-            transform: translateY(0);
-            max-width: 900px; /* 保留文字区域的最大宽度 */
+            max-width: 900px;
             margin: 0 auto;
         }
 
@@ -331,8 +300,6 @@
             padding: 40px 5% 20px;
             max-width: 1260px;
             margin: 0 auto;
-            opacity: 1;
-            transform: translateY(0);
             scroll-margin-top: 80px;
         }
 
@@ -346,7 +313,6 @@
             color: var(--main-color);
         }
 
-        /* 网格布局样式 */
         .grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -468,7 +434,6 @@
             line-height: 1.4;
         }
 
-        /* 辅助组件样式 */
         #back-to-top {
             position: fixed;
             bottom: 40px;
@@ -506,7 +471,7 @@
             bottom: 50px;
             left: 50%;
             transform: translateX(-50%);
-            background: var(--black-alpha-80);
+            background: rgba(17,17,17,0.8);
             color: #fff;
             padding: 10px 20px;
             font-size: 10px;
@@ -518,7 +483,6 @@
             z-index: 9999;
         }
 
-        /* 联系区块样式 */
         .contact-section {
             padding: 100px 5%;
             background-color: #fff;
@@ -573,7 +537,6 @@
             font-size: 18px;
         }
 
-        /* 页脚样式 */
         footer {
             padding: 60px 5% 40px;
             text-align: center;
@@ -584,7 +547,6 @@
             text-transform: uppercase;
         }
 
-        /* 动画关键帧 */
         @keyframes kenBurns {
             0% { transform: scale(1); }
             100% { transform: scale(1.08); }
@@ -612,27 +574,24 @@
             100% { left: 100%; }
         }
 
-        /* 媒体查询 - 响应式适配 */
         @media (max-width: 900px) {
-            /* ========== 修复黑条核心修改 ========== */
             .hero {
-                height: 100svh; /* 使用svh替代vh，适配移动端视口 */
-                min-height: -webkit-fill-available; /* 兼容iOS */
+                height: 100svh;
+                min-height: -webkit-fill-available;
             }
             
             .statement-section {
-                padding: 60px 5% 60px;
-                background-attachment: local; /* 改为local避免滚动间隙 */
-                min-height: 100svh; /* 匹配hero高度，消除间隙 */
+                padding: 60px 5%;
+                background-attachment: local;
+                min-height: 100svh;
                 text-align: left;
-                margin-top: -1px; /* 抵消可能的1px间隙 */
-                background-position: top center; /* 背景从顶部开始，避免黑条 */
+                margin-top: -1px;
+                background-position: top center;
             }
             
-            /* ========== 核心修改：Hero文字居中调整 ========== */
             .hero-overlay { 
-                top: 50%; /* 改回50%，实现完全垂直居中 */
-                transform: translate(-50%, -50%); /* 确保真正居中 */
+                top: 50%;
+                transform: translate(-50%, -50%);
                 display: flex;
                 align-items: center;
                 justify-content: center;
@@ -645,12 +604,9 @@
                 line-height: 2.0;
                 letter-spacing: 0.2em;
                 white-space: normal;
-                animation: fadeIn 1.5s ease-out 0.5s forwards;
-                overflow: visible;
                 max-width: 95%;
-                text-align: center; /* 强制文字居中 */
-                padding: 0 20px; /* 增加左右内边距，避免文字贴边 */
-                margin: 0; /* 重置margin */
+                padding: 0 20px;
+                margin: 0;
             }
             
             .hero-title br { display: block !important; }
@@ -693,7 +649,6 @@
             
             .content-section { padding: 30px 5%; }
             
-            /* ========== 移动端statement-text英文排版优化 ========== */
             .statement-text { 
                 font-size: 18px;
                 line-height: 2.2;
@@ -702,9 +657,7 @@
                 padding: 0 8%;
                 text-align: left;
                 max-width: 100%;
-                transform: translateY(0);
                 hyphens: auto;
-                white-space: normal;
             }
             
             .contact-section { padding: 80px 10%; }
@@ -727,11 +680,6 @@
             
             .hero img { animation: kenBurnsMobile 20s ease-in-out infinite alternate; }
             
-            .project img, .project-image-wrapper {
-                display: block;
-                visibility: visible;
-            }
-
             .series5-wrapper img {
                 transform: scale(0.75); 
                 object-fit: contain;
@@ -739,7 +687,6 @@
             }
         }
 
-        /* 新增：电脑端语言切换按钮垂直对齐调整 */
         @media (min-width: 901px) {
             .language-switch {
                 align-items: baseline;
@@ -780,7 +727,6 @@
                 <a href="#projects" onclick="closeMenu()">Projects</a>
                 <a href="biography.html" onclick="closeMenu()">BIOGRAPHY</a>
                 <a href="#contact" onclick="closeMenu()">Contact</a>
-                <!-- 新增：语言切换按钮 - 增加onclick调用closeMenu() -->
                 <div class="language-switch">
                     <button class="lang-btn active" id="lang-en" onclick="switchLanguage('en'); closeMenu();">English</button>
                     <span class="lang-separator">|</span>
@@ -801,7 +747,6 @@
                      onerror="handleImageError(this, 'images/Cover.JPG');"
                      loading="eager">
             </div>
-            <!-- Hero区域添加目标文本 - 恢复br标签实现移动端分行 -->
             <div class="hero-overlay">
                 <h1 class="hero-title" data-lang="en">Matter dissolves,<br>Memory crystallizes</h1>
                 <h1 class="hero-title" data-lang="zh" style="display: none;">物质消散，<br>记忆结晶</h1>
@@ -811,7 +756,6 @@
             </a>
         </section>
 
-        <!-- 恢复statement部分原始文字，优化移动端换行语义 -->
         <section class="statement-section" id="statement">
             <p class="statement-text" data-lang="en">
                 Zhang Jiarui's practice operates between <br> sculptural reduction and site-specific ecological intervention,<br>
@@ -1019,12 +963,11 @@
             menuToggle: document.getElementById('menuToggle'),
             heroImgWrap: document.getElementById('hero-img-wrap'),
             heroSection: document.getElementById('hero-section'),
-            // 新增：语言切换相关元素
             langEnBtn: document.getElementById('lang-en'),
             langZhBtn: document.getElementById('lang-zh')
         };
 
-        // 工具函数 - 显示提示
+        // 显示提示
         const showToast = () => {
             const toast = document.getElementById('copy-toast');
             toast.style.opacity = '1';
@@ -1052,9 +995,7 @@
         // 初始化滚动监听
         const initScrollObserver = () => {
             const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) entry.target.classList.add('revealed');
-                });
+                entries.forEach(entry => entry.isIntersecting && entry.target.classList.add('revealed'));
             }, { threshold: 0.1 });
 
             document.querySelectorAll('.statement-section, .content-section').forEach(sec => observer.observe(sec));
@@ -1129,66 +1070,50 @@
             document.body.style.overflow = 'auto';
         };
 
-        // 新增：语言切换功能
+        // 语言切换功能
         const switchLanguage = (lang) => {
             // 更新按钮状态
-            if (lang === 'en') {
-                dom.langEnBtn.classList.add('active');
-                dom.langZhBtn.classList.remove('active');
-                document.getElementById('copy-toast').textContent = 'ID COPIED';
-                // 移除中文导航栏字体放大类
-                dom.navLinks.classList.remove('zh');
-            } else {
-                dom.langEnBtn.classList.remove('active');
-                dom.langZhBtn.classList.add('active');
-                document.getElementById('copy-toast').textContent = '已复制ID';
-                // 添加中文导航栏字体放大类
-                dom.navLinks.classList.add('zh');
-            }
+            dom.langEnBtn.classList.toggle('active', lang === 'en');
+            dom.langZhBtn.classList.toggle('active', lang === 'zh');
+            
+            // 更新提示文本
+            document.getElementById('copy-toast').textContent = lang === 'en' ? 'ID COPIED' : '已复制ID';
+            
+            // 切换导航栏字体大小
+            dom.navLinks.classList.toggle('zh', lang === 'zh');
             
             // 切换所有带语言标记的元素
             document.querySelectorAll('[data-lang]').forEach(el => {
-                if (el.getAttribute('data-lang') === lang) {
-                    el.style.display = el.tagName === 'P' || el.tagName === 'SPAN' || el.tagName === 'H1' || el.tagName === 'H2' || el.tagName === 'H3' || el.tagName === 'H4' ? 'block' : 'inline';
-                } else {
-                    el.style.display = 'none';
-                }
+                el.style.display = el.getAttribute('data-lang') === lang 
+                    ? (['P', 'SPAN', 'H1', 'H2', 'H3', 'H4'].includes(el.tagName) ? 'block' : 'inline')
+                    : 'none';
             });
             
             // 更新导航链接文本
-            const navLinks = document.querySelectorAll('.nav-links a');
-            if (lang === 'zh') {
-                navLinks[0].textContent = '生态艺术';
-                navLinks[1].textContent = '雕塑';
-                navLinks[2].textContent = '项目';
-                navLinks[3].textContent = '个人简介';
-                navLinks[4].textContent = '联系我们';
-                // 更新logo
-                document.querySelector('.logo').textContent = '张家瑞艺术作品';
-            } else {
-                navLinks[0].textContent = 'Ecological Art';
-                navLinks[1].textContent = 'Sculpture';
-                navLinks[2].textContent = 'Projects';
-                navLinks[3].textContent = 'BIOGRAPHY';
-                navLinks[4].textContent = 'Contact';
-                // 恢复logo
-                document.querySelector('.logo').textContent = 'ZHANGJIARUI ARTWORKS';
-            }
+            const navTexts = lang === 'zh' 
+                ? ['生态艺术', '雕塑', '项目', '个人简介', '联系我们']
+                : ['Ecological Art', 'Sculpture', 'Projects', 'BIOGRAPHY', 'Contact'];
             
-            // 更新页面标题
-            if (lang === 'zh') {
-                document.title = '张家瑞 | 艺术家 - 生态艺术、雕塑与项目';
-            } else {
-                document.title = 'ZHANG JIARUI | ARTIST - Ecological Art, Sculpture, and Projects';
-            }
+            document.querySelectorAll('.nav-links a').forEach((a, i) => {
+                if (i < 5) a.textContent = navTexts[i];
+            });
             
-            // 保存语言偏好到本地存储
+            // 更新logo和页面标题
+            const logoText = lang === 'zh' ? '张家瑞艺术作品' : 'ZHANGJIARUI ARTWORKS';
+            document.querySelector('.logo').textContent = logoText;
+            
+            const titleText = lang === 'zh' 
+                ? '张家瑞 | 艺术家 - 生态艺术、雕塑与项目' 
+                : 'ZHANG JIARUI | ARTIST - Ecological Art, Sculpture, and Projects';
+            document.title = titleText;
+            
+            // 保存语言偏好
             localStorage.setItem('preferredLanguage', lang);
         };
 
         // 初始化页面
         const initPage = () => {
-            // 图片加载处理
+            // 处理已加载的图片
             document.querySelectorAll('.project img, #hero-img-wrap img').forEach(img => {
                 if (img.complete && !img.classList.contains('loaded')) handleImageLoad(img);
                 if (window.innerWidth <= 900) img.style.opacity = '1';
@@ -1198,13 +1123,10 @@
             initScrollObserver();
             
             // 初始化鼠标跟随（仅桌面端）
-            if (window.innerWidth > 900 && dom.heroSection && dom.heroImgWrap) {
-                initMouseFollow();
-            }
+            if (window.innerWidth > 900) initMouseFollow();
 
             // 更新导航状态
-            updateNavStatus(window.pageYOffset || document.documentElement.scrollTop);
-            document.body.classList.add('page-loaded');
+            updateNavStatus(window.scrollY);
             
             // 初始化语言设置
             const savedLang = localStorage.getItem('preferredLanguage') || 'en';
@@ -1214,10 +1136,11 @@
         // 滚动监听（节流处理）
         let ticking = false;
         dom.lastScrollY = window.scrollY;
+        
         window.addEventListener('scroll', () => {
             if (!ticking) {
                 window.requestAnimationFrame(() => {
-                    const scrollY = window.pageYOffset || document.documentElement.scrollTop;
+                    const scrollY = window.scrollY;
                     const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
                     
                     // 更新进度条
