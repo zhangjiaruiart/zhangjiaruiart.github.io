@@ -8,19 +8,7 @@
   <link rel="icon" href="images/favicon.svg" type="image/svg+xml" />
   <link rel="icon" href="images/favicon.png" type="image/png" sizes="32x32" />
 
-  <!-- Open Graph / Twitter (SEO) -->
-  <meta property="og:title" content="ZHANG JIARUI | Ecological Art & Sculpture">
-  <meta property="og:description" content="Exploring material, time, and fragile systems through art.">
-  <meta property="og:image" content="https://www.zhangjiarui.art/images/cover.webp">
-  <meta property="og:url" content="https://www.zhangjiarui.art">
-  <meta name="twitter:card" content="summary_large_image">
-
-  <!-- Alternate language links (for SEO) -->
-  <link rel="alternate" hreflang="en" href="https://www.zhangjiarui.art/" />
-  <link rel="alternate" hreflang="zh" href="https://www.zhangjiarui.art/zh/" />
-
   <style>
-    /* —— 你的原有 CSS 完全保留在此处 —— */
     :root {
       --primary-font: "Optima", "Didot", "Helvetica Neue", Helvetica, Arial, sans-serif;
       --main-color: #111;
@@ -330,23 +318,21 @@
   <div id="copy-toast">ID COPIED</div>
 
   <header>
-    <nav id="navbar" aria-label="Main navigation">
-      <a href="#" class="logo" data-action="scroll-to-top">ZHANGJIARUI ARTWORKS</a>
+    <nav id="navbar">
+      <a href="#" class="logo" onclick="window.scrollTo({top:0,behavior:'smooth'});return false;">ZHANGJIARUI ARTWORKS</a>
       <div class="nav-links" id="navLinks">
-        <a href="#eco-art" data-nav="eco-art">Ecological Art</a>
-        <a href="#sculpture" data-nav="sculpture">Sculpture</a>
-        <a href="#projects" data-nav="projects">Projects</a>
-        <a href="biography.html" data-nav="biography">BIOGRAPHY</a>
-        <a href="#contact" data-nav="contact">Contact</a>
+        <a href="#eco-art" onclick="closeMenu()">Ecological Art</a>
+        <a href="#sculpture" onclick="closeMenu()">Sculpture</a>
+        <a href="#projects" onclick="closeMenu()">Projects</a>
+        <a href="biography.html" onclick="closeMenu()">BIOGRAPHY</a>
+        <a href="#contact" onclick="closeMenu()">Contact</a>
         <div class="language-switch">
-          <button class="lang-btn active" data-lang-switch="en">English</button>
+          <button class="lang-btn active" id="lang-en" onclick="switchLanguage('en'); closeMenu();">English</button>
           <span class="lang-separator">|</span>
-          <button class="lang-btn" data-lang-switch="zh">中文</button>
+          <button class="lang-btn" id="lang-zh" onclick="switchLanguage('zh'); closeMenu();">中文</button>
         </div>
       </div>
-      <div class="menu-toggle" id="menuToggle" role="button" tabindex="0" aria-expanded="false" aria-label="Toggle navigation">
-        <span></span><span></span><span></span>
-      </div>
+      <div class="menu-toggle" id="menuToggle"><span></span><span></span><span></span></div>
     </nav>
   </header>
 
@@ -354,20 +340,20 @@
     <section class="hero" id="hero-section">
       <div id="hero-img-wrap">
         <img src="images/cover.webp" alt="Zhang Jiarui Cover"
-             width="1920" height="1080"
-             loading="eager"
-             fetchpriority="high">
+             onload="handleImageLoad(this)"
+             onerror="handleImageError(this, 'images/Cover.JPG')"
+             loading="eager">
       </div>
       <div class="hero-overlay">
         <h1 class="hero-title" data-lang="en">Matter dissolves,<br>Memory crystallizes</h1>
         <h1 class="hero-title hidden" data-lang="zh">物质消散，<br>记忆结晶</h1>
       </div>
-      <a href="#statement" class="scroll-indicator" aria-label="Scroll down to statement">
+      <a href="#statement" class="scroll-indicator" aria-label="Scroll down">
         <div class="scroll-arrow"></div>
       </a>
     </section>
 
-    <section class="statement-section" id="statement" aria-labelledby="statement-heading">
+    <section class="statement-section" id="statement">
       <p class="statement-text" data-lang="en">
         Zhang Jiarui's practice operates between <br> sculptural reduction and site-specific ecological intervention,<br>
         examining how material, time, and human action reshape fragile systems.
@@ -378,16 +364,16 @@
       </p>
     </section>
 
-    <section class="content-section" id="eco-art" aria-labelledby="eco-art-heading">
-      <h2 class="category-title" data-lang="en" id="eco-art-heading">Ecological Art</h2>
-      <h2 class="category-title hidden" data-lang="zh" id="eco-art-heading-zh">生态艺术</h2>
+    <section class="content-section" id="eco-art">
+      <h2 class="category-title" data-lang="en">Ecological Art</h2>
+      <h2 class="category-title hidden" data-lang="zh">生态艺术</h2>
       <div class="grid">
         <article>
           <a href="eco-ice-burial.html" class="project">
             <div class="project-image-wrapper video-ratio">
               <img src="images/eco/ice_burial_cover.webp" 
-                   width="1280" height="720"
-                   loading="lazy">
+                   onload="handleImageLoad(this)"
+                   onerror="handleImageError(this, 'images/eco/ice_burial_cover.jpg')">
               <div class="play-overlay"><div class="play-button"></div></div>
             </div>
             <div class="project-info">
@@ -402,8 +388,8 @@
           <a href="eco-4-5tons.html" class="project">
             <div class="project-image-wrapper video-ratio">
               <img src="images/eco/4_5tons_cover.webp"
-                   width="1280" height="720"
-                   loading="lazy">
+                   onload="handleImageLoad(this)"
+                   onerror="handleImageError(this, 'images/eco/4_5tons_cover.jpg')">
               <div class="play-overlay"><div class="play-button"></div></div>
             </div>
             <div class="project-info">
@@ -417,17 +403,18 @@
       </div>
     </section>
 
-    <section class="content-section" id="sculpture" aria-labelledby="sculpture-heading">
-      <h2 class="category-title" data-lang="en" id="sculpture-heading">Sculpture</h2>
-      <h2 class="category-title hidden" data-lang="zh" id="sculpture-heading-zh">雕塑</h2>
+    <section class="content-section" id="sculpture">
+      <h2 class="category-title" data-lang="en">Sculpture</h2>
+      <h2 class="category-title hidden" data-lang="zh">雕塑</h2>
       <div class="grid-sculpture-custom">
-        <!-- 为简洁省略重复项，实际保留全部 -->
         <article>
           <h3 class="series-label" data-lang="en">Wood Series</h3>
           <h3 class="series-label hidden" data-lang="zh">木系列</h3>
           <a href="series1.html" class="project">
             <div class="project-image-wrapper img-ratio">
-              <img src="images/sculpture/s1_cover.webp" width="800" height="1000" loading="lazy">
+              <img src="images/sculpture/s1_cover.webp"
+                   onload="handleImageLoad(this)"
+                   onerror="handleImageError(this, 'images/sculpture/s1_cover.jpg')">
             </div>
             <div class="project-info">
               <h4 class="project-title" data-lang="en">Triangle</h4>
@@ -437,19 +424,88 @@
             </div>
           </a>
         </article>
-        <!-- 其他作品项保持结构一致，此处略 -->
-        <!-- 注意：所有图片都应加上 width/height 和 loading="lazy" -->
+        <article>
+          <h3 class="series-label" data-lang="en">Water Series</h3>
+          <h3 class="series-label hidden" data-lang="zh">水系列</h3>
+          <a href="series2.html" class="project">
+            <div class="project-image-wrapper img-ratio">
+              <img src="images/sculpture/s2_cover.webp"
+                   onload="handleImageLoad(this)"
+                   onerror="handleImageError(this, 'images/sculpture/s2_cover.jpg')">
+            </div>
+            <div class="project-info">
+              <h4 class="project-title" data-lang="en">Water1</h4>
+              <h4 class="project-title hidden" data-lang="zh">水</h4>
+              <p class="project-meta" data-lang="en">Transparent resin / 2023</p>
+              <p class="project-meta hidden" data-lang="zh">透明树脂 / 2023</p>
+            </div>
+          </a>
+        </article>
+        <article>
+          <h3 class="series-label" data-lang="en">Line Series</h3>
+          <h3 class="series-label hidden" data-lang="zh">线系列</h3>
+          <a href="series5.html" class="project">
+            <div class="project-image-wrapper img-ratio series5-wrapper" style="background:#fff;display:flex;align-items:center;justify-content:center;">
+              <img src="images/sculpture/s5_cover.webp"
+                   onload="handleImageLoad(this)"
+                   onerror="handleImageError(this, 'images/sculpture/s5_cover.jpg')"
+                   style="object-fit:contain;">
+            </div>
+            <div class="project-info">
+              <h4 class="project-title" data-lang="en">X</h4>
+              <h4 class="project-title hidden" data-lang="zh">X</h4>
+              <p class="project-meta" data-lang="en">Acrylic / 2023</p>
+              <p class="project-meta hidden" data-lang="zh">亚克力 / 2023</p>
+            </div>
+          </a>
+        </article>
+        <article>
+          <h3 class="series-label" data-lang="en">Formless Series</h3>
+          <h3 class="series-label hidden" data-lang="zh">无形系列</h3>
+          <a href="series4.html" class="project">
+            <div class="project-image-wrapper img-ratio">
+              <img src="images/sculpture/s4_cover.webp"
+                   onload="handleImageLoad(this)"
+                   onerror="handleImageError(this, 'images/sculpture/s4_cover.jpg')">
+            </div>
+            <div class="project-info">
+              <h4 class="project-title" data-lang="en">At ease</h4>
+              <h4 class="project-title hidden" data-lang="zh">自在</h4>
+              <p class="project-meta" data-lang="en">Transparent resin / 2023</p>
+              <p class="project-meta hidden" data-lang="zh">透明树脂 / 2023</p>
+            </div>
+          </a>
+        </article>
+        <article>
+          <h3 class="series-label" data-lang="en">Gold Series</h3>
+          <h3 class="series-label hidden" data-lang="zh">金系列</h3>
+          <a href="series3.html" class="project">
+            <div class="project-image-wrapper img-ratio">
+              <img src="images/sculpture/s3_cover.webp"
+                   onload="handleImageLoad(this)"
+                   onerror="handleImageError(this, 'images/sculpture/s3_cover.jpg')">
+            </div>
+            <div class="project-info">
+              <h4 class="project-title" data-lang="en">New Eighteenth Arhat</h4>
+              <h4 class="project-title hidden" data-lang="zh">新十八罗汉</h4>
+              <p class="project-meta" data-lang="en">Goldenleaf resin / 2015</p>
+              <p class="project-meta hidden" data-lang="zh">金箔、树脂 / 2015</p>
+            </div>
+          </a>
+        </article>
       </div>
     </section>
 
-    <section class="content-section" id="projects" aria-labelledby="projects-heading">
-      <h2 class="category-title" data-lang="en" id="projects-heading">Projects</h2>
-      <h2 class="category-title hidden" data-lang="zh" id="projects-heading-zh">项目</h2>
+    <section class="content-section" id="projects">
+      <h2 class="category-title" data-lang="en">Projects</h2>
+      <h2 class="category-title hidden" data-lang="zh">项目</h2>
       <div class="grid">
         <article>
           <a href="project-coral.html" class="project">
             <div class="project-image-wrapper video-ratio">
-              <img src="images/projects/coral_cover.webp" width="1280" height="720" loading="lazy">
+              <img src="images/projects/coral_cover.webp"
+                   onload="handleImageLoad(this)"
+                   onerror="handleImageError(this, 'images/projects/coral_cover.jpg')">
               <div class="play-overlay"><div class="play-button"></div></div>
             </div>
             <div class="project-info">
@@ -463,7 +519,7 @@
       </div>
     </section>
 
-    <section class="contact-section" id="contact" aria-labelledby="contact-heading">
+    <section class="contact-section" id="contact">
       <div class="contact-container">
         <div class="contact-row">
           <div class="contact-item">
@@ -475,7 +531,7 @@
           <div class="contact-item">
             <span class="contact-label" data-lang="en">WeChat</span>
             <span class="contact-label hidden" data-lang="zh">微信</span>
-            <span class="contact-value" data-wechat="zjr5556699">zjr5556699</span>
+            <span class="contact-value" onclick="copyWeChat('zjr5556699')">zjr5556699</span>
           </div>
           <span class="divider">/</span>
           <div class="contact-item">
@@ -495,45 +551,6 @@
   </footer>
 
   <script>
-    // ======================
-    // 多语言文案集中管理
-    // ======================
-    const translations = {
-      en: {
-        menu: ['Ecological Art', 'Sculpture', 'Projects', 'BIOGRAPHY', 'Contact'],
-        hero: 'Matter dissolves,<br>Memory crystallizes',
-        statement: "Zhang Jiarui's practice operates between <br> sculptural reduction and site-specific ecological intervention,<br> examining how material, time, and human action reshape fragile systems.",
-        categories: {
-          eco: 'Ecological Art',
-          sculpture: 'Sculpture',
-          projects: 'Projects'
-        },
-        contact: { email: 'Email', wechat: 'WeChat', phone: 'Phone' },
-        footer: '&copy; 2026 ZHANGJIARUI ARTWORKS.',
-        toast: 'ID COPIED',
-        logo: 'ZHANGJIARUI ARTWORKS',
-        title: 'ZHANG JIARUI | ARTIST - Ecological Art, Sculpture, and Projects'
-      },
-      zh: {
-        menu: ['生态艺术', '雕塑', '项目', '个人简介', '联系我们'],
-        hero: '物质消散，<br>记忆结晶',
-        statement: "张家瑞的艺术实践介于雕塑与在场性生态艺术创作之间，<br>探讨物质、时间和人类行为如何重塑脆弱的生态系统。",
-        categories: {
-          eco: '生态艺术',
-          sculpture: '雕塑',
-          projects: '项目'
-        },
-        contact: { email: '邮箱', wechat: '微信', phone: '电话' },
-        footer: '&copy; 2026 张家瑞艺术作品.',
-        toast: '已复制ID',
-        logo: '张家瑞艺术作品',
-        title: '张家瑞 | 艺术家 - 生态艺术、雕塑与项目'
-      }
-    };
-
-    // ======================
-    // DOM 缓存
-    // ======================
     const dom = {
       nav: document.getElementById('navbar'),
       progress: document.getElementById('scroll-progress'),
@@ -542,205 +559,97 @@
       menuToggle: document.getElementById('menuToggle'),
       heroImgWrap: document.getElementById('hero-img-wrap'),
       heroSection: document.getElementById('hero-section'),
-      copyToast: document.getElementById('copy-toast')
+      langEnBtn: document.getElementById('lang-en'),
+      langZhBtn: document.getElementById('lang-zh')
     };
 
     let ticking = false;
-    let lastScrollY = window.scrollY;
+    dom.lastScrollY = window.scrollY;
 
-    // ======================
-    // 工具函数
-    // ======================
-    const showToast = (text = null) => {
-      if (text) dom.copyToast.textContent = text;
-      dom.copyToast.style.opacity = '1';
-      dom.copyToast.style.visibility = 'visible';
-      setTimeout(() => {
-        dom.copyToast.style.opacity = '0';
-        dom.copyToast.style.visibility = 'hidden';
-      }, 2000);
+    const showToast = () => {
+      const toast = document.getElementById('copy-toast');
+      toast.style.opacity = '1'; toast.style.visibility = 'visible';
+      setTimeout(() => { toast.style.opacity = '0'; toast.style.visibility = 'hidden'; }, 2000);
     };
 
     const handleImageLoad = (img) => {
       img.classList.add('loaded');
-      img.parentElement?.classList.add('finished-loading');
+      img.parentElement.classList.add('finished-loading');
+      if (window.innerWidth <= 900) img.style.opacity = '1';
     };
 
-    const fallbackCopy = (text) => {
-      const ta = Object.assign(document.createElement("textarea"), {
-        value: text,
-        style: "position:fixed;left:-999999px;"
-      });
-      document.body.appendChild(ta);
-      ta.select();
-      try {
-        document.execCommand('copy');
-        showToast();
-      } catch (e) {
-        alert('复制失败，请手动复制：' + text);
-      }
-      document.body.removeChild(ta);
+    const handleImageError = (img, fallbackSrc) => {
+      img.src = fallbackSrc; img.onerror = null; handleImageLoad(img);
     };
 
     const copyWeChat = (id) => {
       if (navigator.clipboard) {
-        navigator.clipboard.writeText(id).then(() => showToast()).catch(() => fallbackCopy(id));
-      } else {
-        fallbackCopy(id);
+        navigator.clipboard.writeText(id).then(showToast).catch(fallbackCopy);
+      } else fallbackCopy(id);
+
+      function fallbackCopy(text) {
+        const ta = Object.assign(document.createElement("textarea"), {
+          value: text,
+          style: "position:fixed;left:-999999px;"
+        });
+        document.body.appendChild(ta); ta.select();
+        try { document.execCommand('copy'); showToast(); } catch (e) { alert('复制失败，请手动复制：' + text); }
+        document.body.removeChild(ta);
       }
+    };
+
+    const toggleMenu = () => {
+      dom.navLinks.classList.toggle('active');
+      dom.menuToggle.classList.toggle('active');
+      document.body.style.overflow = dom.navLinks.classList.contains('active') ? 'hidden' : 'auto';
     };
 
     const closeMenu = () => {
       dom.navLinks.classList.remove('active');
       dom.menuToggle.classList.remove('active');
-      dom.menuToggle.setAttribute('aria-expanded', 'false');
-      document.body.style.overflow = '';
+      document.body.style.overflow = 'auto';
     };
 
     const switchLanguage = (lang) => {
-      // 更新按钮状态
-      document.querySelectorAll('[data-lang-switch]').forEach(btn => {
-        btn.classList.toggle('active', btn.dataset.langSwitch === lang);
-      });
+      dom.langEnBtn.classList.toggle('active', lang === 'en');
+      dom.langZhBtn.classList.toggle('active', lang === 'zh');
+      document.getElementById('copy-toast').textContent = lang === 'en' ? 'ID COPIED' : '已复制ID';
+      dom.navLinks.classList.toggle('zh', lang === 'zh');
 
-      // 切换内容
       document.querySelectorAll('[data-lang]').forEach(el => {
-        el.classList.toggle('hidden', el.dataset.lang !== lang);
+        el.classList.toggle('hidden', el.getAttribute('data-lang') !== lang);
       });
 
-      // 更新动态文本
-      const t = translations[lang];
-      document.querySelector('.logo').textContent = t.logo;
-      document.title = t.title;
-      dom.copyToast.textContent = t.toast;
-
-      // 更新菜单文本（通过 data-nav）
-      const menuItems = document.querySelectorAll('.nav-links a[data-nav]');
-      menuItems.forEach((item, i) => {
-        if (t.menu[i]) item.textContent = t.menu[i];
+      const navTexts = lang === 'zh'
+        ? ['生态艺术', '雕塑', '项目', '个人简介', '联系我们']
+        : ['Ecological Art', 'Sculpture', 'Projects', 'BIOGRAPHY', 'Contact'];
+      document.querySelectorAll('.nav-links a:not(.language-switch *)').forEach((a, i) => {
+        if (i < 5) a.textContent = navTexts[i];
       });
+
+      document.querySelector('.logo').textContent = lang === 'zh' ? '张家瑞艺术作品' : 'ZHANGJIARUI ARTWORKS';
+      document.title = lang === 'zh'
+        ? '张家瑞 | 艺术家 - 生态艺术、雕塑与项目'
+        : 'ZHANG JIARUI | ARTIST - Ecological Art, Sculpture, and Projects';
 
       localStorage.setItem('preferredLanguage', lang);
-      document.documentElement.lang = lang === 'zh' ? 'zh-CN' : 'en';
     };
 
     const updateNavStatus = (scrollY) => {
       const isScrolled = scrollY > 50;
       dom.nav.classList.toggle("nav-scrolled", isScrolled);
       dom.btt.classList.toggle("visible", isScrolled);
-      if (scrollY > lastScrollY && scrollY > 200) {
-        dom.nav.style.transform = "translateY(-100%)";
-      } else {
-        dom.nav.style.transform = "translateY(0)";
-      }
-      lastScrollY = scrollY;
+      if (scrollY > dom.lastScrollY && scrollY > 200) dom.nav.style.transform = "translateY(-100%)";
+      else dom.nav.style.transform = "translateY(0)";
+      dom.lastScrollY = scrollY;
     };
 
-    // ======================
-    // 事件委托
-    // ======================
-    document.addEventListener('click', (e) => {
-      // 滚动到顶部
-      if (e.target.closest('[data-action="scroll-to-top"]') || e.target.id === 'back-to-top') {
-        e.preventDefault();
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-        return;
-      }
-
-      // 导航链接
-      const navLink = e.target.closest('[data-nav]');
-      if (navLink) {
-        e.preventDefault();
-        closeMenu();
-        const targetId = navLink.getAttribute('href').substring(1);
-        const target = document.getElementById(targetId);
-        if (target) {
-          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }
-        return;
-      }
-
-      // 语言切换
-      const langBtn = e.target.closest('[data-lang-switch]');
-      if (langBtn) {
-        const lang = langBtn.dataset.langSwitch;
-        switchLanguage(lang);
-        closeMenu();
-        return;
-      }
-
-      // 微信复制
-      const wechatEl = e.target.closest('[data-wechat]');
-      if (wechatEl) {
-        copyWeChat(wechatEl.dataset.wechat);
-        return;
-      }
-
-      // 关闭菜单点击外部
-      if (dom.navLinks.classList.contains('active') && !e.target.closest('#navLinks') && !e.target.closest('#menuToggle')) {
-        closeMenu();
-      }
-    });
-
-    // 菜单 toggle
-    dom.menuToggle.addEventListener('click', () => {
-      const isActive = dom.navLinks.classList.toggle('active');
-      dom.menuToggle.classList.toggle('active', isActive);
-      dom.menuToggle.setAttribute('aria-expanded', String(isActive));
-      document.body.style.overflow = isActive ? 'hidden' : '';
-    });
-
-    // 键盘支持（Esc 关闭菜单）
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && dom.navLinks.classList.contains('active')) {
-        closeMenu();
-      }
-    });
-
-    // ======================
-    // 初始化
-    // ======================
-    const initPage = () => {
-      // 图片加载
-      document.querySelectorAll('img').forEach(img => {
-        if (img.complete) {
-          handleImageLoad(img);
-        } else {
-          img.addEventListener('load', () => handleImageLoad(img));
-          img.addEventListener('error', () => {
-            const fallback = img.src.replace(/\.webp$/i, '.jpg');
-            if (img.src !== fallback) {
-              img.src = fallback;
-            }
-          });
-        }
-      });
-
-      // Hero 鼠标视差（仅桌面）
-      if (window.innerWidth > 900) {
-        dom.heroSection.addEventListener('mousemove', (e) => {
-          const maxOffset = 20;
-          const x = Math.max(-maxOffset, Math.min(maxOffset, (e.clientX - window.innerWidth / 2) / 50));
-          const y = Math.max(-maxOffset, Math.min(maxOffset, (e.clientY - window.innerHeight / 2) / 50));
-          dom.heroImgWrap.style.transform = `translate(${-x}px, ${-y}px)`;
-        });
-      }
-
-      // 滚动状态
-      updateNavStatus(window.scrollY);
-
-      // 语言
-      const savedLang = localStorage.getItem('preferredLanguage') || 'en';
-      switchLanguage(savedLang);
-    };
-
-    // 滚动进度条
     window.addEventListener('scroll', () => {
       if (!ticking) {
         requestAnimationFrame(() => {
           const scrollY = window.scrollY;
           const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-          dom.progress.style.width = height > 0 ? ((scrollY / height) * 100) + "%" : "0%";
+          dom.progress.style.width = (scrollY / height) * 100 + "%";
           updateNavStatus(scrollY);
           ticking = false;
         });
@@ -748,17 +657,33 @@
       }
     }, { passive: true });
 
-    // 页面加载
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', initPage);
-    } else {
-      initPage();
-    }
+    dom.btt.onclick = () => window.scrollTo({ top: 0, behavior: 'smooth' });
+    dom.menuToggle.onclick = toggleMenu;
 
-    // pageshow（处理后退缓存）
-    window.addEventListener('pageshow', (e) => {
-      if (e.persisted) initPage();
-    });
+    const initPage = () => {
+      document.querySelectorAll('.project img, #hero-img-wrap img').forEach(img => {
+        if (img.complete && !img.classList.contains('loaded')) handleImageLoad(img);
+        if (window.innerWidth <= 900) img.style.opacity = '1';
+      });
+
+      if (window.innerWidth > 900) {
+        dom.heroSection.addEventListener('mousemove', (e) => {
+          const maxOffset = 20;
+          const x = Math.max(-maxOffset, Math.min(maxOffset, (e.clientX - window.innerWidth / 2) / 50));
+          const y = Math.max(-maxOffset, Math.min(maxOffset, (e.clientY - window.innerHeight / 2) / 50));
+          requestAnimationFrame(() => {
+            dom.heroImgWrap.style.transform = `translate(${-x}px, ${-y}px)`;
+          });
+        });
+      }
+
+      updateNavStatus(window.scrollY);
+      const savedLang = localStorage.getItem('preferredLanguage') || 'en';
+      switchLanguage(savedLang);
+    };
+
+    document.addEventListener('DOMContentLoaded', initPage);
+    window.addEventListener('pageshow', e => e.persisted && initPage());
   </script>
 </body>
-</html>
+</html>   
