@@ -31,7 +31,7 @@
         .back { font-size: 10px; letter-spacing: 0.2em; text-decoration: none; color: #aaa; text-transform: uppercase; transition: color 0.3s; }
         .back:hover { color: #111; }
 
-        /* 语言切换按钮样式 */
+        /* 语言切换按钮样式（和其他页面保持一致） */
         .language-switch {
             display: flex;
             align-items: center;
@@ -68,80 +68,11 @@
 
         /* 视频容器 */
         .video-container { 
-            position: relative; 
-            padding-bottom: 56.25%; /* 16:9 */
-            height: 0; 
-            background: #fdfdfd; 
-            margin-bottom: 60px; 
+            position: relative; padding-bottom: 56.25%; height: 0; 
+            background: #fdfdfd; margin-bottom: 60px; 
             box-shadow: 0 15px 35px rgba(0,0,0,0.04);
-            overflow: hidden;
-            cursor: pointer;
         }
-
-        .video-placeholder {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background-color: #000;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            color: white;
-            font-family: Arial, sans-serif;
-            text-align: center;
-            padding: 20px;
-            box-sizing: border-box;
-        }
-
-        .video-placeholder img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            position: absolute;
-            top: 0; left: 0;
-            z-index: 1;
-        }
-
-        .play-button {
-            width: 80px;
-            height: 80px;
-            background: rgba(0, 0, 0, 0.7);
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 2;
-            margin-bottom: 15px;
-        }
-
-        .play-button::after {
-            content: "";
-            display: block;
-            width: 0; height: 0;
-            border-left: 20px solid white;
-            border-top: 12px solid transparent;
-            border-bottom: 12px solid transparent;
-            margin-left: 4px;
-        }
-
-        .video-placeholder p {
-            z-index: 2;
-            font-size: 14px;
-            color: white;
-            text-shadow: 0 1px 3px rgba(0,0,0,0.8);
-            max-width: 80%;
-        }
-
-        .video-container.loaded .video-placeholder {
-            display: none;
-        }
-
-        .video-container iframe {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            border: none;
-            z-index: 3;
-        }
+        .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
 
         /* 项目信息区域 */
         .project-info { max-width: 850px; text-align: left; margin-bottom: 80px; }
@@ -154,6 +85,7 @@
             letter-spacing: 0.1em; margin-bottom: 40px; display: block;
         }
 
+        /* 文字内容排版 */
         .description { 
             font-size: 14px; color: #444; line-height: 2.2; 
             font-weight: 300; text-align: justify;
@@ -161,7 +93,7 @@
         .description p { margin-bottom: 2.5em; }
         .description strong { color: #111; font-weight: 400; }
 
-        /* 图片网格 */
+        /* --- 图片网格系统（3x3 布局） --- */
         .gallery-title {
             font-size: 11px; letter-spacing: 0.3em; text-transform: uppercase;
             color: #ccc; margin-bottom: 30px; border-bottom: 1px solid #f2f2f2;
@@ -177,7 +109,7 @@
             aspect-ratio: 1 / 1; 
             overflow: hidden;
             background-color: #f9f9f9;
-            cursor: zoom-in;
+            cursor: zoom-in; /* 提示可放大 */
         }
         .image-item img {
             width: 100%; height: 100%; object-fit: cover;
@@ -187,10 +119,10 @@
             transform: scale(1.08);
         }
 
-        /* Lightbox */
+        /* --- 新增：放大查看器（Lightbox）样式 --- */
         #lightbox {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(255, 255, 255, 0.95);
+            background: rgba(255, 255, 255, 0.95); /* 白色半透明背景 */
             display: none; justify-content: center; align-items: center;
             z-index: 2000; cursor: zoom-out;
             opacity: 0; transition: opacity 0.4s ease;
@@ -205,6 +137,7 @@
 
         footer { padding: 60px 0 40px; text-align: center; font-size: 9px; letter-spacing: 0.4em; color: #ccc; text-transform: uppercase; border-top: 1px solid #f9f9f9; }
 
+        /* 移动端适配 */
         @media (max-width: 1024px) {
             .image-grid { grid-template-columns: repeat(2, 1fr); }
         }
@@ -217,20 +150,13 @@
             .nav-right { gap: 20px; }
             .back { font-size: 12px; }
             .lang-btn { font-size: 12px; padding: 0 5px; }
-            .play-button {
-                width: 60px;
-                height: 60px;
-            }
-            .play-button::after {
-                border-left: 16px solid white;
-                border-top: 10px solid transparent;
-                border-bottom: 10px solid transparent;
-            }
         }
     </style>
 </head>
 <body>
     <nav>
+        <a href="index.html" class="logo">ZHANGJIARUI ARTWORKS</a>
+        <a href="index.html" class="back">← BACK</a>
         <a href="index.html" class="logo" data-lang="en">ZHANGJIARUI ARTWORKS</a>
         <a href="index.html" class="logo" data-lang="zh" style="display: none;">张家瑞艺术作品</a>
         
@@ -238,6 +164,7 @@
             <a href="index.html" class="back" data-lang="en">← BACK</a>
             <a href="index.html" class="back" data-lang="zh" style="display: none;">← 返回</a>
             
+            <!-- 语言切换按钮（和其他页面样式/位置一致） -->
             <div class="language-switch">
                 <button class="lang-btn active" id="lang-en" onclick="switchLanguage('en')">English</button>
                 <span class="lang-separator">|</span>
@@ -247,18 +174,13 @@
     </nav>
 
     <div class="container">
-        <!-- 改进后的视频容器 -->
-        <div class="video-container" id="videoWrapper">
-            <div class="video-placeholder">
-                <img src="https://img.youtube.com/vi/OEZ3FvOwdjI/hqdefault.jpg" alt="Video thumbnail" onerror="this.src='https://via.placeholder.com/600x338?text=Video+Preview'">
-                <div class="play-button"></div>
-                <p data-lang="en">Click to play video</p>
-                <p data-lang="zh" style="display: none;">点击播放视频</p>
-            </div>
-            <!-- iframe 将由 JS 动态插入 -->
+        <div class="video-container">
+            <iframe src="https://www.youtube.com/embed/OEZ3FvOwdjI?rel=0" allowfullscreen></iframe>
         </div>
 
         <section class="project-info">
+            <h1 class="title">Coral Planting Project</h1>
+            <span class="meta">Documentary / 2025 / China Southsea</span>
             <h1 class="title" data-lang="en">Coral Planting Project</h1>
             <h1 class="title" data-lang="zh" style="display: none;">珊瑚种植计划</h1>
             
@@ -266,6 +188,10 @@
             <span class="meta" data-lang="zh" style="display: none;">纪录片 / 2025 / 中国南海</span>
 
             <div class="description">
+                <p><strong>The Coral Planting Project</strong> is an ecological restoration film created in the China Southsea in 2025, arising from my participation in a Chinese marine scientific expedition. Working alongside marine scientists and professional divers, I took part in the transplantation of 24,000 coral seedlings. The film focuses on the process of “reforesting” the seabed, presenting coral restoration as an ecological practice shaped by time, environmental conditions, and sustained care. Its aim is not merely the survival of individual coral species, but the recovery of the regenerative capacity of the coral reef system as a whole.
+</p>
+                <p>Unlike conventional nature documentaries, the work emphasizes the rhythmic silence of the underwater environment and the technical precision of restoration procedures. The repeated act of fixing coral fragments onto nursery structures becomes a meditative bodily practice, revealing the concept of “assisted recovery” as a gray zone between the artificial and the natural. Humans are no longer positioned as dominant agents, but as participants within an ecological process co-shaped by currents, light, temperature, and marine life. Each coral seedling functions as a modest yet tangible marker of hope within a damaged seascape.</p>
+                <p>At the same time, <strong>The Coral Planting Project</strong> operates as an artistic reflection on time, fragility, and ecological coexistence. By recording the gradual growth of coral colonies, the film bridges scientific documentation and artistic perception, drawing attention to the long-term and often invisible labor beneath the ocean’s surface. In this sense, art is not a representation of nature, but a perceptual apparatus that runs parallel to scientific practice, inviting viewers to reconsider humanity’s position and responsibility within the marine ecosystem.</p>
                 <p data-lang="en"><strong>The Coral Planting Project</strong> is an ecological restoration film created in the China Southsea in 2025, arising from my participation in a Chinese marine scientific expedition. Working alongside marine scientists and professional divers, I took part in the transplantation of 24,000 coral seedlings. The film focuses on the process of “reforesting” the seabed, presenting coral restoration as an ecological practice shaped by time, environmental conditions, and sustained care. Its aim is not merely the survival of individual coral species, but the recovery of the regenerative capacity of the coral reef system as a whole.</p>
                 <p data-lang="zh" style="display: none;"><strong>珊瑚种植计划</strong>是2025年我参与中国海洋科考项目期间，在中国南海创作的一部生态修复纪录片。我与海洋科学家和专业潜水员一同参与了24000株珊瑚幼苗的移植工作。影片聚焦于海底“重新造林”的过程，将珊瑚修复呈现为一种由时间、环境条件和持续照护所塑造的生态实践。其目的不仅是单个珊瑚物种的存活，更是整个珊瑚礁生态系统再生能力的恢复。</p>
 
@@ -277,6 +203,7 @@
             </div>
         </section>
 
+        <h2 class="gallery-title">Field Documentation</h2>
         <h2 class="gallery-title" data-lang="en">Field Documentation</h2>
         <h2 class="gallery-title" data-lang="zh" style="display: none;">现场纪实</h2>
         
@@ -297,14 +224,16 @@
         <img src="" alt="Enlarged view">
     </div>
 
+    <footer>&copy; 2026 ZHANGJIARUI ARTWORKS.</footer>
     <footer>
         <span data-lang="en">&copy; 2026 ZHANGJIARUI ARTWORKS.</span>
         <span data-lang="zh" style="display: none;">&copy; 2026 张家瑞艺术作品.</span>
     </footer>
 
     <script>
-        // 语言切换功能
+        // 语言切换核心功能（和其他页面逻辑一致）
         const switchLanguage = (lang) => {
+            // 更新按钮激活状态
             const langEnBtn = document.getElementById('lang-en');
             const langZhBtn = document.getElementById('lang-zh');
             
@@ -318,54 +247,50 @@
                 document.title = '珊瑚种植计划 | 张家瑞';
             }
             
+            // 切换所有带语言标记的文本元素
             document.querySelectorAll('[data-lang]').forEach(el => {
                 const elLang = el.getAttribute('data-lang');
                 if (elLang === lang) {
-                    el.style.display = (el.tagName === 'P') ? 'block' : 'inline-block';
+                    // 根据标签类型适配显示方式
+                    if (el.tagName === 'A' || el.tagName === 'H1' || el.tagName === 'H2' || el.tagName === 'SPAN' || el.tagName === 'P') {
+                        el.style.display = el.tagName === 'P' ? 'block' : 'inline-block';
+                    } else {
+                        el.style.display = 'block';
+                    }
                 } else {
                     el.style.display = 'none';
                 }
             });
             
+            // 保存语言偏好到本地存储，和其他页面同步
             localStorage.setItem('preferredLanguage', lang);
         };
 
-        // Lightbox 功能
+        // Lightbox 图片放大功能（保留原有逻辑）
         const lightbox = document.getElementById('lightbox');
         const lightboxImg = lightbox.querySelector('img');
         const galleryImages = document.querySelectorAll('.image-item img');
 
+        // 点击图片打开放大效果
         galleryImages.forEach(img => {
             img.addEventListener('click', () => {
                 lightboxImg.src = img.src;
                 lightbox.classList.add('active');
-                document.body.style.overflow = 'hidden';
+                document.body.style.overflow = 'hidden'; // 锁定滚动
             });
         });
 
+        // 点击背景关闭
         lightbox.addEventListener('click', () => {
             lightbox.classList.remove('active');
-            document.body.style.overflow = 'auto';
+            document.body.style.overflow = 'auto'; // 恢复滚动
         });
 
-        // 视频懒加载：点击封面才插入 iframe
-        document.getElementById('videoWrapper').addEventListener('click', function() {
-            if (!this.classList.contains('loaded')) {
-                const iframe = document.createElement('iframe');
-                iframe.src = 'https://www.youtube.com/embed/OEZ3FvOwdjI?rel=0&autoplay=1';
-                iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
-                iframe.allowFullscreen = true;
-                iframe.loading = 'lazy';
-                this.appendChild(iframe);
-                this.classList.add('loaded');
-            }
-        });
-
-        // 初始化语言
+        // 页面加载时初始化语言设置
         document.addEventListener('DOMContentLoaded', () => {
+            // 优先读取本地存储的语言偏好，默认英文
             const savedLang = localStorage.getItem('preferredLanguage') || 'en';
             switchLanguage(savedLang);
         });
     </script>
 </body>
-</html>
